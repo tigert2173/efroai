@@ -1,0 +1,142 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1d1f21;
+    color: #f5f5f5;
+    margin: 0;
+}
+
+header {
+    background-color: #20232a;
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: #4285f4;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #34a853;
+}
+
+/* Main Content */
+main {
+    padding: 40px 20px;
+}
+
+h2 {
+    color: #fbbc04;
+    margin-bottom: 20px;
+}
+
+.moderator-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2f3136;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.moderator-table th, .moderator-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #3c4043;
+}
+
+.moderator-table th {
+    background-color: #3a3f47;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.status.pending {
+    background-color: #fbbc04;
+}
+
+.status.approved {
+    background-color: #34a853;
+}
+
+.approve-btn, .delete-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #fff;
+    font-size: 14px;
+}
+
+.approve-btn {
+    background-color: #34a853;
+}
+
+.approve-btn:hover {
+    background-color: #0f9d58;
+}
+
+.delete-btn {
+    background-color: #ea4335;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background-color: #d93025;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #20232a;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p, footer a {
+    color: #f5f5f5;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+footer ul li {
+    display: inline;
+}
