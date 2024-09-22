@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderator Panel</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Moderator Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">Moderator Panel</div>
+            <ul class="nav-links">
+                <li><a href="#manage-users">Manage Users</a></li>
+                <li><a href="#manage-characters">Manage Characters</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section id="manage-characters">
+            <h2>Character Management</h2>
+            <table class="moderator-table">
+                <thead>
+                    <tr>
+                        <th>Character</th>
+                        <th>Uploader</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="character-list">
+                    <!-- Characters fetched dynamically -->
+                    <tr data-id="1">
+                        <td>Aimee</td>
+                        <td>User123</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td>
+                            <button class="approve-btn">Approve</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Belle</td>
+                        <td>User456</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td>
+                            <button class="approve-btn">Approve</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Repeat rows -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Character</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        /* (Your existing CSS here) */
+    </style>
+</head>
+<body>
+    <!-- Header (same as before) -->
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Edit Character</h1>
+        <div class="error" id="errorMessage"></div>
+
+        <form id="characterForm">
+            <label for="name">Character Name:</label>
+            <input type="text" id="name" class="name-input" placeholder="Enter character name" required maxlength="64">
+            <label for="status">Character Status:</label>
+            <select id="status">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+            </select>
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" placeholder="Enter tags" required>
+            <label for="persona">Persona:</label>
+            <textarea id="persona" rows="4" placeholder="Enter character persona" required></textarea>
+            <label for="scenario">Scenario:</label>
+            <textarea id="scenario" rows="4" placeholder="Enter scenario"></textarea>
+            <label for="greeting">Greeting:</label>
+            <textarea id="greeting" rows="4" placeholder="Enter the first message" required></textarea>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Retrieve character data from localStorage or URL parameters
+        const characterId = localStorage.getItem('currentCharacterId');
+        const errorMessage = document.getElementById('errorMessage');
+
+        if (characterId) {
+            // Fetch character data using the ID
+            axios.get(`https://characters.efroai.net:3000/api/characters/${characterId}`)
+                .then(response => {
+                    const character = response.data;
+                    document.getElementById('name').value = character.name;
+                    document.getElementById('status').value = character.status;
+                    document.getElementById('tags').value = character.tags.join(', ');
+                    document.getElementById('persona').value = character.persona;
+                    document.getElementById('scenario').value = character.scenario || '';
+                    document.getElementById('greeting').value = character.greeting;
+                })
+                .catch(error => {
+                    errorMessage.textContent = 'Error loading character data.';
+                });
+        } else {
+            errorMessage.textContent = 'No character selected for editing.';
+        }
+
+        // Handle form submission to save changes
+        document.getElementById('characterForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const updatedCharacter = {
+                name: document.getElementById('name').value,
+                status: document.getElementById('status').value,
+                tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
+                persona: document.getElementById('persona').value,
+                scenario: document.getElementById('scenario').value,
+                greeting: document.getElementById('greeting').value,
+            };
+
+            axios.put(`https://characters.efroai.net:3000/api/characters/${characterId}`, updatedCharacter)
+                .then(response => {
+                    alert('Character updated successfully!');
+                    // Optionally, redirect or reset the form
+                })
+                .catch(error => {
+                    errorMessage.textContent = 'Error updating character.';
+                });
+        });
+    </script>
+</body>
+</html>

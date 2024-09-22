@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO.AI Character Hub - Documentation</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add custom styles for the sidebar */
+        .container {
+            display: flex;
+            margin: 20px;
+        }
+        .sidebar {
+            position: sticky;
+            top: 20px; /* Offset from the top */
+            width: 200px; /* Fixed width for the sidebar */
+            padding: 10px;
+            background-color: #1e1e1e; /* Dark background for sidebar */
+            border-radius: 8px; /* Optional: rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+            height: fit-content; /* Adjust height to content */
+        }
+        .sidebar h3 {
+            color: #e67e22; /* Orange color for headings */
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #3498db; /* Bright link color */
+            transition: color 0.3s;
+        }
+        .sidebar ul li a:hover {
+            color: #e67e22; /* Change link color on hover */
+        }
+        .content {
+            flex: 1; /* Take the remaining space */
+            margin-left: 20px; /* Space between sidebar and content */
+        }
+        .collapsible {
+            background-color: #3498db; /* Bright button */
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .collapsible.active, .collapsible:hover {
+            background-color: #e67e22; /* Orange when active */
+        }
+        .collapsible-content {
+            padding: 15px;
+            display: none;
+            overflow: hidden;
+            background-color: #1e1e1e; /* Dark collapsible content */
+            border-left: 5px solid #3498db;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        code {
+            background-color: #333; /* Darker code block */
+            padding: 10px;
+            border-radius: 10px;
+            color: #ddd; /* Lighter text */
+            display: inline-block;
+            font-size: 90%;
+        }
+        .content-container {
+            margin-left: 20px; /* Indent content container */
+            padding: 10px;
+            border-left: 2px solid #3498db; /* Optional: left border for emphasis */
+            background-color: #2b2b2b; /* Dark background for better readability */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
+        h2, h3, h4 {
+            margin: 0; /* Remove default margin for headers */
+        }
+        h2 {
+            margin-bottom: 10px; /* Space below main headers */
+        }
+        h3, h4 {
+            margin-bottom: 5px; /* Space below subheaders */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="doc.html">Documentation</a></li>
+            </ul>
+            <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Documentation</h1>
+            <p>Explore how to create bots effectively on our platform.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <aside class="sidebar">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#basics">Basics</a></li>
+                    <li><a href="#sections">Bot Sections</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#advanced">Advanced Section</a></li>
+                    <li><a href="#expert">Expert Section</a></li>
+                    <li><a href="#models">Models</a></li>
+                </ul>
+            </aside>
+
+            <section class="content">
+                <h2 id="overview">Overview</h2>
+                <div class="content-container">
+                    <p>This page will explain how to create bots on our platform in an effective manner.</p>
+                </div>
+
+                <h2 id="basics">Basics</h2>
+                <div class="content-container">
+                    <h4>Getting your bot to use user's name</h4>
+                    <code>Use the tag {{user}} in your bot greeting message.</code>
+                </div>
+
+                <h2 id="sections">Bot Sections</h2>
+                <div class="content-container">
+                    <h4>Greeting Section:</h4>
+                    <code>This is what your bot will begin the conversation with.</code>
+                    <h4>Context Section:</h4>
+                    <code>This section should include the scenario or any additional context that the bot should remember.</code>
+                    <h4>Persona Section:</h4>
+                    <code>Describe your bot's personality, we recommend W++ formatting.</code>
+                </div>
+
+                <h2 id="advanced">Advanced Section</h2>
+                <div class="content-container">
+                    <h4>Temperature (0.2 to 1.2)</h4>
+                    <code>How predictable or unpredictable message responses from the bot are. A higher temperature is generally more creative.</code>
+                </div>
+
+                <h2 id="expert">Expert Section</h2>
+                <button type="button" class="collapsible">Expert Section (Click to Expand)</button>
+                <div class="collapsible-content" style="display: none;">
+                    <p>This section contains information on expert features/settings for expert users.</p>
+                    <div class="content-container">
+                        <h3>Expert Settings Section</h3>
+                        <p><em>These settings can be modified if you want the bot to respond in a certain way.</em></p>
+                        <h4>Previous Sentences Window</h4>
+                        <code>The number of sentences directly before the last bot message that should be considered during message generation.</code>
+                        <h4>Temporal Sentence Sampling</h4>
+                        <code>This setting weights previous sentences based on recency, offering a broader context for responses while maintaining timeline order.</code>
+                    </div>
+                    <div class="content-container">
+                        <h3>API Security</h3>
+                        <p>For securing the API, ensure that you use proper authentication methods such as JWT (JSON Web Token) or OAuth.</p>
+                        <p>Example of a secure request:</p>
+                        <pre><code>curl -H "Authorization: Bearer your-token" https://api.yoursite.com/protected-endpoint</code></pre>
+                    </div>
+                </div>
+
+                <h2 id="models">Models Section</h2>
+                <div class="content-container">
+                    <h4>Nephra 8B (Recommended)</h4>
+                    <code>Our recommended model, optimized for better efficiency.</code>
+                    <h4>Thespis Mistral 7B</h4>
+                    <code>Another good model for roleplay, typically playful.</code>
+                    <h4>Thespis 13B (Selective, Unavailable)</h4>
+                    <code>A larger model, available during select times due to resource limitations.</code>
+                    <h4>Dolphin 3B</h4>
+                    <code>A lightweight storytelling model that can be hosted by anyone. Currently the results are subpar.</code>
+                    <h4>[3rd Party]</h4>
+                    <code><em>Means a model is hosted by a user within the community, though we do our best, you should especially avoid sending personal information while using these APIs.</em></code>
+                </div>
+
+                <div class="content-container">
+                    <h2>Need Help?</h2>
+                    <p>If you encounter issues, feel free to reach out at <a href="mailto:support@efro.ai">support@efro.ai</a>.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        var collapsibles = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < collapsibles.length; i++) {
+            collapsibles[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

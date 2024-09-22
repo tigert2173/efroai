@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Characters – EFRO.AI</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1b1b1b;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.7);
+            max-width: 900px;
+            width: 100%;
+            margin: 50px auto;
+        }
+        h1 {
+            text-align: center;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+        .character-list {
+            margin-top: 20px;
+        }
+        .character-item {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Your Characters</h1>
+        <div class="character-list" id="characterList"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://characters.efroai.net:3000/api'; // Define your backend URL here
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCharacters(); // Fetch characters on page load
+        });
+
+        async function fetchCharacters() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found. User may not be logged in.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/characters`, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch characters');
+                }
+
+                const characters = await response.json();
+                displayCharacters(characters);
+            } catch (error) {
+                console.error('Error fetching character data:', error);
+                alert('Error fetching character data. Please try again.');
+            }
+        }
+
+        function displayCharacters(characters) {
+            const characterList = document.getElementById('characterList');
+            characterList.innerHTML = '';
+
+            characters.forEach(character => {
+    const characterItem = document.createElement('div');
+    characterItem.classList.add('character-item');
+    characterItem.innerHTML = `
+        <span>${character.name} (Uploaded by: ${character.uploader})</span>
+        <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
+    `;
+    characterList.appendChild(characterItem);
+});
+
+        }
+    function editCharacter(characterId, uploader) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found. User may not be logged in.');
+        alert('You must be logged in to edit a character.');
+        return;
+    }
+
+    console.log('Editing Character ID:', characterId);
+
+    fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {  // Include username in the URL
+        headers: {
+            Authorization: `${token}`  // Add "Bearer" to token format if required
+        }
+    })
+    .then(response => {
+        console.log('Response Status:', response.status);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch character data: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(character => {
+        localStorage.setItem('editCharacter', JSON.stringify(character));
+        // Redirect to the editor page
+        window.location.href = 'editor.html';
+    })
+    .catch(error => {
+        console.error('Error fetching character data:', error);
+        alert('Error fetching character data for editing. Please try again.');
+    });
+}
+
+
+
+    </script>
+
+</body>
+</html>

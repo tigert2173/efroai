@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Character</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1b1b1b;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Menu Bar Styling */
+        .menu-bar {
+            background-color: #262626;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .menu-bar .logo {
+            color: #00ff66;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .menu-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu-bar ul li {
+            margin-right: 20px;
+        }
+
+        .menu-bar ul li a {
+            color: #00ff66;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-bar ul li a:hover {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            border-radius: 5px;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #00ff66;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border: 1px solid #00ff66;
+        }
+
+        button {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            padding: 12px 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            color: #ffffff;
+        }
+
+        .error {
+            color: #ff3300;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Bar -->
+    <nav class="menu-bar">
+        <div class="logo">MyApp</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#characters">Characters</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Create a New Character</h1>
+        <div class="error" id="errorMessage"></div>
+        <form id="characterForm">
+            <label for="name">Character Name:</label>
+            <input type="text" id="name" placeholder="Enter character name" required>
+
+            <label for="status">Character Status:</label>
+            <select id="status">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+            </select>
+
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" placeholder="Enter tags" required>
+
+            <button type="submit">Create Character</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('characterForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const status = document.getElementById('status').value;
+            const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
+
+            // Get the token from localStorage
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('errorMessage').textContent = 'You are not logged in.';
+                return;
+            }
+
+            // Create character payload
+            const character = {
+                name,
+                status,
+                tags
+            };
+
+            // Send the POST request to the backend
+            axios.post('https://characters.efroai.net:3000/api/characters', character, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                alert('Character created successfully!');
+                // Clear the form after successful creation
+                document.getElementById('characterForm').reset();
+            })
+            .catch(error => {
+                if (error.response && error.response.status === 401) {
+                    document.getElementById('errorMessage').textContent = 'Unauthorized: Please log in.';
+                } else {
+                    document.getElementById('errorMessage').textContent = 'Error: ' + (error.response?.data?.message || 'Failed to create character.');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

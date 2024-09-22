@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Character</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        /* Container and form styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1b1b1b;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.7);
+            max-width: 900px;
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #00ff66;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border: 1px solid #00ff66;
+        }
+
+        button {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            padding: 12px 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            color: #ffffff;
+        }
+
+        .error {
+            color: #ff3300;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mode-switch {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 20px; /* Space between this input and the next element */
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border: 1px solid #00ff66; /* Highlight border on focus */
+        }
+
+        .char-count {
+            position: absolute;
+            top: -20px; /* Adjust as needed */
+            right: 10px; /* Adjust for spacing from the edge */
+            color: #bdbdbd; /* Change color as needed */
+            font-size: 0.9em; /* Slightly smaller font for count */
+        }
+
+
+    </style>
+</head>
+<body>
+
+     <!-- Header -->
+     <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Create a New Character</h1>
+        <div class="error" id="errorMessage"></div>
+        
+        <div class="mode-switch">
+            <button id="toggleMode">Switch to Context Mode</button>
+            <p id="modeExplanation">Only one of the two is required: general context or a guided scenario.</p>
+            
+            <div id="description">
+                <p id="generalContext" style="display: none;">
+                    <strong style="color: #00ff66;">Selected — General Context:</strong> 
+                    <br><span style="color: #ddd;">This mode offers a broad overview of the world or setting, detailing its atmosphere, culture, and rules, allowing for a more flexible interpretation of the character's actions and environment.</span>
+                </p>
+                <p id="guidedScenario" style="display: block;">
+                    <strong style="color: #00ff66;">Selected — Guided Scenario:</strong> 
+                    <br><span style="color: #ddd;">This option outlines a specific narrative or situation for the character to navigate, adhering to a defined timeline and set events that drive the story forward.</span>
+                </p>
+                <p id="summary" style="display: block; margin-top: 10px;">
+                    <span style="color: #fff;">In summary, <strong>General Context</strong> allows for creative freedom in a dynamic setting, while a <strong>Guided Scenario</strong> follows a structured timeline for more focused interactions.</span>
+                </p>
+            </div>
+        
+        <form id="characterForm">
+            
+            <label for="name">Character Name:</label>
+            <div class="input-container">
+                <input type="text" id="name" class="name-input" placeholder="Enter character name" required maxlength="64">
+                <span id="nameCharCount" class="char-count">0 / 64</span>
+            </div>
+            
+            
+            
+            <label for="status">Character Status:</label>
+            <select id="status">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+            </select>
+
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" placeholder="Enter tags" required>
+
+            <label for="persona">Persona:</label>
+            <textarea id="persona" rows="4" placeholder="Enter character persona" required></textarea>
+            
+
+            <label for="chardescription">Character Description:</label>
+            <div class="input-container">
+                <textarea id="chardescription" rows="4" placeholder="Enter a brief character description" required maxlength="512"></textarea>
+                <span id="chardescriptionCharCount" class="char-count">0 / 512</span>
+            </div>
+            
+            
+            <div id="scenarioContainer">
+                <label for="scenario">Scenario:</label>
+                <textarea id="scenario" rows="4" placeholder="Enter scenario"></textarea>
+            </div>
+
+            <div id="contextContainer" style="display: none;">
+                <label for="context">Context:</label>
+                <textarea id="context" rows="4" placeholder="Enter world context"></textarea>
+            </div>
+
+            <label for="greeting">Greeting:</label>
+            <textarea id="greeting" rows="4" placeholder="Enter the first message" required></textarea>
+
+            <label for="exampledialogue">Example Dialogue:</label>
+            <textarea id="exampledialogue" rows="4" placeholder="Enter example dialogue"></textarea>
+
+            <button type="submit">Create Character</button>                        
+        </div>
+ 
+        <p id="totalCount" style="text-align: center; color: #ddd;">
+            Total Characters: 0/6144 (Max: 12888)
+        </p>
+            <div id="limitRecNotice" style="color: #ffae00; display: none; text-align: center;">
+            You have exceeded the character content recommendation of 6144! You can enter up to 12,888 characters.
+        </div>
+        </p>
+            <div id="limitNotice" style="color: #ff0000; display: none; text-align: center;">
+            You have exceeded the character limit of 12,888! You cannot enter more than 12,888 characters.
+        </div>
+        </form>
+        <form id="saveForm">
+            <button type="submit">Save Character</button>
+        </form>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('toggleMode').addEventListener('click', function() {
+            const scenarioContainer = document.getElementById('scenarioContainer');
+            const contextContainer = document.getElementById('contextContainer');
+            const toggleButton = document.getElementById('toggleMode');
+            const generalContext = document.getElementById('generalContext');
+            const guidedScenario = document.getElementById('guidedScenario');
+
+            if (scenarioContainer.style.display === 'none') {
+                scenarioContainer.style.display = 'block';
+                contextContainer.style.display = 'none';
+                toggleButton.textContent = 'Switch to Context Mode';
+                generalContext.style.display = 'none';
+                guidedScenario.style.display = 'block';
+            } else {
+                scenarioContainer.style.display = 'none';
+                contextContainer.style.display = 'block';
+                toggleButton.textContent = 'Switch to Scenario Mode';
+                generalContext.style.display = 'block';
+                guidedScenario.style.display = 'none';
+            }
+        });
+
+        document.getElementById('characterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const status = document.getElementById('status').value;
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
+    const chardescription = document.getElementById('chardescription').value;
+    const persona = document.getElementById('persona').value;
+    const scenario = document.getElementById('scenario').value;
+    const context = document.getElementById('context').value;
+    const greeting = document.getElementById('greeting').value;
+    const exampledialogue = document.getElementById('exampledialogue').value;
+    const token = localStorage.getItem('token');
+    const errorMessage = document.getElementById('errorMessage');
+
+    errorMessage.textContent = ''; // Clear previous error messages
+
+    if (!token) {
+        errorMessage.textContent = 'You are not logged in.';
+        return;
+    }
+
+    // Check if both fields are filled
+    if (scenario && context) {
+        errorMessage.textContent = 'Please choose either scenario or context, not both.';
+        alert('Please select either Scenario Mode or Context Mode, but not both. \nUse the switch to toggle and remove one of the options!');
+        return;
+    }
+    // Check if total characters exceed 12,888
+    const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
+
+    if (totalChars > 12888) {
+        errorMessage.textContent = 'Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.';
+        alert("Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.");
+        return;
+    }
+
+    const character = {
+        name,
+        status,
+        tags,
+        chardescription,
+        persona,
+        greeting,
+        exampledialogue,
+    };
+
+    // Include only one of scenario or context based on whether they are not empty
+    if (scenario.trim() !== '') {
+        character.scenario = scenario;
+    } else if (context.trim() !== '') {
+        character.context = context;
+    } else {
+        errorMessage.textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    // axios.post('https://characters.efroai.net:3000/api/characters', character, {
+    //     headers: {
+    //         Authorization: `${token}`
+    //     }
+    // })
+    // .then(response => {
+    //     alert('Character created successfully!');
+    //     document.getElementById('characterForm').reset();
+    //     // Reset view to initial state
+    //     document.getElementById('scenarioContainer').style.display = 'block';
+    //     document.getElementById('contextContainer').style.display = 'none';
+    //     console.log(character);
+
+    // })
+    // .catch(error => {
+    //     console.error(error); // Log the full error object for debugging
+
+    //     if (error.response) {
+    //         if (error.response.status === 401) {
+    //             errorMessage.textContent = 'Unauthorized: Please log in.';
+    //         } else {
+    //             errorMessage.textContent = 'Error: ' + (error.response.data.message || 'Failed to create character.');
+    //         }
+    //     } else if (error.request) {
+    //         errorMessage.textContent = 'Error: No response from server.';
+    //     } else {
+    //         errorMessage.textContent = 'Error: ' + error.message;
+    //     }
+    // });
+});
+
+ document.getElementById('characterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const status = document.getElementById('status').value;
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
+    const chardescription = document.getElementById('chardescription').value;
+    const persona = document.getElementById('persona').value;
+    const scenario = document.getElementById('scenario').value;
+    const context = document.getElementById('context').value;
+    const greeting = document.getElementById('greeting').value;
+    const exampledialogue = document.getElementById('exampledialogue').value;
+    const token = localStorage.getItem('token');
+    const errorMessage = document.getElementById('errorMessage');
+
+    errorMessage.textContent = ''; // Clear previous error messages
+
+    if (!token) {
+        errorMessage.textContent = 'You are not logged in.';
+        return;
+    }
+
+    // Check if both fields are filled
+    if (scenario && context) {
+        errorMessage.textContent = 'Please choose either scenario or context, not both.';
+        alert('Please select either Scenario Mode or Context Mode, but not both. \nUse the switch to toggle and remove one of the options!');
+        return;
+    }
+    // Check if total characters exceed 12,888
+    const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
+
+    if (totalChars > 12888) {
+        errorMessage.textContent = 'Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.';
+        alert("Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.");
+        return;
+    }
+
+    const character = {
+        name,
+        status,
+        tags,
+        chardescription,
+        persona,
+        greeting,
+        exampledialogue,
+    };
+
+    // Include only one of scenario or context based on whether they are not empty
+    if (scenario.trim() !== '') {
+        character.scenario = scenario;
+    } else if (context.trim() !== '') {
+        character.context = context;
+    } else {
+        errorMessage.textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    // axios.post('https://characters.efroai.net:3000/api/characters', character, {
+    //     headers: {
+    //         Authorization: `${token}`
+    //     }
+    // })
+    // .then(response => {
+    //     alert('Character created successfully!');
+    //     document.getElementById('characterForm').reset();
+    //     // Reset view to initial state
+    //     document.getElementById('scenarioContainer').style.display = 'block';
+    //     document.getElementById('contextContainer').style.display = 'none';
+    //     console.log(character);
+
+    // })
+    // .catch(error => {
+    //     console.error(error); // Log the full error object for debugging
+
+    //     if (error.response) {
+    //         if (error.response.status === 401) {
+    //             errorMessage.textContent = 'Unauthorized: Please log in.';
+    //         } else {
+    //             errorMessage.textContent = 'Error: ' + (error.response.data.message || 'Failed to create character.');
+    //         }
+    //     } else if (error.request) {
+    //         errorMessage.textContent = 'Error: No response from server.';
+    //     } else {
+    //         errorMessage.textContent = 'Error: ' + error.message;
+    //     }
+    // });
+});
+
+
+        // Initialize the view to show only scenario mode initially
+        document.getElementById('scenarioContainer').style.display = 'block';
+        document.getElementById('contextContainer').style.display = 'none';
+
+        const initialLimit = 6144;
+        const maxTotalChars = 12888;
+
+function updateCharacterCount() {
+    const persona = document.getElementById('persona').value.length;
+    const scenario = document.getElementById('scenario').value.length;
+    const context = document.getElementById('context').value.length;
+    const greeting = document.getElementById('greeting').value.length;
+    const exampledialogue = document.getElementById('exampledialogue').value.length;
+
+    const totalChars = persona + scenario + context + greeting + exampledialogue;
+
+    document.getElementById('totalCount').textContent = `Total Characters: ${totalChars}/${initialLimit} (Max: ${maxTotalChars})`;
+
+    // Show or hide the notice based on character count
+    const limitRecNotice = document.getElementById('limitRecNotice');
+    const limitNotice = document.getElementById('limitNotice');
+
+    if (totalChars > maxTotalChars) {
+        limitNotice.style.display = 'block';
+        limitRecNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars > maxTotalChars ? '#ff3300' : '#ddd';
+
+    } else if (totalChars > initialLimit) {
+        limitRecNotice.style.display = 'block';
+        limitNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars > initialLimit ? '#ffae00' : '#ddd';
+
+    } else {
+        limitRecNotice.style.display = 'none';
+        limitNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars < initialLimit ? '#ffffff' : '#ddd';
+    }
+}
+
+// Add event listeners to update count on input
+document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.addEventListener('input', updateCharacterCount);
+});
+
+// Initialize the character count display
+updateCharacterCount();
+
+const nameInput = document.getElementById('name');
+    const nameCharCount = document.getElementById('nameCharCount');
+
+    nameInput.addEventListener('input', function() {
+        const currentLength = nameInput.value.length;
+        nameCharCount.textContent = `${currentLength} / 64`;
+    });
+
+const chardescriptionInput = document.getElementById('chardescription');
+    const chardescriptionCharCount = document.getElementById('chardescriptionCharCount');
+
+    chardescriptionInput.addEventListener('input', function() {
+        const currentLength = chardescriptionInput.value.length;
+        chardescriptionCharCount.textContent = `${currentLength} / 512`;
+    });
+
+    function autoResizeTextArea(textarea) {
+    // Reset the height to allow shrinking
+    textarea.style.height = 'auto';
+    // Set the height based on the scroll height
+    textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+// Add event listeners for auto-resizing
+document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.addEventListener('input', () => {
+        autoResizeTextArea(textarea);
+        updateCharacterCount(); // Keep character count updated
+    });
+});
+
+let isEditing = false; // Flag to check if we are in editing mode
+let editingCharacterId; // Variable to hold the ID of the character being edited
+
+// Check for existing character data on page load
+document.addEventListener("DOMContentLoaded", function() {
+   loadCharacterData();
+});
+
+function loadCharacterData() {
+    const characterData = localStorage.getItem('editCharacter');
+
+    if (characterData) {
+        const character = JSON.parse(characterData);
+        isEditing = true; // Set to editing mode
+        editingCharacterId = character.id; // Store the character ID
+
+        // Populate the form fields with character data
+        document.getElementById('name').value = character.name;
+        document.getElementById('status').value = character.status;
+        document.getElementById('tags').value = character.tags.join(', ');
+        document.getElementById('chardescription').value = character.chardescription;
+        document.getElementById('persona').value = character.persona;
+        document.getElementById('greeting').value = character.greeting;
+        document.getElementById('exampledialogue').value = character.exampledialogue;
+
+        // Check for scenario or context and populate accordingly
+        if (character.scenario) {
+            document.getElementById('scenario').value = character.scenario;
+            document.getElementById('scenarioContainer').style.display = 'block';
+            document.getElementById('contextContainer').style.display = 'none'; // Hide context
+        } else {
+            document.getElementById('context').value = character.context || '';
+            document.getElementById('contextContainer').style.display = 'block';
+            document.getElementById('scenarioContainer').style.display = 'none'; // Hide scenario
+        }
+
+        // Change button text to 'Update Character'
+        document.querySelector('button[type="submit"]').textContent = 'Update Character';
+    }
+}
+
+document.getElementById('characterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const character = {
+        name: document.getElementById('name').value,
+        status: document.getElementById('status').value,
+        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
+        chardescription: document.getElementById('chardescription').value,
+        persona: document.getElementById('persona').value,
+        greeting: document.getElementById('greeting').value,
+        exampledialogue: document.getElementById('exampledialogue').value,
+    };
+
+    // Include either scenario or context
+    if (document.getElementById('scenario').value.trim() !== '') {
+        character.scenario = document.getElementById('scenario').value;
+    } else if (document.getElementById('context').value.trim() !== '') {
+        character.context = document.getElementById('context').value;
+    } else {
+        document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    let apiUrl;
+    let method;
+
+    if (isEditing) {
+        apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
+        method = 'put'; // Update character
+    } else {
+        apiUrl = 'https://characters.efroai.net:3000/api/characters';
+        method = 'post'; // Create new character
+    }
+
+    axios({
+        method: method,
+        url: apiUrl,
+        data: character,
+        headers: {
+            Authorization: `${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => {
+        alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+        document.getElementById('characterForm').reset();
+        // After character creation or update
+        localStorage.removeItem('editCharacter');
+
+        isEditing = false; // Reset editing flag
+        editingCharacterId = undefined; // Clear editing character ID
+        document.querySelector('button[type="submit"]').textContent = 'Create Character'; // Reset button text
+        // Reset view to initial state
+        document.getElementById('scenarioContainer').style.display = 'block';
+        document.getElementById('contextContainer').style.display = 'none';
+    })
+    .catch(error => {
+        console.error(error);
+        document.getElementById('errorMessage').textContent = 'Failed to update character.';
+    });
+});
+
+document.getElementById('saveForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const character = {
+        name: document.getElementById('name').value,
+        status: document.getElementById('status').value,
+        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
+        chardescription: document.getElementById('chardescription').value,
+        persona: document.getElementById('persona').value,
+        greeting: document.getElementById('greeting').value,
+        exampledialogue: document.getElementById('exampledialogue').value,
+    };
+// Retrieve the existing character
+const existingCharacter = JSON.parse(localStorage.getItem('editCharacter'));
+
+// Update the character properties as needed
+const updatedCharacter = { ...existingCharacter, ...character }; // Merge with new data
+
+// Save the updated character back to localStorage
+localStorage.setItem('editCharacter', JSON.stringify(updatedCharacter));
+
+    // Include either scenario or context
+    if (document.getElementById('scenario').value.trim() !== '') {
+        character.scenario = document.getElementById('scenario').value;
+    } else if (document.getElementById('context').value.trim() !== '') {
+        character.context = document.getElementById('context').value;
+    } else {
+        document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    let apiUrl;
+    let method;
+
+    if (isEditing) {
+        apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
+        method = 'put'; // Update character
+    } else {
+        apiUrl = 'https://characters.efroai.net:3000/api/characters';
+        method = 'post'; // Create new character
+    }
+
+    axios({
+        method: method,
+        url: apiUrl,
+        data: character,
+        headers: {
+            Authorization: `${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => {
+        alert(isEditing ? 'Character updated successfully!' : 'Character saved (locally) successfully!');
+        //document.getElementById('characterForm').reset();
+        // After character creation or update
+        //localStorage.removeItem('editCharacter');
+
+        isEditing = false; // Reset editing flag
+        //editingCharacterId = undefined; // Clear editing character ID
+        //document.querySelector('button[type="submit"]').textContent = 'Create Character'; // Reset button text
+        // Reset view to initial state
+        //document.getElementById('scenarioContainer').style.display = 'block';
+        //document.getElementById('contextContainer').style.display = 'none';
+    })
+    .catch(error => {
+        console.error(error);
+        document.getElementById('errorMessage').textContent = 'Failed to update character.';
+    });
+});
+    </script>
+
+</body>
+</html>

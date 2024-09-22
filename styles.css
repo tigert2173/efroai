@@ -1,0 +1,252 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1d1f21; /* Dark background */
+    color: #f5f5f5;
+}
+
+h1, h2, h3 {
+    color: #fbbc04; /* Bright Orange */
+    margin-bottom: 15px;
+}
+
+a {
+    color: #4285f4; /* Bright Blue */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #34a853; /* Hover Green */
+}
+
+header {
+    background-color: #20232a;
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+.logo img {
+    width: 50px; /* Adjust the size as necessary */
+    height: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align with text */
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.search-bar {
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: none;
+    background-color: #3c4043;
+    color: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar:focus {
+    box-shadow: 0 0 10px #4285f4;
+    outline: none;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #34a853, #fbbc04);
+    padding: 60px 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.cta-btn {
+    padding: 15px 30px;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: #3367d6;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    background-color: #282c34;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Main Content */
+main {
+    margin-left: 270px;
+    padding: 40px 20px;
+}
+
+main section {
+    margin-bottom: 60px;
+}
+
+.character-grid, .recommendation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Character Cards */
+.character-card, .recommendation-card {
+    background-color: #2f3136;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.character-card:hover, .recommendation-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #fbbc04;
+}
+
+.card-body {
+    margin-top: 10px;
+}
+
+.tags {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.view-btn, .chat-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 30px;
+    background-color: #34a853;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-btn:hover, .chat-btn:hover {
+    background-color: #0f9d58;
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+    background-color: #3367d6;
+}
+
+/* AI Recommendations */
+#recommendations .recommendation-card {
+background-color: #3a3f47;
+}
+
+#recommendations .chat-btn {
+background-color: #ff9800;
+}
+
+#recommendations .chat-btn:hover {
+background-color: #e68900;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #20232a;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p, footer a {
+    color: #f5f5f5;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+footer ul li {
+    display: inline;
+}
