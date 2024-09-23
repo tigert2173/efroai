@@ -144,6 +144,12 @@ main {
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 20px; /* Space between grid items */
 }
+.character-card img {
+    width: 100%; /* Make the image fill the width of the card */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 150px; /* Limit the height to prevent overflow */
+    object-fit: cover; /* Ensure the image covers the box without stretching */
+}
 .character-card {
     background-color: #fff; /* White background for the card */
     border-radius: 12px;    /* Slightly more rounded corners */

@@ -38,7 +38,7 @@ function displayCharacters(characters) {
         const imgElement = document.createElement('img');
         imgElement.alt = `${character.name} image`;
         imgElement.onerror = () => {
-            imgElement.src = 'noimage.jpg'; // Set default image on error
+            imgElement.src = 'noimage.png'; // Set default image on error
         };
 
         // Fetch the image
@@ -60,7 +60,7 @@ function displayCharacters(characters) {
         })
         .catch(error => {
             console.error('Error fetching image:', error);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
+            imgElement.src = 'noimage.png'; // Fallback to default image
         });
 
         // Add the inner HTML to the card
@@ -133,6 +133,39 @@ function showUploadForm() {
 function hideUploadForm() {
     document.getElementById('upload-form').style.display = 'none';
 }
+
+// Function to upload a new character
+function uploadCharacter(event) {
+    event.preventDefault();
+    const name = document.getElementById('character-name').value;
+    const description = document.getElementById('character-description').value;
+    const tags = document.getElementById('character-tags').value.split(',').map(tag => tag.trim());
+
+    const characterData = {
+        name,
+        description,
+        tags
+    };
+
+    fetch(`${backendurl}/api/characters`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Make sure token is available
+        },
+        body: JSON.stringify(characterData)
+    })
+    .then(response => {
+        if (response.ok) {
+            loadCharacters(); // Refresh character list
+            hideUploadForm();
+            alert('Character uploaded successfully!');
+        } else {
+            alert('Failed to upload character. Please check your input.');
+        }
+    })
+    .catch(error => console.error('Error uploading character:', error));
+};
 
 // Function to view character details (can be implemented further)
 function viewCharacter(characterId) {
