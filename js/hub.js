@@ -34,7 +34,7 @@ function displayCharacters(characters) {
         card.className = 'character-card';
 
         // Assuming you have a method to retrieve the correct image path
-        const imageUrl = `http://localhost:3000/api/characters/${character.uploader}/images/${character.id}`; // Adjust URL as needed
+        const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`; // Adjust URL as needed
 
         card.innerHTML = `
             <div class="card-header">
