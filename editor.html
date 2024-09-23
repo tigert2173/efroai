@@ -595,12 +595,37 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         method = 'post'; // Create new character
     }
 
+    // Prepare image upload if an image is selected
+    const imageInput = document.getElementById('imageUpload');
+    const imageFile = imageInput.files[0];
+
+    const formData = new FormData();
+    formData.append('image', imageFile); // Append the image file
+
+    // First, submit the character data
     axios({
         method: method,
         url: apiUrl,
         data: character,
         headers: {
             Authorization: `${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => {
+        const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get the character ID from response or use editing ID
+        console.log(response.data.character.id);
+        alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+
+        // After character creation or update, now upload the image if it exists
+        if (imageFile) {
+            const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
+
+            return axios.post(imageApiUrl, formData, {
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
         }
     })
     .then(response => {
