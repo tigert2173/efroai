@@ -25,7 +25,6 @@ function loadCharacters() {
 }
 
 
-// Function to display characters in the grid
 function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
@@ -33,37 +32,32 @@ function displayCharacters(characters) {
     characters.forEach(character => {
         const card = document.createElement('div');
         card.className = 'character-card';
+
+        // Assuming you have a method to retrieve the correct image path
+        const imageUrl = `http://localhost:3000/api/characters/${character.uploader}/images/${character.id}`; // Adjust URL as needed
+
         card.innerHTML = `
             <div class="card-header">
                 <h3>${character.name}</h3>
             </div>
             <div class="card-body">
+                <img src="${imageUrl}" alt="${character.name} image" onerror="this.onerror=null; this.src='default-image.png';">
                 <p>${character.chardescription || 'Error: Description is missing.'}</p>
-         
-                </p>
             </div>
-                   <p class="tags">
-                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    <span class="full-tags-overlay">
-                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    </span>
-                          <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-                <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
+            <p class="tags">
+                ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                <span class="full-tags-overlay">
+                    ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                </span>
+            </p>
+            <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+            <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
         `;
-        
-        // Add mouse event listeners to show/hide overlay
-        // card.querySelector('.tags').addEventListener('mouseenter', () => {
-        //     card.querySelector('.full-tags-overlay').style.display = 'block';
-        // });
-        // card.querySelector('.tags').addEventListener('mouseleave', () => {
-        //     card.querySelector('.full-tags-overlay').style.display = 'none';
-        // });
-    
+
         characterGrid.appendChild(card);
     });
-    
-    
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
     if (document.getElementById('search-bar')) {
