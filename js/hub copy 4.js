@@ -78,7 +78,6 @@ function displayCharacters(characters) {
                 </span>
             </p>
             <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-            <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
             <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
         `;
 
@@ -89,14 +88,6 @@ function displayCharacters(characters) {
     });
 }
 
-function openCharacterPage(characterId, uploader) {
-    // Use localStorage to save the character ID and uploader information
-    localStorage.setItem('selectedCharacterId', characterId);
-    localStorage.setItem('characterUploader', uploader);
-
-    // Redirect to the chat page
-    window.location.href = '/EFROAIBETA.html';
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
