@@ -44,6 +44,24 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
+            <label for="systemPrompt">System Prompt:</label>
+            <select id="systemPrompt">
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
+                <option value="Write {{char}} next response.">Default</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}.">Descriptive</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction.">Humor</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact.">Knowledge Sharing</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle.">Emotional Support</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about.">Educational</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}.">Advice</option>
+            </select>
+
+            <label for="systemParameters">Parameters:</label>
+            <select id="systemParameters">
+                <option value="Write {{char}} next response.">Default</option>
+            </select>
+            
             <div class="setting">
                 <label for="persona">Character Persona</label>
                 <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
@@ -118,7 +136,7 @@
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-
+   
     <script src="js/chat.js"></script>
 </body>
 </html>
