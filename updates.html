@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO.AI Character Hub - Updates & Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Styling the card containers */
+/* Styling the card containers */
+.update-card-container, .fix-card-container {
+    background-color: rgba(63, 62, 0, 0.8); /* Clear white background */
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional padding for the cards */
+.update-card, .fix-card {
+    padding: 10px;
+}
+
+/* Adjust card spacing within the grid */
+.update-grid, .fix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Hide the section container when empty */
+.updates-section, .fixes-section {
+    display: block;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="#characters">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="mycharacters.html">My Characters</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="rules.html">Rules</a></li>
+                <li><a href="updates.html">Updates & Features</a></li>
+            </ul>
+            <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>What's New at EFRO.AI?</h1>
+            <p>Stay informed about our latest updates, upcoming features, and exciting new improvements to the EFRO.AI Character Hub. We’re constantly evolving to provide the best experience for you and your characters!</p>
+            <button class="cta-btn">Learn More</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Sidebar with Categories -->
+        <div class="filters">
+            <h2>Update Categories</h2>
+            <ul>
+                <li><input type="checkbox" id="feature-updates" name="filter"><label for="feature-updates">New Features</label></li>
+                <li><input type="checkbox" id="bug-fixes" name="filter"><label for="bug-fixes">Bug Fixes</label></li>
+                <li><input type="checkbox" id="performance" name="filter"><label for="performance">Performance Enhancements</label></li>
+                <!-- More Filter Categories -->
+            </ul>
+        </div>
+
+        <!-- Updates Section -->
+        <section id="updates" class="updates-section">
+            <h2>Upcoming Updates & New Features</h2>
+            <div class="update-grid" id="update-grid">
+                <!-- Container for update cards -->
+                <!-- <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>New Chat Feature: Dynamic Emotions</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>We’re introducing a new feature that adds dynamic emotions to your characters, making conversations even more immersive and fun.</p>
+                            <p><strong>Expected Release:</strong> October 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div> -->
+        
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Improved Fetish Tagging System</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>We’re enhancing our tagging system to make it easier to search and categorize characters based on user-specific interests.</p>
+                            <p><strong>Expected Release:</strong> November 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="recent-fixes" class="fixes-section">
+            <h2>Recent Bug Fixes</h2>
+            <div class="fix-grid">
+                <!-- Container for fix cards -->
+                <!-- <div class="fix-card-container" data-tags="bug-fixes">
+                    <div class="fix-card">
+                        <div class="card-header">
+                            <h3>Fixed Chat History Issues</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Resolved an issue where chat history would not properly save or load in some cases.</p>
+                            <p><strong>Released:</strong> September 2024</p>
+                            <div class="tags">Tags: bug-fixes</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="fix-card-container" data-tags="performance">
+                    <div class="fix-card">
+                        <div class="card-header">
+                            <h3>Improved AI Response Times</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>We’ve improved server performance, leading to faster response times during conversations.</p>
+                            <p><strong>Released:</strong> September 2024</p>
+                            <div class="tags">Tags: performance</div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="admin.html">Admin</a></li>
+        </ul>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    const filters = document.querySelectorAll('.filters input[type="checkbox"]');
+    const updateCards = document.querySelectorAll('.update-card-container, .fix-card-container');
+    const updateSection = document.querySelector('.updates-section');
+    const fixesSection = document.querySelector('.fixes-section');
+
+    filters.forEach(filter => {
+        filter.addEventListener('change', () => {
+            let activeFilters = Array.from(filters).filter(f => f.checked).map(f => f.id);
+            
+            let updateMatchCount = 0;
+            let fixMatchCount = 0;
+
+            // Filter the update and fix cards
+            updateCards.forEach(card => {
+                let cardTags = card.getAttribute('data-tags');
+                let matches = activeFilters.every(tag => cardTags.includes(tag));
+
+                if (matches || activeFilters.length === 0) {
+                    card.style.display = 'block';
+                    if (card.closest('.updates-section')) updateMatchCount++;
+                    if (card.closest('.fixes-section')) fixMatchCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide entire sections if no cards match
+            updateSection.style.display = updateMatchCount > 0 ? 'block' : 'none';
+            fixesSection.style.display = fixMatchCount > 0 ? 'block' : 'none';
+        });
+    });
+});
+    </script>
+</body>
+</html>
