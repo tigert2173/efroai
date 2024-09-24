@@ -1,0 +1,334 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1e272e; /* Dark grey */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Change to column to stack elements */
+    align-items: center; /* Center items horizontally */
+    color: #f5f6fa; /* Light grey for text */
+    overflow-x: hidden;
+} 
+
+.temporary-notice {
+    background-color: #ffcc00; /* Yellow or any color you prefer */
+    color: #000; /* Text color */
+    /* Additional styling */
+}
+
+#queue-counter {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.status {
+    margin: 10px 0;
+    padding: 15px;
+    border-left: 4px solid #32CD32; /* Softer neon green */
+    border-radius: 5px;
+}
+
+.status p {
+    font-size: 1.2em;
+    margin: 8px 0;
+}
+
+.status .queue {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.status .queue.low {
+    color: #28a745; /* Green for low queue */
+}
+
+.status .queue.medium {
+    color: #f2a900; /* Orange for medium queue */
+}
+
+.status .queue.high {
+    color: #d9534f; /* Red for high queue */
+}
+
+/* Default link color */
+a {
+    color: #32CD32; /* Softer neon green */
+    text-decoration: none;
+}
+
+/* Link color on hover */
+a:hover {
+    color: #ff6600; /* Orange */
+    text-decoration: underline;
+}
+
+/* Link color when visited */
+a:visited {
+    color: #00aaff; /* Light blue */
+}
+
+/* Link color when active */
+a:active {
+    color: #b1e5ff; /* Light blue */
+}
+
+#api-status-text {
+    font-weight: bold;
+}
+
+.status-checking {
+    color: rgb(155, 156, 207);
+}
+
+.status-operational {
+    color: #00FF00; /* Softer neon green for All Systems Operational */
+}
+
+.status-fully-functional {
+    color: #ADD8E6; /* Medium Green for Fully Functional */
+}
+
+.status-mostly-functional {
+    color: #FFFF00; /* Bright Yellow for Mostly Functional */
+}
+
+.status-partially-functional {
+    color: #FF8C00; /* Orange for Partially Functional */
+}
+
+.status-degraded-service {
+    color: #FF6F20; /* Deep Orange for Degraded Service */
+}
+
+.status-limited-availability {
+    color: #FF1493; /* Orange for Limited Availability */
+}
+
+.status-offline {
+    color: #8B0000; /* Dark Red for All Services Offline */
+}
+
+.status-code {
+    color: #d06aff; /* Orange */
+}
+.status-error {
+    color: #ff0000; /* Orange */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+    50% {
+        background-position: 100% 50%; /* Move to the right */
+    }
+    100% {
+        background-position: 0% 50%; /* Reset to start position */
+    }
+}
+
+#speed-indicator-container {
+    max-width: 50%;
+    width: 500px;
+    height: 10px;
+    background-color: #444; /* Dark grey for the background */
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative; /* Position relative for stacking indicators */
+    margin: 5px;
+}
+
+/* Main speed indicator with animated gradient */
+.speed-indicator {
+    height: 100%;
+    width: 0%; /* Start at 0% width */
+    background: linear-gradient(270deg, #32CD32, #3CB371, #228B22); /* Define the gradient colors */
+    background-size: 200% 200%; /* Size the gradient for movement */
+    animation: gradientAnimation 5s linear infinite; /* Apply the gradient animation */
+    position: relative; /* Position relative for pseudo-elements */
+}
+
+.nav-arrows {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 1.2em;
+    color: #32CD32; /* Softer neon green */
+}
+
+.nav-arrows.disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 100%; /* Take full width */
+    max-width: 700px; /* Limit max width */
+}
+
+#chat-container {
+    width: 100%;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    overflow-y: auto;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #353b48; /* Dark grey */
+}
+
+.user {
+    text-align: right;
+    background-color: #32CD32; /* Softer neon green background for user */
+}
+
+.bot {
+    text-align: left;
+    background-color: #ff6600; /* Orange background for bot */
+}
+
+#input-container {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 10px;
+}
+
+#input-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px 0 0 5px;
+    background-color: #2f3640; /* Dark grey */
+    color: #f5f6fa; /* Light grey */
+}
+
+#input-container button {
+    border: 1px solid #32CD32; /* Softer neon green button */
+    border-left: none;
+    width: 15%;
+    min-width: 10%;
+    border-radius: 0 5px 5px 0;
+    background-color: #32CD32; /* Softer neon green */
+    color: #f5f6fa; /* Light grey */
+    cursor: pointer;
+}
+
+#settings-container {
+    width: 100%;
+    max-width: 700px;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.setting {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f5f6fa; /* Light grey */
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px;
+    background-color: #2f3640; /* Dark grey */
+    color: #f5f6fa; /* Light grey */
+}
+
+#save-load-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#save-load-container button {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px;
+    background-color: #32CD32; /* Softer neon green */
+    color: #f5f6fa; /* Light grey */
+    cursor: pointer;
+}
+
+#api-status {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #32CD32; /* Softer neon green */
+}
+
+#SettingsMaxTokensSlider {
+    width: 100%;
+}
+
+#SettingsMaxTokensValue {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Simple styling to hide expert settings initially */
+#expert-settings {
+    display: none; /* Hidden by default */
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #1e272e; /* Dark grey */
+    width: 100%;
+    max-width: 700px;
+    border-radius: 5px;
+}
+
+button.expert-settings-toggle {
+    background-color: #d9534f; /* Red for the toggle button */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.expert-settings-toggle:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}
+
+/* Active states */
+input:focus, select:focus {
+    outline: none;
+    border: 1px solid #ffcc00; /* Active border color */
+}
+
+input[type="checkbox"]:checked + label {
+    color: #32CD32; /* Softer neon green */
+}
+
+input[type="checkbox"]:not(:checked) + label {
+    color: #f5f6fa; /* Light grey */
+}
+
+.button-disabled {
+    background-color: #555; /* Grey for disabled buttons */
+    cursor: not-allowed;
+}

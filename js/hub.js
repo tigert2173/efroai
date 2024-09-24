@@ -95,7 +95,7 @@ function openCharacterPage(characterId, uploader) {
     localStorage.setItem('characterUploader', uploader);
 
     // Redirect to the chat page
-    window.location.href = '/EFROAIBETA.html';
+    window.location.href = '/chat.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

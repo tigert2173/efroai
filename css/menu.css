@@ -24,10 +24,15 @@ a:hover {
     height: auto; /* Maintain aspect ratio */
     vertical-align: middle; /* Align with text */
 }
+
 header {
-    background-color: #20232a;
-    padding: 20px;
+    background-color: #20232a; /* Dark background color */
+    padding: 20px; /* Inner padding for content */
+    width: calc(100% - 10px); /* Adjust width to be 100% minus 10 pixels */
+    margin: 0 auto; /* Center the header horizontally if it's within a container */
+    box-sizing: border-box; /* Include padding in the element's total width */
 }
+
 
 .navbar {
     display: flex;

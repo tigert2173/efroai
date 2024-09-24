@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO.AI - BETA</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+     <!-- Header -->
+     <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="main-content">
+        <div id="chat-container"></div>
+
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+
+        </div>
+            <div class="status">
+                <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
+            </div>
+            <div id="speed-indicator-container">
+                <div id="speed-indicator" class="speed-indicator"></div>
+            </div>
+            <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
+            
+        <div id="settings-container">
+            <div class="setting">
+                <label for="user-name">Your Name: </label>
+                <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
+            </div>
+            <div class="setting">
+                <label for="persona">Character Persona</label>
+                <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="context">Context</label>
+                <textarea type="text" id="context" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="scenario">Scenario</label>
+                <textarea type="text" id="scenario" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="greeting">Greeting</label>
+                <textarea type="text" id="greeting" placeholder="e.g., Hello! How can I help you?" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="exampledialogue">Example Dialogue</label>
+                <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="temperature">Temperature</label>
+                <input type="number" id="temperature" min="0" max="1" step="0.1" value="0.5">
+            </div>
+            <div class="setting">
+                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
+                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
+                <span id="SettingsMaxTokensValue">256 Tokens</span>
+            </div>
+            <div class="setting">
+                <label for="model">Select Model</label>
+                <select id="model">
+                    <!-- Options will be populated here -->
+                </select>
+            </div>
+            <div class="setting">
+                <a class="add-api" target="_blank" href="https://api.botbridge.net">Add API</a>
+            </div>
+            <div class="setting">
+                <label for="messages-sent">Messages Sent</label>
+                <input type="text" id="messages-sent" value="0" readonly>
+            </div>
+            <div id="save-load-container">
+                <button onclick="saveCharacter()">Save Character</button>
+                <button onclick="updateSettings()">Update Settings</button>
+            </div>
+            <div class="setting">
+                <label for="advanced-debugging">Debugging</label>
+                <textarea id="advanced-debugging" value="" rows="20" style="width: 100%;" readonly></textarea>
+            </div>
+            <!-- Checkbox -->
+            <label for="show-expert">Show Expert Settings:</label>
+            <input type="checkbox" id="show-expert" onchange="toggleExpertSettings()">
+        </div>
+        
+        <!-- Expert Settings Section -->
+        <div id="expert-settings">
+            <h3>Expert Settings</h3>
+            <!-- Expert settings go here -->
+            <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
+            <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="100" step="1" value="25">
+            <span id="ESettingslastNUMsentencesValue">Last 25 Sentences</span>
+
+            <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
+            <input type="range" id="ESettingsRandomNUMsentencesSlider" min="1" max="100" step="1" value="10">
+            <span id="ESettingsRandomNUMsentencesValue">Select 10 Random Sentences</span>
+            <br><i>Older Content has a lower and lower chance of being selected</i>
+            <label for="setting2">Expert Setting 2:</label>
+            <input type="text" id="setting2"><br><br>
+
+            <label for="setting3">Expert Setting 3:</label>
+            <input type="text" id="setting3"><br><br>
+        </div>
+    </div>
+
+    <script src="js/chat.js"></script>
+</body>
+</html>
