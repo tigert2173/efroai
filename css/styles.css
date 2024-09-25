@@ -250,6 +250,9 @@ main {
     cursor: pointer;           /* Pointer cursor on hover */
     align-self: flex-end;      /* Align button to the end of the card */
     transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover */
+    flex: 1; /* Take remaining space */
+    align-items: center; /* Center horizontally */
+
     margin-top: 10px;
 }
 
@@ -548,3 +551,33 @@ footer {
 footer p {
     margin: 0;
 }
+
+.button-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    
+}
+.like-btn {
+    background-color: #00000000; /* Transparent background */
+    color: white;              /* White text */
+    border: none;              /* No border */
+    padding: 0;                /* Remove padding for size control */
+    border-radius: 5px;        /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    align-self: flex-end;      /* Align button to the end of the card */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover */
+    margin-top: 10px;
+    width: 40px;               /* Fixed width */
+    height: 40px;              /* Fixed height */
+    font-size: 24px;           /* Maximize font size */
+    line-height: 40px;         /* Vertically center the text */
+    display: flex;             /* Flex display to center content */
+    align-items: center;       /* Center vertically */
+    justify-content: center;    /* Center horizontally */
+}
+
+.like-btn:hover {
+    background-color: #da070060; /* Darker color on hover */
+    transform: scale(1.25);    /* Slightly enlarge button on hover */
+}
+
