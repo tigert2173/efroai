@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const SettingsMaxTokensValue = document.getElementById('SettingsMaxTokensValue');
 
     SettingsMaxTokensSlider.addEventListener('input', () => {
-        SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
+    SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
         // Here you can add code to handle the setting change
         // For example, updating a global setting or sending it to a server
     });
@@ -42,17 +42,11 @@ function toggleExpertSettings() {
     }
 }
 
-let settings = {
-    persona: '',
-    context: '',
-    greeting: '',
-    temperature: 0.5,
-    model: '',
-    //         charName: ''
-};
+
 var messagessent = 0;
 
 setInterval(checkAPIStatus, 60000); // Check API status every 60 seconds
+
 async function checkAPIStatus() {
     const statusTextElement = document.getElementById('api-status-text');
     statusTextElement.textContent = 'Checking';
@@ -111,10 +105,29 @@ async function checkAPIStatus() {
     }
    
 }
+
+
+let settings = {
+    persona: '',
+    context: '',
+    scenario: '',
+    greeting: '',
+    exampledialogue: '',
+    temperature: 1.22,
+    model: '',
+    top_p: 0.8, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    min_p: 0.1, //Sets a minimum base probability threshold for token selection.
+    top_k: 40, //Limit the next token selection to the K most probable tokens.
+    prescence_penalty: 0, //Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+    frequency_penalty: 0, //Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+    repeat_penalty: 1.08,
+};
+
+
 function populateCharacterSettings() {
-    // Retrieve the character data from localStorage
-    const selectedCharacterId = localStorage.getItem('selectedCharacterId');
-    const characterUploader = localStorage.getItem('characterUploader');
+    // Retrieve the character data from sessionStorage
+    const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
+    const characterUploader = sessionStorage.getItem('characterUploader');
 
     // Fetch the character data from the backend
     const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
@@ -146,10 +159,11 @@ function populateCharacterSettings() {
             document.getElementById('exampledialogue').value = characterData.exampledialogue;
 
             // Update settings
-            settings.persona = characterData.uploader;
-            settings.context = characterData.persona;
+            settings.persona = characterData.persona;
+            settings.context = characterData.context;
             character.greeting = characterData.greeting;
-
+            character.scenario = characterData.scenario;
+            character.exampledialogue = characterData.exampledialogue;
             // Display the greeting as a bot message
             displayMessage(characterData.greeting, 'bot'); // Display greeting as bot message
         })
@@ -161,7 +175,7 @@ function populateCharacterSettings() {
 function loadCharacter(charName, listItem) {
     clearCurrentBotMessage();
 
-    const characterData = localStorage.getItem('chatbotCharacter_' + charName);
+    const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
     if (characterData) {
         settings = JSON.parse(characterData);
         document.getElementById('persona').value = settings.persona;
@@ -212,44 +226,6 @@ function uploadCharacter() {
     } else {
         alert('Please select a file to upload.');
     }
-}
-
-function downloadJSONConfig() {
-    const persona = document.getElementById('persona').value;
-    const context = document.getElementById('context').value;
-    const greeting = document.getElementById('greeting').value;
-    const temperature = parseFloat(document.getElementById('temperature').value) || 0.5;
-
-    // Construct JSON object
-    const jsonData = {
-        char_persona: persona,
-        char_greeting: greeting,
-        world_scenario: context,
-        temperature: temperature
-    };
-
-    // Convert JSON object to string
-    const jsonString = JSON.stringify(jsonData, null, 4);
-
-    // Create a blob with the JSON string
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'character-config.json';
-
-    // Trigger the download
-    a.click();
-
-    // Clean up
-    URL.revokeObjectURL(url);
-}
-
-// Helper function to extract values based on a keyword
-function extractValue(jsonString, keyword) {
-    const regex = new RegExp(`${keyword}:\\s*"([^"]+)"`, 'i');
-    const match = jsonString.match(regex);
-    return match ? match[1] : '';
 }
 
 function updateSettings() {
@@ -321,7 +297,46 @@ function processMessageDataImportance() {
 
     // Step 1: Split the message history into sentences
     //let sentences = fullText.split(/(?<=\.)\s+/); // Splits by sentence, assuming period ends a sentence
-    let sentences = fullText.split(/(?<=[.!?])\s+(?!\.\.\.)/); //"This is a sentence! And this is another? But this one... keeps going."
+    //BREAKS IOS 16 and BELOW //let sentences = fullText.split(/(?<=[.!?])\s+(?!\.\.\.)/); //"This is a sentence! And this is another? But this one... keeps going."
+    //WORKS BUT DOESN'T GET Punctuation//let sentences = fullText.split(/[\.\!\?]+\s+/);
+    //let sentences = fullText.replace(/([.!?])\s+/g, '$1|').split('|')
+    // let sentences = fullText
+    // .replace(/([.!?])\s+(?=[A-Z])/g, '$1|') // Replace punctuation followed by space and capital letter
+    // .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|') // Handle ellipses
+    // .split('|');
+// List of common abbreviations
+const abbreviations = [
+    'U.S.', 'e.g.', 'i.e.', 'Dr.', 'Mr.', 'Ms.', 'Mrs.', 'Inc.', 'Ltd.', 'Prof.', 'St.', 'Ave.'
+  ];
+  
+  // Function to create a regex pattern for known abbreviations
+  function getAbbreviationPattern(abbrList) {
+    return abbrList.map(abbr => abbr.replace('.', '\\.')).join('|');
+  }
+  
+  // Create the regex for matching abbreviations
+  const abbreviationRegex = new RegExp(`\\b(?:${getAbbreviationPattern(abbreviations)})\\b`, 'g');
+  
+  let sentences = fullText
+    // Normalize multiple spaces or tabs to a single space
+    .replace(/\s+/g, ' ')
+    // Temporarily replace known abbreviations with a unique placeholder
+    .replace(abbreviationRegex, match => match.replace(/./g, '_')) // Replace dots with underscores
+    // Replace sentence-ending punctuation followed by space and capital letter
+    .replace(/([.!?])\s+(?=[A-Z])/g, '$1|')
+    // Handle ellipses and prevent splitting after them
+    .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|')
+    // Restore placeholders to their original form
+    .replace(/_/g, '.')
+    // Split the text into sentences
+    .split('|')
+    // Trim each sentence to remove any leading/trailing whitespace
+    .map(sentence => sentence.trim())
+    // Filter out any empty sentences
+    .filter(sentence => sentence.length > 0);
+  
+  // Result: 'sentences' contains the split sentences
+  
 
     // Step 2: Get the last # sentences
     let numLastSentences = parseInt(ESettingslastNUMsentencesSlider.value, ESettingslastNUMsentencesSlider.value);
@@ -408,19 +423,30 @@ async function sendMessage() {
         document.getElementById('model').value = 'https://hose-apparatus-wilderness-computer.trycloudflare.com';
     }
 
-    try {
+    const systemPrompt = "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.";
+
+    try {    
         updateSettings();
         const requestData = {
             messages: [
-                { role: 'assistant', content: settings.persona },
+                { role: 'system', content: systemPrompt }, // Adding the system prompt
                 { role: 'system', content: settings.context },
+                { role: 'system', content: settings.scenario },
                 { role: 'system', content: messagedataimportance.messagehistorytrimmed },
-                { role: 'assistant', content: lastBotMsg },
-                { role: 'user', content: message }
+                { role: 'user', content: message },
+                { role: 'system', content: lastBotMsg },
+                { role: 'assistant', content: settings.persona },
             ],
             max_tokens: SettingsMaxTokensSlider.value,
             stream: true,
-            temperature: settings.temperature
+            temperature: settings.temperature,
+            top_p: settings.top_p,
+            repeat_penalty: settings.repeat_penalty, 
+            top_p: settings.top_p, 
+            min_p: settings.min_p,
+            top_k: settings.top_k, 
+            prescence_penalty: settings.prescence_penalty, 
+            frequency_penalty: settings.frequency_penalty
         };
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
@@ -486,21 +512,6 @@ function displayBotMessage(message, type) {
     setTimeout(() => {
         messageElement.remove();
     }, 10000); // Adjust the duration as needed
-}
-
-
-function regenerateMessage() {
-    if (lastUserMessage) {
-        settings.context = settings.context.replace(lastBotMessage, '').trim();
-        //messagedataimportance.historytrimmed = messagedataimportance.messagehistorytrimmed.replace(lastBotMessage, '').trim();
-        //processMessageDataImportance();
-        clearCurrentBotMessage();
-        isResend = true;
-        document.getElementById('user-input').value = lastUserMessage;
-        sendMessage();
-    } else {
-        displayMessage('No previous user message found to regenerate.', 'bot');
-    }
 }
 
 function usernameupdated () {
@@ -651,8 +662,6 @@ async function updateQueueCounter() {
 
 // Fetch queue status every 5 seconds
 setInterval(updateQueueCounter, 5000);
-
-
 
 function updateArrowStates() {
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
