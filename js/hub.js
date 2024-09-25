@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadCharacters() {
     fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
     .then(response => {
+        if (response.status === 429) {
+            // Show an alert message to the user
+            alert("We're sorry, but you've made too many requests in a short period of time. This is usually caused by refreshing the page too frequently or making repeated requests. Please wait 15 minutes and try again. Thank you for your patience!");
+        }
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
