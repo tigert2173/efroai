@@ -40,7 +40,7 @@ function displayCharacters(characters) {
         imgElement.onerror = () => {
             imgElement.src = 'noimage.jpg'; // Set default image on error
         };
-
+ 
         // Fetch the image
         fetch(imageUrl, {
             method: 'GET',
@@ -48,20 +48,26 @@ function displayCharacters(characters) {
                 'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.blob();
-        })
-        .then(imageBlob => {
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            imgElement.src = imageObjectURL; // Set the src to the object URL
-        })
-        .catch(error => {
-            console.error('Error fetching image:', error);
+        fetch(imageUrl)
+    .then(response => {
+        if (!response.ok) {
+            console.error(`Failed to fetch image: ${response.statusText}`);
             imgElement.src = 'noimage.jpg'; // Fallback to default image
-        });
+            return;
+        }
+        return response.blob();
+    })
+    .then(imageBlob => {
+        if (imageBlob) {
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            imgElement.src = imageObjectURL;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching image:', error);
+        imgElement.src = 'noimage.jpg'; // Fallback to default image
+    });
+
 
         // Add the inner HTML to the card
         card.innerHTML = `
@@ -79,7 +85,13 @@ function displayCharacters(characters) {
             </p>
             <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
             <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-            <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
+            <div class="button-container">
+                <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
+                <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                    <span role="img" aria-hidden="true">❤️</span> <!-- Fart emoji for humor -->
+                </button>
+            </div>
+
         `;
 
         // Append the image element after setting the card innerHTML
@@ -89,10 +101,40 @@ function displayCharacters(characters) {
     });
 }
 
+function likeCharacter(characterId, uploader) {
+    // Here you can implement what happens when the like button is clicked
+    // For example, you could send a POST request to your backend to save the like
+
+    // Example of an AJAX request to save the like
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to like character');
+        }
+        return response.json(); // Return the response as JSON
+    })
+    .then(data => {
+        // Optionally, update the UI to reflect the like
+        console.log(data.message); // Display a success message or perform other actions
+        alert(data.message); // Display success or failure message
+    })
+    .catch(error => {
+        console.error('Error liking character:', error);
+        alert('Failed to like character. Please try again.'); // Simple error message
+    });
+}
+
 function openCharacterPage(characterId, uploader) {
-    // Use localStorage to save the character ID and uploader information
-    localStorage.setItem('selectedCharacterId', characterId);
-    localStorage.setItem('characterUploader', uploader);
+    // Use sessionStorage to save the character ID and uploader information
+    sessionStorage.setItem('selectedCharacterId', characterId);
+    sessionStorage.setItem('characterUploader', uploader);
 
     // Redirect to the chat page
     window.location.href = '/chat.html';
