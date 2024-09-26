@@ -1,6 +1,6 @@
 // Fetch bots awaiting approval
 function fetchBots() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     fetch('https://characters.efroai.net:3000/api/bots/pending', {
         method: 'GET',
@@ -32,7 +32,7 @@ function fetchBots() {
 
 // Approve a bot
 function approveBot(botId) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     fetch(`https://characters.efroai.net:3000/api/bots/${botId}/approve`, {
         method: 'POST',
@@ -50,7 +50,7 @@ function approveBot(botId) {
 
 // Deny a bot
 function denyBot(botId) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     fetch(`https://characters.efroai.net:3000/api/bots/${botId}/deny`, {
         method: 'POST',

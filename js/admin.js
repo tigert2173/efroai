@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to load characters from the backend
 async function loadCharacters() {
-    const token = localStorage.getItem('token'); // Get token from local storage
+    const token = sessionStorage.getItem('token'); // Get token from local storage
     if (!token) {
         console.error('No token found. User may not be logged in.');
         return; // Exit if no token is found
@@ -91,7 +91,7 @@ function handleCharacterActions(event) {
 
 // Function to revoke a character's approval
 async function revokeCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token'); // Get token from local storage
+    const token = sessionStorage.getItem('token'); // Get token from local storage
     if (!token) {
         console.error('No token found. User may not be logged in.');
         return; // Exit if no token is found
@@ -120,7 +120,7 @@ async function revokeCharacter(characterId, uploader) {
 
 // Function to approve a character
 async function approveCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token'); // Get token from local storage
+    const token = sessionStorage.getItem('token'); // Get token from local storage
     if (!token) {
         console.error('No token found. User may not be logged in.');
         return; // Exit if no token is found
@@ -149,7 +149,7 @@ async function approveCharacter(characterId, uploader) {
 
 // Function to delete a character
 async function deleteCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token'); // Get token from local storage
+    const token = sessionStorage.getItem('token'); // Get token from local storage
     if (!token) {
         console.error('No token found. User may not be logged in.');
         return; // Exit if no token is found

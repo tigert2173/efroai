@@ -26,8 +26,10 @@ function loginUser() {
         }
     })
     .then(data => {
-        localStorage.setItem('token', data.token); // Store token in localStorage
-        
+        sessionStorage.setItem('token', data.token); // Store token in sessionStorage
+          // Store user ID in a cookie
+          document.cookie = `userID=${username}; path=/;`;
+
         alert('Login successful! Redirecting to homepage...');
         window.location.href = 'index.html'; // Redirect to home page or desired page
     })

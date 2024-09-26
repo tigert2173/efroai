@@ -145,9 +145,9 @@ function populateCharacterSettings() {
             // Update settings
             settings.persona = characterData.persona;
             settings.context = characterData.context;
-            settings.greeting = characterData.greeting;
-            settings.scenario = characterData.scenario;
-            settings.exampledialogue = characterData.exampledialogue;
+            character.greeting = characterData.greeting;
+            character.scenario = characterData.scenario;
+            character.exampledialogue = characterData.exampledialogue;
             // Display the greeting as a bot message
             displayMessage(characterData.greeting, 'bot'); // Display greeting as bot message
         })
@@ -388,16 +388,14 @@ let settings = {
     scenario: '',
     greeting: '',
     exampledialogue: '',
-    temperature: 1.53,
+    temperature: 0.8,
     model: '',
-    top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
-    typical_p: 1, 
-    min_p: 0.00, //Sets a minimum base probability threshold for token selection.
-    top_k: 33, //Limit the next token selection to the K most probable tokens.
-    
-    prescence_penalty: 0.15, //Slightly encourge new topics
-    frequency_penalty: 0.05, //penalty for repetition
-    repeat_penalty: 1.09,
+    top_p: 1, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    min_p: 0.05, //Sets a minimum base probability threshold for token selection.
+    top_k: 40, //Limit the next token selection to the K most probable tokens.
+    prescence_penalty: 0.05, //encourge new topics
+    frequency_penalty: 0.0, //penalty for repetition
+    repeat_penalty: 1,
 };
 
 async function sendMessage() {
@@ -405,6 +403,7 @@ async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
     if (!message) return;
+
     if (!isResend) {
         processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
@@ -431,88 +430,28 @@ async function sendMessage() {
         const requestData = {
             messages: [
                 {
-                    "role": "user",
-                    "content": message
+                    role: 'system',
+                    content: `${systemPrompt}` // Keep this at the beginning for instruction/context
                 },
                 {
-                     "role": "assistant",
-                     "content": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg
+                    role: 'user',
+                    content: message // Place user message right after the system prompt
+                },
+                {
+                    role: 'assistant',
+                    content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed} ${settings.context} ${settings.scenario} ${settings.persona}`
                 }
-            ],
-             //  "model": "string",
-                "frequency_penalty": settings.frequency_penalty,
-               // "function_call": "string",
-               // "functions": [
-                //  {}
-             //    ],
-              //  "logit_bias": {},
-                "max_tokens": SettingsMaxTokensSlider.value,
-              //  "n": 1,
-                "presence_penalty": settings.repeat_penalty,
-               // "stop": [
-              //    "string"
-               // ],
-                "stream": true,
-                "temperature": settings.temperature,
-                "top_p": settings.top_p,
-                "user": "{{user}}",
-                "mode": "chat",
-              //  "instruction_template": "string",
-               // "instruction_template_str": "string",
-              // "character": settings.persona,
-              //  "name2": "string",
-              //  "char_bio": settings.persona,
-               "context": "Persona: " + settings.persona + "\nScenario: " + settings.scenario + "\nContext: " + settings.context,
-               // "greeting": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg,
-             //   "name1": "string",
-             //   "user_bio": "string",
-             //   "chat_template_str": "string", //Jinja2 template for chat.
-             //   "chat_instruct_command": "string",
-              //  "continue_": false, //Makes the last bot message in the history be continued instead of starting a new message.
-              //  "preset": "string", //Parameters:
-                "min_p": settings.min_p,
-              //  "dynamic_temperature": false,
-              //  "dynatemp_low": 1,
-              //  "dynatemp_high": 1,
-              //  "dynatemp_exponent": 1,
-               // "smoothing_factor": 0,
-               // "smoothing_curve": 1,
-                "top_k": settings.top_k,
-                "repetition_penalty": settings.repeat_penalty,
-              //  "repetition_penalty_range": 1024,
-                "typical_p": settings.typical_p,
-              //  "tfs": 1,
-              //  "top_a": 0,
-              //  "epsilon_cutoff": 0,
-               // "eta_cutoff": 0,
-               // "guidance_scale": 1,
-               // "negative_prompt": "", //Implement
-              //  "penalty_alpha": 0,
-               /// "mirostat_mode": 0,
-               // "mirostat_tau": 5,
-               // "mirostat_eta": 0.1,
-               // "temperature_last": false,
-               // "do_sample": true,
-               // "seed": -1,
-               // "encoder_repetition_penalty": 1,
-               // "no_repeat_ngram_size": 0,
-              //  "dry_multiplier": 0,
-               // "dry_base": 1.75,
-               // "dry_allowed_length": 2,
-              //  "dry_sequence_breakers": "\"\\n\", \":\", \"\\\"\", \"*\"",
-              //  "truncation_length": 0,
-              //  "max_tokens_second": 0,
-              //  "prompt_lookup_num_tokens": 0,
-              //  "custom_token_bans": "",
-              //  "sampler_priority": [
-              //    "string"
-             //   ],
-              ///  "auto_max_new_tokens": false,
-              //  "ban_eos_token": false,
-             //   "add_bos_token": true,
-              //  "skip_special_tokens": true,
-             //   "grammar_string": ""
-              };
+            ],              
+            max_tokens: SettingsMaxTokensSlider.value,
+            stream: true,
+            temperature: settings.temperature,
+            top_p: settings.top_p,
+            repeat_penalty: settings.repeat_penalty, 
+            min_p: settings.min_p,
+            top_k: settings.top_k, 
+            prescence_penalty: settings.prescence_penalty, 
+            frequency_penalty: settings.frequency_penalty
+        };
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
