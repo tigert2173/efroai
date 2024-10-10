@@ -177,7 +177,7 @@ body {
 
 .fart-container.show {
   display: block; /* Show when needed */
-  animation: fadeInOut 3s ease;
+  animation: fadeInOut 12ts ease;
 }
 
 
