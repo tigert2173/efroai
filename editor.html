@@ -277,7 +277,7 @@
     const context = document.getElementById('context').value;
     const greeting = document.getElementById('greeting').value;
     const exampledialogue = document.getElementById('exampledialogue').value;
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const errorMessage = document.getElementById('errorMessage');
 
     errorMessage.textContent = ''; // Clear previous error messages
@@ -365,7 +365,7 @@
     const context = document.getElementById('context').value;
     const greeting = document.getElementById('greeting').value;
     const exampledialogue = document.getElementById('exampledialogue').value;
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const errorMessage = document.getElementById('errorMessage');
 
     errorMessage.textContent = ''; // Clear previous error messages
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadCharacterData() {
-    const characterData = localStorage.getItem('editCharacter');
+    const characterData = sessionStorage.getItem('editCharacter');
 
     if (characterData) {
         const character = JSON.parse(characterData);
@@ -608,7 +608,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         url: apiUrl,
         data: character,
         headers: {
-            Authorization: `${localStorage.getItem('token')}`
+            Authorization: `${sessionStorage.getItem('token')}`
         }
     })
     .then(response => {
@@ -622,7 +622,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
 
             return axios.post(imageApiUrl, formData, {
                 headers: {
-                    Authorization: `${localStorage.getItem('token')}`,
+                    Authorization: `${sessionStorage.getItem('token')}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -632,7 +632,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
         document.getElementById('characterForm').reset();
         // After character creation or update
-        localStorage.removeItem('editCharacter');
+        sessionStorage.removeItem('editCharacter');
 
         isEditing = false; // Reset editing flag
         editingCharacterId = undefined; // Clear editing character ID
@@ -694,7 +694,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         url: apiUrl,
         data: character,
         headers: {
-            Authorization: `${localStorage.getItem('token')}`
+            Authorization: `${sessionStorage.getItem('token')}`
         }
     })
     .then(response => {
@@ -707,7 +707,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
 
             return axios.post(imageApiUrl, formData, {
                 headers: {
-                    Authorization: `${localStorage.getItem('token')}`,
+                    Authorization: `${sessionStorage.getItem('token')}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -717,7 +717,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         if (imageResponse) {
             console.log('Image uploaded successfully!');
         }
-        // Reset the form and localStorage if needed
+        // Reset the form and sessionStorage if needed
         // document.getElementById('characterForm').reset();
     })
     .catch(error => {

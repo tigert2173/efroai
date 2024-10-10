@@ -195,7 +195,7 @@ function uploadCharacter() {
                     document.getElementById('persona').value = jsonData.char_persona;
                     document.getElementById('context').value = jsonData.world_scenario;
                     document.getElementById('greeting').value = jsonData.char_greeting;
-                    document.getElementById('temperature').value = jsonData.temperature || 0.5; // Default value if temperature is not provided
+                    document.getElementById('temperature').value = jsonData.temperature || 0.85; // Default value if temperature is not provided
 
                     alert('Character uploaded and settings updated successfully!');
                 } else {
@@ -215,24 +215,16 @@ function uploadCharacter() {
 function updateSettings() {
     checkAPIStatus();
     //processMessageDataImportance();
-    if (messagessent.value > 8) {
-        settings.persona = document.getElementById('persona').value;
-        settings.context = document.getElementById('context').value;
-        settings.greeting = '';
-        settings.temperature = parseFloat(document.getElementById('temperature').value);
-        settings.model = document.getElementById('model').value;
-    } else {
-        settings.persona = document.getElementById('persona').value;
-        settings.context = document.getElementById('context').value;
-        settings.greeting = document.getElementById('greeting').value;
-        settings.temperature = parseFloat(document.getElementById('temperature').value);
-        settings.model = document.getElementById('model').value;
+    settings.persona = document.getElementById('persona').value;
+    settings.context = document.getElementById('context').value;
+    settings.greeting = document.getElementById('greeting').value;
+    settings.temperature = parseFloat(document.getElementById('temperature').value);
+    settings.model = document.getElementById('model').value;
 
-        //Controlled Message Data Importance
-        messagedataimportance.lusermsg = lastUserMessage;
+    //Controlled Message Data Importance
+    messagedataimportance.lusermsg = lastUserMessage;
 
-        //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
-    }
+     //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
 }
 
 let lastBotMessage = ''; // Variable to store the last bot message
@@ -388,23 +380,29 @@ let settings = {
     scenario: '',
     greeting: '',
     exampledialogue: '',
-    temperature: 1.53,
+    temperature: 1.05,
     model: '',
-    top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    maxTokens: 256,
+    topP: 0.85, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
-    min_p: 0.00, //Sets a minimum base probability threshold for token selection.
-    top_k: 33, //Limit the next token selection to the K most probable tokens.
-    
+    minP: 0.00, //Sets a minimum base probability threshold for token selection.
+    topK: 30, //Limit the next token selection to the K most probable tokens.
+    systemPrompt: "",
     prescence_penalty: 0.15, //Slightly encourge new topics
     frequency_penalty: 0.05, //penalty for repetition
-    repeat_penalty: 1.09,
+    repetitionPenalty: 1.15,
+    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+    negativePrompt: "Do not talk about sexual topics or explicit content.",
+    context: "",
+    enablePreload: false, // Default to false if not provided
+    sessionId: 1,
 };
 
 async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (!message) return;
+   // if (!message) return;
     if (!isResend) {
         processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
@@ -418,51 +416,87 @@ async function sendMessage() {
         currentBotMessageElement = null;
     }
 
-    lastBotMsg = lastBotMsg ? lastBotMsg : settings.greeting;
+    lastBotMsg = lastBotMsg || settings.greeting;
 
     if (document.getElementById('model').value == '') {
         document.getElementById('model').value = 'https://hose-apparatus-wilderness-computer.trycloudflare.com';
     }
 
-    const systemPrompt = "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.";
-
     try {    
         updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
+
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
             messages: [
                 {
-                    "role": "user",
-                    "content": message
+                    role: 'system',
+                    content: `${systemPrompt}` // Keep this at the beginning for instruction/context
                 },
                 {
-                     "role": "assistant",
-                     "content": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg
+                    role: 'user',
+                    content: message // Place user message right after the system prompt
+                },
+                {
+                    role: 'assistant',
+                    content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed} ${settings.context} ${settings.scenario} ${settings.persona}`
                 }
-            ],
-             //  "model": "string",
-                "frequency_penalty": settings.frequency_penalty,
-               // "function_call": "string",
-               // "functions": [
-                //  {}
-             //    ],
-              //  "logit_bias": {},
-                "max_tokens": SettingsMaxTokensSlider.value,
-              //  "n": 1,
-                "presence_penalty": settings.repeat_penalty,
-               // "stop": [
-              //    "string"
-               // ],
-                "stream": true,
-                "temperature": settings.temperature,
-                "top_p": settings.top_p,
-                "user": "{{user}}",
-                "mode": "chat",
+            ],  
+            stream: true,
+            
+            //systemPrompt: `${settings.systemPrompt} ${settings.persona} ${settings.scenario} ${settings.context}`, // Concatenate persona and scenario
+            systemPrompt: `
+            ${settings.systemPrompt}
+            Persona: ${settings.persona}
+            Scenario: ${settings.scenario}
+            ${settings.context ? `Context: ${settings.context}` : ''}
+            ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
+            prompt: `Assistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg} \n User: ${message}`,
+          // prompt: "Tell me about yourself",
+           // prompt: `User: ${message}\nAssistant: ${lastBotMsg || ''}`,
+          //  enablePreload: settings.enablePreload, // Default to false if not provided
+           // sessionId: settings.sessionId,
+          //  userId: 'TigerT2173', // Make sure to use a unique identifier
+       //    "repetitionPenalty": settings.repetitionPenalty,
+          //      "maxTokens": SettingsMaxTokensSlider.value,
+          //      "frequency_penalty": settings.frequency_penalty,
+           //     "temperature": settings.temperature,
+           //     conversationContext: messagedataimportance.messagehistorytrimmed,
+              //  negativePrompt: settings.negativePrompt,
+                max_tokens: settings.maxTokens,
+                temperature: settings.temperature,
+                min_p: settings.minP,
+                top_k: settings.topK,
+                top_p: settings.topP,
+              //  seed: 10000,
+             //   signal: AbortSignal;
+            //    stopOnAbortSignal: boolean;
+             //   trimWhitespaceSuffix: boolean;
+            //    evaluationPriority: EvaluationPriority;
+             //   repeatPenalty: false | LlamaChatSessionRepeatPenalty,
+             //   tokenBias: TokenBias | () => TokenBias;
+             
+             
+             //   customStopTriggers: (LlamaText | string | (string | Token)[])[];
+                  //  ${messagedataimportance.messagehistorytrimmed} 
+                       //  "model": "string",
+           //     "top_p": settings.top_p,
+            //    "user": "{{user}}",
+            //    "mode": "chat",
               //  "instruction_template": "string",
                // "instruction_template_str": "string",
               // "character": settings.persona,
               //  "name2": "string",
               //  "char_bio": settings.persona,
-               "context": "Persona: " + settings.persona + "\nScenario: " + settings.scenario + "\nContext: " + settings.context,
+              // "context": "Persona: " + settings.persona + "\nScenario: " + settings.scenario + "\nContext: " + settings.context,
                // "greeting": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg,
              //   "name1": "string",
              //   "user_bio": "string",
@@ -470,17 +504,16 @@ async function sendMessage() {
              //   "chat_instruct_command": "string",
               //  "continue_": false, //Makes the last bot message in the history be continued instead of starting a new message.
               //  "preset": "string", //Parameters:
-                "min_p": settings.min_p,
+              ///  "min_p": settings.min_p,
               //  "dynamic_temperature": false,
               //  "dynatemp_low": 1,
               //  "dynatemp_high": 1,
               //  "dynatemp_exponent": 1,
                // "smoothing_factor": 0,
                // "smoothing_curve": 1,
-                "top_k": settings.top_k,
-                "repetition_penalty": settings.repeat_penalty,
+             ///   "top_k": settings.top_k,
               //  "repetition_penalty_range": 1024,
-                "typical_p": settings.typical_p,
+              ///  "typical_p": settings.typical_p,
               //  "tfs": 1,
               //  "top_a": 0,
               //  "epsilon_cutoff": 0,
@@ -512,23 +545,51 @@ async function sendMessage() {
              //   "add_bos_token": true,
               //  "skip_special_tokens": true,
              //   "grammar_string": ""
+                            // "function_call": "string",
+               // "functions": [
+                //  {}
+             //    ],
+              //  "logit_bias": {},
+              //  "n": 1,
+           //     "presence_penalty": settings.repeat_penalty,
+               // "stop": [
+              //    "string"
+               // ],
+            //    "stream": true,
               };
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
-        const response = await fetch("https://api.botbridge.net/api/send", {
+        const response = await fetch("http://api.botbridge.net:3009/api/send", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
             body: JSON.stringify(requestData)
         });
+        
+        console.log(sessionStorage.getItem('token'));
 
         if (!response.ok) {
+            if (response.status === 451) {
             const errorData = await response.json();
-            displayBotMessage(errorData.message || 'Unknown error occurred.', 'temporary-notice');
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
+                const errorData = await response.json();
+                displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
             return; // Exit early if the request failed
         }
+    }
 
         if (response.body) {
             const reader = response.body.getReader();
@@ -564,6 +625,27 @@ async function sendMessage() {
         displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
     } finally {
         isResend = false;
+    }
+}
+
+function displayBotMessage(message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'bot-message ' + type; // Add type for specific styling
+    messageElement.textContent = message;
+    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
+
+    // Automatically remove the notice after a few seconds
+    setTimeout(() => {
+        messageElement.remove();
+    }, 10000); // Adjust the duration as needed
+}
+
+function usernameupdated () {
+
+    if ( messagessent == 0) {
+        currentBotMessageElement.innerHTML = '';
+        const greeting = settings.greeting;
+        displayMessage(greeting, 'bot');
     }
 }
 
@@ -710,7 +792,7 @@ function navigateBotMessages(direction) {
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
     const queueCount = document.querySelector('#queue-count');
-    const queueResponse = await fetch('https://api.botbridge.net/api/queue-status');
+    const queueResponse = await fetch('http://api.botbridge.net:3009/api/queue-status');
     const queueData = await queueResponse.json();
     const queueLength = queueData.queueLength;
     queueCount.textContent = queueLength;
@@ -744,3 +826,4 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
     populateCharacterSettings();
 });
+

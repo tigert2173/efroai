@@ -358,7 +358,7 @@ async function sendMessage() {
               { role: 'system', content: lastBotMsg },
               { role: 'assistant', content: settings.persona },
           ],
-          max_tokens: SettingsMaxTokensSlider.value,
+          max_tokens: 512, //SettingsMaxTokensSlider.value,
           stream: true,
           temperature: settings.temperature,
           top_p: settings.top_p,
@@ -372,7 +372,7 @@ async function sendMessage() {
 
       console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
-      const response = await fetch("https://api.botbridge.net/api/send", {
+      const response = await fetch("http://127.0.0.1:3009/api/send", {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'

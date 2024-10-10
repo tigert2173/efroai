@@ -81,7 +81,7 @@
         });
 
         async function fetchCharacters() {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             if (!token) {
                 console.error('No token found. User may not be logged in.');
                 return;
@@ -122,7 +122,7 @@
 
         }
     function editCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
         console.error('No token found. User may not be logged in.');
         alert('You must be logged in to edit a character.');
@@ -144,7 +144,7 @@
         return response.json();
     })
     .then(character => {
-        localStorage.setItem('editCharacter', JSON.stringify(character));
+        sessionStorage.setItem('editCharacter', JSON.stringify(character));
         // Redirect to the editor page
         window.location.href = 'editor.html';
     })

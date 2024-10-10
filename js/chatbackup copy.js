@@ -455,8 +455,14 @@ async function sendMessage() {
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
+        const response = await fetch("http://127.0.0.1:5000/v1/chat/completions", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        });
 
-        
         if (!response.ok) {
             const errorData = await response.json();
             displayBotMessage(errorData.message || 'Unknown error occurred.', 'temporary-notice');

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO.AI Character Hub - Local Hosting</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add custom styles for the sidebar */
+        .container {
+            display: flex;
+            margin: 20px;
+        }
+        .sidebar {
+            position: sticky;
+            top: 20px; /* Offset from the top */
+            width: 200px; /* Fixed width for the sidebar */
+            padding: 10px;
+            background-color: #1e1e1e; /* Dark background for sidebar */
+            border-radius: 8px; /* Optional: rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+            height: fit-content; /* Adjust height to content */
+        }
+        .sidebar h3 {
+            color: #e67e22; /* Orange color for headings */
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #3498db; /* Bright link color */
+            transition: color 0.3s;
+        }
+        .sidebar ul li a:hover {
+            color: #e67e22; /* Change link color on hover */
+        }
+        .content {
+            flex: 1; /* Take the remaining space */
+            margin-left: 20px; /* Space between sidebar and content */
+        }
+        .collapsible {
+            background-color: #3498db; /* Bright button */
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .collapsible.active, .collapsible:hover {
+            background-color: #e67e22; /* Orange when active */
+        }
+        .collapsible-content {
+            padding: 15px;
+            display: none;
+            overflow: hidden;
+            background-color: #1e1e1e; /* Dark collapsible content */
+            border-left: 5px solid #3498db;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        code {
+            background-color: #333; /* Darker code block */
+            padding: 10px;
+            border-radius: 10px;
+            color: #ddd; /* Lighter text */
+            display: inline-block;
+            font-size: 90%;
+        }
+        .content-container {
+            margin-left: 20px; /* Indent content container */
+            padding: 10px;
+            border-left: 2px solid #3498db; /* Optional: left border for emphasis */
+            background-color: #2b2b2b; /* Dark background for better readability */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
+        h2, h3, h4 {
+            margin: 0; /* Remove default margin for headers */
+        }
+        h2 {
+            margin-bottom: 10px; /* Space below main headers */
+        }
+        h3, h4 {
+            margin-bottom: 5px; /* Space below subheaders */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Characters</a></li>
+                <li><a href="editor.html">Upload Character</a></li>
+                <li><a href="#account">Account</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="doc.html">Documentation</a></li>
+            </ul>
+            <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>How to host our AI on your own!</h1>
+            <p>Explore how to set up and use the Text Generation Web UI.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <aside class="sidebar">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#advanced">Advanced Settings</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
+                </ul>
+            </aside>
+
+            <section class="content">
+                <h2 id="overview">Overview</h2>
+                <div class="content-container">
+                    <p>The Text Generation Web UI allows users to interact with various text generation models through a web interface. This guide will help you set up and utilize the web UI effectively.</p>
+                </div>
+
+                <h2 id="installation">Installation</h2>
+                <div class="content-container">
+                    <h4>Requirements</h4>
+                    <ul>
+                        <li>Python 3.8 or later</li>
+                        <li>Git</li>
+                        <li>A compatible GPU is recommended for optimal performance.</li>
+                    </ul>
+                    <h4>Installation Steps</h4>
+                    <ol>
+                        <li>Clone the repository:</li>
+                        <code>git clone https://github.com/oobabooga/text-generation-webui.git</code>
+                        <li>Navigate into the project directory:</li>
+                        <code>cd text-generation-webui</code>
+                        <li>Install the required dependencies:</li>
+                        <code>pip install -r requirements.txt</code>
+                        <li>Download the model weights (follow instructions in the repo for specifics).</li>
+                        <li>Launch the application:</li>
+                        <code>python app.py</code>
+                    </ol>
+                    <p>Once the server is running, you can access the web interface by opening your browser and navigating to <code>http://localhost:5000</code>.</p>
+                </div>
+
+                <h2 id="usage">Usage</h2>
+                <div class="content-container">
+                    <h4>Accessing the Web UI</h4>
+                    <p>After launching the application, open your browser and go to <code>http://localhost:5000</code>. Here, you can interact with the text generation models.</p>
+
+                    <h4>Input and Output</h4>
+                    <p>Type your input in the provided text box and hit enter to generate text. You can customize the generation parameters such as temperature and max tokens.</p>
+                </div>
+
+                <h2 id="advanced">Advanced Settings</h2>
+                <div class="content-container">
+                    <h4>Configuration Options</h4>
+                    <p>Advanced users can customize settings such as:</p>
+                    <ul>
+                        <li><strong>Temperature:</strong> Controls the randomness of the output. Higher values (up to 1.0) produce more random results.</li>
+                        <li><strong>Max Tokens:</strong> Limits the number of tokens (words or parts of words) generated in the response.</li>
+                        <li><strong>Top-k and Top-p Sampling:</strong> Techniques to control diversity in the generated text.</li>
+                    </ul>
+                </div>
+
+                <h2 id="troubleshooting">Troubleshooting</h2>
+                <div class="content-container">
+                    <h4>Common Issues</h4>
+                    <ul>
+                        <li>If you encounter issues with dependencies, ensure you have the correct Python version and all required packages installed.</li>
+                        <li>For GPU-related issues, verify that you have the necessary drivers and libraries installed (e.g., CUDA).</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 EFRO.AI Character Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Collapsible content functionality
+        document.querySelectorAll('.collapsible').forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+                const content = button.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

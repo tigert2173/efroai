@@ -1,0 +1,104 @@
+/* Importing spooky fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a; /* Very dark background for Halloween */
+    padding: 20px; /* Inner padding for content */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Stronger shadow for depth */
+}
+
+/* Logo Styles */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff7518; /* Pumpkin Orange */
+    text-shadow: 0 0 5px rgba(255, 117, 24, 0.8), 0 0 15px rgba(255, 117, 24, 0.5); /* Glowing pumpkin effect */
+    vertical-align: middle;
+    font-family: 'Creepster', cursive; /* Apply spooky font */
+}
+
+.logo img {
+    width: 50px; /* Adjust the size as necessary */
+    height: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align with text */
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+a {
+    color: #ff7518; /* Pumpkin Orange */
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    position: relative; /* For pseudo-element effect */
+    font-family: 'Creepster', cursive; /* Apply spooky font */
+    text-shadow: 0 0 5px rgba(255, 117, 24, 0.8), 0 0 10px rgba(255, 117, 24, 0.5); /* Glowing effect */
+    font-size: 18px; /* Adjust font size for better readability */
+}
+
+a:hover {
+    color: #ffffff; /* Change to white for better contrast */
+    background-color: rgba(139, 0, 0, 0.8); /* Dark Red with some transparency */
+    border-radius: 4px; /* Rounded corners for the hover effect */
+    transform: translateY(-3px); /* Make it pop out more */
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.7); /* Stronger glow effect */
+}
+
+/* Add a border outline to improve readability */
+a {
+    position: relative; /* Make sure positioning is relative for outline */
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px; /* Height of the underline */
+    background-color: #ff7518; /* Pumpkin Orange underline */
+    transition: width 0.3s ease, left 0.3s ease; /* Smooth width transition */
+}
+
+a:hover::after {
+    width: 100%; /* Full width underline on hover */
+    left: 0; /* Reset left position */
+}
+
+/* Dark background for header */
+header {
+    background-color: #0b0b0b; /* Even darker background for header */
+    padding: 20px; /* Inner padding for content */
+    width: calc(100% - 10px); /* Adjust width to be 100% minus 10 pixels */
+    margin: 0 auto; /* Center the header horizontally if it's within a container */
+    box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+/* Ghostly pop-out effect for spooky theme */
+@keyframes pop-out {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.nav-links li:hover {
+    animation: pop-out 0.5s ease; /* Animate on hover */
+}

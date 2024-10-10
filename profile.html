@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/menu-spooky.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+<head>
+    <nav class="navbar">
+        <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Tavern</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Characters</a></li>
+            <li><a href="editor.html">Upload Character</a></li>
+            <li><a href="#account">Account</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <img src="images/default-profile.png" alt="Profile Picture" class="profile-pic">
+            <div class="profile-info">
+                <h1 class="username">Username</h1>
+                <div class="badges-section">
+                    <span class="badge animate">Supporter</span>
+                    <span class="badge animate">Donor</span>
+                    <span class="badge animate">Contest Winner</span>
+                </div>
+                <div class="bio-section">
+                    <h2>Bio</h2>
+                    <p>This is a brief bio about the user. They can share their interests, skills, or anything they want to express.</p>
+                </div>
+                <div class="social-section">
+                    <h2>Social Links</h2>
+                    <p>Twitter: @username</p>
+                    <p>Website: www.username.com</p>
+                </div>
+                <button class="follow-button">Follow</button>
+            </div>
+        </div>
+
+        <div class="pinned-section">
+            <h2>Pinned</h2>
+            <p>This section can contain important announcements or pinned messages from the user.</p>
+        </div>
+
+        <div class="columns">
+            <div class="chatbots-column">
+                <h2>Chatbots</h2>
+                <div class="sidebar-card">
+                    <img src="images/chatbot1.png" alt="Chatbot 1" class="sidebar-image">
+                    <p>Chatbot 1</p>
+                </div>
+                <div class="sidebar-card">
+                    <img src="images/chatbot2.png" alt="Chatbot 2" class="sidebar-image">
+                    <p>Chatbot 2</p>
+                </div>
+                <div class="sidebar-card">
+                    <img src="images/chatbot3.png" alt="Chatbot 3" class="sidebar-image">
+                    <p>Chatbot 3</p>
+                </div>
+                <div class="sidebar-card">
+                    <img src="images/chatbot4.png" alt="Chatbot 4" class="sidebar-image">
+                    <p>Chatbot 4</p>
+                </div>
+            </div>
+
+            <div class="stories-column">
+                <h2>Stories</h2>
+                <div class="sidebar-card story-card">
+                    <img src="images/story1.png" alt="Story 1" class="sidebar-image">
+                    <p>Story 1</p>
+                </div>
+                <div class="sidebar-card story-card">
+                    <img src="images/story2.png" alt="Story 2" class="sidebar-image">
+                    <p>Story 2</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="color-customization">
+            <h2>Customize Colors</h2>
+            <label for="bg-color">Background Color:</label>
+            <input type="color" id="bg-color" value="#1a1a1a">
+            <label for="text-color">Text Color:</label>
+            <input type="color" id="text-color" value="#e0e0e0">
+            <button id="apply-colors">Apply</button>
+        </div>
+    </div>
+
+    <!-- Fart Clouds -->
+    <div class="fart-clouds">
+        <div class="fart-cloud" style="animation-delay: 0s;"></div>
+        <div class="fart-cloud" style="animation-delay: 1s;"></div>
+        <div class="fart-cloud" style="animation-delay: 2s;"></div>
+        <div class="fart-cloud" style="animation-delay: 3s;"></div>
+        <div class="fart-cloud" style="animation-delay: 4s;"></div>
+    </div>
+
+    <script>
+        // JavaScript to apply color customization
+        const bgColorInput = document.getElementById('bg-color');
+        const textColorInput = document.getElementById('text-color');
+        const applyColorsButton = document.getElementById('apply-colors');
+
+        applyColorsButton.addEventListener('click', () => {
+            document.body.style.backgroundColor = bgColorInput.value;
+            document.body.style.color = textColorInput.value;
+            document.querySelector('.container').style.backgroundColor = bgColorInput.value;
+            document.querySelectorAll('.profile-header, .badges-section, .bio-section, .social-section, .pinned-section').forEach((el) => {
+                el.style.backgroundColor = bgColorInput.value;
+            });
+            document.querySelectorAll('.badge').forEach((el) => {
+                el.style.color = textColorInput.value;
+            });
+        });
+    </script>
+</body>
+</html>

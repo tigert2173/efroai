@@ -1,0 +1,177 @@
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Arial', sans-serif;
+  
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column; /* Stack links vertically on small screens */
+        gap: 10px; /* Space between links */
+    }
+}
+
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* For absolute positioning of fart clouds */
+    z-index: 1; /* Keep container content above fart clouds */
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #00b300; /* Modern bottom border */
+    padding-bottom: 20px; /* Space below profile header */
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.badges-section {
+    margin: 10px 0;
+}
+
+.badge {
+    background-color: #00b300; 
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 20px; /* Pill shape */
+    margin-right: 5px;
+    display: inline-block;
+    position: relative; /* For animation */
+    overflow: hidden; /* To contain the particles */
+    animation: glow 1.5s infinite alternate; /* Glow effect */
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #00b300, 0 0 10px #00b300, 0 0 15px #00b300;
+        box-shadow: 0 0 5px #00b300, 0 0 10px #00b300, 0 0 15px #00b300;
+    }
+    100% {
+        text-shadow: 0 0 10px #00b300, 0 0 20px #00b300, 0 0 30px #00b300;
+        box-shadow: 0 0 10px #00b300, 0 0 20px #00b300, 0 0 30px #00b300;
+    }
+}
+
+.badge::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    border-radius: 50%;
+    background: rgba(0, 179, 0, 0.5); /* Particle effect color */
+    transform: translate(-50%, -50%);
+    animation: particles 1.5s infinite;
+    z-index: -1; /* Send particles behind badge */
+}
+
+@keyframes particles {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.bio-section, .social-section {
+    margin-top: 10px;
+}
+
+.pinned-section {
+    background-color: #3a3a3a; 
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.chatbots-column,
+.stories-column {
+    width: 48%;
+    padding: 10px;
+    background-color: #2a2a2a; 
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-card {
+    background-color: #3a3a3a; 
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.color-customization {
+    margin-top: 20px; 
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #3a3a3a; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.color-customization label {
+    margin-right: 10px; 
+}
+
+.follow-button {
+    background-color: #00b300; 
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+    padding: 10px 15px; 
+    cursor: pointer; 
+}
+
+.follow-button:hover {
+    background-color: #009900; 
+}
+
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px); 
+        opacity: 0.8; 
+    }
+    100% {
+        transform: translateY(0); 
+        opacity: 0.6; 
+    }
+}
