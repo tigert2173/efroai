@@ -7,7 +7,7 @@ const path = require('path');
 app.use(cors());
 
 // Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 // Start the server on port 80
 const port = 80;
