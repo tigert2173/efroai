@@ -114,7 +114,7 @@ function populateCharacterSettings() {
     const characterUploader = sessionStorage.getItem('characterUploader');
 
     // Fetch the character data from the backend
-    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
+    const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
     
     fetch(url)
         .then(response => {
@@ -560,7 +560,7 @@ async function sendMessage() {
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
-        const response = await fetch("http://api.botbridge.net:3009/api/send", {
+        const response = await fetch("https://api.botbridge.net:443/api/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -792,7 +792,7 @@ function navigateBotMessages(direction) {
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
     const queueCount = document.querySelector('#queue-count');
-    const queueResponse = await fetch('http://api.botbridge.net:3009/api/queue-status');
+    const queueResponse = await fetch('https://api.botbridge.net:443/api/queue-status');
     const queueData = await queueResponse.json();
     const queueLength = queueData.queueLength;
     queueCount.textContent = queueLength;
