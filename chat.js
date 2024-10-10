@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const SettingsMaxTokensValue = document.getElementById('SettingsMaxTokensValue');
 
     SettingsMaxTokensSlider.addEventListener('input', () => {
-        SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
+    SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
         // Here you can add code to handle the setting change
         // For example, updating a global setting or sending it to a server
     });
@@ -46,6 +46,7 @@ function toggleExpertSettings() {
 var messagessent = 0;
 
 setInterval(checkAPIStatus, 60000); // Check API status every 60 seconds
+
 async function checkAPIStatus() {
     const statusTextElement = document.getElementById('api-status-text');
     statusTextElement.textContent = 'Checking';
@@ -106,30 +107,14 @@ async function checkAPIStatus() {
 }
 
 
-let settings = {
-    persona: '',
-    context: '',
-    scenario: '',
-    greeting: '',
-    exampledialogue: '',
-    temperature: 1.22,
-    model: '',
-    top_p: 0.8, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
-    min_p: 0.1, //Sets a minimum base probability threshold for token selection.
-    top_k: 40, //Limit the next token selection to the K most probable tokens.
-    prescence_penalty: 0, //Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-    frequency_penalty: 0, //Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-    repeat_penalty: 1.08,
-};
-
 
 function populateCharacterSettings() {
-    // Retrieve the character data from localStorage
-    const selectedCharacterId = localStorage.getItem('selectedCharacterId');
-    const characterUploader = localStorage.getItem('characterUploader');
+    // Retrieve the character data from sessionStorage
+    const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
+    const characterUploader = sessionStorage.getItem('characterUploader');
 
     // Fetch the character data from the backend
-    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
+    const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
     
     fetch(url)
         .then(response => {
@@ -160,9 +145,9 @@ function populateCharacterSettings() {
             // Update settings
             settings.persona = characterData.persona;
             settings.context = characterData.context;
-            character.greeting = characterData.greeting;
-            character.scenario = characterData.scenario;
-            character.exampledialogue = characterData.exampledialogue;
+            settings.greeting = characterData.greeting;
+            settings.scenario = characterData.scenario;
+            settings.exampledialogue = characterData.exampledialogue;
             // Display the greeting as a bot message
             displayMessage(characterData.greeting, 'bot'); // Display greeting as bot message
         })
@@ -174,7 +159,7 @@ function populateCharacterSettings() {
 function loadCharacter(charName, listItem) {
     clearCurrentBotMessage();
 
-    const characterData = localStorage.getItem('chatbotCharacter_' + charName);
+    const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
     if (characterData) {
         settings = JSON.parse(characterData);
         document.getElementById('persona').value = settings.persona;
@@ -210,7 +195,7 @@ function uploadCharacter() {
                     document.getElementById('persona').value = jsonData.char_persona;
                     document.getElementById('context').value = jsonData.world_scenario;
                     document.getElementById('greeting').value = jsonData.char_greeting;
-                    document.getElementById('temperature').value = jsonData.temperature || 0.5; // Default value if temperature is not provided
+                    document.getElementById('temperature').value = jsonData.temperature || 0.85; // Default value if temperature is not provided
 
                     alert('Character uploaded and settings updated successfully!');
                 } else {
@@ -227,65 +212,19 @@ function uploadCharacter() {
     }
 }
 
-function downloadJSONConfig() {
-    const persona = document.getElementById('persona').value;
-    const context = document.getElementById('context').value;
-    const greeting = document.getElementById('greeting').value;
-    const temperature = parseFloat(document.getElementById('temperature').value) || 0.5;
-
-    // Construct JSON object
-    const jsonData = {
-        char_persona: persona,
-        char_greeting: greeting,
-        world_scenario: context,
-        temperature: temperature
-    };
-
-    // Convert JSON object to string
-    const jsonString = JSON.stringify(jsonData, null, 4);
-
-    // Create a blob with the JSON string
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'character-config.json';
-
-    // Trigger the download
-    a.click();
-
-    // Clean up
-    URL.revokeObjectURL(url);
-}
-
-// Helper function to extract values based on a keyword
-function extractValue(jsonString, keyword) {
-    const regex = new RegExp(`${keyword}:\\s*"([^"]+)"`, 'i');
-    const match = jsonString.match(regex);
-    return match ? match[1] : '';
-}
-
 function updateSettings() {
     checkAPIStatus();
     //processMessageDataImportance();
-    if (messagessent.value > 8) {
-        settings.persona = document.getElementById('persona').value;
-        settings.context = document.getElementById('context').value;
-        settings.greeting = '';
-        settings.temperature = parseFloat(document.getElementById('temperature').value);
-        settings.model = document.getElementById('model').value;
-    } else {
-        settings.persona = document.getElementById('persona').value;
-        settings.context = document.getElementById('context').value;
-        settings.greeting = document.getElementById('greeting').value;
-        settings.temperature = parseFloat(document.getElementById('temperature').value);
-        settings.model = document.getElementById('model').value;
+    settings.persona = document.getElementById('persona').value;
+    settings.context = document.getElementById('context').value;
+    settings.greeting = document.getElementById('greeting').value;
+    settings.temperature = parseFloat(document.getElementById('temperature').value);
+    settings.model = document.getElementById('model').value;
 
-        //Controlled Message Data Importance
-        messagedataimportance.lusermsg = lastUserMessage;
+    //Controlled Message Data Importance
+    messagedataimportance.lusermsg = lastUserMessage;
 
-        //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
-    }
+     //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
 }
 
 let lastBotMessage = ''; // Variable to store the last bot message
@@ -334,7 +273,46 @@ function processMessageDataImportance() {
 
     // Step 1: Split the message history into sentences
     //let sentences = fullText.split(/(?<=\.)\s+/); // Splits by sentence, assuming period ends a sentence
-    let sentences = fullText.split(/(?<=[.!?])\s+(?!\.\.\.)/); //"This is a sentence! And this is another? But this one... keeps going."
+    //BREAKS IOS 16 and BELOW //let sentences = fullText.split(/(?<=[.!?])\s+(?!\.\.\.)/); //"This is a sentence! And this is another? But this one... keeps going."
+    //WORKS BUT DOESN'T GET Punctuation//let sentences = fullText.split(/[\.\!\?]+\s+/);
+    //let sentences = fullText.replace(/([.!?])\s+/g, '$1|').split('|')
+    // let sentences = fullText
+    // .replace(/([.!?])\s+(?=[A-Z])/g, '$1|') // Replace punctuation followed by space and capital letter
+    // .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|') // Handle ellipses
+    // .split('|');
+// List of common abbreviations
+const abbreviations = [
+    'U.S.', 'e.g.', 'i.e.', 'Dr.', 'Mr.', 'Ms.', 'Mrs.', 'Inc.', 'Ltd.', 'Prof.', 'St.', 'Ave.'
+  ];
+  
+  // Function to create a regex pattern for known abbreviations
+  function getAbbreviationPattern(abbrList) {
+    return abbrList.map(abbr => abbr.replace('.', '\\.')).join('|');
+  }
+  
+  // Create the regex for matching abbreviations
+  const abbreviationRegex = new RegExp(`\\b(?:${getAbbreviationPattern(abbreviations)})\\b`, 'g');
+  
+  let sentences = fullText
+    // Normalize multiple spaces or tabs to a single space
+    .replace(/\s+/g, ' ')
+    // Temporarily replace known abbreviations with a unique placeholder
+    .replace(abbreviationRegex, match => match.replace(/./g, '_')) // Replace dots with underscores
+    // Replace sentence-ending punctuation followed by space and capital letter
+    .replace(/([.!?])\s+(?=[A-Z])/g, '$1|')
+    // Handle ellipses and prevent splitting after them
+    .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|')
+    // Restore placeholders to their original form
+    .replace(/_/g, '.')
+    // Split the text into sentences
+    .split('|')
+    // Trim each sentence to remove any leading/trailing whitespace
+    .map(sentence => sentence.trim())
+    // Filter out any empty sentences
+    .filter(sentence => sentence.length > 0);
+  
+  // Result: 'sentences' contains the split sentences
+  
 
     // Step 2: Get the last # sentences
     let numLastSentences = parseInt(ESettingslastNUMsentencesSlider.value, ESettingslastNUMsentencesSlider.value);
@@ -396,12 +374,35 @@ function processMessageDataImportance() {
     //document.getElementById('advanced-debugging').value = messagedataimportance.messagehistorytrimmed;
 }
 
+let settings = {
+    persona: '',
+    context: '',
+    scenario: '',
+    greeting: '',
+    exampledialogue: '',
+    temperature: 1.05,
+    model: '',
+    maxTokens: 256,
+    topP: 0.85, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    typical_p: 1, 
+    minP: 0.00, //Sets a minimum base probability threshold for token selection.
+    topK: 30, //Limit the next token selection to the K most probable tokens.
+    systemPrompt: "",
+    prescence_penalty: 0.15, //Slightly encourge new topics
+    frequency_penalty: 0.05, //penalty for repetition
+    repetitionPenalty: 1.15,
+    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+    negativePrompt: "Do not talk about sexual topics or explicit content.",
+    context: "",
+    enablePreload: false, // Default to false if not provided
+    sessionId: 1,
+};
+
 async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (!message) return;
-
+   // if (!message) return;
     if (!isResend) {
         processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
@@ -415,53 +416,180 @@ async function sendMessage() {
         currentBotMessageElement = null;
     }
 
-    lastBotMsg = lastBotMsg ? lastBotMsg : settings.greeting;
+    lastBotMsg = lastBotMsg || settings.greeting;
 
     if (document.getElementById('model').value == '') {
         document.getElementById('model').value = 'https://hose-apparatus-wilderness-computer.trycloudflare.com';
     }
 
-    const systemPrompt = "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.";
-
     try {    
         updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
+
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
             messages: [
-                { role: 'system', content: systemPrompt }, // Adding the system prompt
-                { role: 'system', content: settings.context },
-                { role: 'system', content: settings.scenario },
-                { role: 'system', content: messagedataimportance.messagehistorytrimmed },
-                { role: 'user', content: message },
-                { role: 'system', content: lastBotMsg },
-                { role: 'assistant', content: settings.persona },
-            ],
-            max_tokens: SettingsMaxTokensSlider.value,
+                {
+                    role: 'system',
+                    content: `${systemPrompt}` // Keep this at the beginning for instruction/context
+                },
+                {
+                    role: 'user',
+                    content: message // Place user message right after the system prompt
+                },
+                {
+                    role: 'assistant',
+                    content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed} ${settings.context} ${settings.scenario} ${settings.persona}`
+                }
+            ],  
             stream: true,
-            temperature: settings.temperature,
-            top_p: settings.top_p,
-            repeat_penalty: settings.repeat_penalty, 
-            top_p: settings.top_p, 
-            min_p: settings.min_p,
-            top_k: settings.top_k, 
-            prescence_penalty: settings.prescence_penalty, 
-            frequency_penalty: settings.frequency_penalty
-        };
+            
+            //systemPrompt: `${settings.systemPrompt} ${settings.persona} ${settings.scenario} ${settings.context}`, // Concatenate persona and scenario
+            systemPrompt: `
+            ${settings.systemPrompt}
+            Persona: ${settings.persona}
+            Scenario: ${settings.scenario}
+            ${settings.context ? `Context: ${settings.context}` : ''}
+            ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
+            prompt: `Assistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg} \n User: ${message}`,
+          // prompt: "Tell me about yourself",
+           // prompt: `User: ${message}\nAssistant: ${lastBotMsg || ''}`,
+          //  enablePreload: settings.enablePreload, // Default to false if not provided
+           // sessionId: settings.sessionId,
+          //  userId: 'TigerT2173', // Make sure to use a unique identifier
+       //    "repetitionPenalty": settings.repetitionPenalty,
+          //      "maxTokens": SettingsMaxTokensSlider.value,
+          //      "frequency_penalty": settings.frequency_penalty,
+           //     "temperature": settings.temperature,
+           //     conversationContext: messagedataimportance.messagehistorytrimmed,
+              //  negativePrompt: settings.negativePrompt,
+                max_tokens: settings.maxTokens,
+                temperature: settings.temperature,
+                min_p: settings.minP,
+                top_k: settings.topK,
+                top_p: settings.topP,
+              //  seed: 10000,
+             //   signal: AbortSignal;
+            //    stopOnAbortSignal: boolean;
+             //   trimWhitespaceSuffix: boolean;
+            //    evaluationPriority: EvaluationPriority;
+             //   repeatPenalty: false | LlamaChatSessionRepeatPenalty,
+             //   tokenBias: TokenBias | () => TokenBias;
+             
+             
+             //   customStopTriggers: (LlamaText | string | (string | Token)[])[];
+                  //  ${messagedataimportance.messagehistorytrimmed} 
+                       //  "model": "string",
+           //     "top_p": settings.top_p,
+            //    "user": "{{user}}",
+            //    "mode": "chat",
+              //  "instruction_template": "string",
+               // "instruction_template_str": "string",
+              // "character": settings.persona,
+              //  "name2": "string",
+              //  "char_bio": settings.persona,
+              // "context": "Persona: " + settings.persona + "\nScenario: " + settings.scenario + "\nContext: " + settings.context,
+               // "greeting": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg,
+             //   "name1": "string",
+             //   "user_bio": "string",
+             //   "chat_template_str": "string", //Jinja2 template for chat.
+             //   "chat_instruct_command": "string",
+              //  "continue_": false, //Makes the last bot message in the history be continued instead of starting a new message.
+              //  "preset": "string", //Parameters:
+              ///  "min_p": settings.min_p,
+              //  "dynamic_temperature": false,
+              //  "dynatemp_low": 1,
+              //  "dynatemp_high": 1,
+              //  "dynatemp_exponent": 1,
+               // "smoothing_factor": 0,
+               // "smoothing_curve": 1,
+             ///   "top_k": settings.top_k,
+              //  "repetition_penalty_range": 1024,
+              ///  "typical_p": settings.typical_p,
+              //  "tfs": 1,
+              //  "top_a": 0,
+              //  "epsilon_cutoff": 0,
+               // "eta_cutoff": 0,
+               // "guidance_scale": 1,
+               // "negative_prompt": "", //Implement
+              //  "penalty_alpha": 0,
+               /// "mirostat_mode": 0,
+               // "mirostat_tau": 5,
+               // "mirostat_eta": 0.1,
+               // "temperature_last": false,
+               // "do_sample": true,
+               // "seed": -1,
+               // "encoder_repetition_penalty": 1,
+               // "no_repeat_ngram_size": 0,
+              //  "dry_multiplier": 0,
+               // "dry_base": 1.75,
+               // "dry_allowed_length": 2,
+              //  "dry_sequence_breakers": "\"\\n\", \":\", \"\\\"\", \"*\"",
+              //  "truncation_length": 0,
+              //  "max_tokens_second": 0,
+              //  "prompt_lookup_num_tokens": 0,
+              //  "custom_token_bans": "",
+              //  "sampler_priority": [
+              //    "string"
+             //   ],
+              ///  "auto_max_new_tokens": false,
+              //  "ban_eos_token": false,
+             //   "add_bos_token": true,
+              //  "skip_special_tokens": true,
+             //   "grammar_string": ""
+                            // "function_call": "string",
+               // "functions": [
+                //  {}
+             //    ],
+              //  "logit_bias": {},
+              //  "n": 1,
+           //     "presence_penalty": settings.repeat_penalty,
+               // "stop": [
+              //    "string"
+               // ],
+            //    "stream": true,
+              };
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
-        const response = await fetch("https://api.botbridge.net/api/send", {
+        const response = await fetch("https://api.botbridge.net:443/api/send", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
             body: JSON.stringify(requestData)
         });
+        
+        console.log(sessionStorage.getItem('token'));
 
         if (!response.ok) {
+            if (response.status === 451) {
             const errorData = await response.json();
-            displayBotMessage(errorData.message || 'Unknown error occurred.', 'temporary-notice');
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
+                const errorData = await response.json();
+                displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
             return; // Exit early if the request failed
         }
+    }
 
         if (response.body) {
             const reader = response.body.getReader();
@@ -512,19 +640,25 @@ function displayBotMessage(message, type) {
     }, 10000); // Adjust the duration as needed
 }
 
+function usernameupdated () {
 
-function regenerateMessage() {
-    if (lastUserMessage) {
-        settings.context = settings.context.replace(lastBotMessage, '').trim();
-        //messagedataimportance.historytrimmed = messagedataimportance.messagehistorytrimmed.replace(lastBotMessage, '').trim();
-        //processMessageDataImportance();
-        clearCurrentBotMessage();
-        isResend = true;
-        document.getElementById('user-input').value = lastUserMessage;
-        sendMessage();
-    } else {
-        displayMessage('No previous user message found to regenerate.', 'bot');
+    if ( messagessent == 0) {
+        currentBotMessageElement.innerHTML = '';
+        const greeting = settings.greeting;
+        displayMessage(greeting, 'bot');
     }
+}
+
+function displayBotMessage(message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'bot-message ' + type; // Add type for specific styling
+    messageElement.textContent = message;
+    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
+
+    // Automatically remove the notice after a few seconds
+    setTimeout(() => {
+        messageElement.remove();
+    }, 10000); // Adjust the duration as needed
 }
 
 function usernameupdated () {
@@ -658,7 +792,7 @@ function navigateBotMessages(direction) {
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
     const queueCount = document.querySelector('#queue-count');
-    const queueResponse = await fetch('https://api.botbridge.net/api/queue-status');
+    const queueResponse = await fetch('https://api.botbridge.net:443/api/queue-status');
     const queueData = await queueResponse.json();
     const queueLength = queueData.queueLength;
     queueCount.textContent = queueLength;
@@ -676,8 +810,6 @@ async function updateQueueCounter() {
 // Fetch queue status every 5 seconds
 setInterval(updateQueueCounter, 5000);
 
-
-
 function updateArrowStates() {
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
     const rightArrow = document.querySelector('.nav-arrows:last-of-type');
@@ -694,3 +826,4 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
     populateCharacterSettings();
 });
+
