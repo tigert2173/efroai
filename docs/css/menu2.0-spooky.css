@@ -1,0 +1,268 @@
+@font-face {
+    font-family: "SpookyLiberty";
+    src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/907368/liberty.otf');
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Creepster', sans-serif; /* Halloween-themed font */
+    background-color: #0d0d0d; /* Dark background for the spooky effect */
+    color: #e74c3c; /* Blood red text */
+}
+
+.header {
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffcc00; /* Yellow text for contrast */
+}
+
+/* Left content (logo and text) */
+.left-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Right content (search bar, nav links, hamburger) */
+.right-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1a1a1a;
+    padding: 15px 20px;
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.8); /* Ominous glowing shadow */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.logo a {
+    color: #ffcc00; /* Bright Halloween yellow */
+    text-decoration: none;
+    font-size: 1.8em;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.logo img {
+    width: 50px;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* Spooky puff effect for logo */
+.text {
+    display: flex;
+    font-family: 'SpookyLiberty', sans-serif;
+    font-size: 2rem;
+    letter-spacing: -0.05em;
+    color: #ffcc00;
+    position: relative;
+    animation: spookyGlow 1.5s infinite alternate; /* Glowing text */
+}
+
+/* Smoke-like puff animation */
+.text::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.5), rgba(0, 0, 0, 0) 70%);
+    filter: blur(2px);
+    top: -80%;
+    left: 0;
+    animation: puff 4s ease-in-out infinite;
+}
+
+/* Nav Links */
+.nav-links {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links li {
+    margin-left: 0 20px;
+}
+
+.nav-links a {
+    color: #e74c3c; /* Blood red links */
+    text-decoration: none;
+    margin-left: 0px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect with eerie glow */
+.nav-links a:hover {
+    color: #ffcc00; /* Halloween yellow */
+    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 69, 0, 1); /* Creepy glow */
+    transform: scale(1.1);
+}
+
+
+/* Dropdown menu styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #222;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #444;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Search bar styling */
+.search-bar {
+    margin-left: 20px;
+    padding: 10px;
+    border: 2px solid #ffcc00;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.search-bar:focus {
+    box-shadow: 0 0 10px #ff0000;
+    outline: none;
+}
+
+.search-bar::placeholder {
+    color: #ffcc00;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger .bar {
+    width: 20px;
+    height: 3px;
+    background-color: #ffcc00;
+    margin: 2px 0;
+    border-radius: 2px;
+    transition: all 0.1s ease;
+}
+
+/* Hamburger Menu Animation */
+.hamburger.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@keyframes puff {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.8);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes spookyGlow {
+    0% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+    100% {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 843px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #444; /* Match background */
+        position: absolute;
+        top: 60px; 
+        left: 0;
+        width: 100%;
+        padding: 20px 0;
+        z-index: 999;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+@media (max-width: 512px) {
+    .search-bar {
+        display: none;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #1a1a1a;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
