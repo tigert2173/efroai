@@ -1,0 +1,238 @@
+/* General page styling */
+body {
+  background-size: cover;
+  font-family: 'Arial', sans-serif;
+  color: white;
+  text-align: center;
+  overflow-y: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: hsl(0, 0%, 10%);
+}
+
+.logo-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.status-icon {
+  width: 30px;
+  height: auto;
+}
+
+.bot-image-container {
+  margin-top: -40px; /* Space between logo/status and bot image */
+  margin-bottom: -170px;
+  width: 325px; /* Allow it to take the full width */
+  justify-content: center; /* Center the image horizontally */
+}
+
+.botimage {
+  max-width: 100%; /* Make sure it doesn’t exceed the width of its container */
+  height: auto; /* Maintain aspect ratio */
+  position: relative;
+  margin-bottom: 100px;
+  
+}
+
+/* Loader and Circle Styles (no changes needed) */
+.loader {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* ... (rest of your CSS remains unchanged) ... */
+
+.circle {
+  position: absolute;
+  border: 3px solid transparent;
+  border-top-color: hsl(83, 82%, 53%);
+  border-radius: 50%;
+  margin-top: 120px;
+  animation: rotate linear infinite;
+}
+
+.circle.one {
+  height: 50px;
+  width: 50px;
+  left: 50%; /* Centered */
+  top: 50%; /* Centered */
+  margin-left: -25px; /* Adjust for half the width */
+  margin-top: -95px; /* Adjust for half the height */
+  animation-duration: 0.85s;
+}
+
+.circle.two {
+  height: 75px;
+  width: 75px;
+  left: 50%; /* Centered */
+  top: 50%; /* Centered */
+  margin-left: -37.5px; /* Adjust for half the width */
+  border-top-color: hsl(103, 82%, 53%);
+  margin-top: -107.5px; /* Adjust for half the height */
+  animation-duration: 0.95s;
+}
+
+.circle.three {
+  height: 100px;
+  width: 100px;
+  left: 50%; /* Centered */
+  top: 50%; /* Centered */
+  border-top-color: hsl(91, 82%, 53%);
+  margin-left: -50px; /* Adjust for half the width */
+  margin-top: -120px; /* Adjust for half the height */
+  animation-duration: 1.05s;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateZ(360deg);
+  }
+  to {
+    transform: rotateZ(0deg);
+  }
+}
+
+
+.message {
+  margin-bottom: 20px; /* Space below the message */
+  background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background for message */
+  padding: 21px;
+  border-radius: 10px;
+  border: 2px solid #32cd32; /* Neon green border */
+  box-shadow: 0 0 20px rgba(50, 205, 50, 0.7); /* Neon green glow effect */
+  height: 175px; /* Fixed height */
+  overflow: hidden; /* Hide overflow if text exceeds height */
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center children vertically */
+  align-items: center; /* Center children horizontally */
+  text-align: center; /* Center text within the container */
+}
+
+.message h1 {
+  font-size: 1.8em; /* Adjusted font size for fitting */
+  margin-bottom: 20px; /* Remove margins to better center */
+  margin-top: 15px;
+  color: #ffa500; /* Neon orange for the title text */
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.8); /* Glow effect for title */
+}
+
+.message p {
+  font-size: 1.2em; /* Adjusted font size for fitting */
+  color: #bfff00; /* Neon green for paragraph text */
+  text-shadow: 0 0 10px rgba(177, 205, 50, 0.8); /* Glow effect for text */
+  margin: 5px 1; /* Add margin for spacing between paragraphs */
+}
+.message p2 {
+  font-size: 1.2em; /* Adjusted font size for fitting */
+  color: #32cd32; /* Neon green for paragraph text */
+  text-shadow: 0 0 10px rgba(50, 205, 50, 0.8); /* Glow effect for text */
+  margin: 5px 0; /* Add margin for spacing between paragraphs */
+}
+
+
+.fart-container {
+  position: absolute; /* Make it fixed to the bottom */
+  margin-top: -137px;
+  left: 50%;
+  display: none;
+  max-width: 90%; /* Set a maximum width to control how wide it can get */
+  width: auto; /* Set width to auto to fit content naturally */
+  transform: translateX(-50%); /* Center horizontally */
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px; /* Adjust padding for a balanced look */
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  height: 12  0px; /* Set a fixed height for consistency */
+  border-radius: 10px;
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Optional: Add a light shadow for depth */
+  overflow: hidden; /* Hide overflow for better alignment */
+}
+
+.fart-text {
+  font-size: 1.2em;
+  color: hsl(50, 100%, 85%);
+  font-style: italic;
+  margin: 0; /* Remove margin to avoid vertical shifting */
+  padding: 0; /* Remove padding if any */
+  display: flex; /* Flexbox for centering in the text area */
+  align-items: center; /* Center text vertically */
+}
+
+.fart-container.show {
+  display: block; /* Show when needed */
+  animation: fadeInOut 3s ease;
+}
+
+
+.fart-container.show .fart-text {
+  opacity: 1;
+}
+
+.fart-container:not(.show) .fart-text {
+  opacity: 0; /* Hide joke text when not shown */
+}
+
+/* Adjust font size based on the overall content height */
+@media (max-width: 500px) {
+  .message h1 {
+    font-size: 1.4em; /* Smaller title */
+  }
+
+  .message p {
+    font-size: 0.9em; /* Smaller paragraph text */
+  }
+  .message p2 {
+    font-size: 0.9em; /* Smaller paragraph text */
+  }
+}
+/* Adjust font size based on the overall content height */
+@media (max-width: 441px) {
+  .message h1 {
+    font-size: 1.15em; /* Smaller title */
+  }
+
+  .message p {
+    font-size: 0.8em; /* Smaller paragraph text */
+  }
+  .message p2 {
+    font-size: 0.8em; /* Smaller paragraph text */
+  }
+}
+/* Adjust font size based on the overall content height */
+@media (max-width: 400px) {
+  .message h1 {
+    font-size: 1.0em; /* Smaller title */
+  }
+
+  .message p {
+    font-size: 0.8em; /* Smaller paragraph text */
+  }
+  .message p2 {
+    font-size: 0.8em; /* Smaller paragraph text */
+  }
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+

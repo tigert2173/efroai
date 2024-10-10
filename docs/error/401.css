@@ -1,0 +1,58 @@
+/* General page styling */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #f0f0f0; /* Light text for contrast */
+}
+
+/* Error container styling */
+.error-container {
+    text-align: center;
+    padding: 30px;
+    background-color: #1e1e1e; /* Slightly lighter dark background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Error title styling */
+.error-container h1 {
+    font-size: 4rem;
+    color: #4caf50; /* Green accent color */
+    margin-bottom: 20px;
+}
+
+/* Error message styling */
+.error-container p {
+    font-size: 1.4rem;
+    color: #d0d0d0;
+    margin-bottom: 40px;
+}
+
+/* Error image styling */
+.error-image {
+    max-width: 250px; /* Adjust the size of the image */
+    height: auto;
+    margin-bottom: 40px;
+}
+
+/* Button styling */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    color: #fff;
+    background-color: #4caf50; /* Green button */
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #388e3c; /* Darker green on hover */
+}

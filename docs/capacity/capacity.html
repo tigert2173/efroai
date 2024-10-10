@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site at Capacity</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="logo-container">
+    <img src="../logo.png" alt="Logo" class="logo">
+  </div>
+  
+  <div class="loader">
+    <div class="circle one"></div>
+    <div class="circle two"></div>
+    <div class="circle three"></div>
+  </div>
+
+  <div class="message">
+    <h1>Oops! Our site is at full capacity 💨</h1>
+    <p2>Number of users waiting: <span id="waitingCount">0</span><br>
+    Estimated wait time: <span id="waitTime">0</span> minutes</p2>
+    <p>We’ll be back soon! <br>In the meantime, have a laugh 😅</p>
+  </div>
+
+  <!-- Bot Image Container -->
+  <div class="bot-image-container">
+    <img src="../images/AtCapacityBotTransparent.png" alt="Bot Image" class="botimage">
+    <div class="fart-container">
+      <p class="fart-text">*Pffft* You didn’t hear that... right?</p>
+    </div>
+  </div>
+
+  <script>
+    // Fart joke logic
+    const fartContainer = document.querySelector('.fart-container');
+    const fartText = document.querySelector('.fart-text');
+    
+    const fartJokes = [
+  "*Pffft* You didn’t hear that... right?",
+  "Silent but magical ✨💨",
+  "Oops... the magic escaped 💨",
+  "Do you smell something? 🦨",
+  "*Toot toot* Just passing by!",
+  "Why did the fart cross the road? To get to the other side! 🚗💨",
+  "That wasn’t me, it was the wind... or a ghost! 👻💨",
+  "I don’t always fart, but when I do, I prefer to blame the dog! 🐶💨",
+  "*Brrap* It's a symphony of sounds! 🎶💨",
+  "Guess what? I just released my inner dragon! 🐉💨",
+  "Farting is like a magic trick: it disappears before you can see it! 🎩💨",
+  "I asked my fart to do a trick, and it vanished into thin air! ✨💨",
+  "Ever seen a fart do a backflip? Neither have I, but I bet it could! 🤸‍♂️💨",
+  "Why don’t scientists trust atoms? Because they make up everything, including farts! ⚛️💨",
+  "What do you call a dinosaur fart? A blast from the past! 🦖💨",
+  "Farts are just the body’s way of saying, ‘I’m full of hot air!’ 🌬️💨",
+  "I let one rip in an elevator and suddenly became the most popular person! 🛗💨",
+  "If farts had a smell, mine would be a fine wine—aged to perfection! 🍷💨",
+  "Why did the guy bring a ladder to the bar? Because he heard the drinks were on the house and he wanted to fart on the way up! 🍻💨",
+  "What’s a ghost’s favorite type of gas? Boo-t! 👻💨",
+  "What did one fart say to the other? 'You crack me up!' 😂💨",
+  "I told my fart to be quiet, but it just laughed and made a louder noise! 🤭💨",
+  "If you can smell it, it’s real. If you can’t, it’s just a rumor! 🔍💨",
+  "Why do farts smell? So that deaf people can enjoy them too! 👂💨",
+  "What did the fart say to the sneeze? 'You blow me away!' 💨🤧"
+];
+
+
+    function showFartJoke() {
+      fartText.textContent = fartJokes[Math.floor(Math.random() * fartJokes.length)];
+      fartContainer.classList.add('show');
+      
+      setTimeout(() => {
+        fartContainer.classList.remove('show');
+      }, 3000); // Shows joke for 5 seconds
+    }
+
+    setInterval(showFartJoke, Math.random() * 5000 + 10000);
+
+    // Waiting info logic
+    let waitingCount = 0;
+    const waitTimePerPerson = 2; // Estimated time in minutes per person
+
+    function updateWaitingInfo() {
+      waitingCount++;
+      document.getElementById('waitingCount').textContent = waitingCount;
+      document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+    }
+
+    // Simulate users joining the queue
+    setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
+  </script>
+</body>
+</html>
