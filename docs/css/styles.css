@@ -5,7 +5,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 10;
     background-color: #1d1f21; /* Dark background */
     color: #f5f5f5;
 }
@@ -23,53 +23,6 @@ a {
 
 a:hover {
     color: #34a853; /* Hover Green */
-}
-
-header {
-    background-color: #20232a;
-    padding: 20px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    vertical-align: middle;
-}
-
-.logo img {
-    width: 50px; /* Adjust the size as necessary */
-    height: auto; /* Maintain aspect ratio */
-    vertical-align: middle; /* Align with text */
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links li {
-    display: inline;
-}
-
-.search-bar {
-    padding: 8px 12px;
-    border-radius: 25px;
-    border: none;
-    background-color: #3c4043;
-    color: #fff;
-    transition: box-shadow 0.3s ease;
-}
-
-.search-bar:focus {
-    box-shadow: 0 0 10px #4285f4;
-    outline: none;
 }
 
 /* Hero Section */
@@ -140,7 +93,8 @@ main {
 .character-grid {
     flex: 1; /* Take up remaining space */
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    width: 100;
+    grid-template-columns: repeat(5, 1fr); /* 4 columns */
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 20px; /* Space between grid items */
 }
@@ -366,6 +320,12 @@ background-color: #fb8c00;
 #recommendations {
 margin-left: 100px; /* Add space above recommendations */
 }
+
+header {
+    background-color: #20232a;
+    padding: 20px;
+}
+
 /* Footer */
 footer {
     background-color: #20232a;
@@ -385,11 +345,6 @@ footer ul {
     gap: 20px;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 a {
     color: #4285f4; /* Bright Blue */
     text-decoration: none;
@@ -400,49 +355,6 @@ a:hover {
     color: #34a853; /* Hover Green */
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    vertical-align: middle;
-}
-
-.logo img {
-    width: 50px; /* Adjust the size as necessary */
-    height: auto; /* Maintain aspect ratio */
-    vertical-align: middle; /* Align with text */
-}
-header {
-    background-color: #20232a;
-    padding: 20px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    vertical-align: middle;
-}
-
-.logo img {
-    width: 50px; /* Adjust the size as necessary */
-    height: auto; /* Maintain aspect ratio */
-    vertical-align: middle; /* Align with text */
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links li {
-    display: inline;
-}
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -453,23 +365,6 @@ body {
     padding: 0;
     background-color: #1d1f21; /* Dark background */
     color: #f5f5f5;
-}
-
-/* Header */
-header {
-    background-color: #20232a;
-    padding: 20px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
 }
 
 /* Main Content */
@@ -531,11 +426,10 @@ main {
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 768px) {
+@media (max-width: 1240px) {
     main {
         flex-direction: column; /* Stack layout on smaller screens */
     }
-
     .chat-area {
         margin-left: 0; /* Remove left margin */
     }
@@ -579,5 +473,15 @@ footer p {
 .like-btn:hover {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
+}
+
+/* Media Query for super small screens */
+@media (max-width: 768px) {
+    /* Additional styles for main content */
+    main {
+        padding: 20px; /* Padding for the main content */
+        color: #ffffff; /* Text color for main content */
+        text-align: center; /* Center align main text */
+    }
 }
 

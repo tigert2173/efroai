@@ -5,28 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EFRO.AI Character Hub</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/menu2.0.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
     <header>
         <nav class="navbar">
-            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+            <div class="left-content">
+                <div class="logo">
+                    <img src="logo.png" alt=" ">
+                </div>
+                <div class="text">
+                    <span class="letter letter-1">E</span>
+                    <span class="letter letter-2">F</span>
+                    <span class="letter letter-3">R</span>
+                    <span class="letter letter-4">O</span>
+                    <span class="letter letter-5">.</span>
+                    <span class="letter letter-6">A</span>
+                    <span class="letter letter-7">I</span>
+                </div>
+            </div>
+            <div class="right-content">
             <ul class="nav-links">
-                <li><a href="index.html">Characters</a></li>
-                <li><a href="editor.html">Upload Character</a></li>
-                <li><a href="mylikes.html">My Likes</a></li>
-                <li><a href="mycharacters.html">My Characters</a></li>
-                <li><a href="documentation.html">Documentation</a></li>
-                <li><a href="rules.html">Rules</a></li>
-                <li><a href="join-our-team.html">Get Involved in the Fetish Scene</a></li>
-                <li><a href="updates.html">Updates & Features</a></li>
-                <li><a href="login.html">Login</a></li>
+                <!-- Characters with dropdown -->
+                <li class="dropdown">
+                    <a href="index.html" class="dropbtn">Characters</a>
+                    <div class="dropdown-content">
+                        <a href="editor.html">Upload Character</a>
+                        <a href="mycharacters.html">My Characters</a>
+                    </div>
+                </li>
+    
+                <!-- Community with dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Community</a>
+                    <div class="dropdown-content">
+                        <a href="rules.html">Rules</a>
+                        <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                    </div>
+                </li>
+    
+                <!-- Account with dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Account</a>
+                    <div class="dropdown-content">
+                        <a href="mylikes.html">My Likes</a>
+                        <a href="login.html">Login</a>
+                    </div>
+                </li>
+    
+                <!-- Help with dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Help</a>
+                    <div class="dropdown-content">
+                        <a href="documentation.html">Documentation</a>
+                        <a href="updates.html">Updates & Features</a>
+                    </div>
+                </li>
             </ul>
+            
+    
+            <!-- Search bar -->
             <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
-        </nav>
-    </header>
+    
+            <!-- Hamburger menu for mobile view -->
+            <div class="hamburger" onclick="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>  
+        </div>
+    </div>
 
+    </header>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -74,11 +127,11 @@
         </section>
 
         <!-- AI Recommendations Section -->
-        <section id="recommendations">
+        <!-- <section id="recommendations">
             <h2>Recommended for You</h2>
-            <div class="recommendation-grid">
+            <div class="recommendation-grid"> -->
                 <!-- Recommended Character Cards -->
-                <div class="recommendation-card">
+                <!-- <div class="recommendation-card">
                     <div class="card-header">
                         <h3>Recommended Name</h3>
                     </div>
@@ -86,10 +139,10 @@
                         <p>Short description of the recommended character...</p>
                         <button class="chat-btn">Chat Now</button>
                     </div>
-                </div>
+                </div> -->
                 <!-- Recommendations will be populated dynamically -->
-            </div>
-        </section>
+            <!-- </div>
+        </section> -->
     </main>
 
     <!-- Footer -->
