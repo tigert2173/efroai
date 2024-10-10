@@ -1,4 +1,4 @@
-const backendurl = 'https://characters.efroai.net:30001'; // Ensure this points to your backend
+const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
 
 
 function toggleMenu() {
