@@ -23,7 +23,7 @@
     <main>
         <section id="manage-characters">
             <h2>Character Management</h2>
-            <button id="request-json" class="request-json-btn">Request JSON Data</button>
+            <button id="request-json" class="request-json-btn">View Character JSON Data</button>
             <table class="moderator-table">
                 <thead>
                     <tr>
@@ -74,16 +74,28 @@
     <!-- Scripts -->
     <script src="js/admin.js"></script>
     <script>
-        // Handle the request for JSON data
+        // Handle the request for JSON data to view character details
         document.getElementById('request-json').addEventListener('click', function() {
-            // Make an AJAX call or fetch request to get JSON data
-            fetch('/api/getCharacterData') // Adjust the URL as needed
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Received JSON data:', data);
-                    // Handle the JSON data as needed
-                })
-                .catch(error => console.error('Error fetching JSON data:', error));
+            // Get all character rows
+            const characters = document.querySelectorAll('#character-list tr');
+
+            // Prepare an array to hold character details
+            const characterDetails = [];
+
+            characters.forEach(character => {
+                const characterData = {
+                    id: character.dataset.id,
+                    name: character.cells[0].innerText,
+                    uploader: character.cells[1].innerText,
+                    status: character.cells[2].innerText,
+                    dateUploaded: character.cells[3].innerText
+                };
+                characterDetails.push(characterData);
+            });
+
+            // Display the character details as JSON
+            const jsonOutput = JSON.stringify(characterDetails, null, 2);
+            alert("Character JSON Data:\n\n" + jsonOutput);
         });
     </script>
 </body>
