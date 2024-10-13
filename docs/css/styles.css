@@ -91,7 +91,7 @@ main {
 
 /* Character Grid */
 #characters {
-    padding: 20px; /* Optional padding around the section */
+    padding: 5px; /* Optional padding around the section */
 }
 
 .character-grid {
@@ -101,7 +101,7 @@ main {
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusts columns automatically */
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
-    gap: 20px; /* Space between grid items */
+    gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
 }
 .character-card img {
