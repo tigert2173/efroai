@@ -97,6 +97,7 @@ main {
     grid-template-columns: repeat(5, 1fr); /* 4 columns */
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 20px; /* Space between grid items */
+    overflow: hidden;
 }
 .character-card img {
     width: 100%; /* Make the image fill the width of the card */
