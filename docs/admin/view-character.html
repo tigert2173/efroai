@@ -21,7 +21,6 @@
             border-radius: 5px;
             overflow: auto; /* Enables scrolling for overflow */
             max-height: 70vh; /* Limits height to keep layout intact */
-            display: none; /* Hide the character data by default */
         }
         pre {
             background: #222; /* Dark background for JSON display */
@@ -33,12 +32,12 @@
             word-wrap: break-word; /* Wrap long words onto the next line */
             overflow-wrap: break-word; /* Ensure that long words break to fit within the container */
         }
-        img {
+        #character-image {
             max-width: 100%; /* Make sure the image is responsive */
             height: auto; /* Maintain aspect ratio */
             border-radius: 5px; /* Rounded corners for aesthetics */
             margin-bottom: 15px; /* Space between the image and the JSON */
-            cursor: pointer; /* Change cursor to pointer for better UX */
+            cursor: pointer; /* Change cursor to pointer to indicate clickability */
         }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
@@ -56,7 +55,7 @@
 </head>
 <body>
     <h1>Character JSON Viewer</h1>
-    <img id="character-image" src="" alt="Character Image" />
+    <img id="character-image" src="" alt="Character Image" style="display: none;" />
     <div id="character-data"></div>
     <button id="back-button">Back to Characters</button>
 
@@ -131,14 +130,9 @@
             }
         }
 
-        document.getElementById('character-image').addEventListener('click', () => {
-            const characterDataDiv = document.getElementById('character-data');
-            // Toggle visibility of the character data
-            if (characterDataDiv.style.display === 'none') {
-                characterDataDiv.style.display = 'block';
-            } else {
-                characterDataDiv.style.display = 'none';
-            }
+        // Toggle image visibility on click
+        document.getElementById('character-image').addEventListener('click', function() {
+            this.style.display = this.style.display === 'none' ? 'block' : 'none';
         });
 
         document.getElementById('back-button').addEventListener('click', () => {
