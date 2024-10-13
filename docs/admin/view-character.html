@@ -32,11 +32,11 @@
             word-wrap: break-word; /* Wrap long words onto the next line */
             overflow-wrap: break-word; /* Ensure that long words break to fit within the container */
         }
-        #character-image {
-            max-width: 100%; /* Ensure the image fits within the container */
+        img {
+            max-width: 100%; /* Make sure the image is responsive */
             height: auto; /* Maintain aspect ratio */
-            border-radius: 5px; /* Rounded corners for the image */
-            margin-bottom: 15px; /* Space below the image */
+            border-radius: 5px; /* Rounded corners for aesthetics */
+            margin-bottom: 15px; /* Space between the image and the JSON */
         }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
@@ -54,7 +54,7 @@
 </head>
 <body>
     <h1>Character JSON Viewer</h1>
-    <img id="character-image" alt="Character Image" />
+    <img id="character-image" src="" alt="Character Image" />
     <div id="character-data"></div>
     <button id="back-button">Back to Characters</button>
 
@@ -73,7 +73,7 @@
             }
 
             loadCharacterData(username, characterId, token);
-            loadCharacterImage(username, characterId, token);
+            loadCharacterImage(username, characterId, token); // Load the character image
         });
 
         async function loadCharacterData(username, characterId, token) {
@@ -99,23 +99,24 @@
 
         async function loadCharacterImage(username, characterId, token) {
             try {
-                const imageResponse = await fetch(`${BACKEND_URL}/characters/${username}/images/${characterId}`, {
+                const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
+                const response = await fetch(imageUrl, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `${token}` // Use the token here if needed
+                        'Authorization': `${token}` // Use the token here
                     }
                 });
 
-                if (imageResponse.ok) {
-                    const imageUrl = await imageResponse.url; // Get the image URL
-                    document.getElementById('character-image').src = imageUrl; // Set the image source
-                } else {
-                    console.error('Image not found:', imageResponse.statusText);
-                    document.getElementById('character-image').alt = 'Character image not found.';
+                if (!response.ok) {
+                    throw new Error(`Failed to load character image: ${response.statusText}`);
                 }
+
+                // Set the src of the image
+                const imageElement = document.getElementById('character-image');
+                imageElement.src = imageUrl;
             } catch (error) {
                 console.error('Error loading character image:', error);
-                document.getElementById('character-image').alt = 'Error loading character image.';
+                document.getElementById('character-image').alt = 'Character image not found.';
             }
         }
 
