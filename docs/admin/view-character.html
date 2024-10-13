@@ -39,6 +39,7 @@
             margin-bottom: 15px; /* Space between the image and the JSON */
             cursor: pointer; /* Change cursor to pointer to indicate clickability */
             display: none; /* Start hidden */
+            transition: filter 0.3s; /* Smooth transition for the blur effect */
         }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
@@ -133,9 +134,13 @@
             }
         }
 
-        // Toggle image visibility on click
+        // Toggle image blur effect on click
         document.getElementById('character-image').addEventListener('click', function() {
-            this.style.display = this.style.display === 'none' ? 'block' : 'none';
+            if (this.style.filter === 'blur(10px)') {
+                this.style.filter = 'none'; // Remove blur
+            } else {
+                this.style.filter = 'blur(10px)'; // Apply blur
+            }
         });
 
         document.getElementById('back-button').addEventListener('click', () => {
