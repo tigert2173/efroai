@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Character JSON</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Character JSON Viewer</h1>
+    <div id="character-data"></div>
+    <button id="back-button">Back to Characters</button>
+
+    <script>
+        const BACKEND_URL = 'https://characters.efroai.net:3000/api'; // Define your backend URL here
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('token');
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            const characterId = urlParams.get('id');
+
+            if (!token) {
+                document.getElementById('character-data').innerText = 'You are not logged in.';
+                return;
+            }
+
+            loadCharacterData(username, characterId, token);
+        });
+
+        async function loadCharacterData(username, characterId, token) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/admin/characters/${username}/${characterId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `${token}` // Use the token here
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load character data: ${response.statusText}`);
+                }
+
+                const characterData = await response.json();
+                document.getElementById('character-data').innerHTML = `<pre>${JSON.stringify(characterData, null, 2)}</pre>`;
+            } catch (error) {
+                console.error('Error loading character data:', error);
+                document.getElementById('character-data').innerText = 'Error loading character data.';
+            }
+        }
+
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
