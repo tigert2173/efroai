@@ -629,7 +629,6 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         }
     })
     .then(response => {
-        alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
         document.getElementById('characterForm').reset();
         // After character creation or update
         sessionStorage.removeItem('editCharacter');
