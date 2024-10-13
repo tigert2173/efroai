@@ -90,12 +90,6 @@ main {
 }
 
 /* Character Grid */
-#characters {
-    width: 100%; /* Ensure the section takes full width */
-    padding: 20px; /* Add some padding for aesthetics */
-    box-sizing: border-box; /* Include padding in width */
-}
-
 .character-grid {
     flex: 1; /* Take up remaining space */
     display: grid;
