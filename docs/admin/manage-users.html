@@ -45,60 +45,78 @@
     </table>
 
     <script>
+        const backendUrl = 'https://characters.efroai.net:3000/api'; // Set your backend URL here
+
         async function fetchUsers() {
-            const response = await fetch('/api/users', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+            try {
+                const response = await fetch(`${backendUrl}/users`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users.');
                 }
-            });
 
-            const users = await response.json();
-            const userTableBody = document.querySelector('#userTable tbody');
-            userTableBody.innerHTML = '';
+                const users = await response.json();
+                const userTableBody = document.querySelector('#userTable tbody');
+                userTableBody.innerHTML = '';
 
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.username}</td>
-                    <td>${user.email}</td>
-                    <td>${user.role}</td>
-                    <td>${user.priority}</td>
-                    <td>
-                        <button onclick="suspendUser('${user.username}')">Suspend</button>
-                        <button onclick="deleteUser('${user.username}')">Delete</button>
-                    </td>
-                `;
-                userTableBody.appendChild(row);
-            });
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td>${user.priority}</td>
+                        <td>
+                            <button onclick="suspendUser('${user.username}')">Suspend</button>
+                            <button onclick="deleteUser('${user.username}')">Delete</button>
+                        </td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+            } catch (error) {
+                alert(error.message);
+            }
         }
 
         async function suspendUser(username) {
-            const response = await fetch('/api/users/suspend', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({ username })
-            });
+            try {
+                const response = await fetch(`${backendUrl}/users/suspend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ username })
+                });
 
-            const message = await response.json();
-            alert(message.message);
-            fetchUsers(); // Refresh the user list
+                const message = await response.json();
+                alert(message.message);
+                fetchUsers(); // Refresh the user list
+            } catch (error) {
+                alert('Error suspending user: ' + error.message);
+            }
         }
 
         async function deleteUser(username) {
-            const response = await fetch(`/api/users/${username}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            try {
+                const response = await fetch(`${backendUrl}/users/${username}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
 
-            const message = await response.json();
-            alert(message.message);
-            fetchUsers(); // Refresh the user list
+                const message = await response.json();
+                alert(message.message);
+                fetchUsers(); // Refresh the user list
+            } catch (error) {
+                alert('Error deleting user: ' + error.message);
+            }
         }
 
         // Fetch users on page load
