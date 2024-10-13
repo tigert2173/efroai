@@ -71,8 +71,8 @@ main {
 
 /* Filters Section */
 .filters {
-    flex: 0 0 150px; /* Fixed width for filters */
-    margin-right: 20px; /* Space between filters and character grid */
+    flex: 0 0 200px; /* Fixed width for filters */
+    margin-right: 10px; /* Space between filters and character grid */
     background-color: darkslategray;
     border-radius: 10px;
 }
