@@ -98,27 +98,28 @@
         }
 
         async function loadCharacterImage(username, characterId, token) {
-            try {
-                const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
-                const response = await fetch(imageUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${token}` // Use the token here
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to load character image: ${response.statusText}`);
-                }
-
-                // Set the src of the image
-                const imageElement = document.getElementById('character-image');
-                imageElement.src = imageUrl;
-            } catch (error) {
-                console.error('Error loading character image:', error);
-                document.getElementById('character-image').alt = 'Character image not found.';
+    try {
+        const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
+        const response = await fetch(imageUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `${token}` // Use the token here
             }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to load character image: ${response.statusText}`);
         }
+
+        // Set the src of the image
+        const imageElement = document.getElementById('character-image');
+        imageElement.src = imageUrl; // Set the image source
+    } catch (error) {
+        console.error('Error loading character image:', error);
+        document.getElementById('character-image').alt = 'Character image not found.';
+    }
+}
+
 
         document.getElementById('back-button').addEventListener('click', () => {
             window.history.back();
