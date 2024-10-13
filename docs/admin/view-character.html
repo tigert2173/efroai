@@ -5,8 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Character JSON</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark background for consistency */
+            color: #f4f4f4; /* Light text color */
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #00aaff; /* Neon blue for headings */
+        }
+        #character-data {
+            background: #2a2a2a; /* Darker background for the data container */
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto; /* Enables scrolling for overflow */
+            max-height: 70vh; /* Limits height to keep layout intact */
+            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+        }
+        pre {
+            background: #222; /* Dark background for JSON display */
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto; /* Enables scrolling for overflow */
+            max-height: 60vh; /* Limits height of JSON display */
+        }
+        button {
+            background-color: #ff6600; /* Neon orange for buttons */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff9933; /* Lighter orange on hover */
+        }
     </style>
 </head>
 <body>
