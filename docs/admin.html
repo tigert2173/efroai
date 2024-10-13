@@ -6,6 +6,41 @@
     <title>Moderator Panel</title>
     <link rel="stylesheet" href="css/admin-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Optional CSS for modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <!-- Moderator Header -->
@@ -29,8 +64,8 @@
                         <th>Character</th>
                         <th>Uploader</th>
                         <th>Status</th>
-                        <th>Date Uploaded</th>
                         <th>Actions</th>
+                        <th>Date Uploaded</th>
                     </tr>
                 </thead>
                 <tbody id="character-list">
@@ -39,29 +74,38 @@
                         <td>Aimee</td>
                         <td>User123</td>
                         <td><span class="status pending">Pending</span></td>
-                        <td>2024-10-13</td>
                         <td>
-                            <button class="view-btn">View</button>
+                            <button class="view-btn">View JSON</button>
                             <button class="approve-btn">Approve</button>
                             <button class="delete-btn">Delete</button>
                         </td>
+                        <td>2024-10-13</td>
                     </tr>
                     <tr data-id="2" data-username="User456">
                         <td>Belle</td>
                         <td>User456</td>
                         <td><span class="status pending">Pending</span></td>
-                        <td>2024-10-12</td>
                         <td>
-                            <button class="view-btn">View</button>
+                            <button class="view-btn">View JSON</button>
                             <button class="approve-btn">Approve</button>
                             <button class="delete-btn">Delete</button>
                         </td>
+                        <td>2024-10-12</td>
                     </tr>
                     <!-- Repeat rows -->
                 </tbody>
             </table>
         </section>
     </main>
+
+    <!-- Modal for displaying character JSON -->
+    <div id="jsonModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Character JSON</h2>
+            <pre id="character-json"></pre>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -81,6 +125,9 @@
                 const row = this.closest('tr');
                 const username = row.getAttribute('data-username');
                 const id = row.getAttribute('data-id');
+                const modal = document.getElementById("jsonModal");
+                const jsonDisplay = document.getElementById("character-json");
+                const closeModal = document.querySelector(".close");
 
                 try {
                     const response = await fetch(`/api/admin/characters/${username}/${id}`);
@@ -88,10 +135,23 @@
                         throw new Error('Character not found');
                     }
                     const characterData = await response.json();
-                    // Display character data (you can customize this part)
-                    alert(`Character Data:\n${JSON.stringify(characterData, null, 2)}`);
+                    // Display character data in JSON format
+                    jsonDisplay.textContent = JSON.stringify(characterData, null, 2);
+                    modal.style.display = "block"; // Show modal
                 } catch (error) {
                     alert(error.message);
+                }
+
+                // Close modal when user clicks on <span> (x)
+                closeModal.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // Close modal when user clicks anywhere outside of the modal
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
                 }
             });
         });
