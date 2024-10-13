@@ -1,16 +1,20 @@
 const express = require('express');
-const cors = require('cors'); // Import the cors middleware
-const app = express();
+const https = require('https');
+const fs = require('fs');
 const path = require('path');
 
-// Enable CORS for all routes
-app.use(cors());
+const app = express();
 
-// Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'docs')));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Start the server on port 80
-const port = 80;
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Read your SSL certificate and private key
+const options = {
+  key: fs.readFileSync('certs/private.key.pem'),
+  cert: fs.readFileSync('certs/domain.cert.pem'),
+};
+
+// Start the HTTPS server
+https.createServer(options, app).listen(443, () => {
+  console.log('HTTPS Server running on port 443');
 });
