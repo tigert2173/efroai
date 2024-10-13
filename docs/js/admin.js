@@ -57,20 +57,23 @@ function displayCharacters(characters) {
         const row = document.createElement('tr');
         row.setAttribute('data-id', character.id);
         row.innerHTML = `
-        <td>${character.name}</td>
-        <td>${character.uploader}</td>
-        <td><span class="status ${character.status.toLowerCase()}">${character.status}</span></td>
-        <td>
-        ${character.status.toLowerCase() === 'approved'
-            ? `<button class="revoke-btn">Revoke</button>`
-            : `<button class="approve-btn">Approve</button>`
-        }
-        <button class="delete-btn">Delete</button>
-        </td>
+            <td>${character.name}</td>
+            <td>${character.uploader}</td>
+            <td><span class="status ${character.status.toLowerCase()}">${character.status}</span></td>
+            <td>
+                <a class="view-btn" href="${BACKEND_URL}/characters/${character.uploader}/${character.id}" target="_blank">View JSON</a>
+                ${character.status.toLowerCase() === 'approved'
+                    ? `<button class="revoke-btn">Revoke</button>`
+                    : `<button class="approve-btn">Approve</button>`
+                }
+                <button class="delete-btn">Delete</button>
+            </td>
+            <td>${new Date(character.dateUploaded).toLocaleDateString()}</td>
         `;
         characterList.appendChild(row);
     });
 }
+
 
 // Function to handle button clicks for character actions
 function handleCharacterActions(event) {
