@@ -99,7 +99,7 @@ main {
     display: grid;
     width: 100%;
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusts columns automatically */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusts columns automatically */
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 20px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
@@ -119,7 +119,8 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
     display: flex; /* Use flexbox for the card */
     flex-direction: column; /* Stack elements vertically */
-    min-height: 280px; /* Set a minimum height for cards */
+    min-height: 150px; /* Set a minimum height for cards */
+    max-height: 280px; /* Set a maximum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
     transition: transform 0.2s; /* Smooth scaling effect on hover */
     /* Remove margin */
