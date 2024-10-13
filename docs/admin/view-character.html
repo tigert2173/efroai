@@ -21,7 +21,6 @@
             border-radius: 5px;
             overflow: auto; /* Enables scrolling for overflow */
             max-height: 70vh; /* Limits height to keep layout intact */
-            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
         }
         pre {
             background: #222; /* Dark background for JSON display */
@@ -29,6 +28,9 @@
             border-radius: 5px;
             overflow: auto; /* Enables scrolling for overflow */
             max-height: 60vh; /* Limits height of JSON display */
+            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+            word-wrap: break-word; /* Wrap long words onto the next line */
+            overflow-wrap: break-word; /* Ensure that long words break to fit within the container */
         }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
