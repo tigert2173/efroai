@@ -73,6 +73,7 @@ main {
 .filters {
     flex: 0 0 150px; /* Fixed width for filters */
     margin-right: 20px; /* Space between filters and character grid */
+    background-color: burlywood;
 }
 
 .filters h2 {
