@@ -38,6 +38,7 @@
             border-radius: 5px; /* Rounded corners for aesthetics */
             margin-bottom: 15px; /* Space between the image and the JSON */
             cursor: pointer; /* Change cursor to pointer to indicate clickability */
+            display: none; /* Start hidden */
         }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
@@ -55,7 +56,7 @@
 </head>
 <body>
     <h1>Character JSON Viewer</h1>
-    <img id="character-image" src="" alt="Character Image" style="display: none;" />
+    <img id="character-image" src="" alt="Character Image" />
     <div id="character-data"></div>
     <button id="back-button">Back to Characters</button>
 
@@ -119,6 +120,7 @@
                 if (blob.type.startsWith('image/')) {
                     const imageObjectURL = URL.createObjectURL(blob);
                     imageElement.src = imageObjectURL; // Set the image source
+                    imageElement.style.display = 'block'; // Show the image
                 } else {
                     throw new Error('Response is not an image.');
                 }
@@ -127,6 +129,7 @@
                 const imageElement = document.getElementById('character-image');
                 imageElement.alt = 'Character image not found.';
                 imageElement.src = ''; // Clear the image src
+                imageElement.style.display = 'none'; // Ensure the image is hidden
             }
         }
 
