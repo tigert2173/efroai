@@ -39,7 +39,7 @@
             margin-bottom: 15px; /* Space between the image and the JSON */
             cursor: pointer; /* Change cursor to pointer to indicate clickability */
             display: none; /* Start hidden */
-            filter: blur(25px); /* Apply blur effect by default */
+            filter: blur(20px); /* Apply blur effect by default */
             transition: filter 0.1s; /* Smooth transition for the blur effect */
         }
         button {
@@ -137,10 +137,10 @@
 
         // Toggle image blur effect on click
         document.getElementById('character-image').addEventListener('click', function() {
-            if (this.style.filter === 'blur(25px)') {
+            if (this.style.filter === 'blur(20px)') {
                 this.style.filter = 'none'; // Remove blur
             } else {
-                this.style.filter = 'blur(25px)'; // Apply blur
+                this.style.filter = 'blur(20px)'; // Apply blur
             }
         });
 
