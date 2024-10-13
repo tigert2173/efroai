@@ -1,9 +1,12 @@
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
+const cors = request('cors')
 const path = require('path');
 
 const app = express();
+// Use CORS middleware
+app.use(cors());
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'docs')));
