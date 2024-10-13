@@ -32,6 +32,12 @@
             word-wrap: break-word; /* Wrap long words onto the next line */
             overflow-wrap: break-word; /* Ensure that long words break to fit within the container */
         }
+        #character-image {
+            max-width: 100%; /* Ensure the image fits within the container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px; /* Rounded corners for the image */
+            margin-bottom: 15px; /* Space below the image */
+        }
         button {
             background-color: #ff6600; /* Neon orange for buttons */
             color: #fff;
@@ -48,6 +54,7 @@
 </head>
 <body>
     <h1>Character JSON Viewer</h1>
+    <img id="character-image" alt="Character Image" />
     <div id="character-data"></div>
     <button id="back-button">Back to Characters</button>
 
@@ -66,6 +73,7 @@
             }
 
             loadCharacterData(username, characterId, token);
+            loadCharacterImage(username, characterId, token);
         });
 
         async function loadCharacterData(username, characterId, token) {
@@ -86,6 +94,28 @@
             } catch (error) {
                 console.error('Error loading character data:', error);
                 document.getElementById('character-data').innerText = 'Error loading character data.';
+            }
+        }
+
+        async function loadCharacterImage(username, characterId, token) {
+            try {
+                const imageResponse = await fetch(`${BACKEND_URL}/characters/${username}/images/${characterId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `${token}` // Use the token here if needed
+                    }
+                });
+
+                if (imageResponse.ok) {
+                    const imageUrl = await imageResponse.url; // Get the image URL
+                    document.getElementById('character-image').src = imageUrl; // Set the image source
+                } else {
+                    console.error('Image not found:', imageResponse.statusText);
+                    document.getElementById('character-image').alt = 'Character image not found.';
+                }
+            } catch (error) {
+                console.error('Error loading character image:', error);
+                document.getElementById('character-image').alt = 'Error loading character image.';
             }
         }
 
