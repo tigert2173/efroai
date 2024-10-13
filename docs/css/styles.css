@@ -90,6 +90,10 @@ main {
 }
 
 /* Character Grid */
+#characters {
+    padding: 20px; /* Optional padding around the section */
+}
+
 .character-grid {
     flex: 1; /* Take up remaining space */
     display: grid;
