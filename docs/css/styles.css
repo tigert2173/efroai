@@ -91,7 +91,7 @@ main {
 
 /* Character Grid */
 #characters {
-    padding: 120px; /* Optional padding around the section */
+    padding: 20px; /* Optional padding around the section */
 }
 
 .character-grid {
@@ -110,20 +110,21 @@ main {
     max-height: 150px; /* Limit the height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
+
+/* Character Card Styles */
 .character-card {
     background-color: #fff; /* White background for the card */
-    border-radius: 12px;    /* Slightly more rounded corners */
-    padding: 20px;          /* Padding inside the card */
-    margin: 15px;           /* Margin around the card */
+    border-radius: 12px; /* Slightly more rounded corners */
+    padding: 20px; /* Padding inside the card */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
-    display: flex;          /* Use flexbox for the card */
-    flex-direction: column;  /* Stack elements vertically */
-    min-height: 280px;      /* Set a minimum height for cards */
-    position: relative;      /* Allow absolute positioning of tooltip */
+    display: flex; /* Use flexbox for the card */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 280px; /* Set a minimum height for cards */
+    position: relative; /* Allow absolute positioning of tooltip */
     transition: transform 0.2s; /* Smooth scaling effect on hover */
-    min-width: 200px;
-    
+    /* Remove margin */
 }
+
 
 .character-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
