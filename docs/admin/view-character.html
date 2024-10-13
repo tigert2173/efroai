@@ -111,12 +111,21 @@
             throw new Error(`Failed to load character image: ${response.statusText}`);
         }
 
-        // Set the src of the image
+        // Check if the response is an image
+        const blob = await response.blob();
         const imageElement = document.getElementById('character-image');
-        imageElement.src = imageUrl; // Set the image source
+
+        if (blob.type.startsWith('image/')) {
+            const imageObjectURL = URL.createObjectURL(blob);
+            imageElement.src = imageObjectURL; // Set the image source
+        } else {
+            throw new Error('Response is not an image.');
+        }
     } catch (error) {
         console.error('Error loading character image:', error);
-        document.getElementById('character-image').alt = 'Character image not found.';
+        const imageElement = document.getElementById('character-image');
+        imageElement.alt = 'Character image not found.';
+        imageElement.src = ''; // Clear the image src
     }
 }
 
