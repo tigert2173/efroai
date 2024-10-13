@@ -241,9 +241,9 @@ main {
         margin-bottom: 20px; /* Add margin below filters */
     }
 
-    .character-grid {
+    /* .character-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
-    }
+    /* } */
 
     .recommendation-grid {
         margin-top: 20px; /* Add space above recommendations */
