@@ -614,7 +614,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
     .then(response => {
         const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get the character ID from response or use editing ID
         console.log(response.data.character.id);
-        alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+        alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
 
         // After character creation or update, now upload the image if it exists
         if (imageFile) {
@@ -697,7 +697,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         }
     })
     .then(response => {
-        alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+        alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
 
         // After character creation or update, now upload the image if it exists
         if (imageFile) {
