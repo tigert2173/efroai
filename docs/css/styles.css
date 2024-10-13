@@ -75,6 +75,7 @@ main {
     margin-right: 10px; /* Space between filters and character grid */
     background-color: darkslategray;
     border-radius: 10px;
+    padding: 5px;
 }
 
 .filters h2 {
