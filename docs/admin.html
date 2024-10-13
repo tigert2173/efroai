@@ -23,7 +23,6 @@
     <main>
         <section id="manage-characters">
             <h2>Character Management</h2>
-            <button id="request-json" class="request-json-btn">View Character JSON Data</button>
             <table class="moderator-table">
                 <thead>
                     <tr>
@@ -36,22 +35,24 @@
                 </thead>
                 <tbody id="character-list">
                     <!-- Characters fetched dynamically -->
-                    <tr data-id="1">
+                    <tr data-id="1" data-username="User123">
                         <td>Aimee</td>
                         <td>User123</td>
                         <td><span class="status pending">Pending</span></td>
-                        <td>2024-10-13</td> <!-- Example date -->
+                        <td>2024-10-13</td>
                         <td>
+                            <button class="view-btn">View</button>
                             <button class="approve-btn">Approve</button>
                             <button class="delete-btn">Delete</button>
                         </td>
                     </tr>
-                    <tr data-id="2">
+                    <tr data-id="2" data-username="User456">
                         <td>Belle</td>
                         <td>User456</td>
                         <td><span class="status pending">Pending</span></td>
-                        <td>2024-10-12</td> <!-- Example date -->
+                        <td>2024-10-12</td>
                         <td>
+                            <button class="view-btn">View</button>
                             <button class="approve-btn">Approve</button>
                             <button class="delete-btn">Delete</button>
                         </td>
@@ -74,28 +75,25 @@
     <!-- Scripts -->
     <script src="js/admin.js"></script>
     <script>
-        // Handle the request for JSON data to view character details
-        document.getElementById('request-json').addEventListener('click', function() {
-            // Get all character rows
-            const characters = document.querySelectorAll('#character-list tr');
+        // Function to fetch and display individual character data
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                const row = this.closest('tr');
+                const username = row.getAttribute('data-username');
+                const id = row.getAttribute('data-id');
 
-            // Prepare an array to hold character details
-            const characterDetails = [];
-
-            characters.forEach(character => {
-                const characterData = {
-                    id: character.dataset.id,
-                    name: character.cells[0].innerText,
-                    uploader: character.cells[1].innerText,
-                    status: character.cells[2].innerText,
-                    dateUploaded: character.cells[3].innerText
-                };
-                characterDetails.push(characterData);
+                try {
+                    const response = await fetch(`/api/admin/characters/${username}/${id}`);
+                    if (!response.ok) {
+                        throw new Error('Character not found');
+                    }
+                    const characterData = await response.json();
+                    // Display character data (you can customize this part)
+                    alert(`Character Data:\n${JSON.stringify(characterData, null, 2)}`);
+                } catch (error) {
+                    alert(error.message);
+                }
             });
-
-            // Display the character details as JSON
-            const jsonOutput = JSON.stringify(characterDetails, null, 2);
-            alert("Character JSON Data:\n\n" + jsonOutput);
         });
     </script>
 </body>
