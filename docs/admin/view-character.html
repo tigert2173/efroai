@@ -5,57 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Character JSON</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a; /* Dark background for consistency */
-            color: #f4f4f4; /* Light text color */
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #00aaff; /* Neon blue for headings */
-        }
-        #character-data {
-            background: #2a2a2a; /* Darker background for the data container */
-            padding: 15px;
-            border-radius: 5px;
-            overflow: auto; /* Enables scrolling for overflow */
-            max-height: 70vh; /* Limits height to keep layout intact */
-        }
-        pre {
-            background: #222; /* Dark background for JSON display */
-            padding: 10px;
-            border-radius: 5px;
-            overflow: auto; /* Enables scrolling for overflow */
-            max-height: 60vh; /* Limits height of JSON display */
-            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
-            word-wrap: break-word; /* Wrap long words onto the next line */
-            overflow-wrap: break-word; /* Ensure that long words break to fit within the container */
-        }
-        img {
-            max-width: 100%; /* Make sure the image is responsive */
-            height: auto; /* Maintain aspect ratio */
-            border-radius: 5px; /* Rounded corners for aesthetics */
-            margin-bottom: 15px; /* Space between the image and the JSON */
-        }
-        button {
-            background-color: #ff6600; /* Neon orange for buttons */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #ff9933; /* Lighter orange on hover */
-        }
+        body { font-family: Arial, sans-serif; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        .blur { filter: blur(10px); transition: filter 0.3s; }
+        .reveal { display: none; margin-top: 10px; }
+        .reveal.active { display: block; }
     </style>
 </head>
 <body>
     <h1>Character JSON Viewer</h1>
-    <img id="character-image" src="" alt="Character Image" />
     <div id="character-data"></div>
+    <img id="character-image" class="blur" alt="Character Image" />
+    <button id="reveal-button">Reveal Image</button>
     <button id="back-button">Back to Characters</button>
 
     <script>
@@ -73,7 +34,7 @@
             }
 
             loadCharacterData(username, characterId, token);
-            loadCharacterImage(username, characterId, token); // Load the character image
+            loadCharacterImage(username, characterId, token);
         });
 
         async function loadCharacterData(username, characterId, token) {
@@ -98,37 +59,42 @@
         }
 
         async function loadCharacterImage(username, characterId, token) {
-    try {
-        const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
-        const response = await fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': `${token}` // Use the token here
+            try {
+                const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
+                const response = await fetch(imageUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `${token}` // Use the token here
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load character image: ${response.statusText}`);
+                }
+
+                // Check if the response is an image
+                const blob = await response.blob();
+                const imageElement = document.getElementById('character-image');
+
+                if (blob.type.startsWith('image/')) {
+                    const imageObjectURL = URL.createObjectURL(blob);
+                    imageElement.src = imageObjectURL; // Set the image source
+                } else {
+                    throw new Error('Response is not an image.');
+                }
+            } catch (error) {
+                console.error('Error loading character image:', error);
+                const imageElement = document.getElementById('character-image');
+                imageElement.alt = 'Character image not found.';
+                imageElement.src = ''; // Clear the image src
             }
+        }
+
+        document.getElementById('reveal-button').addEventListener('click', () => {
+            const imageElement = document.getElementById('character-image');
+            imageElement.classList.remove('blur'); // Remove the blur effect
+            document.getElementById('reveal-button').style.display = 'none'; // Hide the reveal button
         });
-
-        if (!response.ok) {
-            throw new Error(`Failed to load character image: ${response.statusText}`);
-        }
-
-        // Check if the response is an image
-        const blob = await response.blob();
-        const imageElement = document.getElementById('character-image');
-
-        if (blob.type.startsWith('image/')) {
-            const imageObjectURL = URL.createObjectURL(blob);
-            imageElement.src = imageObjectURL; // Set the image source
-        } else {
-            throw new Error('Response is not an image.');
-        }
-    } catch (error) {
-        console.error('Error loading character image:', error);
-        const imageElement = document.getElementById('character-image');
-        imageElement.alt = 'Character image not found.';
-        imageElement.src = ''; // Clear the image src
-    }
-}
-
 
         document.getElementById('back-button').addEventListener('click', () => {
             window.history.back();
