@@ -106,7 +106,7 @@ function likeCharacter(characterId, uploader) {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+            'Authorization': `${token}` // Include the token in the Authorization header
         },
         body: JSON.stringify({ characterId: characterId }) // Sending the character ID
     })
