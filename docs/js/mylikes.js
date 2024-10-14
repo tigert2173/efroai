@@ -121,8 +121,8 @@ function displayCharacters(characters) {
 }
 
 function likeCharacter(characterId, uploader) {
-    // Here you can implement what happens when the like button is clicked
-    // For example, you could send a POST request to your backend to save the like
+    // Get the token from local storage (or wherever you store it)
+    const token = sessionStorage.getItem('token'); // Adjust the key based on your implementation
 
     // Example of an AJAX request to save the like
     fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
@@ -130,6 +130,7 @@ function likeCharacter(characterId, uploader) {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': `${token}` // Include the token in the Authorization header
         },
         body: JSON.stringify({ characterId: characterId }) // Sending the character ID
     })
