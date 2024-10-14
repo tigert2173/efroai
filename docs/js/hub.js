@@ -96,18 +96,31 @@ function displayCharacters(characters) {
     });
 }
 
-function likeCharacter(characterId, uploader) {
-    // Here you can implement what happens when the like button is clicked
-    // For example, you could send a POST request to your backend to save the like
+function likeCharacter(characterId) {
+    // Function to get a specific cookie value by name
+    function getCookieValue(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
-    // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+    // Get the username from the cookie
+    const username = getCookieValue('userID'); // Replace 'username' with your actual cookie name
+
+    // Check if username is available
+    if (!username) {
+        alert('You must be logged in to like a character.');
+        return;
+    }
+
+    // Sending a POST request to like the character
+    fetch(`${backendurl}/api/characters/${characterId}/like`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
-        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+        body: JSON.stringify({ username: username }) // Sending the username
     })
     .then(response => {
         if (!response.ok) {
@@ -125,6 +138,7 @@ function likeCharacter(characterId, uploader) {
         alert('Failed to like character. Please try again.'); // Simple error message
     });
 }
+
 
 function openCharacterPage(characterId, uploader) {
     // Use sessionStorage to save the character ID and uploader information
