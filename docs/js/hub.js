@@ -96,31 +96,19 @@ function displayCharacters(characters) {
     });
 }
 
-function likeCharacter(characterId) {
-    // Function to get a specific cookie value by name
-    function getCookieValue(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
+function likeCharacter(characterId, uploader) {
+    // Get the token from local storage (or wherever you store it)
+    const token = sessionStorage.getItem('token'); // Adjust the key based on your implementation
 
-    // Get the username from the cookie
-    const username = getCookieValue('userID'); // Replace 'username' with your actual cookie name
-
-    // Check if username is available
-    if (!username) {
-        alert('You must be logged in to like a character.');
-        return;
-    }
-
-    // Sending a POST request to like the character
-    fetch(`${backendurl}/api/characters/${characterId}/like`, {
+    // Example of an AJAX request to save the like
+    fetch(`${backendurl}/api/characters/${characterId}/like`, { // Only include characterId in the URL
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the Authorization header
         },
-        body: JSON.stringify({ username: username }) // Sending the username
+        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
     })
     .then(response => {
         if (!response.ok) {
