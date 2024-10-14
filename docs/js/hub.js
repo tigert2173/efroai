@@ -101,7 +101,7 @@ function likeCharacter(characterId, uploader) {
     const token = sessionStorage.getItem('token'); // Adjust the key based on your implementation
 
     // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${characterId}/like`, { // Only include characterId in the URL
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
