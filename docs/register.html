@@ -124,15 +124,17 @@
                 </div>
 
                 <div style="text-align: center;">
-                    <label for="email">Email (optional for password resets):</label>
-                    <input type="text" id="email" placeholder="example@efroai.net">
-                    <small><em>(Email will be hashed for security; we cannot contact you directly.)</em></small>
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                        <label for="email">Email (optional for password resets):</label>
+                        <input type="text" id="email" placeholder="example@efroai.net" style="margin: 10px 0;">
+                        <small><em>(Email will be hashed for security; we cannot contact you directly.)</em></small>
+                    </div>
                 
-                    <br><br>
-                
-                    <label for="discordID">Discord ID (optional for notifications):</label>
-                    <input type="text" id="discordID" placeholder="123456789012345678">
-                    <small><em>(To get your Discord ID, right-click on your username in Discord and select 'Copy ID'.)</em></small>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <label for="discordID">Discord ID (optional for notifications):</label>
+                        <input type="text" id="discordID" placeholder="123456789012345678" style="margin: 10px 0;">
+                        <small><em>(To get your Discord ID, right-click on your username in Discord and select 'Copy ID'.)</em></small>
+                    </div>
                 </div>
                 
                 <label for="role">Role:</label>
