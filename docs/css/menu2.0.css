@@ -30,7 +30,7 @@ html { /*body*/
     align-items: center;
     gap: 20px; /* Add space between items */
     padding-right: 100px;
-    padding-left: 50px;
+    padding-left: 30px;
 }
 
 .navbar {
