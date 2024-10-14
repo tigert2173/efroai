@@ -101,31 +101,38 @@
                 alert('Error suspending user: ' + error.message);
             }
         }
+        
+    async function deleteUser(username) {
+    const confirmation = confirm(`Are you sure you want to delete user "${username}"?`);
+    if (!confirmation) return; // Exit if the user cancels
 
-        async function deleteUser(username) {
-            const confirmation = confirm(`Are you sure you want to delete user "${username}"?`);
-            if (!confirmation) return; // Exit if the user cancels
-
-            try {
-                const response = await fetch(`${backendUrl}/delete-user/${username}`, { // Adjusted URL
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                    }
-                });
-
-                if (!response.ok) {
-                    const errorMessage = await response.json();
-                    throw new Error(`Error: ${response.status} ${errorMessage.message}`);
-                }
-
-                const message = await response.json();
-                alert(message.message);
-                fetchUsers(); // Refresh the user list
-            } catch (error) {
-                alert('Error deleting user: ' + error.message);
+    try {
+        const response = await fetch(`${backendUrl}/delete-user/${username}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
+        });
+
+        const contentType = response.headers.get('content-type');
+
+        // Check if the response is JSON
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Error: ${response.status} ${errorBody}`);
         }
+
+        if (contentType && contentType.includes('application/json')) {
+            const message = await response.json();
+            alert(message.message);
+        } else {
+            throw new Error(`Unexpected response type: ${contentType}`);
+        }
+        fetchUsers(); // Refresh the user list
+    } catch (error) {
+        alert('Error deleting user: ' + error.message);
+    }
+}
 
         // Fetch users on page load
         fetchUsers();
