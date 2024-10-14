@@ -103,26 +103,29 @@
         }
 
         async function deleteUser(username) {
-    try {
-        const response = await fetch(`${backendUrl}/delete-user/${username}`, {  // Correct URL
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            const confirmation = confirm(`Are you sure you want to delete user "${username}"?`);
+            if (!confirmation) return; // Exit if the user cancels
+
+            try {
+                const response = await fetch(`${backendUrl}/delete-user/${username}`, { // Adjusted URL
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.json();
+                    throw new Error(`Error: ${response.status} ${errorMessage.message}`);
+                }
+
+                const message = await response.json();
+                alert(message.message);
+                fetchUsers(); // Refresh the user list
+            } catch (error) {
+                alert('Error deleting user: ' + error.message);
             }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);  // Handle non-200 responses
         }
-
-        const message = await response.json();
-        alert(message.message);
-        fetchUsers(); // Refresh the user list
-    } catch (error) {
-        alert('Error deleting user: ' + error.message);
-    }
-}
-
 
         // Fetch users on page load
         fetchUsers();
