@@ -65,6 +65,22 @@
         a:hover {
             text-decoration: underline;
         }
+        .user-status {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .logged-in {
+            background-color: #e0f7fa;
+            color: #00695c;
+            border: 1px solid #4db6ac;
+        }
+        .logged-out {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +153,11 @@
 
     <!-- Main Content -->
     <main>
-        <div id="user-status"></div> <!-- Element to display user login status -->
+        <div class="container">
+            <h1>User Login Status</h1>
+            <div id="user-status" class="user-status"></div> <!-- Element to display user login status -->
+        </div>
+        
         <div class="container">
             <h2>Email Support</h2>
             <p>If you need assistance with your account, please reach out to our support team:</p>
