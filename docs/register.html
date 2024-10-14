@@ -18,20 +18,18 @@
             display: flex; /* Use flexbox for header layout */
             justify-content: center; /* Center content horizontally */
             align-items: center; /* Center content vertically */
-            height: 80px; /* Fixed height for the header */
         }
 
         h1 {
             margin: 0; /* Remove default margin */
             color: #f5f5f5; /* Light color for header */
-            font-size: 1.8em; /* Increased font size for visibility */
         }
 
         main {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 80px); /* Adjust for header height */
+            height: calc(100vh - 80px); /* Adjust for header/footer height */
             padding: 0 20px;
         }
 
@@ -103,7 +101,6 @@
             margin-top: 10px;
             list-style: none;
             padding: 0;
-            white-space: pre-line; /* Preserve line breaks */
         }
 
         #errorMessage {
@@ -151,13 +148,13 @@
                 </div>
 
                 <div class="requirements">
-                    Password must:
+                    <p>Password must:</p>
                     <ul>
                         <li>Be at least 10 characters long</li>
                         <li>Include at least one uppercase letter</li>
                         <li>Include at least one lowercase letter</li>
                         <li>Include at least one number</li>
-                        <li>Include at least one special character (e.g., @, #, $, %, _)</li>
+                        <li>Include at least one special character (e.g., <strong>@</strong>, <strong>#</strong>, <strong>$</strong>, <strong>%</strong>, <strong>_</strong>)</li>
                         <li>Be no longer than 32 characters</li>
                     </ul>
                 </div>
@@ -211,7 +208,7 @@
                 return;
             }
 
-            // Password requirements: at least 10 characters, one uppercase, one lowercase, one number, one special character, and max 32 characters
+            // Password requirements: at least 8 characters, one uppercase, one lowercase, one number, one special character, and max 32 characters
             const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{10,32}$/;
 
             // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -)
@@ -228,13 +225,13 @@
                     return `<span style="color: ${color}; font-weight: bold; font-size: 1.2em;">${char}</span>`;
                 }).join(' ');
 
-                errorMessage.innerHTML = `Password contains disallowed characters: ${styledChars}.`;
+                errorMessage.innerHTML = `Password contains disallowed characters: <br> ${styledChars} <br>Please remove them.`;
                 return;
             }
 
             // Check if the password meets the requirements
             if (!passwordRequirements.test(password)) {
-                errorMessage.textContent = 'Password must:\n- Be at least 10 characters long\n- Include at least one uppercase letter\n- Include at least one lowercase letter\n- Include at least one number\n- Include at least one special character (e.g., @, #, $, %, _)\n- Be no longer than 32 characters.';
+                errorMessage.textContent = 'Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
                 return;
             }
 
