@@ -243,6 +243,9 @@ html { /*body*/
 
 /* Media Query for Small Screens */
 @media (max-width: 843px) {
+    .right-content {
+        padding-right: 0px;
+    }
     .nav-links {
         display: none;
         flex-direction: column;
