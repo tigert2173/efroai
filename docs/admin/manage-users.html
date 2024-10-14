@@ -103,21 +103,29 @@
         }
 
         async function deleteUser(username) {
-            try {
-                const response = await fetch(`${backendUrl}/users/${username}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                    }
-                });
-
-                const message = await response.json();
-                alert(message.message);
-                fetchUsers(); // Refresh the user list
-            } catch (error) {
-                alert('Error deleting user: ' + error.message);
+    try {
+        // Change the URL to match the DELETE endpoint defined in your server
+        const response = await fetch(`${backendUrl}/delete-user/${username}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
+        });
+
+        if (!response.ok) {
+            // Handle non-2xx responses
+            const errorMessage = await response.json();
+            throw new Error(errorMessage.message || 'Failed to delete user.');
         }
+
+        const message = await response.json();
+        alert(message.message);
+        fetchUsers(); // Refresh the user list
+    } catch (error) {
+        alert('Error deleting user: ' + error.message);
+    }
+}
+
 
         // Fetch users on page load
         fetchUsers();
