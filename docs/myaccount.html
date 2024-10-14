@@ -137,6 +137,7 @@
 
     <!-- Main Content -->
     <main>
+        <div id="user-status"></div> <!-- Element to display user login status -->
         <div class="container">
             <h2>Email Support</h2>
             <p>If you need assistance with your account, please reach out to our support team:</p>
@@ -150,4 +151,29 @@
         <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
     </footer>
 </body>
+<script>
+    // Function to get a cookie by name
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';'); // Split cookies into array
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length); // Trim space
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length); // Return cookie value
+    }
+    return null; // Return null if cookie not found
+}
+
+// Get the userID cookie value
+const userID = getCookie('userID');
+
+// Display logged in user message
+if (userID) {
+    console.log(`User logged in: ${userID}`); // Display in console
+    // You can also display this in the HTML
+    document.getElementById('user-status').innerText = `User logged in: ${userID}`;
+} else {
+    console.log('No user logged in.'); // Display if no user is logged in
+}
+</script>
 </html>
