@@ -157,7 +157,7 @@
             <h1>User Login Status</h1>
             <div id="user-status" class="user-status"></div> <!-- Element to display user login status -->
         </div>
-        
+
         <div class="container">
             <h2>Email Support</h2>
             <p>If you need assistance with your account, please reach out to our support team:</p>
@@ -188,12 +188,14 @@ function getCookie(name) {
 const userID = getCookie('userID');
 
 // Display logged in user message
+const userStatusDiv = document.getElementById('user-status');
+
 if (userID) {
-    console.log(`User logged in: ${userID}`); // Display in console
-    // You can also display this in the HTML
-    document.getElementById('user-status').innerText = `User logged in: ${userID}`;
+    userStatusDiv.classList.add('logged-in');
+    userStatusDiv.innerText = `User logged in: ${userID}`; // Display logged in message
 } else {
-    console.log('No user logged in.'); // Display if no user is logged in
+    userStatusDiv.classList.add('logged-out');
+    userStatusDiv.innerText = 'No user logged in.'; // Display logged out message
 }
 </script>
 </html>
