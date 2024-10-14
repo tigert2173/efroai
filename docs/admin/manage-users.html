@@ -102,7 +102,7 @@
             }
         }
 
-        async function deleteUser(username) {
+async function deleteUser(username) {
     try {
         const response = await fetch(`${backendUrl}/delete-user/${username}`, {  // Adjusted URL
             method: 'DELETE',
