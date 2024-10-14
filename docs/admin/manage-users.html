@@ -104,8 +104,7 @@
 
         async function deleteUser(username) {
     try {
-        // Change the URL to match the DELETE endpoint defined in your server
-        const response = await fetch(`${backendUrl}/delete-user/${username}`, {
+        const response = await fetch(`${backendUrl}/delete-user/${username}`, {  // Adjusted URL
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
@@ -113,9 +112,7 @@
         });
 
         if (!response.ok) {
-            // Handle non-2xx responses
-            const errorMessage = await response.json();
-            throw new Error(errorMessage.message || 'Failed to delete user.');
+            throw new Error(`Error: ${response.status} ${response.statusText}`);  // Handle non-200 responses
         }
 
         const message = await response.json();
