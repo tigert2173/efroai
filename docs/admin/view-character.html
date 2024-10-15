@@ -103,36 +103,36 @@
         async function loadCharacterImage(username, characterId, token) {
     try {
         const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
+        const imageElement = document.getElementById('character-image');
+
+        // Fetch the image from the server
         const response = await fetch(imageUrl, {
             method: 'GET',
             headers: {
-                'Authorization': `${token}` // Use the token here
+                'Authorization': `${token}`, // Include token
+                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5' // Accept various image types
             }
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to load character image: ${response.statusText}`);
+            console.error(`Failed to load character image: ${response.statusText}`);
+            imageElement.src = 'noimage.jpg'; // Fallback to default image
+            return;
         }
 
-        // Get the Content-Type from headers
-        const contentType = response.headers.get('Content-Type');
-        const imageElement = document.getElementById('character-image');
-
-        // Check if the Content-Type header indicates an image, including 'image/jfif'
-        if (contentType && contentType.startsWith('image/')) {
-            // Handle the image
-            const blob = await response.blob();
-            const imageObjectURL = URL.createObjectURL(blob);
-            imageElement.src = imageObjectURL; // Set the image source
+        const imageBlob = await response.blob();
+        if (imageBlob.type.startsWith('image/')) {
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            imageElement.src = imageObjectURL; // Set the fetched image
             imageElement.style.display = 'block'; // Show the image
         } else {
-            throw new Error('Response is not a valid image.');
+            console.error('The fetched content is not a valid image.');
+            imageElement.src = 'noimage.jpg'; // Fallback to default image
         }
     } catch (error) {
         console.error('Error loading character image:', error);
         const imageElement = document.getElementById('character-image');
-        imageElement.alt = 'Character image not found.';
-        imageElement.src = ''; // Clear the image src
+        imageElement.src = 'noimage.jpg'; // Fallback to default image
         imageElement.style.display = 'none'; // Ensure the image is hidden
     }
 }
