@@ -161,32 +161,28 @@
 <script>
          // Function to check if the user is suspended
          function checkUserSuspension(username) {
-            const url = `https://characters.efroai.net:3000/api/check-suspension/${username}`;
             console.log(`Checking suspension status for user: ${username}`);
-
-            fetch(url)
-                .then(response => {
-                    console.log("Received response: ", response);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Received data: ", data);
-                    if (data.suspended) {
-                        // User is suspended, redirect them
-                        window.location.href = 'https://efroai.net/error/suspended.html';
-                    } else {
-                        console.log("User is active.");
-                        // Proceed if the user is not suspended
-                    }
-                })
-                .catch(error => {
-                    console.error('Error during suspension check:', error);
-                });
-        }
-
+            fetch(`https://characters.efroai.net:3000/api/check-suspension/${username}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add authentication token here
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.suspended) {
+                    window.location.href = 'https://efroai.net/suspended.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error during suspension check:', error);
+            });
         // Automatically call the function on page load
         window.onload = function () {
             const username = 'TigerT217333'; // Replace with the actual username logic
