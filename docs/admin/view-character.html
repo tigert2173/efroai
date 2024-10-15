@@ -119,7 +119,7 @@
         const imageElement = document.getElementById('character-image');
 
         // Check if the Content-Type header indicates an image, including 'image/jfif'
-        if (contentType && contentType.startsWith('image/')) {
+        if (contentType && contentType.startsWith('')) {
             // Handle the image
             const blob = await response.blob();
             const imageObjectURL = URL.createObjectURL(blob);
