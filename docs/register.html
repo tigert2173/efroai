@@ -205,6 +205,8 @@
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const discordID = document.getElementById('discordID').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const role = document.getElementById('role').value;
             const errorMessage = document.getElementById('errorMessage');
@@ -253,7 +255,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ username, password, role }),
+                    body: JSON.stringify({ username, password, role,  }),
                 });
 
                 const result = await response.json();
