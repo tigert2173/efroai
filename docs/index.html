@@ -159,29 +159,39 @@
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
 <script>
-    // Function to check if the user is suspended
-    function checkUserSuspension(username) {
-        fetch(`https://characters.efroai.net/api/check-suspension/${username}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.suspended) {
-                    // User is suspended, redirect them
-                    window.location.href = 'https://efroai.net/suspended.html';
-                } else {
-                    console.log("User is active.");
-                    // You can show other page content here if the user is active
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
+ 
+        // Function to check if the user is suspended
+        function checkUserSuspension(username) {
+            console.log(`Checking suspension status for user: ${username}`);
+            
+            fetch(`https://characters.efroai.net/api/check-suspension/${username}`)
+                .then(response => {
+                    console.log("Received response: ", response);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Received data: ", data);
+                    if (data.suspended) {
+                        // User is suspended, redirect them
+                        window.location.href = 'https://efroai.net/suspended.html';
+                    } else {
+                        console.log("User is active.");
+                        // Display the rest of the page if the user is active
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during suspension check:', error);
+                });
+        }
 
-    // Automatically call the function on page load
-    window.onload = function () {
-        const username = 'TigerT217333'; // Replace with the actual username logic
-        checkUserSuspension(username);
-    };
+        // Automatically call the function on page load
+        window.onload = function () {
+            const username = 'TigerT217333'; // Replace with the actual username logic
+            checkUserSuspension(username);
+        };
 </script>
 </body>
 </html>
