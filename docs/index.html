@@ -161,7 +161,7 @@
 <script>
     // Function to check if the user is suspended
     function checkUserSuspension(username) {
-        fetch(`https://chardatabase.efroai.net/api/check-suspension/${username}`)
+        fetch(`https://characters.efroai.net/api/check-suspension/${username}`)
             .then(response => response.json())
             .then(data => {
                 if (data.suspended) {
