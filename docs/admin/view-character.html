@@ -114,13 +114,14 @@
             throw new Error(`Failed to load character image: ${response.statusText}`);
         }
 
-        // Get blob from response
-        const blob = await response.blob();
+        // Get the Content-Type from headers
         const contentType = response.headers.get('Content-Type');
         const imageElement = document.getElementById('character-image');
 
-        // Check if the response is a known image type, including .jfif
-        if (blob.type.startsWith('image/') || contentType === 'image/jfif') {
+        // Check if the Content-Type header indicates an image, including 'image/jfif'
+        if (contentType && contentType.startsWith('image/')) {
+            // Handle the image
+            const blob = await response.blob();
             const imageObjectURL = URL.createObjectURL(blob);
             imageElement.src = imageObjectURL; // Set the image source
             imageElement.style.display = 'block'; // Show the image
