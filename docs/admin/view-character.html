@@ -100,40 +100,42 @@
                 document.getElementById('character-data').innerText = 'Error loading character data.';
             }
         }
-
         async function loadCharacterImage(username, characterId, token) {
-            try {
-                const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
-                const response = await fetch(imageUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${token}` // Use the token here
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to load character image: ${response.statusText}`);
-                }
-
-                // Check if the response is an image
-                const blob = await response.blob();
-                const imageElement = document.getElementById('character-image');
-
-                if (blob.type.startsWith('image/')) {
-                    const imageObjectURL = URL.createObjectURL(blob);
-                    imageElement.src = imageObjectURL; // Set the image source
-                    imageElement.style.display = 'block'; // Show the image
-                } else {
-                    throw new Error('Response is not an image.');
-                }
-            } catch (error) {
-                console.error('Error loading character image:', error);
-                const imageElement = document.getElementById('character-image');
-                imageElement.alt = 'Character image not found.';
-                imageElement.src = ''; // Clear the image src
-                imageElement.style.display = 'none'; // Ensure the image is hidden
+    try {
+        const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
+        const response = await fetch(imageUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `${token}` // Use the token here
             }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to load character image: ${response.statusText}`);
         }
+
+        // Get blob from response
+        const blob = await response.blob();
+        const contentType = response.headers.get('Content-Type');
+        const imageElement = document.getElementById('character-image');
+
+        // Check if the response is a known image type, including .jfif
+        if (blob.type.startsWith('image/') || contentType === 'image/jfif') {
+            const imageObjectURL = URL.createObjectURL(blob);
+            imageElement.src = imageObjectURL; // Set the image source
+            imageElement.style.display = 'block'; // Show the image
+        } else {
+            throw new Error('Response is not a valid image.');
+        }
+    } catch (error) {
+        console.error('Error loading character image:', error);
+        const imageElement = document.getElementById('character-image');
+        imageElement.alt = 'Character image not found.';
+        imageElement.src = ''; // Clear the image src
+        imageElement.style.display = 'none'; // Ensure the image is hidden
+    }
+}
+
 
         // Toggle image blur effect on click
         document.getElementById('character-image').addEventListener('click', function() {
