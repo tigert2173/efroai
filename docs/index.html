@@ -190,7 +190,7 @@
 
         // Call the function on page load, using the username from cookies
         window.onload = function() {
-            const username = getCookie('username'); // Get the 'username' cookie
+            const username = getCookie('userID'); // Get the 'username' cookie
 
             if (username) {
                 checkSuspension(username); // Check suspension if username exists
