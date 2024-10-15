@@ -166,7 +166,7 @@
             .then(data => {
                 if (data.suspended) {
                     // User is suspended, redirect them
-                    window.location.href = 'https://efroai.net/suspended';
+                    window.location.href = 'https://efroai.net/suspended.html';
                 } else {
                     console.log("User is active.");
                     // You can show other page content here if the user is active
@@ -179,7 +179,7 @@
 
     // Automatically call the function on page load
     window.onload = function () {
-        const username = 'exampleUser'; // Replace with the actual username logic
+        const username = 'TigerT217333'; // Replace with the actual username logic
         checkUserSuspension(username);
     };
 </script>
