@@ -158,5 +158,30 @@
     <!-- Scripts -->
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
+<script>
+    // Function to check if the user is suspended
+    function checkUserSuspension(username) {
+        fetch(`http://chardatabase.efroai.net/api/check-suspension/${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.suspended) {
+                    // User is suspended, redirect them
+                    window.location.href = 'https://efroai.net/suspended';
+                } else {
+                    console.log("User is active.");
+                    // You can show other page content here if the user is active
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Automatically call the function on page load
+    window.onload = function () {
+        const username = 'exampleUser'; // Replace with the actual username logic
+        checkUserSuspension(username);
+    };
+</script>
 </body>
 </html>
