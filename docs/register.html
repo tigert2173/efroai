@@ -246,8 +246,37 @@
             // If all checks pass, you can proceed to register the user.
             console.log("Registering user:", username, role);
             // Add your registration logic here
+              // Sending data to the backend
+              try {
+                const response = await fetch('https://characters.efroai.net:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password, role }),
+                });
+
+                const result = await response.json();
+
+                if (response.status === 201) {
+                    alert(result.message); // Registration successful
+                    document.getElementById('registerForm').reset();
+                } else {
+                    // Handle different error scenarios based on backend response
+                    if (result.message === 'User already exists') {
+                        errorMessage.textContent = 'Username already exists. Please choose another one.';
+                    } else if (result.message === 'Invalid role') {
+                        errorMessage.textContent = 'Invalid role. Please enter either "admin" or "user".';
+                    } else {
+                        errorMessage.textContent = result.message; // Generic error message from the backend
+                    }
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred during registration. Please try again.';
+            }
         });
 
+        
         // Reveal password functionality
         const revealPasswordBtn = document.getElementById('revealPassword');
         revealPasswordBtn.addEventListener('click', function() {
