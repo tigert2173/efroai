@@ -159,12 +159,12 @@
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
 <script>
- 
-        // Function to check if the user is suspended
-        function checkUserSuspension(username) {
+         // Function to check if the user is suspended
+         function checkUserSuspension(username) {
+            const url = `https://characters.efroai.net:3000/api/check-suspension/${username}`;
             console.log(`Checking suspension status for user: ${username}`);
-            
-            fetch(`https://characters.efroai.net/api/check-suspension/${username}`)
+
+            fetch(url)
                 .then(response => {
                     console.log("Received response: ", response);
                     if (!response.ok) {
@@ -176,10 +176,10 @@
                     console.log("Received data: ", data);
                     if (data.suspended) {
                         // User is suspended, redirect them
-                        window.location.href = 'https://efroai.net/error/suspended.html';
+                        window.location.href = 'https://efroai.net/suspended.html';
                     } else {
                         console.log("User is active.");
-                        // Display the rest of the page if the user is active
+                        // Proceed if the user is not suspended
                     }
                 })
                 .catch(error => {
