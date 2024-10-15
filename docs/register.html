@@ -255,7 +255,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ username, password, role,  }),
+                    body: JSON.stringify({ username, password, role, email, discordID }),
                 });
 
                 const result = await response.json();
