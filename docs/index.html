@@ -160,35 +160,28 @@
     <script src="js/menu.js"></script>
 <script>
          // Function to check if the user is suspended
-         function checkUserSuspension(username) {
-            console.log(`Checking suspension status for user: ${username}`);
-            fetch(`https://characters.efroai.net:3000/api/check-suspension/${username}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Add authentication token here
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
+         async function checkSuspension(username) {
+            try {
+                const response = await fetch(`https://characters.efroai.net:3000/api/check-suspension/${username}`);
+                const data = await response.json();
+                
                 if (data.suspended) {
-                    window.location.href = 'https://efroai.net/suspended.html';
+                    // Redirect to the suspended page if user is suspended
+                    window.location.href = '/suspended.html'; // Replace with your suspended page URL
+                } else {
+                    console.log('User is not suspended');
                 }
-            })
-            .catch(error => {
-                console.error('Error during suspension check:', error);
-            });
-        // Automatically call the function on page load
-        window.onload = function () {
-            const username = 'TigerT217333'; // Replace with the actual username logic
-            checkUserSuspension(username);
+            } catch (error) {
+                console.error('Error checking suspension:', error);
+            }
+        }
+
+        // Call the function on page load with the username
+        window.onload = function() {
+            const username = 'TigerT217333'; // Replace with dynamic username if necessary
+            checkSuspension(username);
         };
-    }
+
 </script>
 </body>
 </html>
