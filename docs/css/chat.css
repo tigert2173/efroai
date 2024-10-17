@@ -219,12 +219,6 @@ a:active {
 
 #user-input {
     background-color: #1b663e; /* Slightly lighter green for the input field */
-    color: white;
-    border: 2px solid #124429;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
-    resize: none;
 }
 
 #input-container button {
