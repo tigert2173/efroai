@@ -212,8 +212,19 @@ a:active {
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 5px 0 0 5px;
-    background-color: #2f3640; /* Dark grey */
+    /* background-color: #2f3640; Dark grey */
+    background-color: #124429; 
     color: #f5f6fa; /* Light grey */
+}
+
+#user-input {
+    background-color: #1b663e; /* Slightly lighter green for the input field */
+    color: white;
+    border: 2px solid #124429;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
 }
 
 #input-container button {
