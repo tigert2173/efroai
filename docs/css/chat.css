@@ -187,7 +187,7 @@ a:active {
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 5px;
-    background-color: #2c61d4; /* Dark grey */
+    background-color: #353b48; /* Dark grey */
 }
 
 .user {
@@ -221,6 +221,11 @@ a:active {
     background-color: #2e2e2e; /* Slightly lighter green for the input field */
     color: #f5f6fa;
 }
+
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
 
 #input-container button {
     border: 1px solid #32CD32; /* Softer neon green button */
