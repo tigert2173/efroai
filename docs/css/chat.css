@@ -233,7 +233,7 @@ a:active {
     width: 15%;
     min-width: 10%;
     border-radius: 0 5px 5px 0;
-    background-color: #32CD32; /* Softer neon green */
+    background-color: #1b663e; /* Softer neon green */
     color: #f5f6fa; /* Light grey */
     cursor: pointer;
 }
