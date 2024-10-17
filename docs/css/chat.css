@@ -197,7 +197,8 @@ a:active {
 
 .bot {
     text-align: left;
-    background-color: #c64f00; /* Orange background for bot */
+    background-color: #017201; /* Orange background for bot */
+    color: white;
 }
 
 #input-container {
