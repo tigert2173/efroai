@@ -222,6 +222,10 @@ a:active {
     color: #f5f6fa;
 }
 
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
 
 #input-container button {
     border: 1px solid #32CD32; /* Softer neon green button */
