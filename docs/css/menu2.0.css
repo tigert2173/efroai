@@ -77,13 +77,13 @@ html { /*body*/
 .text::after {
     content: '';
     position: absolute;
-    width: 120px; /* Width of the puff */
-    height: 120px; /* Height of the puff */
+    width: 0px; /* Width of the puff */
+    height: 0px; /* Height of the puff */
     background: radial-gradient(circle, rgba(255, 255, 0, 0.3), rgba(255, 255, 255, 0) 70%);
     filter: blur(1px); /* Stronger blur for a softer look */
     top: -75%; /* Adjusted position */
     left: 0%; /* Adjusted position */
-    animation: puff 4s ease-in-out infinite; /* Animation for puff */
+    /* animation: puff 4s ease-in-out infinite; Animation for puff */
 }
 
 .nav-links {
