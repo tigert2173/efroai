@@ -461,7 +461,7 @@ async function sendMessage() {
                 `,
             
                 // The combined prompt for the AI
-                prompt: `Assistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}\nUser: ${message}`,
+                prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
             
                 // AI parameters
                 max_tokens: settings.maxTokens,
