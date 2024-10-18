@@ -240,13 +240,7 @@ let settings = {
     prescence_penalty: 0.15, //Slightly encourge new topics
     frequency_penalty: 0.05, //penalty for repetition
     repetitionPenalty: 1.15,
-    systemPrompt:
-    `${settings.systemPrompt}
-    Persona: ${settings.persona}
-    Scenario: ${settings.scenario}
-    ${settings.context ? `Context: ${settings.context}` : ''}
-    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-    `,
+    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
@@ -276,13 +270,17 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     // Define the system message
-    const systemPrompt = {
+    const systemMessage = {
         role: "system",
-        content: settings.systemPrompt
+        content: "You are a helpful AI assistant. Provide accurate and informative answers while maintaining a friendly demeanor."
     };
 
     try {    
         await updateSettings();
+        if (isFirstMessage) {
+            displayMessage(settings.systemPrompt, 'system');
+            isFirstMessage = false;
+        }
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
@@ -295,7 +293,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                messages: [systemPrompt, ...messages],
+                messages: messages,
                 stream: true, // Enables streaming responses
             
 
