@@ -1,5 +1,15 @@
 const { getCookies } = require("undici-types");
 
+// Function to get a cookie by name
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+const userID = getCookie('userID');
+console.log(userID);
+
 document.addEventListener('DOMContentLoaded', () => {
     const ESettingslastNUMsentencesSlider = document.getElementById('ESettingslastNUMsentencesSlider');
     const ESettingslastNUMsentencesValue = document.getElementById('ESettingslastNUMsentencesValue');
@@ -125,16 +135,6 @@ function loadCharacter(charName, listItem) {
         alert('Character not found.');
     }
 }
-
-// Function to get a cookie by name
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-const userID = getCookie('userID');
-console.log(userID);
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
