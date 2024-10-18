@@ -142,9 +142,10 @@ main section {
     margin-bottom: 60px;
 }
 
-.ad-container {
-    text-align: center;
-    margin: 20px 0; /* Adjust spacing as needed */
+#ad-container {
+    display: flex;
+    justify-content: center; /* Center the ad */
+    margin: 20px 0; /* Add spacing above and below the ad */
 }
 
 .character-grid, .recommendation-grid {
