@@ -451,17 +451,17 @@ async function sendMessage() {
                 ],
                 stream: true, // Enables streaming responses
             
-                // The system prompt context details
-                systemPrompt: `
-                ${settings.systemPrompt}
-                Persona: ${settings.persona}
-                Scenario: ${settings.scenario}
-                ${settings.context ? `Context: ${settings.context}` : ''}
-                ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-                `,
+                // // The system prompt context details
+                // systemPrompt: `
+                // ${settings.systemPrompt}
+                // Persona: ${settings.persona}
+                // Scenario: ${settings.scenario}
+                // ${settings.context ? `Context: ${settings.context}` : ''}
+                // ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+                // `,
             
                 // The combined prompt for the AI
-                prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
+               // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
             
                 // AI parameters
                 max_tokens: settings.maxTokens,
