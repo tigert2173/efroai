@@ -160,7 +160,7 @@ function populateCharacterSettings() {
             };
 
             // Populate each field with the character's data
-            document.getElementById('user-name').value = userID;
+            document.getElementById('user-name').value = userID || "{{user}";
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
             document.getElementById('scenario').value = characterData.scenario;
@@ -313,6 +313,8 @@ async function sendMessage() {
                 // AI parameters
                 max_tokens: settings.maxTokens,
                 temperature: settings.temperature,
+                prescence_penalty: settings.prescence_penalty,
+                frequency_penalty: settings.frequency_penalty,
                 min_p: settings.minP,
                 top_k: settings.topK,
                 top_p: settings.topP,
