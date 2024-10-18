@@ -106,8 +106,6 @@ async function checkAPIStatus() {
    
 }
 
-
-
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
@@ -154,62 +152,6 @@ function populateCharacterSettings() {
         .catch(error => {
             console.error('Error fetching character data:', error);
         });
-}
-
-function loadCharacter(charName, listItem) {
-    clearCurrentBotMessage();
-
-    const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
-    if (characterData) {
-        settings = JSON.parse(characterData);
-        document.getElementById('persona').value = settings.persona;
-        document.getElementById('context').value = settings.context;
-        document.getElementById('greeting').value = settings.greeting;
-        document.getElementById('temperature').value = settings.temperature;
-        document.getElementById('model').value = settings.model;
-        highlightCharacter(listItem);
-        sendGreeting(); // Send greeting message on character load
-    } else {
-        alert('Character not found.');
-    }
-}
-
-function highlightCharacter(selectedItem) {
-    const listItems = document.querySelectorAll('#character-list li');
-    listItems.forEach(item => item.classList.remove('selected'));
-    selectedItem.classList.add('selected');
-}
-
-function uploadCharacter() {
-    const fileInput = document.getElementById('upload-json');
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            try {
-                const jsonData = JSON.parse(event.target.result);
-
-                // Check for the expected fields in the JSON
-                if (jsonData.char_persona && jsonData.char_greeting && jsonData.world_scenario) {
-                    // Update the HTML elements with the JSON data
-                    document.getElementById('persona').value = jsonData.char_persona;
-                    document.getElementById('context').value = jsonData.world_scenario;
-                    document.getElementById('greeting').value = jsonData.char_greeting;
-                    document.getElementById('temperature').value = jsonData.temperature || 0.85; // Default value if temperature is not provided
-
-                    alert('Character uploaded and settings updated successfully!');
-                } else {
-                    alert('Invalid JSON format. Ensure it contains the necessary fields.');
-                }
-            } catch (e) {
-                alert('Failed to parse JSON.');
-            }
-        };
-        reader.readAsText(file);
-        addNewCharacter();
-    } else {
-        alert('Please select a file to upload.');
-    }
 }
 
 function updateSettings() {
@@ -262,116 +204,6 @@ function getAllMessagesExceptLast() {
     .join(' '); // Join all messages into a single string
 
     return messagesExceptLast;
-}
-
-function processMessageDataImportance() {
-    const chatContainer = document.getElementById('chat-container');
-    // messagedataimportance.messagehistory = chatContainer.textContent;
-    messagedataimportance.messagehistory = getAllMessagesExceptLast();
-    console.log(messagedataimportance.messagehistory);
-    let fullText = messagedataimportance.messagehistory;
-
-    // Step 1: Split the message history into sentences
-    //let sentences = fullText.split(/(?<=\.)\s+/); // Splits by sentence, assuming period ends a sentence
-    //BREAKS IOS 16 and BELOW //let sentences = fullText.split(/(?<=[.!?])\s+(?!\.\.\.)/); //"This is a sentence! And this is another? But this one... keeps going."
-    //WORKS BUT DOESN'T GET Punctuation//let sentences = fullText.split(/[\.\!\?]+\s+/);
-    //let sentences = fullText.replace(/([.!?])\s+/g, '$1|').split('|')
-    // let sentences = fullText
-    // .replace(/([.!?])\s+(?=[A-Z])/g, '$1|') // Replace punctuation followed by space and capital letter
-    // .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|') // Handle ellipses
-    // .split('|');
-// List of common abbreviations
-const abbreviations = [
-    'U.S.', 'e.g.', 'i.e.', 'Dr.', 'Mr.', 'Ms.', 'Mrs.', 'Inc.', 'Ltd.', 'Prof.', 'St.', 'Ave.'
-  ];
-  
-  // Function to create a regex pattern for known abbreviations
-  function getAbbreviationPattern(abbrList) {
-    return abbrList.map(abbr => abbr.replace('.', '\\.')).join('|');
-  }
-  
-  // Create the regex for matching abbreviations
-  const abbreviationRegex = new RegExp(`\\b(?:${getAbbreviationPattern(abbreviations)})\\b`, 'g');
-  
-  let sentences = fullText
-    // Normalize multiple spaces or tabs to a single space
-    .replace(/\s+/g, ' ')
-    // Temporarily replace known abbreviations with a unique placeholder
-    .replace(abbreviationRegex, match => match.replace(/./g, '_')) // Replace dots with underscores
-    // Replace sentence-ending punctuation followed by space and capital letter
-    .replace(/([.!?])\s+(?=[A-Z])/g, '$1|')
-    // Handle ellipses and prevent splitting after them
-    .replace(/([.!?])\s+(?=\.\.\.)/g, '$1|')
-    // Restore placeholders to their original form
-    .replace(/_/g, '.')
-    // Split the text into sentences
-    .split('|')
-    // Trim each sentence to remove any leading/trailing whitespace
-    .map(sentence => sentence.trim())
-    // Filter out any empty sentences
-    .filter(sentence => sentence.length > 0);
-  
-  // Result: 'sentences' contains the split sentences
-  
-
-    // Step 2: Get the last # sentences
-    let numLastSentences = parseInt(ESettingslastNUMsentencesSlider.value, ESettingslastNUMsentencesSlider.value);
-    let lastSentences = sentences.slice(-numLastSentences).join(' '); // Take the last X sentences
-
-    // Step 3: Get the sentences before the last X sentences
-    let remainingSentences = sentences.slice(0, sentences.length - numLastSentences)
-    .filter(sentence => !sentence.includes('◀') && !sentence.includes('▶')); // Exclude sentences with ◀ or ▶
-
-    // Filter out any sentences containing the last bot message
-    if (lastBotMsg) {
-        remainingSentences = remainingSentences.filter(sentences => !sentences.includes(lastBotMsg));
-        console.log("Removed: " + sentences + " || " + lastBotMsg)
-    }
-
-    // Step 4: Generate weights for sentences, inversely proportional to their index
-    let weightedSentences = remainingSentences.map((sentence, index) => ({
-        sentence: sentence,
-        weight: remainingSentences.length - index
-    }));
-    let totalWeight = weightedSentences.reduce((a, b) => a + b.weight, 0);
-
-    // Function to select a weighted random item
-    function getRandomWeightedIndex() {
-        let random = Math.random() * totalWeight;
-        for (let i = 0; i < weightedSentences.length; i++) {
-            if (random < weightedSentences[i].weight) {
-                return i;
-            }
-            random -= weightedSentences[i].weight;
-        }
-        return weightedSentences.length - 1; // Fallback to the last item
-    }
-
-    // Debugging: Log weights and sentences
-    console.log('Weighted Sentences:', weightedSentences);
-
-    // Step 5: Randomly select X sentences from the weighted list
-    let numRandomSentences = parseInt(ESettingsRandomNUMsentencesSlider.value, ESettingsRandomNUMsentencesSlider.value);
-    let selectedSentences = [];
-    for (let i = 0; i < Math.min(numRandomSentences, weightedSentences.length); i++) {
-        const index = getRandomWeightedIndex();
-        selectedSentences.push(weightedSentences[index]);
-        console.log(`Selected Sentence: "${weightedSentences[index].sentence}" with weight ${weightedSentences[index].weight}`);
-
-        // Remove selected sentence and corresponding weight from the list to avoid repetition
-        weightedSentences.splice(index, 1);
-        totalWeight = weightedSentences.reduce((a, b) => a + b.weight, 0); // Recalculate total weight
-    }
-
-    // Sort selected sentences by their weights
-    selectedSentences.sort((b, a) => b.weight - a.weight);
-
-    // Step 6: Combine the last X sentences and the randomly selected sentences
-    let finalText = selectedSentences.map(item => item.sentence).join(' ') + "\n\n" + lastSentences;
-
-    // Step 7: Display or use the result
-    messagedataimportance.messagehistorytrimmed = finalText;
-    //document.getElementById('advanced-debugging').value = messagedataimportance.messagehistorytrimmed;
 }
 
 let settings = {
@@ -541,18 +373,6 @@ async function sendMessage() {
     }
 }
 
-function displayBotMessage(message, type) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'bot-message ' + type; // Add type for specific styling
-    messageElement.textContent = message;
-    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
-
-    // Automatically remove the notice after a few seconds
-    setTimeout(() => {
-        messageElement.remove();
-    }, 10000); // Adjust the duration as needed
-}
-
 function usernameupdated () {
 
     if ( messagessent == 0) {
@@ -561,28 +381,6 @@ function usernameupdated () {
         displayMessage(greeting, 'bot');
     }
 }
-
-function displayBotMessage(message, type) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'bot-message ' + type; // Add type for specific styling
-    messageElement.textContent = message;
-    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
-
-    // Automatically remove the notice after a few seconds
-    setTimeout(() => {
-        messageElement.remove();
-    }, 10000); // Adjust the duration as needed
-}
-
-function usernameupdated () {
-
-    if ( messagessent == 0) {
-        currentBotMessageElement.innerHTML = '';
-        const greeting = settings.greeting;
-        displayMessage(greeting, 'bot');
-    }
-}
-
 
 function sendGreeting() {
     messagessent = 0;
@@ -592,32 +390,48 @@ function sendGreeting() {
     }
 }
 
+function displayBotMessage(message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'bot-message ' + type; // Add type for specific styling
+    messageElement.textContent = message;
+    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
+
+    // Automatically remove the notice after a few seconds
+    setTimeout(() => {
+        messageElement.remove();
+    }, 10000); // Adjust the duration as needed
+}
+
 let userName = '{{user}}';
 let currentBotMessageElement = null;
 let botMessages = []; // Array to store bot messages
 let currentBotMessageIndex = -1; // Index to track current bot message
 let lastBotMsg = null;
 
-function displayMessage(content, sender, isFinal = false) {
+let messages = []; // Array to store messages
 
+function displayMessage(content, sender, isFinal = false) {
     userName = document.getElementById('user-name').value.trim();
     if (!userName) { userName = "{{user}}" }
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
-    .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-    .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-    .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-    .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-    .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-    //.replace(/(\r\n|\n|\r)/g, '<br>') // Convert all types of newlines to <br>
-    //.replace(/\\n/g, '<br>') // Replace literal \n with <br>
-    //.replace(/\\(?!n)/g, '') // Remove any backslashes not followed by 'n'
-    //.replace(/\\/, '') // Remove backslashes
-    //.replace(/\*(.*?)\*/g, '<i>$1</i>'); // Replace *text* with <i>text</i>
-    .replace(/{{user}}/g, userName) // Replace {{user}} with the actual user name
-    //.replace(/{{char}}/g, charName); // Replace {{char}} with the file char name
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
+        .replace(/{{user}}/g, userName); // Replace {{user}} with the actual user name
 
+    // Prepare message object in the desired format
+    const messageObject = {
+        role: sender === 'bot' ? 'assistant' : 'user', // 'assistant' for bot, 'user' otherwise
+        content: [{ type: 'text', text: content }]
+    };
+
+    // Add the message object to the messages array
+    messages.push(messageObject);
+    console.log('Messages array:', messages); // Debugging to view the array
 
     if (sender === 'bot') {
         // Remove previous bot message header if exists
@@ -659,21 +473,18 @@ function displayMessage(content, sender, isFinal = false) {
         chatContainer.appendChild(messageElement);
     }
 
-    // chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
-    //document.getElementById('advanced-debugging').value = chatContainer.textContent;
-
-    //messagedataimportance.messagehistory = chatContainer.textContent;
-    const lastBotMessageElement = chatContainer.querySelector('.message.bot:last-child'); // Select the last bot message element
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
-let isResend = false;
+
+// Additional functions remain the same
 
 function regenerateMessage() {
-    // Remove the last bot message from the context
     if (lastUserMessage) {
-        settings.context = settings.context.replace(lastBotMessage, '').trim(); // Use last bot message
+        settings.context = settings.context.replace(lastBotMessage, '').trim();
 
-        clearCurrentBotMessage(); // Clear the last bot message
-        isResend = true; // Set flag to indicate resend
+        clearCurrentBotMessage();
+        isResend = true;
         document.getElementById('user-input').value = lastUserMessage;
 
         sendMessage(); // Resend the last user message
@@ -683,7 +494,7 @@ function regenerateMessage() {
 }
 
 function navigateBotMessages(direction) {
-    if (currentBotMessageIndex === -1) return; // No messages to navigate
+    if (currentBotMessageIndex === -1) return;
 
     const newIndex = currentBotMessageIndex + direction;
     if (newIndex >= 0 && newIndex < botMessages.length) {
@@ -691,13 +502,22 @@ function navigateBotMessages(direction) {
         const content = botMessages[currentBotMessageIndex];
         currentBotMessageElement.innerHTML = content;
 
-
-        // Update lastBotMessage to the current content
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg (navigated):', lastBotMsg);
 
-        // Update arrow states
         updateArrowStates();
+    }
+}
+
+function updateArrowStates() {
+    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
+    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
+
+    if (leftArrow) {
+        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
+    }
+    if (rightArrow) {
+        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
     }
 }
 
@@ -722,18 +542,6 @@ async function updateQueueCounter() {
 
 // Fetch queue status every 5 seconds
 setInterval(updateQueueCounter, 5000);
-
-function updateArrowStates() {
-    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
-    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
-
-    if (leftArrow) {
-        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
-    }
-    if (rightArrow) {
-        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
