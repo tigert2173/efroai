@@ -281,7 +281,7 @@ async function sendMessage() {
 
     try {    
         updateSettings();
-        if (isFirstMessage) {
+        if (isFirstMessage == true) {
             displayMessage(systemPrompt, 'system');
             isFirstMessage = false;
         }
