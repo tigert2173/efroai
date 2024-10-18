@@ -23,7 +23,7 @@ function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
 
-    characters.forEach(character => {
+    characters.forEach((character, index) => {
         const card = document.createElement('div');
         card.className = 'character-card';
 
@@ -35,34 +35,27 @@ function displayCharacters(characters) {
         imgElement.onerror = () => {
             imgElement.src = 'noimage.jpg'; // Set default image on error
         };
- 
-        // Fetch the image
-        fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-            }
-        })
-        fetch(imageUrl)
-    .then(response => {
-        if (!response.ok) {
-            console.error(`Failed to fetch image: ${response.statusText}`);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
-            return;
-        }
-        return response.blob();
-    })
-    .then(imageBlob => {
-        if (imageBlob) {
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            imgElement.src = imageObjectURL;
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching image:', error);
-        imgElement.src = 'noimage.jpg'; // Fallback to default image
-    });
 
+        // Fetch the image
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            })
+            .then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
 
         // Add the inner HTML to the card
         card.innerHTML = `
@@ -86,13 +79,32 @@ function displayCharacters(characters) {
                     <span role="img" aria-hidden="true">❤️</span> <!-- Fart emoji for humor -->
                 </button>
             </div>
-
         `;
 
         // Append the image element after setting the card innerHTML
         card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
+        // Append the card to the grid
         characterGrid.appendChild(card);
+
+        // Insert ad every 5 characters
+        if ((index + 1) % 5 === 0) {
+            const adContainer = document.createElement('div');
+            adContainer.className = 'ad-container'; // You can style this class as needed
+            adContainer.innerHTML = `
+                <script type="text/javascript">
+                    atOptions = {
+                        'key': 'db086d05d9d8a4a053853756515f57ae',
+                        'format': 'iframe',
+                        'height': 300,
+                        'width': 160,
+                        'params': {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.topcpmcreativeformat.com/db086d05d9d8a4a053853756515f57ae/invoke.js"></script>
+            `;
+            characterGrid.appendChild(adContainer);
+        }
     });
 }
 
