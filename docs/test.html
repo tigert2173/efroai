@@ -1,38 +1,21 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Website Title</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website Title</title>
+    <script type='text/javascript' src='//pl24736341.cpmrevenuegate.com/ad/1e/88/ad1e888a02e1a0216b69ffc5135dc260.js'></script>
 
-<!-- Example for loading ad scripts with an API key using JavaScript -->
-<script>
-    // Function to load the script with custom headers
-    async function loadScriptWithApiKey(url, apiKey) {
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-API-Key': apiKey
-                }
-            });
+    <!-- Adsterra Ad Code -->
+    <script async="async" data-cfasync="false" src="https://pl24736297.cpmrevenuegate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js"></script>
+    <div id="container-7c80b8064dd18a028f4297f82a0c8ca4"></div>
+    
+</head>
+<body>
 
-            if (response.ok) {
-                const scriptContent = await response.text();
-                const scriptElement = document.createElement('script');
-                scriptElement.textContent = scriptContent;
-                document.body.appendChild(scriptElement);
-            } else {
-                console.error('Failed to load script:', response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error('Error loading script:', error);
-        }
-    }
+    <h1>Welcome to My Website</h1>
+    <p>Here is some content on my page.</p>
 
-    // Load Adsterra ad script with X-API-Key
-    const adsterraUrl = '//pl24736341.cpmrevenuegate.com/ad/1e/88/ad1e888a02e1a0216b69ffc5135dc260.js';
-    const apiKey = '53ab69b564937ea88c2a0a8056a5fb80'; // Replace with your actual API key
 
-    loadScriptWithApiKey(adsterraUrl, apiKey);
-</script>
-
-<!-- Container for Adsterra Ads -->
-<div id="container-7c80b8064dd18a028f4297f82a0c8ca4"></div>
+</body>
+</html>
