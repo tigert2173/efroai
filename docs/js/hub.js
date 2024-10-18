@@ -100,8 +100,8 @@ function displayCharacters(characters) {
     adContainer.appendChild(insElement);
 
     // Add keywords to the <ins> element
-    const keywords = 'ai,chatbots,chatbot,fart,fartfetish,footfetish,aigirlfriend'; // Replace this with your actual keywords
-    insElement.setAttribute('data-keywords', keywords);
+   // const keywords = 'ai,chatbots,chatbot,fart,fartfetish,footfetish,aigirlfriend'; // Replace this with your actual keywords
+    //insElement.setAttribute('data-keywords', keywords);
 
     // Insert the script tag for the ad provider
     const scriptElement = document.createElement('script');
