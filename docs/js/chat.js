@@ -331,43 +331,59 @@ async function sendMessage() {
             return; // Exit early if the request failed
         }
     }
+    if (response.body) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let result = '';
 
-        if (response.body) {
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let result = '';
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                const chunk = decoder.decode(value, { stream: true });
-                const matches = chunk.match(/"content":\s*"([^"]*)"/);
-                if (matches && matches[1]) {
-                    const content = matches[1];
-                    result += content;
-                    clearCurrentBotMessage();
-                    displayMessage(result, 'bot', false);
-                }
-            }
-
-            if (result) {
+            const chunk = decoder.decode(value, { stream: true });
+            const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
+            if (matches && matches[1]) {
+                const content = matches[1];
+                result += content;
                 clearCurrentBotMessage();
-                displayMessage(result, 'bot', true);
+                displayMessage(result, 'bot', false);
             }
-        } else {
-            const data = await response.json();
-            const botMessage = data.choices[0].message.content;
-            displayMessage(botMessage, 'bot', false);
         }
 
-    } catch (error) {
-        console.error('Error:', error);
-        displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
-    } finally {
-        isResend = false;
+        if (result) {
+            // Append the final message to the botMessages array
+            const botMessage = {
+                role: 'assistant',
+                content: [{ type: 'text', text: result }]
+            };
+            messages.push(botMessage);
+
+            // Display the final bot message in the chat
+            clearCurrentBotMessage();
+            displayMessage(result, 'bot', true);
+        }
+    } else {
+        const data = await response.json();
+        const botMessage = data.choices[0].message.content;
+        
+        // Append the final message to the botMessages array
+        const botMessageObject = {
+            role: 'assistant',
+            content: [{ type: 'text', text: botMessage }]
+        };
+        messages.push(botMessageObject);
+
+        // Display the final bot message in the chat
+        displayMessage(botMessage, 'bot', true);
     }
+} catch (error) {
+    console.error('Error:', error);
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+} finally {
+    isResend = false;
 }
+}
+
 
 function usernameupdated () {
 
