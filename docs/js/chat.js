@@ -280,8 +280,11 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     try {    
-        updateSettings();
- 
+        await updateSettings();
+        if (isFirstMessage) {
+            displayMessage(settings.systemPrompt, 'system');
+            isFirstMessage = false;
+        }
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
