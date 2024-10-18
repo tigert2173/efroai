@@ -233,52 +233,52 @@ function getAllMessagesExceptLast() {
     return messagesExceptLast;
 }
 
-// //Shortwave Config
-// let settings = {
-//     persona: '',
-//     context: '',
-//     scenario: '',
-//     greeting: '',
-//     exampledialogue: '',
-//     temperature: 1.53,
-//     model: '',
-//     maxTokens: 256,
-//     topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
-//     typical_p: 1, 
-//     minP: 0.00, //Sets a minimum base probability threshold for token selection.
-//     topK: 33, //Limit the next token selection to the K most probable tokens.
-//     prescence_penalty: 0.00, //Slightly encourge new topics
-//     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-//     repeat_penalty: 1.07,
-//     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
-//     negativePrompt: "Do not talk about sexual topics or explicit content.",
-//     context: "",
-//     enablePreload: false, // Default to false if not provided
-//     sessionId: 1,
-// };
-
+//Shortwave Config
 let settings = {
     persona: '',
     context: '',
     scenario: '',
     greeting: '',
     exampledialogue: '',
-    temperature: 1.05,
+    temperature: 1.25,
     model: '',
     maxTokens: 256,
-    topP: 0.85, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
     minP: 0.00, //Sets a minimum base probability threshold for token selection.
-    topK: 30, //Limit the next token selection to the K most probable tokens.
-    prescence_penalty: 0.10, //Slightly encourge new topics
+    topK: 33, //Limit the next token selection to the K most probable tokens.
+    prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-    repeat_penalty: 1.15,
+    repeat_penalty: 1.07,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
     sessionId: 1,
 };
+
+// let settings = {
+//     persona: '',
+//     context: '',
+//     scenario: '',
+//     greeting: '',
+//     exampledialogue: '',
+//     temperature: 1.05,
+//     model: '',
+//     maxTokens: 256,
+//     topP: 0.85, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+//     typical_p: 1, 
+//     minP: 0.00, //Sets a minimum base probability threshold for token selection.
+//     topK: 30, //Limit the next token selection to the K most probable tokens.
+//     prescence_penalty: 0.10, //Slightly encourge new topics
+//     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
+//     repeat_penalty: 1.15,
+//     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+//     negativePrompt: "Do not talk about sexual topics or explicit content.",
+//     context: "",
+//     enablePreload: false, // Default to false if not provided
+//     sessionId: 1,
+// };
 
 const isFirstMessage = true; 
 
