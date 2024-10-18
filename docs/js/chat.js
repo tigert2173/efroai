@@ -257,7 +257,7 @@ let settings = {
     sessionId: 1,
 };
 
-let isFirstMessage = true; 
+const isFirstMessage = true; 
 
 async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
