@@ -181,6 +181,16 @@ function updateSettings() {
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
 
+
+    // The system prompt context details
+    settings.systemPrompt = `
+    ${settings.systemPrompt}
+    Persona: ${settings.persona}
+    Scenario: ${settings.scenario}
+    ${settings.context ? `Context: ${settings.context}` : ''}
+    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+    `,
+
     //Controlled Message Data Importance
     messagedataimportance.lusermsg = lastUserMessage;
 
@@ -285,15 +295,7 @@ async function sendMessage() {
                 messages: messages,
                 stream: true, // Enables streaming responses
             
-                // The system prompt context details
-                systemPrompt: `
-                ${settings.systemPrompt}
-                Persona: ${settings.persona}
-                Scenario: ${settings.scenario}
-                ${settings.context ? `Context: ${settings.context}` : ''}
-                ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-                `,
-            
+
                 // The combined prompt for the AI
                // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
             
@@ -304,7 +306,8 @@ async function sendMessage() {
                 top_k: settings.topK,
                 top_p: settings.topP,
             };            
-
+        
+        displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
         // const response = await fetch("https://api.botbridge.net/api/send", {
@@ -426,6 +429,7 @@ function sendGreeting() {
     messagessent = 0;
     const greeting = settings.greeting;
     if (greeting) {
+        displayMessage(systemPrompt, 'system');
         displayMessage(greeting, 'bot', true);
     }
 }
@@ -465,12 +469,17 @@ function displayMessage(content, sender, isFinal = false) {
 
     // Prepare message object in the desired format
     const messageObject = {
-        role: sender === 'bot' ? 'assistant' : 'user', // 'assistant' for bot, 'user' otherwise
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user', // 'assistant' for bot, 'system' for system messages, 'user' otherwise
         content: [{ type: 'text', text: content }]
     };
-
+    
     // Add the message object to the messages array
     if (sender === 'user') {
+        messages.push(messageObject);
+        console.log('Messages array:', messages); // Debugging to view the array
+    }
+    // Add the message object to the messages array
+    if (sender === 'system') {
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
     }
