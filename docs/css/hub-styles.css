@@ -142,6 +142,11 @@ main section {
     margin-bottom: 60px;
 }
 
+.ad-container {
+    text-align: center;
+    margin: 20px 0; /* Adjust spacing as needed */
+}
+
 .character-grid, .recommendation-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
