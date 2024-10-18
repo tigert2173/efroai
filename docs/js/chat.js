@@ -133,6 +133,18 @@ function getCookie(name) {
     return null;
 }
 
+// Usage on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", function() {
+    const userId = getCookie("userID");
+    console.log('User ID from cookie:', userId); // Check cookie value
+
+    const userNameInput = document.getElementById('user-name');
+    if (userNameInput) {
+        userNameInput.value = userId || ''; // Set input value
+    } else {
+        console.error('Element with ID "user-name" not found.');
+    }
+});
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
