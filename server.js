@@ -3,7 +3,6 @@ const https = require('https');
 const fs = require('fs');
 const cors = require('cors')
 const path = require('path');
-const axios = require('axios');
 
 const app = express();
 // Use CORS middleware
