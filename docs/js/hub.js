@@ -88,20 +88,30 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
-         // Insert ad after every 3 characters
-         if ((index + 1) % 3 === 0) {
-            const adContainer = document.createElement('div');
-            adContainer.className = 'ad-container';
-            
-            // Insert the ad code inside this container
-            adContainer.innerHTML = `
-                <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
-                <ins class="eas6a97888e2" data-zoneid="5449604"></ins>
-                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-            `;
+  // Insert ad after every 3 characters
+  if ((index + 1) % 3 === 0) {
+    const adContainer = document.createElement('div');
+    adContainer.className = 'ad-container';
 
-            characterGrid.appendChild(adContainer); // Insert ad after the card
-        }
+    // Insert the <ins> element for the ad
+    const insElement = document.createElement('ins');
+    insElement.className = 'eas6a97888e2';
+    insElement.setAttribute('data-zoneid', '5449604');
+    adContainer.appendChild(insElement);
+
+    // Insert the script tag for the ad provider
+    const scriptElement = document.createElement('script');
+    scriptElement.async = true;
+    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+    scriptElement.onload = function() {
+        (AdProvider = window.AdProvider || []).push({"serve": {}});
+    };
+    document.body.appendChild(scriptElement); // Append script to body
+
+    // Append the ad container to the grid
+    characterGrid.appendChild(adContainer);
+}
+
     });
 }
 
