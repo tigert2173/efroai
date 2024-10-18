@@ -281,6 +281,7 @@ async function sendMessage() {
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
+                model: "nephra_v1.0.Q4_K_M.gguf",
                 messages: [
                     {
                         role: 'system',
@@ -368,6 +369,7 @@ async function sendMessage() {
             return; // Exit early if the request failed
         }
     }
+    
     if (response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
