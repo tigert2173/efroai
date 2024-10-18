@@ -439,7 +439,7 @@ function sendGreeting() {
     messagessent = 0;
     const greeting = settings.greeting;
     if (greeting) {
-        displayMessage(greeting, 'bot');
+        displayMessage(greeting, 'bot', true);
     }
 }
 
