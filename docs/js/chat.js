@@ -515,7 +515,7 @@ function displayMessage(content, sender, isFinal = false) {
         currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
-            messages.push(messageObject);
+            //messages.push(messageObject);
             botMessages.push(currentBotMessageElement.innerHTML);
             currentBotMessageIndex = botMessages.length - 1;
         }
