@@ -51,6 +51,14 @@
         button:hover {
             background-color: #ff6600;
         }
+        .reminder {
+            background-color: #444;
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -70,6 +78,12 @@
 
     <div class="container">
         <h1>Your Chats</h1>
+        
+        <div class="reminder">
+            <strong>Reminder:</strong> You can only store up to 10 chats at a time due to storage limitations. 
+            Chats will be deleted if you do not log in for over a 3-month period.
+        </div>
+
         <div class="chat-list" id="chatList"></div>
     </div>
 
