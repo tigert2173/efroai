@@ -230,6 +230,24 @@ let settings = {
     sessionId: 1,
 };
 
+function loadCharacter(charName, listItem) {
+    clearCurrentBotMessage();
+
+    const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
+    if (characterData) {
+        settings = JSON.parse(characterData);
+        document.getElementById('persona').value = settings.persona;
+        document.getElementById('context').value = settings.context;
+        document.getElementById('greeting').value = settings.greeting;
+        document.getElementById('temperature').value = settings.temperature;
+        document.getElementById('model').value = settings.model;
+        highlightCharacter(listItem);
+        sendGreeting(); // Send greeting message on character load
+    } else {
+        alert('Character not found.');
+    }
+}
+
 async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
