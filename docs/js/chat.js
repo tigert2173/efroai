@@ -310,7 +310,7 @@ async function sendMessage() {
         //     body: JSON.stringify(requestData)
         // });
         
-        const response = await fetch("https://viewers-expressed-gaps-expense.trycloudflare.com/v1/chat/completions", {
+        const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
