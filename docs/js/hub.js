@@ -23,7 +23,7 @@ function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
 
-    characters.forEach(character => {
+    characters.forEach((character, index) => {
         const card = document.createElement('div');
         card.className = 'character-card';
 
@@ -35,34 +35,29 @@ function displayCharacters(characters) {
         imgElement.onerror = () => {
             imgElement.src = 'noimage.jpg'; // Set default image on error
         };
- 
+
         // Fetch the image
         fetch(imageUrl, {
             method: 'GET',
             headers: {
                 'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
             }
-        })
-        fetch(imageUrl)
-    .then(response => {
-        if (!response.ok) {
-            console.error(`Failed to fetch image: ${response.statusText}`);
+        }).then(response => {
+            if (!response.ok) {
+                console.error(`Failed to fetch image: ${response.statusText}`);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+                return;
+            }
+            return response.blob();
+        }).then(imageBlob => {
+            if (imageBlob) {
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+                imgElement.src = imageObjectURL;
+            }
+        }).catch(error => {
+            console.error('Error fetching image:', error);
             imgElement.src = 'noimage.jpg'; // Fallback to default image
-            return;
-        }
-        return response.blob();
-    })
-    .then(imageBlob => {
-        if (imageBlob) {
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            imgElement.src = imageObjectURL;
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching image:', error);
-        imgElement.src = 'noimage.jpg'; // Fallback to default image
-    });
-
+        });
 
         // Add the inner HTML to the card
         card.innerHTML = `
@@ -86,7 +81,6 @@ function displayCharacters(characters) {
                     <span role="img" aria-hidden="true">❤️</span> <!-- Fart emoji for humor -->
                 </button>
             </div>
-
         `;
 
         // Append the image element after setting the card innerHTML
@@ -94,6 +88,7 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
+        // Insert ad after every 3 characters
         if ((index + 1) % 3 === 0) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
@@ -106,6 +101,7 @@ function displayCharacters(characters) {
         }
     });
 }
+
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
