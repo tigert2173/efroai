@@ -133,6 +133,8 @@ function getCookie(name) {
     return null;
 }
 
+<<<<<<< HEAD
+=======
 // Usage on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function() {
     const userId = getCookie("userID");
@@ -145,6 +147,8 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error('Element with ID "user-name" not found.');
     }
 });
+
+>>>>>>> 90a0479081cf372427d838fff8b5e44ec5b6adb5
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
@@ -173,8 +177,7 @@ function populateCharacterSettings() {
             };
 
             // Populate each field with the character's data
-            document.getElementById('user-name').value = getCookie("userID");
-            console.log(document.getElementById('user-name').value);
+            document.getElementById('user-name').value;
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
             document.getElementById('scenario').value = characterData.scenario;
