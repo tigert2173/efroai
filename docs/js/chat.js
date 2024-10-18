@@ -233,13 +233,14 @@ function getAllMessagesExceptLast() {
     return messagesExceptLast;
 }
 
+//Shortwave Config
 let settings = {
     persona: '',
     context: '',
     scenario: '',
     greeting: '',
     exampledialogue: '',
-    temperature: 1.53,
+    temperature: 1.43,
     model: '',
     maxTokens: 256,
     topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
