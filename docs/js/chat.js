@@ -483,11 +483,11 @@ function displayMessage(content, sender, isFinal = false) {
     };
 
     // Add the message object to the messages array
-    if (isFinal) {
-    messages.push(messageObject);
-    console.log('Messages array:', messages); // Debugging to view the array
+    if (sender === 'user') {
+        messages.push(messageObject);
+        console.log('Messages array:', messages); // Debugging to view the array
     }
-    
+
     if (sender === 'bot') {
         // Remove previous bot message header if exists
         const previousHeader = document.querySelector('.message-header');
@@ -515,6 +515,7 @@ function displayMessage(content, sender, isFinal = false) {
         currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
+            messages.push(messageObject);
             botMessages.push(currentBotMessageElement.innerHTML);
             currentBotMessageIndex = botMessages.length - 1;
         }
