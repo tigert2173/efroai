@@ -126,29 +126,14 @@ function loadCharacter(charName, listItem) {
     }
 }
 
+// Function to get a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
 }
 
-<<<<<<< HEAD
-=======
-// Usage on DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function() {
-    const userId = getCookie("userID");
-    console.log('User ID from cookie:', userId); // Check cookie value
-
-    const userNameInput = document.getElementById('user-name');
-    if (userNameInput) {
-        userNameInput.value = userId || ''; // Set input value
-    } else {
-        console.error('Element with ID "user-name" not found.');
-    }
-});
-
->>>>>>> 90a0479081cf372427d838fff8b5e44ec5b6adb5
+const userID = getCookie('userID');
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
@@ -177,7 +162,7 @@ function populateCharacterSettings() {
             };
 
             // Populate each field with the character's data
-            document.getElementById('user-name').value;
+            document.getElementById('user-name').value = userID;
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
             document.getElementById('scenario').value = characterData.scenario;
