@@ -9,6 +9,7 @@ function getCookie(name) {
 
 const userID = getCookie('userID');
 console.log(userID);
+console.log(document.cookie);
 
 document.addEventListener('DOMContentLoaded', () => {
     const ESettingslastNUMsentencesSlider = document.getElementById('ESettingslastNUMsentencesSlider');
