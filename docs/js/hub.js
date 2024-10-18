@@ -95,8 +95,8 @@ function displayCharacters(characters) {
 
     // Insert the <ins> element for the ad
     const insElement = document.createElement('ins');
-    insElement.className = 'eas6a97888e38';
-    insElement.setAttribute('data-zoneid', '5449642');
+    insElement.className = 'eas6a97888e2';
+    insElement.setAttribute('data-zoneid', '5449604');
     adContainer.appendChild(insElement);
 
     // Add keywords to the <ins> element
