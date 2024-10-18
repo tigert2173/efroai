@@ -88,16 +88,19 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
-        // Insert ad after every 3 characters
-        if ((index + 1) % 3 === 0) {
+         // Insert ad after every 3 characters
+         if ((index + 1) % 3 === 0) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
+            
+            // Insert the ad code inside this container
             adContainer.innerHTML = `
                 <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
                 <ins class="eas6a97888e2" data-zoneid="5449604"></ins>
                 <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
             `;
-            characterGrid.appendChild(adContainer);
+
+            characterGrid.appendChild(adContainer); // Insert ad after the card
         }
     });
 }
