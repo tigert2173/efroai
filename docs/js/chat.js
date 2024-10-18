@@ -231,18 +231,16 @@ let settings = {
 };
 
 async function sendMessage() {
-    document.getElementById('advanced-debugging').value = currentBotMessageElement ? currentBotMessageElement.innerHTML : '';
+    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-
-    if (!message && !isResend) return; // Exit if no message and not a resend
-
+   // if (!message) return;
     if (!isResend) {
-        //processMessageDataImportance();
-        lastBotMsg = currentBotMessageElement ? currentBotMessageElement.textContent || currentBotMessageElement.innerHTML : '';
+        processMessageDataImportance();
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent += 1;
+        messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
@@ -252,32 +250,54 @@ async function sendMessage() {
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
-    try {
+    try {    
         updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
 
-        // Build the message array with the new structure
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
-            messages: [
-                {
-                    role: 'system',
-                    content: [{ type: 'text', text: `${settings.systemPrompt} Persona: ${settings.persona} Scenario: ${settings.scenario} ${settings.context ? `Context: ${settings.context}` : ''}` }]
-                },
-                {
-                    role: 'user',
-                    content: [{ type: 'text', text: message }]
-                },
-                {
-                    role: 'assistant',
-                    content: [{ type: 'text', text: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed}` }]
-                }
-            ],
-            stream: true, // Enables streaming responses
-            max_tokens: settings.maxTokens,
-            temperature: settings.temperature,
-            top_p: settings.topP,
-            top_k: settings.topK,
-            min_p: settings.minP
-        };
+                messages: [
+                    {
+                        role: 'system',
+                        content: `${settings.systemPrompt} Persona: ${settings.persona} Scenario: ${settings.scenario} ${settings.context ? `Context: ${settings.context}` : ''}`
+                    },
+                    {
+                        role: 'user',
+                        content: message // User message goes here
+                    },
+                    {
+                        role: 'assistant',
+                        content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed}` // Previous assistant message trimmed for context
+                    }
+                ],
+                stream: true, // Enables streaming responses
+            
+                // The system prompt context details
+                systemPrompt: `
+                ${settings.systemPrompt}
+                Persona: ${settings.persona}
+                Scenario: ${settings.scenario}
+                ${settings.context ? `Context: ${settings.context}` : ''}
+                ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+                `,
+            
+                // The combined prompt for the AI
+                prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
+            
+                // AI parameters
+                max_tokens: settings.maxTokens,
+                temperature: settings.temperature,
+                min_p: settings.minP,
+                top_k: settings.topK,
+                top_p: settings.topP,
+            };            
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
@@ -289,26 +309,28 @@ async function sendMessage() {
             },
             body: JSON.stringify(requestData)
         });
+        
+        console.log(sessionStorage.getItem('token'));
 
         if (!response.ok) {
             if (response.status === 451) {
-                const errorData = await response.json();
-                displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
-                return;
-            } else if (response.status === 401) {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
                 const errorData = await response.json();
                 displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
-                return;
-            } else if (response.status === 406) {
-                const errorData = await response.json();
-                displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
-                return;
-            } else {
-                const errorData = await response.json();
-                displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
-                return;
-            }
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
+            return; // Exit early if the request failed
         }
+    }
 
         if (response.body) {
             const reader = response.body.getReader();
@@ -346,7 +368,6 @@ async function sendMessage() {
         isResend = false;
     }
 }
-
 
 function usernameupdated () {
 
