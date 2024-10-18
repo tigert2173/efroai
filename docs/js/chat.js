@@ -126,6 +126,14 @@ function loadCharacter(charName, listItem) {
     }
 }
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
@@ -153,7 +161,7 @@ function populateCharacterSettings() {
             };
 
             // Populate each field with the character's data
-            document.getElementById('user-name').value = getCookies("userID");
+            document.getElementById('user-name').value = getCookie("userID");
             console.log(document.getElementById('user-name').value);
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
