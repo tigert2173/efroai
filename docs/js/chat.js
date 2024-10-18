@@ -281,10 +281,7 @@ async function sendMessage() {
 
     try {    
         await updateSettings();
-        if (isFirstMessage) {
-            displayMessage(systemPrompt, 'system');
-            isFirstMessage = false;
-        }
+ 
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
