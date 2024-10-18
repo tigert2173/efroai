@@ -233,29 +233,53 @@ function getAllMessagesExceptLast() {
     return messagesExceptLast;
 }
 
-//Shortwave Config
+//Llama 3 Default Config
 let settings = {
     persona: '',
     context: '',
     scenario: '',
     greeting: '',
     exampledialogue: '',
-    temperature: 1.10,
+    temperature: 1.22,
     model: '',
     maxTokens: 256,
-    topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    topP: 0.8, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
-    minP: 0.00, //Sets a minimum base probability threshold for token selection.
-    topK: 33, //Limit the next token selection to the K most probable tokens.
+    minP: 0.1, //Sets a minimum base probability threshold for token selection.
+    topK: 40, //Limit the next token selection to the K most probable tokens.
     prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-    repeat_penalty: 1.07,
+    repeat_penalty: 1.08,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
     sessionId: 1,
 };
+
+// //Shortwave Config
+// let settings = {
+//     persona: '',
+//     context: '',
+//     scenario: '',
+//     greeting: '',
+//     exampledialogue: '',
+//     temperature: 1.10,
+//     model: '',
+//     maxTokens: 256,
+//     topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+//     typical_p: 1, 
+//     minP: 0.00, //Sets a minimum base probability threshold for token selection.
+//     topK: 33, //Limit the next token selection to the K most probable tokens.
+//     prescence_penalty: 0.00, //Slightly encourge new topics
+//     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
+//     repeat_penalty: 1.07,
+//     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+//     negativePrompt: "Do not talk about sexual topics or explicit content.",
+//     context: "",
+//     enablePreload: false, // Default to false if not provided
+//     sessionId: 1,
+// };
 
 // let settings = {
 //     persona: '',
