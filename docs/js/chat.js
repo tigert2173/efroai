@@ -379,7 +379,7 @@ async function sendMessage() {
             const { done, value } = await reader.read();
             if (done) break;
             const chunk = decoder.decode(value, { stream: true });
-            console.log(chunk);
+            //console.log(chunk);
 
            // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
            const matches = chunk.match(/"content":"([^"]*)"/); 
