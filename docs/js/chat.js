@@ -154,6 +154,7 @@ function populateCharacterSettings() {
 
             // Populate each field with the character's data
             document.getElementById('user-name').value = getCookies("userID");
+            console.log(document.getElementById('user-name').value);
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
             document.getElementById('scenario').value = characterData.scenario;
