@@ -238,7 +238,7 @@ async function sendMessage() {
     if (!message && !isResend) return; // Exit if no message and not a resend
 
     if (!isResend) {
-        processMessageDataImportance();
+        //processMessageDataImportance();
         lastBotMsg = currentBotMessageElement ? currentBotMessageElement.textContent || currentBotMessageElement.innerHTML : '';
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
