@@ -282,20 +282,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                messages: [
-                    {
-                        role: 'system',
-                        content: `${settings.systemPrompt} Persona: ${settings.persona} Scenario: ${settings.scenario} ${settings.context ? `Context: ${settings.context}` : ''}`
-                    },
-                    {
-                        role: 'user',
-                        content: message // User message goes here
-                    },
-                    {
-                        role: 'assistant',
-                        content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed}` // Previous assistant message trimmed for context
-                    }
-                ],
+                messages: messages,
                 stream: true, // Enables streaming responses
             
                 // The system prompt context details
