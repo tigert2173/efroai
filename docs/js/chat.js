@@ -310,14 +310,17 @@ async function sendMessage() {
         //     body: JSON.stringify(requestData)
         // });
         
-        const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-             //   'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
-            },
-            body: JSON.stringify(requestData)
-        });
+        const requestData = await axios.post("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", reqBody, { responseType: 'stream' });
+
+        // const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //      //   'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+            
+        //     body: JSON.stringify(requestData)
+        // });
         
         console.log(sessionStorage.getItem('token'));
 
