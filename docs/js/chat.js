@@ -236,7 +236,7 @@ async function sendMessage() {
     const message = userInput.value.trim();
    // if (!message) return;
     //if (!isResend) {
-        processMessageDataImportance();
+       // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
