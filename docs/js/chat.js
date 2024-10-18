@@ -385,7 +385,7 @@ async function sendMessage() {
                 const content = matches[1];
                 result += content;
                 clearCurrentBotMessage();
-                displayMessage(result, 'bot');
+                displayMessage(result, 'bot', false);
             }
         }
 
