@@ -134,6 +134,7 @@ function getCookie(name) {
 }
 
 const userID = getCookie('userID');
+console.log(userID);
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
