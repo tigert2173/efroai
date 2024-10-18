@@ -99,6 +99,10 @@ function displayCharacters(characters) {
     insElement.setAttribute('data-zoneid', '5449604');
     adContainer.appendChild(insElement);
 
+    // Add keywords to the <ins> element
+    const keywords = 'ai,chatbots,chatbot,fart,fart fetish, foot fetish, ai girlfriend'; // Replace this with your actual keywords
+    insElement.setAttribute('data-keywords', keywords);
+
     // Insert the script tag for the ad provider
     const scriptElement = document.createElement('script');
     scriptElement.async = true;
@@ -110,7 +114,7 @@ function displayCharacters(characters) {
 
     // Append the ad container to the grid
     characterGrid.appendChild(adContainer);
-}
+    }
 
     });
 }

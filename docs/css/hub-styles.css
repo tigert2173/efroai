@@ -145,13 +145,11 @@ main section {
 .ad-container {
     text-align: center;
     margin: 20px 0;
-    height: 600px;
-    width: 160px;
 }
 
 .character-grid, .recommendation-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
