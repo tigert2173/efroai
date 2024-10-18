@@ -145,6 +145,8 @@ main section {
 .ad-container {
     text-align: center;
     margin: 20px 0;
+    height: 600px;
+    width: 160px;
 }
 
 .character-grid, .recommendation-grid {
