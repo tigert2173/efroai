@@ -270,17 +270,18 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     // Define the system message
-    const systemMessage = {
+    const systemPrompt = {
         role: "system",
-        content: "You are a helpful AI assistant. Provide accurate and informative answers while maintaining a friendly demeanor."
+        content: `${settings.systemPrompt}
+        Persona: ${settings.persona}
+        Scenario: ${settings.scenario}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
     };
 
     try {    
         await updateSettings();
-        if (isFirstMessage) {
-            displayMessage(settings.systemPrompt, 'system');
-            isFirstMessage = false;
-        }
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
@@ -293,7 +294,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                messages: messages,
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
