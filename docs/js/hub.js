@@ -88,7 +88,7 @@ function displayCharacters(characters) {
         characterGrid.appendChild(card);
 
         // Insert ad every 5 characters
-        if ((index + 1) % 5 === 0) {
+        if ((index + 1) % 2 === 0) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container'; // You can style this class as needed
             adContainer.innerHTML = `
