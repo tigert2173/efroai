@@ -88,7 +88,33 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
-  
+  // Insert ad after every 3 characters
+  if ((index + 1) % 3 === 0) {
+    const adContainer = document.createElement('div');
+    adContainer.className = 'ad-container';
+
+    // Insert the <ins> element for the ad
+    const insElement = document.createElement('ins');
+    insElement.className = 'eas6a97888e38';
+    insElement.setAttribute('data-zoneid', '5449642');
+    adContainer.appendChild(insElement);
+
+    // Add keywords to the <ins> element
+    const keywords = 'ai,chatbots,chatbot,fart,fart fetish, foot fetish, ai girlfriend'; // Replace this with your actual keywords
+    insElement.setAttribute('data-keywords', keywords);
+
+    // Insert the script tag for the ad provider
+    const scriptElement = document.createElement('script');
+    scriptElement.async = true;
+    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+    scriptElement.onload = function() {
+        (AdProvider = window.AdProvider || []).push({"serve": {}});
+    };
+    document.body.appendChild(scriptElement); // Append script to body
+
+    // Append the ad container to the grid
+    characterGrid.appendChild(adContainer);
+    }
 
     });
 }
