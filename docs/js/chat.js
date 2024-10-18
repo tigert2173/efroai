@@ -435,128 +435,41 @@ async function sendMessage() {
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
-            messages: [
-                {
-                    role: 'system',
-                    content: `${systemPrompt}` // Keep this at the beginning for instruction/context
-                },
-                {
-                    role: 'user',
-                    content: message // Place user message right after the system prompt
-                },
-                {
-                    role: 'assistant',
-                    content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed}`
-                }
-            ],  
-            stream: true,
-            //${settings.context} ${settings.scenario} ${settings.persona}
-            //systemPrompt: `${settings.systemPrompt} ${settings.persona} ${settings.scenario} ${settings.context}`, // Concatenate persona and scenario
-            systemPrompt: `
-            ${settings.systemPrompt}
-            Persona: ${settings.persona}
-            Scenario: ${settings.scenario}
-            ${settings.context ? `Context: ${settings.context}` : ''}
-            ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        `,
-            prompt: `Assistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg} \n User: ${message}`,
-          // prompt: "Tell me about yourself",
-           // prompt: `User: ${message}\nAssistant: ${lastBotMsg || ''}`,
-          //  enablePreload: settings.enablePreload, // Default to false if not provided
-           // sessionId: settings.sessionId,
-          //  userId: 'TigerT2173', // Make sure to use a unique identifier
-       //    "repetitionPenalty": settings.repetitionPenalty,
-          //      "maxTokens": SettingsMaxTokensSlider.value,
-          //      "frequency_penalty": settings.frequency_penalty,
-           //     "temperature": settings.temperature,
-           //     conversationContext: messagedataimportance.messagehistorytrimmed,
-              //  negativePrompt: settings.negativePrompt,
+                messages: [
+                    {
+                        role: 'system',
+                        content: `${settings.systemPrompt} Persona: ${settings.persona} Scenario: ${settings.scenario} ${settings.context ? `Context: ${settings.context}` : ''}`
+                    },
+                    {
+                        role: 'user',
+                        content: message // User message goes here
+                    },
+                    {
+                        role: 'assistant',
+                        content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed}` // Previous assistant message trimmed for context
+                    }
+                ],
+                stream: true, // Enables streaming responses
+            
+                // The system prompt context details
+                systemPrompt: `
+                ${settings.systemPrompt}
+                Persona: ${settings.persona}
+                Scenario: ${settings.scenario}
+                ${settings.context ? `Context: ${settings.context}` : ''}
+                ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+                `,
+            
+                // The combined prompt for the AI
+                prompt: `Assistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}\nUser: ${message}`,
+            
+                // AI parameters
                 max_tokens: settings.maxTokens,
                 temperature: settings.temperature,
                 min_p: settings.minP,
                 top_k: settings.topK,
                 top_p: settings.topP,
-              //  seed: 10000,
-             //   signal: AbortSignal;
-            //    stopOnAbortSignal: boolean;
-             //   trimWhitespaceSuffix: boolean;
-            //    evaluationPriority: EvaluationPriority;
-             //   repeatPenalty: false | LlamaChatSessionRepeatPenalty,
-             //   tokenBias: TokenBias | () => TokenBias;
-             
-             
-             //   customStopTriggers: (LlamaText | string | (string | Token)[])[];
-                  //  ${messagedataimportance.messagehistorytrimmed} 
-                       //  "model": "string",
-           //     "top_p": settings.top_p,
-            //    "user": "{{user}}",
-            //    "mode": "chat",
-              //  "instruction_template": "string",
-               // "instruction_template_str": "string",
-              // "character": settings.persona,
-              //  "name2": "string",
-              //  "char_bio": settings.persona,
-              // "context": "Persona: " + settings.persona + "\nScenario: " + settings.scenario + "\nContext: " + settings.context,
-               // "greeting": messagedataimportance.messagehistorytrimmed + "\n" + lastBotMsg,
-             //   "name1": "string",
-             //   "user_bio": "string",
-             //   "chat_template_str": "string", //Jinja2 template for chat.
-             //   "chat_instruct_command": "string",
-              //  "continue_": false, //Makes the last bot message in the history be continued instead of starting a new message.
-              //  "preset": "string", //Parameters:
-              ///  "min_p": settings.min_p,
-              //  "dynamic_temperature": false,
-              //  "dynatemp_low": 1,
-              //  "dynatemp_high": 1,
-              //  "dynatemp_exponent": 1,
-               // "smoothing_factor": 0,
-               // "smoothing_curve": 1,
-             ///   "top_k": settings.top_k,
-              //  "repetition_penalty_range": 1024,
-              ///  "typical_p": settings.typical_p,
-              //  "tfs": 1,
-              //  "top_a": 0,
-              //  "epsilon_cutoff": 0,
-               // "eta_cutoff": 0,
-               // "guidance_scale": 1,
-               // "negative_prompt": "", //Implement
-              //  "penalty_alpha": 0,
-               /// "mirostat_mode": 0,
-               // "mirostat_tau": 5,
-               // "mirostat_eta": 0.1,
-               // "temperature_last": false,
-               // "do_sample": true,
-               // "seed": -1,
-               // "encoder_repetition_penalty": 1,
-               // "no_repeat_ngram_size": 0,
-              //  "dry_multiplier": 0,
-               // "dry_base": 1.75,
-               // "dry_allowed_length": 2,
-              //  "dry_sequence_breakers": "\"\\n\", \":\", \"\\\"\", \"*\"",
-              //  "truncation_length": 0,
-              //  "max_tokens_second": 0,
-              //  "prompt_lookup_num_tokens": 0,
-              //  "custom_token_bans": "",
-              //  "sampler_priority": [
-              //    "string"
-             //   ],
-              ///  "auto_max_new_tokens": false,
-              //  "ban_eos_token": false,
-             //   "add_bos_token": true,
-              //  "skip_special_tokens": true,
-             //   "grammar_string": ""
-                            // "function_call": "string",
-               // "functions": [
-                //  {}
-             //    ],
-              //  "logit_bias": {},
-              //  "n": 1,
-           //     "presence_penalty": settings.repeat_penalty,
-               // "stop": [
-              //    "string"
-               // ],
-            //    "stream": true,
-              };
+            };            
 
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
