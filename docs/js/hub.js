@@ -95,9 +95,9 @@ function displayCharacters(characters) {
             
             // Insert the ad code inside this container
             adContainer.innerHTML = `
-                <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
-                <ins class="eas6a97888e2" data-zoneid="5449604"></ins>
-                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+              <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+ <ins class="eas6a97888e20" data-zoneid="5449622"></ins> 
+ <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
             `;
 
             characterGrid.appendChild(adContainer); // Insert ad after the card
