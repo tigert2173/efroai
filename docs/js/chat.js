@@ -435,20 +435,20 @@ async function sendMessage() {
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
-            // messages: [
-            //     {
-            //         role: 'system',
-            //         content: `${systemPrompt}` // Keep this at the beginning for instruction/context
-            //     },
-            //     {
-            //         role: 'user',
-            //         content: message // Place user message right after the system prompt
-            //     },
-            //     {
-            //         role: 'assistant',
-            //         content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed} ${settings.context} ${settings.scenario} ${settings.persona}`
-            //     }
-            // ],  
+            messages: [
+                {
+                    role: 'system',
+                    content: `${systemPrompt}` // Keep this at the beginning for instruction/context
+                },
+                {
+                    role: 'user',
+                    content: message // Place user message right after the system prompt
+                },
+                {
+                    role: 'assistant',
+                    content: `${lastBotMsg} ${messagedataimportance.messagehistorytrimmed} ${settings.context} ${settings.scenario} ${settings.persona}`
+                }
+            ],  
             stream: true,
             
             //systemPrompt: `${settings.systemPrompt} ${settings.persona} ${settings.scenario} ${settings.context}`, // Concatenate persona and scenario
