@@ -397,7 +397,7 @@ async function sendMessage() {
                 role: 'assistant',
                 content: [{ type: 'text', text: result }]
             };
-            messages.push(botMessage);
+           // messages.push(botMessage);
 
             // Display the final bot message in the chat
             clearCurrentBotMessage();
@@ -412,7 +412,7 @@ async function sendMessage() {
             role: 'assistant',
             content: [{ type: 'text', text: botMessage }]
         };
-        messages.push(botMessageObject);
+        // messages.push(botMessageObject);
 
         // Display the final bot message in the chat
         displayMessage(botMessage, 'bot', true);
