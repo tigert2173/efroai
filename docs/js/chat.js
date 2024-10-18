@@ -464,8 +464,8 @@ let lastBotMsg = null;
 let messages = []; // Array to store messages
 
 function displayMessage(content, sender, isFinal = false) {
-    userName = document.getElementById('user-name').value.trim();
-    if (!userName) { userName = "{{user}}" }
+    let userName = document.getElementById('user-name').value.trim();
+    if (!userName) { userName = "{{user}}"; }
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
@@ -481,10 +481,6 @@ function displayMessage(content, sender, isFinal = false) {
         role: sender === 'bot' ? 'assistant' : 'user', // 'assistant' for bot, 'user' otherwise
         content: [{ type: 'text', text: content }]
     };
-
-    // Add the message object to the messages array
-    messages.push(messageObject);
-    console.log('Messages array:', messages); // Debugging to view the array
 
     if (sender === 'bot') {
         // Remove previous bot message header if exists
@@ -513,6 +509,8 @@ function displayMessage(content, sender, isFinal = false) {
         currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
+            // Only push to messages array if it's the final message
+            messages.push(messageObject);
             botMessages.push(currentBotMessageElement.innerHTML);
             currentBotMessageIndex = botMessages.length - 1;
         }
@@ -523,12 +521,16 @@ function displayMessage(content, sender, isFinal = false) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = sanitizedContent;
+
+        // Push user message to the messages array immediately
+        messages.push(messageObject);
         chatContainer.appendChild(messageElement);
     }
 
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
 
 // Additional functions remain the same
 
