@@ -1,3 +1,5 @@
+const { getCookies } = require("undici-types");
+
 document.addEventListener('DOMContentLoaded', () => {
     const ESettingslastNUMsentencesSlider = document.getElementById('ESettingslastNUMsentencesSlider');
     const ESettingslastNUMsentencesValue = document.getElementById('ESettingslastNUMsentencesValue');
@@ -151,7 +153,7 @@ function populateCharacterSettings() {
             };
 
             // Populate each field with the character's data
-            document.getElementById('user-name').value = characterData.uploader;
+            document.getElementById('user-name').value = getCookies("userID");
             document.getElementById('persona').value = characterData.persona;
             document.getElementById('context').value = characterData.context;
             document.getElementById('scenario').value = characterData.scenario;
