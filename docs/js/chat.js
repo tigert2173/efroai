@@ -248,7 +248,7 @@ let settings = {
     topK: 30, //Limit the next token selection to the K most probable tokens.
     prescence_penalty: 0.15, //Slightly encourge new topics
     frequency_penalty: 0.05, //penalty for repetition
-    repetitionPenalty: 1.15,
+    repeat_penalty: 1.07,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
@@ -315,6 +315,7 @@ async function sendMessage() {
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
+                repeat_penalty: settings.repeat_penalty,
                 min_p: settings.minP,
                 top_k: settings.topK,
                 top_p: settings.topP,
