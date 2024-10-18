@@ -246,7 +246,7 @@ let settings = {
     typical_p: 1, 
     minP: 0.00, //Sets a minimum base probability threshold for token selection.
     topK: 33, //Limit the next token selection to the K most probable tokens.
-    prescence_penalty: 0.10, //Slightly encourge new topics
+    prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.07,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
