@@ -485,7 +485,6 @@ function displayMessage(content, sender, isFinal = false) {
     // Add the message object to the messages array
     if (sender === 'user') {
         messages.push(messageObject);
-        console.log('Messages array:', messages); // Debugging to view the array
     }
 
     if (sender === 'bot') {
@@ -530,6 +529,8 @@ function displayMessage(content, sender, isFinal = false) {
     }
 
     // Scroll to the bottom of the chat container
+    console.log('Messages array:', messages); // Debugging to view the array
+
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
