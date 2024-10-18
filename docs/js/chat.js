@@ -1,5 +1,3 @@
-const { getCookies } = require("undici-types");
-
 // Function to get a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -9,7 +7,6 @@ function getCookie(name) {
 
 const userID = getCookie('userID');
 console.log(userID);
-console.log(document.cookie);
 
 document.addEventListener('DOMContentLoaded', () => {
     const ESettingslastNUMsentencesSlider = document.getElementById('ESettingslastNUMsentencesSlider');
