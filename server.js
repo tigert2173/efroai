@@ -10,10 +10,7 @@ app.use(cors());
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'docs')));
-app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  next();
-});
+
 // Read your SSL certificate and private key
 const options = {
   key: fs.readFileSync('certs/private.key.pem'),
