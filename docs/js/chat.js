@@ -319,7 +319,7 @@ async function sendMessage() {
         //     body: JSON.stringify(requestData)
         // });
         
-        const response = await fetch("https://hist--adware-kijiji.trycloudflare.com/v1/chat/completions", {
+        const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
