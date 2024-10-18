@@ -88,37 +88,34 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
-  
-        // Insert ad logic
-        if ((index + 1) % 3 === 0) {
-            // Randomly decide to insert 1 or 2 ads
-            const numAds = Math.random() < 0.5 ? 1 : 2; // 50% chance for 1 or 2 ads
+  // Insert ad after every 3 characters
+  if ((index + 1) % 3 === 0) {
+    const adContainer = document.createElement('div');
+    adContainer.className = 'ad-container';
 
-            for (let i = 0; i < numAds; i++) {
-                const adContainer = document.createElement('div');
-                adContainer.className = 'ad-container';
+    // Insert the <ins> element for the ad
+    const insElement = document.createElement('ins');
+    insElement.className = 'eas6a97888e38';
+    insElement.setAttribute('data-zoneid', '5449642');
+    adContainer.appendChild(insElement);
 
-                // Create the <ins> element for the ad
-                const insElement = document.createElement('ins');
-                insElement.className = 'eas6a97888e2';
-                insElement.setAttribute('data-zoneid', i === 0 ? '5449604' : '5449630'); // Different zone IDs
-                insElement.setAttribute('data-keywords', i === 0 ? 'ai,chatbots,chatbot,fart,fart fetish, foot fetish, ai girlfriend' : 'fart, farting, foot fetish, ai, chatbot, ai girlfriend, gassy, smelly'); // Keywords for each ad
+    // Add keywords to the <ins> element
+    const keywords = 'ai,chatbots,chatbot,fart,fart fetish, foot fetish, ai girlfriend'; // Replace this with your actual keywords
+    insElement.setAttribute('data-keywords', keywords);
 
-                adContainer.appendChild(insElement);
+    // Insert the script tag for the ad provider
+    const scriptElement = document.createElement('script');
+    scriptElement.async = true;
+    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+    scriptElement.onload = function() {
+        (AdProvider = window.AdProvider || []).push({"serve": {}});
+    };
+    document.body.appendChild(scriptElement); // Append script to body
 
-                // Insert the script tag for the ad provider
-                const scriptElement = document.createElement('script');
-                scriptElement.async = true;
-                scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-                scriptElement.onload = function() {
-                    (AdProvider = window.AdProvider || []).push({"serve": {}});
-                };
-                document.body.appendChild(scriptElement); // Append script to body
+    // Append the ad container to the grid
+    characterGrid.appendChild(adContainer);
+    }
 
-                // Append the ad container to the grid
-                characterGrid.appendChild(adContainer);
-            }
-        }
     });
 }
 
