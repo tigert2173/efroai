@@ -87,24 +87,22 @@ function displayCharacters(characters) {
         // Append the card to the grid
         characterGrid.appendChild(card);
 
-        // Insert ad every 5 characters
-        if ((index + 1) % 2 === 0) {
-            const adContainer = document.createElement('div');
-            adContainer.className = 'ad-container'; // You can style this class as needed
-            adContainer.innerHTML = `
-                <script type="text/javascript">
-                    atOptions = {
-                        'key': 'db086d05d9d8a4a053853756515f57ae',
-                        'format': 'iframe',
-                        'height': 300,
-                        'width': 160,
-                        'params': {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.topcpmcreativeformat.com/db086d05d9d8a4a053853756515f57ae/invoke.js"></script>
-            `;
-            characterGrid.appendChild(adContainer);
-        }
+      // Show ad after characters are displayed
+    const adContainer = document.createElement('div');
+    adContainer.id = 'ad-container';
+    adContainer.innerHTML = `
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'db086d05d9d8a4a053853756515f57ae',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.topcpmcreativeformat.com/db086d05d9d8a4a053853756515f57ae/invoke.js"></script>
+    `;
+    characterGrid.appendChild(adContainer);
     });
 }
 
