@@ -181,15 +181,6 @@ function updateSettings() {
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
 
-
-    // The system prompt context details
-    settings.systemPrompt = `
-    ${settings.systemPrompt}
-    Persona: ${settings.persona}
-    Scenario: ${settings.scenario}
-    ${settings.context ? `Context: ${settings.context}` : ''}
-    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-    `,
     //Controlled Message Data Importance
     messagedataimportance.lusermsg = lastUserMessage;
 
@@ -246,11 +237,16 @@ let settings = {
     typical_p: 1, 
     minP: 0.00, //Sets a minimum base probability threshold for token selection.
     topK: 30, //Limit the next token selection to the K most probable tokens.
-    systemPrompt: "",
     prescence_penalty: 0.15, //Slightly encourge new topics
     frequency_penalty: 0.05, //penalty for repetition
     repetitionPenalty: 1.15,
-    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+    systemPrompt:
+    `${settings.systemPrompt}
+    Persona: ${settings.persona}
+    Scenario: ${settings.scenario}
+    ${settings.context ? `Context: ${settings.context}` : ''}
+    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+    `,
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
@@ -279,12 +275,14 @@ async function sendMessage() {
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
+    // Define the system message
+    const systemPrompt = {
+        role: "system",
+        content: settings.systemPrompt
+    };
+
     try {    
         await updateSettings();
-        if (isFirstMessage) {
-            displayMessage(settings.systemPrompt, 'system');
-            isFirstMessage = false;
-        }
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
@@ -297,7 +295,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                messages: messages,
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
@@ -482,6 +480,7 @@ function displayMessage(content, sender, isFinal = false) {
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
     }
+
     // Add the message object to the messages array
     if (sender === 'system') {
         messages.push(messageObject);
