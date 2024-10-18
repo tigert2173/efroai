@@ -280,8 +280,8 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     try {    
-        updateSettings();
-        if (isFirstMessage == true) {
+        await updateSettings();
+        if (isFirstMessage) {
             displayMessage(systemPrompt, 'system');
             isFirstMessage = false;
         }
