@@ -307,7 +307,7 @@ async function sendMessage() {
                 top_p: settings.topP,
             };            
         
-        displayMessage(systemPrompt, 'system');
+       // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
         // const response = await fetch("https://api.botbridge.net/api/send", {
