@@ -454,8 +454,8 @@ let settings = {
     greeting: '',
     exampledialogue: '',
     temperature: 1.10,
+    maxTokens: 256,
     model: '',
-    maxTokens: document.getElementById('SettingsMaxTokensSlider').value,
     top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
     min_p: 0.00, //Sets a minimum base probability threshold for token selection.
@@ -549,7 +549,7 @@ async function sendMessage() {
             
                 // AI parameters
                // max_tokens: settings.maxTokens,
-                n_predict: settings.maxTokens,
+                n_predict: document.getElementById('SettingsMaxTokensSlider').value || settings.maxTokens,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
