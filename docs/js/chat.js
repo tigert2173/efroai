@@ -550,7 +550,7 @@ async function sendMessage() {
             
                 // AI parameters
                // max_tokens: settings.maxTokens,
-                n_predict: settings.maxTokens,
+                predict: settings.maxTokens,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
@@ -558,6 +558,7 @@ async function sendMessage() {
                 min_p: settings.min_p,
                 top_k: settings.top_k,
                 top_p: settings.top_p,
+                t_max_predict_ms: 300000, //timeout after 5 minutes
             };            
         
        // displayMessage(systemPrompt, 'system');
