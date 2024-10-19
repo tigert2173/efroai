@@ -445,7 +445,7 @@ function getAllMessagesExceptLast() {
         const selectedOption = this.value;
         updateSettingParameters(selectedOption);
     });
-    
+
 //Shortwave Config
 let settings = {
     persona: '',
@@ -455,7 +455,7 @@ let settings = {
     exampledialogue: '',
     temperature: 1.10,
     model: '',
-    maxTokens: 2048,
+    maxTokens: document.getElementById('SettingsMaxTokensSlider'),
     top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
     min_p: 0.00, //Sets a minimum base probability threshold for token selection.
