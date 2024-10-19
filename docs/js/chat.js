@@ -541,7 +541,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                n_predict: settings.maxTokens,
+                n_predict: 10,
                 messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
