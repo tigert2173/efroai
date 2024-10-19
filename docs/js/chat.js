@@ -257,7 +257,7 @@ function getAllMessagesExceptLast() {
 //     sessionId: 1,
 // };
 
-// //Shortwave Config
+//Shortwave Config
 let settings = {
     persona: '',
     context: '',
