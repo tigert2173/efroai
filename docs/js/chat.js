@@ -455,7 +455,7 @@ let settings = {
     exampledialogue: '',
     temperature: 1.10,
     model: '',
-    maxTokens: document.getElementById('SettingsMaxTokensSlider'),
+    maxTokens: document.getElementById('SettingsMaxTokensSlider').value,
     top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
     min_p: 0.00, //Sets a minimum base probability threshold for token selection.
