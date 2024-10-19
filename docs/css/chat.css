@@ -10,6 +10,17 @@ body {
     overflow-x: hidden;
 } 
 
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 1000;
+}
+
 .temporary-notice {
     background-color: #ffcc00; /* Yellow or any color you prefer */
     color: #000; /* Text color */
