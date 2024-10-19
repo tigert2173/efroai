@@ -257,6 +257,194 @@ function getAllMessagesExceptLast() {
 //     sessionId: 1,
 // };
 
+   // Function to update settings based on selected option
+    function updateSettingParameters(option) {
+        switch (option) {       
+        case 'Ethereal Winds':
+            // Shortwave config
+            settings.temperature = 1.10;
+            settings.top_p = 0.64;
+            settings.top_k = 33;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            settings.repeat_penalty = 1.07;
+            // Add any additional settings updates here
+            break;
+    
+        case 'AetherFume':
+            // Shortwave config
+            settings.temperature = 1.10;
+            settings.top_p = 0.64;
+            settings.top_k = 33;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.05;
+            settings.frequency_penalty = 0.00;
+            settings.repeat_penalty = 1.07;
+            // Add any additional settings updates here
+            break;
+
+            case 'Llama 3 Default':
+                // Llama 3 Default config
+                settings.temperature = 1.22;
+                settings.top_p = 0.80;
+                settings.top_k = 40;
+                settings.repeat_penalty = 1.08;
+                settings.min_p = 0.1;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+
+            case 'Creative Boost':
+                // Creative Boost config
+                settings.temperature = 1.53;
+                settings.top_p = 0.5;
+                settings.top_k = 0;
+                settings.repeat_penalty = 1.07;
+                settings.min_p = 0.0;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+
+            case 'Yodayo Default':
+                // Yodayo Default config
+                settings.temperature = 1.31;
+                settings.top_p = 0.85;
+                settings.top_k = 49;
+                settings.repeat_penalty = 1.15;
+                settings.min_p = 0.0;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+
+            case 'Clarity Forge':
+                // Clarity Forge config
+                settings.temperature = 1.30;
+                settings.top_p = 1.0;
+                settings.top_k = 50;
+                settings.repeat_penalty = 1.10;
+                settings.min_p = 0.1;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+
+            case 'Divine Intellect':
+                // Divine Intellect config
+                settings.temperature = 1.31;
+                settings.top_p = 0.14;
+                settings.top_k = 49;
+                settings.repeat_penalty = 1.17;
+                settings.min_p = 0.0;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+
+            case 'Fantastic':
+                // Fantastic config
+                settings.temperature = 1.75;
+                settings.top_p = 1.00;
+                settings.top_k = 0;
+                settings.repeat_penalty = 1.05;
+                settings.min_p = 0.0;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+    
+                
+            case 'Basic':
+                // Basic config
+                settings.temperature = 0.44;
+                settings.top_p = 1.00;
+                settings.top_k = 0;
+                settings.repeat_penalty = 1.15;
+                settings.min_p = 0.0;
+                settings.prescence_penalty = 0.00;
+                settings.frequency_penalty = 0.00;
+                // Add any additional settings updates here
+                break;
+    
+                     
+        case 'LLama Precise':
+            // LLama Precise config
+            settings.temperature = 0.70;
+            settings.top_p = 0.10;
+            settings.top_k = 40;
+            settings.repeat_penalty = 1.18;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            // Add any additional settings updates here
+            break;
+
+        case 'Midnight Enigma':
+            // Midnight Enigma config
+            settings.temperature = 0.98;
+            settings.top_p = 0.37;
+            settings.top_k = 0;
+            settings.repeat_penalty = 1.18;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            // Add any additional settings updates here
+            break;
+
+        case 'Shortwave':
+            // Shortwave config
+            settings.temperature = 1.53;
+            settings.top_p = 0.64;
+            settings.top_k = 33;
+            settings.repeat_penalty = 1.07;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            // Add any additional settings updates here
+            break;
+
+        case 'Star Chat':
+            // Star Chat config
+            settings.temperature = 0.02;
+            settings.top_p = 0.95;
+            settings.top_k = 50;
+            settings.repeat_penalty = 1.00;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            // Add any additional settings updates here
+            break;
+
+        case 'Yara':
+            // Yara config
+            settings.temperature = 0.82;
+            settings.top_p = 0.21;
+            settings.top_k = 72;
+            settings.repeat_penalty = 1.19;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            // Add any additional settings updates here
+            break;
+
+            // Add cases for other options if needed
+            
+            
+            default:
+                console.log("No matching config found.");
+                break;
+        }
+        console.log('Updated settings:', settings);
+    }
+
+    // Add event listener to detect changes in the <select> element
+    document.getElementById('systemParameters').addEventListener('change', function() {
+        const selectedOption = this.value;
+        updateSettingParameters(selectedOption);
+    });
 //Shortwave Config
 let settings = {
     persona: '',
@@ -267,10 +455,10 @@ let settings = {
     temperature: 1.10,
     model: '',
     maxTokens: 2048,
-    topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
-    minP: 0.00, //Sets a minimum base probability threshold for token selection.
-    topK: 33, //Limit the next token selection to the K most probable tokens.
+    min_p: 0.00, //Sets a minimum base probability threshold for token selection.
+    top_k: 33, //Limit the next token selection to the K most probable tokens.
     prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.07,
@@ -359,15 +547,15 @@ async function sendMessage() {
                // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
             
                 // AI parameters
-                max_tokens: settings.maxTokens,
-                n_predict: 1024,
+               // max_tokens: settings.maxTokens,
+                n_predict: settings.maxTokens,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
                 repeat_penalty: settings.repeat_penalty,
-                min_p: settings.minP,
-                top_k: settings.topK,
-                top_p: settings.topP,
+                min_p: settings.min_p,
+                top_k: settings.top_k,
+                top_p: settings.top_p,
             };            
         
        // displayMessage(systemPrompt, 'system');
