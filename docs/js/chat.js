@@ -266,7 +266,7 @@ let settings = {
     exampledialogue: '',
     temperature: 1.10,
     model: '',
-    maxTokens: 256,
+    maxTokens: 2048,
     topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
     minP: 0.00, //Sets a minimum base probability threshold for token selection.
