@@ -266,7 +266,6 @@ let settings = {
     exampledialogue: '',
     temperature: 1.10,
     model: '',
-    minTokens: 2048,
     maxTokens: 2048,
     topP: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
     typical_p: 1, 
@@ -361,7 +360,7 @@ async function sendMessage() {
             
                 // AI parameters
                 max_tokens: settings.maxTokens,
-                min_tokens: settings.minTokens,
+                n_predict: 1024,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
