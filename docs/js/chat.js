@@ -189,6 +189,7 @@ function updateSettings() {
     settings.greeting = document.getElementById('greeting').value;
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
+    settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
 
     //Controlled Message Data Importance
     messagedataimportance.lusermsg = lastUserMessage;
@@ -549,7 +550,7 @@ async function sendMessage() {
             
                 // AI parameters
                // max_tokens: settings.maxTokens,
-                n_predict: document.getElementById('SettingsMaxTokensSlider').value || settings.maxTokens,
+                n_predict: settings.maxTokens,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
