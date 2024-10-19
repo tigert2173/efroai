@@ -158,13 +158,15 @@
                 <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
                 <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
-            </div>
+            
             <div class="setting">
                 <label for="model">Select Model</label>
                 <select id="model">
-                    <!-- Options will be populated here -->
+                    <option value="gastronova">Gastronova 8B</option>
+                    <!-- Other options will be populated here -->
                 </select>
             </div>
+            
             <div class="setting">
                 <a class="add-api" target="_blank" href="https://api.botbridge.net">Add API</a>
             </div>
