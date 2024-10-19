@@ -445,6 +445,7 @@ function getAllMessagesExceptLast() {
         const selectedOption = this.value;
         updateSettingParameters(selectedOption);
     });
+    
 //Shortwave Config
 let settings = {
     persona: '',
