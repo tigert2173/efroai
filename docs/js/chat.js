@@ -471,6 +471,18 @@ let settings = {
     sessionId: 1,
 };
 
+// Function to update systemPrompt in settings
+function updateSystemPrompt() {
+    const selectElement = document.getElementById('systemPrompt');
+    settings.systemPrompt = selectElement.value;
+    console.log("Updated systemPrompt:", settings.systemPrompt); // Optional: for debugging
+}
+
+// // Set the initial value for systemPrompt
+// document.getElementById('systemPrompt').value = settings.systemPrompt;
+
+// Add event listener for change events on the select element
+document.getElementById('systemPrompt').addEventListener('change', updateSystemPrompt);
 // let settings = {
 //     persona: '',
 //     context: '',
