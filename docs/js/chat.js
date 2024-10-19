@@ -550,7 +550,7 @@ async function sendMessage() {
             
                 // AI parameters
                // max_tokens: settings.maxTokens,
-                max_tokens: settings.maxTokens,
+                n_predict: settings.maxTokens,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
