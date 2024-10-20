@@ -8,7 +8,7 @@ document.getElementById('login-form').addEventListener('submit', (event) => {
 
 // Function to login the user
 function loginUser() {
-    const username = document.getElementById('login-username').value;
+    const username = document.getElementById('login-username').value.trim().toLowerCase();
     const password = document.getElementById('login-password').value;
 
     fetch(`${backendurl}/login`, {
