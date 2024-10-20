@@ -841,7 +841,7 @@ function showSnowflakes() {
     // Deactivate effect after 10 seconds
     setTimeout(() => {
         isSnowflakeActive = false;
-    }, 10000);
+    }, 30000);
 }
 
 function showSantaImage() {
@@ -857,7 +857,7 @@ function showSantaImage() {
     setTimeout(() => {
         santaImage.remove();
         isSantaActive = false; // Deactivate the Santa effect
-    }, 15000);
+    }, 30000);
 }
 
 function showGiftBoxes() {
