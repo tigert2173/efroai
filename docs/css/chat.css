@@ -402,7 +402,7 @@ input[type="checkbox"]:not(:checked) + label {
 /* Santa image */
 .santa-image {
     position: fixed;
-    top: 40px;
+    top: 45px;
     z-index: 1000;
     right: 0;
     width: 75px;
