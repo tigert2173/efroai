@@ -546,7 +546,6 @@ async function sendMessage() {
     };
 
     const sanitizedSystemPrompt = {
-
         role: "system",
         content: sanitizeToUnicode(`${settings.systemPrompt}
         Persona: ${settings.persona}
@@ -572,7 +571,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
+                messages: [sanitizedSystemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
