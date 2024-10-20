@@ -537,6 +537,7 @@ function loadCharacterData() {
         const character = JSON.parse(characterData);
         isEditing = true; // Set to editing mode
         editingCharacterId = character.id; // Store the character ID
+        console.log(character.tags); // Check what character.tags is
 
         // Populate the form fields with character data
         document.getElementById('name').value = character.name;
