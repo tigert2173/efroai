@@ -728,132 +728,63 @@ function getLastAssistantMessage() {
 let userName = '{{user}}';
 let lastBotMsg = null;
 
-let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot messages
-let currentBotMessageElement; // To store the current bot message element
-let currentBotMessageIndex = -1; // Index for tracking the current bot message
-
-function displayMessage(content, sender, isFinal = false) {
-    let userName = document.getElementById('user-name').value.trim();
-    if (!userName) { userName = "{{user}}"; }
-
-    const chatContainer = document.getElementById('chat-container');
-    const sanitizedContent = content
-        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
-
-    // Prepare message object in the desired format
-    const messageObject = {
-        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+// Function to handle the final message display
+function finalMessage(content) {
+    // Create a bot message object and store it
+    const botMessage = {
+        role: 'assistant',
         content: [{ type: 'text', text: content }]
     };
 
-    // Add the message object to the messages array
-    messages.push(messageObject);
-    console.log('Messages array:', messages); // Debugging to view the array
+    // Store current messages and add to old messages array
+    messages.push(botMessage);
+    oldMessages.push(botMessage);
+    currentMessageIndex = messages.length - 1;
 
-    if (sender === 'bot') {
-        // Store bot message in the botMessages array
-        botMessages.push(sanitizedContent);
-        
-        // Create or reuse the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
-        }
-
-        // Update the content of the existing bot message element
-        currentBotMessageElement.innerHTML = sanitizedContent;
-
-        // If the message is final, update the navigation header
-        if (isFinal) {
-            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            
-            // Remove previous bot message header if exists
-            const previousHeader = document.querySelector('.message-header');
-            if (previousHeader) {
-                previousHeader.remove();
-            }
-
-            // Create a new message header with navigation arrows
-            const messageHeader = document.createElement('div');
-            messageHeader.className = 'message-header';
-            messageHeader.innerHTML = `
-            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            `;
-
-            // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        }
-
-        // Update arrow states
-        updateArrowStates();
-    } else {
-        const messageElement = document.createElement('div');
-        messageElement.className = `message ${sender}`;
-        messageElement.innerHTML = sanitizedContent;
-        chatContainer.appendChild(messageElement);
-    }
-
-    // Scroll to the bottom of the chat container
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Display the final message
+    displayMessage(content, 'bot', true);
+    isFinal = true;
 }
 
-function regenerateMessage() {
-    const lastAssistantMessage = getLastAssistantMessage();
-    if (lastAssistantMessage) {
-        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
-
-        // Update the user input with the last user message
-        document.getElementById('user-input').value = lastUserMessage;
-        
-        // Clear current bot message content to regenerate
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message
-
-        // Resend the last user message
-        sendMessage(); // Ensure this function is defined to handle sending the message
-    } else {
-        displayMessage('No previous assistant message found to regenerate.', 'bot');
+// Function to navigate to the previous message
+function showPreviousMessage() {
+    if (currentMessageIndex > 0) {
+        currentMessageIndex--;
+        const message = messages[currentMessageIndex].content[0].text;
+        displayMessage(message, 'bot', true);
     }
 }
 
-// Navigation functions remain the same
-
-function navigateBotMessages(direction) {
-    if (currentBotMessageIndex === -1) return;
-
-    const newIndex = currentBotMessageIndex + direction;
-    if (newIndex >= 0 && newIndex < botMessages.length) {
-        currentBotMessageIndex = newIndex;
-        const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
-
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
-
-        updateArrowStates();
+// Function to navigate to the next message
+function showNextMessage() {
+    if (currentMessageIndex < messages.length - 1) {
+        currentMessageIndex++;
+        const message = messages[currentMessageIndex].content[0].text;
+        displayMessage(message, 'bot', true);
     }
 }
 
-function updateArrowStates() {
-    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
-    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
-
-    if (leftArrow) {
-        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
-    }
-    if (rightArrow) {
-        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
-    }
+// Function to clear all messages
+function clearAllMessages() {
+    messages = [];
+    oldMessages = [];
+    currentMessageIndex = -1;
+    document.getElementById('chat-container').innerHTML = ''; // Assuming chat-container displays messages
+    displayMessage('All messages have been cleared.', 'temporary-notice');
 }
 
+// Function to add message navigation controls
+function addNavigationControls() {
+    const navigationContainer = document.getElementById('navigation-controls');
+    navigationContainer.innerHTML = `
+        <button id="prev-button" onclick="showPreviousMessage()">&#8592; Previous</button>
+        <button id="next-button" onclick="showNextMessage()">Next &#8594;</button>
+        <button id="clear-button" onclick="clearAllMessages()">Clear All Messages</button>
+    `;
+}
 
+// Call this function once to set up the navigation controls in your HTML
+addNavigationControls();
 
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
