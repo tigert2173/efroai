@@ -716,25 +716,34 @@ function displayBotMessage(message, type) {
 }
 
 function regenerateMessage() {
+    // Log the messages array for debugging
+    console.log('Messages array before regeneration:', messages);
+
     // Check if there are messages and the last one is from the user
-    if (messages.length > 0 && messages[messages.length - 2].role === 'user') {
-        // Get the last user message
-        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
-        
-        // Update the user input with the last user message for resending
-        document.getElementById('user-input').value = lastUserMessage;
+    if (messages.length > 0) {
+        // Find the last user message
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === 'user') {
+                const lastUserMessage = messages[i].content[0].text; // Get the last user message
+                
+                // Update the user input with the last user message for resending
+                document.getElementById('user-input').value = lastUserMessage;
 
-        // Clear the current bot message content to prepare for regeneration
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+                // Clear the current bot message content to prepare for regeneration
+                currentBotMessageElement.innerHTML = ''; // Clear current bot message
 
-        // Optionally, you might want to store the current bot message index or clear it
-        currentBotMessageIndex = -1;
+                // Reset current bot message index if needed
+                currentBotMessageIndex = -1;
 
-        // Send the last user message again
-        sendMessage(); // This will handle sending the message and receiving streaming response
-    } else {
-        displayMessage('No previous user message found to regenerate.', 'bot');
+                // Send the last user message again
+                sendMessage(); // This will handle sending the message and receiving streaming response
+                return; // Exit once the message is sent
+            }
+        }
     }
+
+    // If no user message is found
+    displayMessage('No previous user message found to regenerate.', 'bot');
 }
 
 // Update this function to get the last assistant message correctly
