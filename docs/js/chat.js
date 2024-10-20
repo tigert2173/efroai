@@ -815,7 +815,7 @@ function showSnowflakes() {
         // Randomly decide whether to position the snowflake above or to the side of the chat container
         if (Math.random() > 0.5) {
             // Position above the chat container
-            snowflake.style.top = `${-randomSize}px`; // Start above
+            //snowflake.style.top = `${-randomSize}px`; // Start above
         } else {
             // Position on the sides of the chat container
             const randomSideX = Math.random() < 0.5 ? -randomSize : window.innerWidth + randomSize; // Randomly left or right
