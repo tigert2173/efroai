@@ -11,7 +11,7 @@ function isAdExempt(token) {
     return decodedPayload['Ad-Exempt'] === true; // Check the Ad-Exempt claim
 }
 
-const adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
+const adExempt = false // Check if the user is Ad-Exempt
 
 // Function to load characters from the backend
 function loadCharacters() {
