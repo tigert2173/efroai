@@ -792,7 +792,8 @@ function showSnowflakes() {
     isEffectActive = true; // Set flag to active
 
     const chatContainer = document.getElementById('chat-container'); // Get the chat container
-    const chatContainerHeight = chatContainer.offsetTop; // Get the top position of the chat container
+    const chatContainerTop = chatContainer.offsetTop; // Get the top position of the chat container
+    const chatContainerHeight = chatContainer.offsetHeight; // Get the height of the chat container
 
     function createSnowflake() {
         const snowflake = document.createElement('div');
@@ -807,9 +808,8 @@ function showSnowflakes() {
         const randomSize = Math.random() * 40 + 10;
         snowflake.style.fontSize = `${randomSize}px`;
 
-        // Random starting position from the top, ensuring it starts above the chat container
-        const randomTop = Math.random() * (chatContainerHeight * 0.8); // 80% of the height above the chat container
-        snowflake.style.top = `-${randomSize}px`; // Start just above the viewport
+        // Start the snowflake above the chat container
+        snowflake.style.top = `${-randomSize}px`; // Start just above the viewport
 
         // Add the snowflake to the document body
         document.body.appendChild(snowflake);
@@ -835,51 +835,6 @@ function showSnowflakes() {
     setTimeout(() => {
         isEffectActive = false;
     }, 10000);
-}
-
-
-function showSantaImage() {
-    if (isEffectActive) return; // Prevent triggering if another effect is active
-    isEffectActive = true; // Set flag to active
-
-    const santaImage = document.createElement('img');
-    santaImage.src = 'santa.png';
-    santaImage.classList.add('santa-image');
-    document.body.appendChild(santaImage);
-
-    setTimeout(() => {
-        santaImage.remove();
-        isEffectActive = false; // Reset flag after Santa image is removed
-    }, 11000);
-}
-
-function showGiftBoxes() {
-    if (isEffectActive) return; // Prevent triggering if another effect is active
-    isEffectActive = true; // Set flag to active
-
-    const giftBox = document.createElement('div');
-    giftBox.classList.add('gift-box');
-    giftBox.textContent = '🎁';
-    document.body.appendChild(giftBox);
-
-    setTimeout(() => {
-        giftBox.remove();
-        isEffectActive = false; // Reset flag after gift boxes are removed
-    }, 5000);
-}
-
-function triggerSpecialEffect(effect) {
-    if (isEffectActive) return; // Don't trigger if an effect is already running
-
-    if (effect === 'merry-christmas') {
-        document.getElementById('christmas-music').play();
-        showSnowflakes();
-    } else if (effect === 'santa') {
-        showSantaImage();
-        playSantaVoice();
-    } else if (effect === 'gifts') {
-        showGiftBoxes();
-    }
 }
 
 
