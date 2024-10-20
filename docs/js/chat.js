@@ -587,18 +587,9 @@ async function sendMessage() {
                 top_p: settings.top_p,
                 t_max_predict_ms: 300000, //timeout after 5 minutes
             };            
-        
-        // Sanitize the array
-        const sanitizedArray = requestData.map(item => {
-            return {
-                name: sanitizeForJson(item.name),
-                age: item.age,
-                bio: sanitizeForJson(item.bio)
-            };
-        });
 
        // displayMessage(systemPrompt, 'system');
-       console.log('Sanitized Request Data:', JSON.stringify(sanitizedArray, null, 2));
+       console.log('Sanitized Request Data:', JSON.stringify(requestData, null, 2));
         
         const response = await fetch("https://botbridgeai.net/api/send", {
             method: 'POST',
@@ -606,7 +597,7 @@ async function sendMessage() {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
-            body: JSON.stringify(sanitizedArray)
+            body: JSON.stringify(requestData)
         });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
