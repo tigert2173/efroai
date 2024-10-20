@@ -600,7 +600,7 @@ async function sendMessage() {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
-            body: JSON.stringify(requestData)
+            body: requestData
         });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
