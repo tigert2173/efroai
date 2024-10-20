@@ -522,7 +522,7 @@ async function sendMessage() {
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
-        botMessages = [];
+        //botMessages = [];
         currentBotMessageElement = null;
   //  }
 
