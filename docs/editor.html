@@ -764,9 +764,9 @@ imageInput.addEventListener('change', function() {
 
 function cleanInput(input) {
     // Sanitize the input and then apply other cleaning as needed
-    return DOMPurify.sanitize(input);
-        // .replace(/“|”/g, '"')
-        // .replace(/‘|’/g, "'");
+    return DOMPurify.sanitize(input)
+        .replace(/“|”/g, '"')
+        .replace(/‘|’/g, "'");
 }
 
     </script>
