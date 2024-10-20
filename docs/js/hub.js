@@ -1,5 +1,16 @@
 const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
 
+// Function to decode JWT and check for the Ad-Exempt claim
+function isAdExempt(token) {
+    if (!token) return false; // If there's no token, assume not exempt
+
+    // Decode the JWT (assuming it's a standard JWT with 3 parts)
+    const payload = token.split('.')[1]; // Get the payload part
+    const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+
+    return decodedPayload['Ad-Exempt'] === true; // Check the Ad-Exempt claim
+}
+
 // Function to load characters from the backend
 function loadCharacters() {
     fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
@@ -14,6 +25,8 @@ function loadCharacters() {
         return response.json();
     })
     .then(characters => {
+        const userToken = sessionStorage.getItem('token'); // Replace with your method of obtaining the token
+        const adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
         displayCharacters(characters);
     })
     .catch(error => console.error('Error fetching characters:', error));
@@ -93,6 +106,8 @@ function displayCharacters(characters) {
         characterGrid.appendChild(card);
         cardCounter++; // Increment the counter after adding a card
 
+        // Check if ads should be displayed
+        if (!adExempt) {
         // Check if it's time to insert an ad
         if (cardCounter >= nextAdInterval) {
             const adContainer = document.createElement('div');
@@ -122,6 +137,7 @@ function displayCharacters(characters) {
             // Set the next ad interval
             nextAdInterval = cardCounter + getRandomAdInterval(); // Set the next interval
         }
+    }
     });
 }
 
