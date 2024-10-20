@@ -731,7 +731,7 @@ let currentBotMessageIndex = -1; // Index for navigation
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot messages
+let botMessages = []; // Array to store non-final bot messages
 
 function displayMessage(content, sender, isFinal = false) {
     userName = document.getElementById('user-name').value.trim();
@@ -748,7 +748,7 @@ function displayMessage(content, sender, isFinal = false) {
 
     // Prepare message object in the desired format
     const messageObject = {
-        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user', // 'assistant' for bot, 'system' for system messages, 'user' otherwise
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
         content: [{ type: 'text', text: content }]
     };
 
@@ -756,42 +756,39 @@ function displayMessage(content, sender, isFinal = false) {
     messages.push(messageObject);
     console.log('Messages array:', messages); // Debugging to view the array
 
+    // Handle bot messages
     if (sender === 'bot') {
-        // Store bot message in the botMessages array
-        botMessages.push(sanitizedContent);
-        
-        // Remove previous bot message header if exists
-        const previousHeader = document.querySelector('.message-header');
-        if (previousHeader) {
-            previousHeader.remove();
-        }
-
         // Create a new message header with navigation arrows
         const messageHeader = document.createElement('div');
         messageHeader.className = 'message-header';
         messageHeader.innerHTML = `
-        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+            <!-- Add your navigation buttons or icons here -->
         `;
 
-        // Create or update the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
+        // Create a new bot message element
+        const botMessageElement = document.createElement('div');
+        botMessageElement.className = `message ${sender}`;
+        botMessageElement.innerHTML = sanitizedContent;
+
+        // Append message header and bot message to the chat container
+        chatContainer.appendChild(messageHeader);
+        chatContainer.appendChild(botMessageElement);
+
+        // Store non-final bot messages in the botMessages array
+        if (!isFinal) {
+            botMessages.push(messageObject);
+            console.log('Non-final bot messages array:', botMessages); // Debugging to view the array
         }
 
-        // Append message header and content
-        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        currentBotMessageElement.innerHTML += sanitizedContent;
-
+        // If it's the final bot message, add it to messages array
         if (isFinal) {
-            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            console.log('Final bot message added to the array:', messageObject);
         }
 
-        // Update arrow states
+        // Update arrow states if necessary
         updateArrowStates();
     } else {
+        // Create a new message element for user/system
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = sanitizedContent;
@@ -801,6 +798,7 @@ function displayMessage(content, sender, isFinal = false) {
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
 
 function regenerateMessage() {
     const lastAssistantMessage = getLastAssistantMessage();
