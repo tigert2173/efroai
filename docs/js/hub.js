@@ -25,6 +25,7 @@ function displayCharacters(characters) {
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
+    let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach((character) => {
         const card = document.createElement('div');
@@ -93,7 +94,7 @@ function displayCharacters(characters) {
         cardCounter++; // Increment the counter after adding a card
 
         // Check if it's time to insert an ad
-        if (cardCounter % 3 === 0 && cardCounter <= 10) { // Ad after every 3 cards up to 10
+        if (cardCounter >= nextAdInterval) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
 
@@ -117,8 +118,16 @@ function displayCharacters(characters) {
 
             // Append the ad container to the grid
             characterGrid.appendChild(adContainer);
+
+            // Set the next ad interval
+            nextAdInterval = cardCounter + getRandomAdInterval(); // Set the next interval
         }
     });
+}
+
+// Function to get a random ad interval between 3 and 6
+function getRandomAdInterval() {
+    return Math.floor(Math.random() * (6 - 3 + 1)) + 3; // Returns a random number between 3 and 6
 }
 
 
