@@ -204,3 +204,52 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Blocker Detection</title>
+    <style>
+        #adBlockMessage {
+            display: none; /* Hidden by default */
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="adBlockMessage">
+    <h1>Ad Blocker Detected!</h1>
+    <p>Please consider disabling your ad blocker to support us.</p>
+</div>
+
+<script>
+    // Function to check for ad blocker
+    function detectAdBlocker() {
+        // Create a test image element
+        var img = new Image();
+        img.src = 'https://pagead2.googlesyndication.com/pagead/imgad?id=CAAQy5Z5y1cYwGoJ6gM1GQgPShTqlNTRx4WEJ8IY'; // A test image URL that is typically blocked
+        img.onload = function() {
+            // If the image loads, no ad blocker is detected
+            console.log('No ad blocker detected.');
+        };
+        img.onerror = function() {
+            // If the image fails to load, an ad blocker is likely active
+            document.getElementById('adBlockMessage').style.display = 'block';
+        };
+        // Append the image to the body (hidden)
+        document.body.appendChild(img);
+    }
+
+    // Run the detection function
+    detectAdBlocker();
+</script>
+
+</body>
+</html>
