@@ -88,10 +88,13 @@ function displayCharacters(characters) {
 
         characterGrid.appendChild(card);
 
-  // Loop through your character array (assuming you have one)
-characterArray.forEach((character, index) => {
-    // Check if an ad should be inserted
-    if (shouldInsertAd(index)) {
+  // Loop through the characters in your characterGrid (or any iterable source)
+  for (let index = 0; index < characterGrid.children.length; index++) {
+    // Generate a random number between 3 and 20
+    const randomInterval = Math.floor(Math.random() * (20 - 3 + 1)) + 3;
+
+    // Check if it's time to insert an ad based on the random interval
+    if ((index + 1) % randomInterval === 0) {
         const adContainer = document.createElement('div');
         adContainer.className = 'ad-container';
 
@@ -116,17 +119,10 @@ characterArray.forEach((character, index) => {
         // Append the ad container to the grid
         characterGrid.appendChild(adContainer);
     }
-
+}
 
     });
 }
-
-// Function to randomly determine when to insert an ad
-function shouldInsertAd(index) {
-    const randomNumber = Math.floor(Math.random() * (20 - 3 + 1)) + 3; // Random number between 3 and 20
-    return (index + 1) % randomNumber === 0; // Insert ad based on the random number
-}
-
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
