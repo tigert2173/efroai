@@ -382,16 +382,19 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: not-allowed;
 }
 
+
 /* Snowflake animation */
 .snowflake {
-    position: absolute;
-    color: white; /* Change this to match your desired snowflake color */
-    pointer-events: none; /* Make sure snowflakes don't interfere with clicks */
+    position: fixed;
+    top: -50px; /* Start above the viewport */
+    color: white;
+    z-index: 9999; /* Ensure it's on top */
+    pointer-events: none; /* Snowflakes should not interfere with clicks */
 }
 
 @keyframes fall {
     to {
-        transform: translateY(calc(100vh + 50px)); /* Move down past the viewport */
+        transform: translateY(100vh); /* Fall to the bottom of the viewport */
     }
 }
 

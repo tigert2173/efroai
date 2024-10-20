@@ -785,14 +785,11 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
-// script.js
 let isEffectActive = false; // Flag to track if an effect is active
 
 function showSnowflakes() {
     if (isEffectActive) return; // Prevent triggering if another effect is active
     isEffectActive = true; // Set flag to active
-
-    const chatContainer = document.getElementById('chat-container'); // Get the chat container
 
     function createSnowflake() {
         const snowflake = document.createElement('div');
@@ -807,8 +804,24 @@ function showSnowflakes() {
         const randomSize = Math.random() * 40 + 10;
         snowflake.style.fontSize = `${randomSize}px`;
 
-        // Start the snowflake above the chat container
+        // Start the snowflake above the viewport
         snowflake.style.top = `${-randomSize}px`; // Start just above the viewport
+
+        // Prevent snowflakes from falling in the chat container area
+        const chatContainer = document.getElementById('chat-container');
+        const chatContainerRect = chatContainer.getBoundingClientRect();
+        const chatContainerBottom = chatContainerRect.bottom;
+
+        // Randomly decide whether to position the snowflake above or to the side of the chat container
+        if (Math.random() > 0.5) {
+            // Position above the chat container
+            snowflake.style.top = `${-randomSize}px`; // Start above
+        } else {
+            // Position on the sides of the chat container
+            const randomSideX = Math.random() < 0.5 ? -randomSize : window.innerWidth + randomSize; // Randomly left or right
+            snowflake.style.left = `${randomSideX}px`;
+            snowflake.style.top = `${Math.random() * (chatContainerBottom - randomSize)}px`; // Position within chat area height
+        }
 
         // Add the snowflake to the document body
         document.body.appendChild(snowflake);
@@ -835,9 +848,6 @@ function showSnowflakes() {
         isEffectActive = false;
     }, 10000);
 }
-
-// Start the snowflakes when the script loads
-showSnowflakes();
 
 
 
