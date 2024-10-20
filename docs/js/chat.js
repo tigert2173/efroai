@@ -569,7 +569,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizeForJson(systemPrompt), ...messages.map(sanitizeForJson)],
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
@@ -588,16 +588,25 @@ async function sendMessage() {
                 t_max_predict_ms: 300000, //timeout after 5 minutes
             };            
         
+        // Sanitize the array
+        const sanitizedArray = requestData.map(item => {
+            return {
+                name: sanitizeForJson(item.name),
+                age: item.age,
+                bio: sanitizeForJson(item.bio)
+            };
+        });
+
        // displayMessage(systemPrompt, 'system');
-       console.log('Sanitized Request Data:', JSON.stringify(requestData, null, 2));
+       console.log('Sanitized Request Data:', JSON.stringify(sanitizedArray, null, 2));
         
-        const response = await fetch("https://botbridgeai.net/api/send", {
+        const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(sanitizedArray)
         });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
