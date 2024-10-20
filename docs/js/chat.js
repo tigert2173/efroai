@@ -804,13 +804,17 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\\n/g, '<br>') // Convert literal \n to <br>
         // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        .replace(/_*_*(.*?)\_\_/g, '<u>$1</u>') // Convert **text** to <b>text</b>
+        .replace(/_*_*(.*?)\_\_/g, '<u>$1</u>') // Convert __text__ to <u>text</u>
         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // Convert **text** to <b>text</b>
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
         .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
-        .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // Inline code with single backticks
+        .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // monospace with single backticks
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
+        if (sanitizedContent.includes("Christmas") || input.includes("holiday")) {
+            return "Ho ho ho! Merry Christmas! 🎅 How can I make your holidays even merrier?";
+        }
+        return "Happy holidays! Let me know if you need help with anything.";
     // Prepare message object in the desired format
     const messageObject = {
         role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
