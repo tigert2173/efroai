@@ -127,7 +127,7 @@ function displayCharacters(characters) {
 
 // Function to get a random ad interval between 3 and 6
 function getRandomAdInterval() {
-    return Math.floor(Math.random() * (6 - 3 + 1)) + 3; // Returns a random number between 3 and 6
+    return Math.floor(Math.random() * (8 - 3 + 1)) + 3; // Returns a random number between 3 and 6
 }
 
 
