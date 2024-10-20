@@ -509,26 +509,23 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
-    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    // if (!message) return;
+    
+    if (!message) return; // Ensure there's a message to send
 
+    // Update lastBotMsg if not resending
     if (!isResend) {
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        lastBotMsg = currentBotMessageElement ? currentBotMessageElement.innerHTML : '';
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent += 1;
+        messagessent++;
         document.getElementById('messages-sent').value = messagessent;
-        displayMessage(message, 'user');
-        userInput.value = '';
-        botMessages = []; // Reset bot messages on new message
-        currentBotMessageElement = null;
+        displayMessage(message, 'user'); // Display user's message
+        userInput.value = ''; // Clear input field
     }
 
-    lastBotMsg = lastBotMsg || settings.greeting;
-
-    // Define the system message
+    // Prepare the system prompt
     const systemPrompt = {
         role: "system",
         content: `${settings.systemPrompt}
@@ -569,14 +566,14 @@ async function sendMessage() {
         });
 
         if (!response.ok) {
-            // Handle error responses
-            // (Same error handling code as before)
+            handleErrorResponse(response);
+            return;
         }
 
+        let result = '';
         if (response.body) {
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
-            let result = '';
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -586,25 +583,25 @@ async function sendMessage() {
                 if (matches && matches[1]) {
                     const content = matches[1];
                     result += content;
-                    clearCurrentBotMessage();
-                    displayMessage(result, 'bot', false); // Show streaming updates
+
+                    // Display streaming updates
+                    displayMessage(result, 'bot', false);
                 }
             }
 
-            // Only save the final result to botMessages if it's not a resend
+            // Save the final result to botMessages if not resending
             if (!isResend && result) {
                 const botMessage = {
                     role: 'assistant',
                     content: [{ type: 'text', text: result }]
                 };
-                botMessages.push(botMessage); // Save the final bot message only on normal send
+                botMessages.push(botMessage); // Save the final bot message
             }
 
             // Display the final bot message in the chat
-            clearCurrentBotMessage();
             displayMessage(result, 'bot', true);
         } else {
-            // Handle non-streaming response
+            // Handle non-streaming response if needed
         }
     } catch (error) {
         console.error('Error:', error);
@@ -612,6 +609,112 @@ async function sendMessage() {
     } finally {
         isResend = false; // Reset resend flag at the end
     }
+}
+
+function handleErrorResponse(response) {
+    // Handle error responses based on status codes
+    const errorMessages = {
+        451: "Oops! It looks like your message contains some illegal content and can't be sent.",
+        401: "Your login session has likely expired. Please try logging in again.",
+        406: "The request cannot be processed because it contains names of identifiable individuals.",
+        400: "This usually means you are not logged in.",
+    };
+
+    if (errorMessages[response.status]) {
+        displayMessage(errorMessages[response.status], 'temporary-notice');
+    } else {
+        displayMessage(`Unknown error occurred. ${response.status}`, 'temporary-notice');
+    }
+}
+
+function regenerateMessage() {
+    console.log('Messages array before regeneration:', messages);
+
+    // Check if there are messages to regenerate
+    if (messages.length > 0) {
+        // Find the last user message
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === 'user') {
+                const lastUserMessage = messages[i].content[0].text; // Get the last user message
+
+                // Set isResend to true for sending the last user message again
+                isResend = true;
+
+                // Update the user input with the last user message for resending
+                document.getElementById('user-input').value = lastUserMessage;
+
+                // Send the last user message again
+                sendMessage(); // This will handle sending the message and receiving streaming response
+                return; // Exit once the message is sent
+            }
+        }
+    }
+
+    // If no user message is found
+    displayMessage('No previous user message found to regenerate.', 'bot');
+}
+
+function displayMessage(content, sender, isFinal = false) {
+    const chatContainer = document.getElementById('chat-container');
+    const sanitizedContent = sanitizeContent(content);
+    
+    // Prepare message object in the desired format
+    const messageObject = {
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        content: [{ type: 'text', text: content }]
+    };
+
+    // Add the message object to the messages array
+    messages.push(messageObject);
+    console.log('Messages array:', messages); // Debugging to view the array
+
+    if (sender === 'bot') {
+        // Store bot message in the botMessages array
+        if (isFinal) {
+            botMessages.push(sanitizedContent); // Only save final message
+            updateNavigationHeader(chatContainer, sanitizedContent);
+        }
+    }
+
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${sender}`;
+    messageElement.innerHTML = sanitizedContent;
+    chatContainer.appendChild(messageElement);
+
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function sanitizeContent(content) {
+    return content
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/\*(.*?)\*/g, '<i>$1</i>'); // Convert *text* to <i>text</i>
+}
+
+function updateNavigationHeader(chatContainer, content) {
+    // Create or reuse the current bot message element
+    if (!currentBotMessageElement) {
+        currentBotMessageElement = document.createElement('div');
+        currentBotMessageElement.className = `message bot`;
+        chatContainer.appendChild(currentBotMessageElement);
+    }
+
+    // Update the content of the existing bot message element
+    currentBotMessageElement.innerHTML = content;
+
+    // Create a message header with navigation arrows
+    const messageHeader = document.createElement('div');
+    messageHeader.className = 'message-header';
+    messageHeader.innerHTML = `
+        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+    `;
+
+    // Append message header to the chat container
+    chatContainer.insertBefore(messageHeader, currentBotMessageElement);
 }
 
 
@@ -631,45 +734,6 @@ function sendGreeting() {
     if (greeting) {
         displayMessage(greeting, 'bot', true);
     }
-}
-
-function displayBotMessage(message, type) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'bot-message ' + type; // Add type for specific styling
-    messageElement.textContent = message;
-    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
-
-    // Automatically remove the notice after a few seconds
-    setTimeout(() => {
-        messageElement.remove();
-    }, 10000); // Adjust the duration as needed
-}
-
-function regenerateMessage() {
-    console.log('Messages array before regeneration:', messages);
-
-    // Check if there are messages
-    if (messages.length > 0) {
-        // Find the last user message
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].role === 'user') {
-                const lastUserMessage = messages[i].content[0].text; // Get the last user message
-                
-                // Set isResend to true for sending the last user message again
-                isResend = true;
-
-                // Update the user input with the last user message for resending
-                document.getElementById('user-input').value = lastUserMessage;
-
-                // Send the last user message again
-                sendMessage(); // This will handle sending the message and receiving streaming response
-                return; // Exit once the message is sent
-            }
-        }
-    }
-
-    // If no user message is found
-    displayMessage('No previous user message found to regenerate.', 'bot');
 }
 
 // Update this function to get the last assistant message correctly
