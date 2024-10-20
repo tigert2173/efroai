@@ -735,6 +735,11 @@ function regenerateMessage() {
 
             // Clear current bot message content to regenerate
             currentBotMessageElement.innerHTML = ''; // Clear current bot message
+            
+            // remove the last assistant message if needed
+            if (messages.length > 0) {
+                messages.pop(); // Remove the last message from the array
+            }
 
             // Send the last user message again
             sendMessage(); // Ensure this function is defined to handle sending the message
@@ -827,7 +832,7 @@ function displayMessage(content, sender, isFinal = false) {
         messageElement.innerHTML = sanitizedContent;
         chatContainer.appendChild(messageElement);
     }
-    
+
     if (isFinal || sender === 'user'){
         // Add the message object to the messages array
         messages.push(messageObject);
