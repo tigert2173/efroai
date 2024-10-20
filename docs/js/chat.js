@@ -791,21 +791,32 @@ function showSnowflakes() {
     if (isEffectActive) return; // Prevent triggering if another effect is active
     isEffectActive = true; // Set flag to active
 
+    // Get the chat container's dimensions
+    const chatContainer = document.getElementById('chat-container');
+    const chatContainerRect = chatContainer.getBoundingClientRect();
+    const chatContainerBottom = chatContainerRect.bottom;
+
     function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
         snowflake.textContent = '❄️';
-        
-        const randomX = Math.random() * 100;
-        snowflake.style.left = `${randomX}%`;
-        
+
+        // Random horizontal position within the chat container
+        const randomX = Math.random() * chatContainerRect.width; // Use chat container width
+        snowflake.style.left = `${randomX}px`;
+
+        // Random size between 10px and 50px
         const randomSize = Math.random() * 40 + 10;
         snowflake.style.fontSize = `${randomSize}px`;
+
+        // Set snowflake's starting position above the chat container
+        snowflake.style.top = `${-randomSize}px`; // Start above the visible area
         
         document.body.appendChild(snowflake);
         snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;
-        
-        setTimeout(() => snowflake.remove(), 5000);
+
+        // Remove the snowflake after animation completes
+        setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000); // Convert seconds to ms
     }
 
     function generateSnowflakes() {
@@ -821,6 +832,7 @@ function showSnowflakes() {
         isEffectActive = false;
     }, 10000);
 }
+
 
 function showSantaImage() {
     if (isEffectActive) return; // Prevent triggering if another effect is active
