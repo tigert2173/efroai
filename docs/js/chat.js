@@ -539,31 +539,6 @@ async function sendMessage() {
         `,
     };
 
- // Sanitize the system prompt
-const sanitizedSystemPrompt = {
-    role: "system",
-    content: `${settings.systemPrompt}
-    Persona: ${settings.persona}
-    Scenario: ${settings.scenario}
-    ${settings.context ? `Context: ${settings.context}` : ''}
-    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-    `.replace(/\\+/g, '') // Remove all backslashes
-};
-
-// Prepare the messages array for the request
-const formattedMessages = [
-    { role: "system", content: sanitizedSystemPrompt.content },
-    ...messages.map(msg => ({
-        role: msg.role,
-        content: typeof msg.content === 'string' ? msg.content.replace(/\\/g, '') : '', // Ensure content is a string
-    })),
-];
-
-// Log the formatted messages for debugging
-console.log('Formatted Messages:', formattedMessages);
-// Log the sanitized content for debugging
-console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
-
     try {    
         await updateSettings();
         // Construct the conversation context
@@ -580,7 +555,7 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: formattedMessages,
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
