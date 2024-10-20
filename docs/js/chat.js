@@ -801,18 +801,21 @@ function displayMessage(content, sender, isFinal = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function regenerateMessage() {
-    if (lastUserMessage) {
-        // Clear current bot message and regenerate
-        clearCurrentBotMessage();
-
-        // Resend the last user message
-        document.getElementById('user-input').value = lastUserMessage;
-        sendMessage(); // Use sendMessage to trigger bot response
-    } else {
-        displayMessage('No previous user message found to regenerate.', 'bot');
+function regenerateMessage(newMessageContent) {
+    // Store the current message content in botMessages
+    if (currentBotMessageElement) {
+        botMessages[currentBotMessageIndex] = currentBotMessageElement.innerHTML;
     }
+
+    // Push the new message content and update the index
+    botMessages.push(newMessageContent);
+    currentBotMessageIndex = botMessages.length - 1;
+
+    // Update the message in the chat container
+    updateBotMessage(newMessageContent);
+    updateArrowStates(); // Ensure navigation arrows are updated accordingly
 }
+
 
 function navigateBotMessages(direction) {
     if (currentBotMessageIndex === -1) return;
