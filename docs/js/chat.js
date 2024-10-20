@@ -725,16 +725,11 @@ function regenerateMessage() {
             if (messages[i].role === 'user') {
                 const lastUserMessage = messages[i].content[0].text; // Get the last user message
                 
+                // Set isResend to true for sending the last user message again
+                isResend = true;
+
                 // Update the user input with the last user message for resending
                 document.getElementById('user-input').value = lastUserMessage;
-
-                // Use the existing bot message element instead of clearing or creating a new one
-                if (currentBotMessageElement) {
-                    currentBotMessageElement.innerHTML = ''; // Clear current bot message content
-                }
-
-                // Reset current bot message index if needed
-                currentBotMessageIndex = -1;
 
                 // Send the last user message again
                 sendMessage(); // This will handle sending the message and receiving streaming response
