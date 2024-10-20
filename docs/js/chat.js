@@ -637,26 +637,38 @@ async function sendMessage() {
         const decoder = new TextDecoder();
         let result = '';
 
+        let bufferedContent = '';
+
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             const chunk = decoder.decode(value, { stream: true });
             console.log(chunk);
-
-           // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
-          // const matches = chunk.match(/"content":\s*"([^"]*)"/);
-        //   const matches = chunk.match(/"content":\s*"((?:[^"\\]|\\.)*)"/);
-        const matches = chunk.match(/"delta":\s*{[^}]*"content":\s*"((?:[^"\\]|\\.)*?)"/);
-
-           //  const matches = chunk.match(/"content":"([^"]*)"/); 
-           if (matches && matches[1]) {
+        
+            const matches = chunk.match(/"delta":\s*{[^}]*"content":\s*"((?:[^"\\]|\\.)*?)"/);
+            
+            if (matches && matches[1]) {
                 const content = matches[1];
-                result += content;
-                clearCurrentBotMessage();
-                displayMessage(result, 'bot', false);
+                bufferedContent += content; // Buffer the content instead of displaying immediately
+        
+                // Optional: Check if the content ends with a full stop or other ending punctuation
+                if (content.endsWith('.') || content.endsWith('!') || content.endsWith('?') || content.endsWith('\n')) {
+                    clearCurrentBotMessage();
+                    displayMessage(bufferedContent.trim(), 'bot', false);
+                    bufferedContent = ''; // Clear the buffer after displaying
+                } else {
+                    clearCurrentBotMessage();
+                    displayMessage(bufferedContent.trim(), 'bot', false); // Update display with buffered content
+                }
             }
         }
-
+        
+        // Final check to display any remaining buffered content
+        if (bufferedContent) {
+            clearCurrentBotMessage();
+            displayMessage(bufferedContent.trim(), 'bot', true); // Display remaining content as final
+        }
+        
         if (result) {
             // Append the final message to the botMessages array
             const botMessage = {
