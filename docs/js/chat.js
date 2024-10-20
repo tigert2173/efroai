@@ -528,7 +528,7 @@ async function sendMessage() {
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
-    Define the system message
+    //Define the system message
     const systemPrompt = {
         role: "system",
         content: `${settings.systemPrompt}
