@@ -759,7 +759,7 @@ function displayMessage(content, sender, isFinal = false) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = sanitizedContent;
-        chatContainer.appendChild(messageElement);
+        await chatContainer.appendChild(messageElement);
         
         const lastAssistantMessage = getLastAssistantMessage();
         if (lastAssistantMessage) {
