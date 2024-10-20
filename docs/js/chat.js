@@ -588,7 +588,7 @@ async function sendMessage() {
             };            
         
         // Sanitize the array
-        const sanitizedArray = myArray.map(item => {
+        const sanitizedArray = requestData.map(item => {
             return {
                 name: sanitizeForJson(item.name),
                 age: item.age,
