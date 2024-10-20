@@ -650,7 +650,7 @@ async function sendMessage() {
             const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
         
             // Clean up the chunk by removing unwanted trailing characters
-            const cleanedChunk = jsonChunk;
+            const cleanedChunk = jsonChunk.trim(); // Trim whitespace
         
             // Try to parse the cleaned JSON
             let parsedChunk;
@@ -666,17 +666,20 @@ async function sendMessage() {
             if (parsedChunk.choices && parsedChunk.choices.length > 0) {
                 // Extract the content from the chunk
                 const content = parsedChunk.choices[0].delta.content;
-                if (content) {
+                if (content !== undefined) { // Check if content is not undefined
                     bufferedContent += content; // Append the extracted content
         
                     // Update the display with the current buffered content
                     clearCurrentBotMessage();
                     displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
+                } else {
+                    console.log("Content is undefined in chunk:", parsedChunk); // Log if content is undefined
                 }
             } else {
                 console.log("No valid choices found in chunk:", parsedChunk); // Log if no valid choices were found
             }
         }
+        
         
         // Final display of the complete buffered content
         if (bufferedContent) {
