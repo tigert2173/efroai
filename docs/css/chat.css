@@ -403,7 +403,7 @@ input[type="checkbox"]:not(:checked) + label {
 .santa-image {
     position: fixed;
     bottom: 0;
-    right: -100%;
+    right: -500px;
     width: 150px;
     animation: santaEntrance 3s ease-out forwards;
 }
