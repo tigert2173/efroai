@@ -926,10 +926,10 @@ function displayMessage(content, sender, isFinal = false) {
  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
-      // Add colorful text formatting
-    .replace(/(red|blue|green|yellow|purple|orange|pink|brown)/gi, (match) => {
-        // Return the word wrapped in a span with a class for styling
-        return `<span style="color:${match};">${match}</span>`;
+      // Add colorful text formatting for specific syntax |color|text|color|
+    .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
+        // Return the text wrapped in a span with the corresponding color
+        return `<span style="color:${color};">${text}</span>`;
     });
    
       // Check for Christmas keywords to trigger special effects
