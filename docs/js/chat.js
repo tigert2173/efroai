@@ -649,13 +649,17 @@ async function sendMessage() {
             // Remove the 'data: ' prefix if present
             const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
         
+            // Trim any trailing characters after a complete JSON object
+            const endIndex = jsonChunk.indexOf('}');
+            const trimmedChunk = endIndex !== -1 ? jsonChunk.slice(0, endIndex + 1) : jsonChunk;
+        
             // Try to parse the JSON
             let parsedChunk;
             try {
-                parsedChunk = JSON.parse(jsonChunk);
+                parsedChunk = JSON.parse(trimmedChunk);
             } catch (error) {
                 console.error("Error parsing chunk:", error);
-                console.log("Skipped chunk:", jsonChunk); // Log the skipped chunk
+                console.log("Skipped chunk:", trimmedChunk); // Log the skipped chunk
                 continue; // Skip this iteration if there's a parsing error
             }
         
