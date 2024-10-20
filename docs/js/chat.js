@@ -642,31 +642,27 @@ async function sendMessage() {
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
+            
             const chunk = decoder.decode(value, { stream: true });
             console.log(chunk);
         
-            const matches = chunk.match(/"delta":\s*{[^}]*"content":\s*"((?:[^"\\]|\\.)*?)"/);
-            
+            // Use regex to find content in the chunk
+            const matches = chunk.match(/"content":"((?:[^"\\]|\\.)*?)"/);
+        
             if (matches && matches[1]) {
                 const content = matches[1];
-                bufferedContent += content; // Buffer the content instead of displaying immediately
-                result = content;
-                // Optional: Check if the content ends with a full stop or other ending punctuation
-                if (content.endsWith('.') || content.endsWith('!') || content.endsWith('?') || content.endsWith('\n')) {
-                    clearCurrentBotMessage();
-                    displayMessage(bufferedContent.trim(), 'bot', false);
-                    bufferedContent = ''; // Clear the buffer after displaying
-                } else {
-                    clearCurrentBotMessage();
-                    displayMessage(bufferedContent.trim(), 'bot', false); // Update display with buffered content
-                }
+                bufferedContent += content; // Accumulate content
+        
+                // Always update the current display
+                clearCurrentBotMessage();
+                displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
             }
         }
         
-        // Final check to display any remaining buffered content
+        // Final check to display the complete buffered content
         if (bufferedContent) {
             clearCurrentBotMessage();
-            displayMessage(bufferedContent.trim(), 'bot', true); // Display remaining content as final
+            displayMessage(bufferedContent.trim(), 'bot', true); // Display the final complete message
         }
         
         if (result) {
@@ -678,8 +674,8 @@ async function sendMessage() {
            // messages.push(botMessage);
 
             // Display the final bot message in the chat
-            clearCurrentBotMessage();
-            displayMessage(result, 'bot', true);
+          //  clearCurrentBotMessage();
+           // displayMessage(result, 'bot', true);
         }
     } else {
         const data = await response.json();
