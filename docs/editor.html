@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <!-- Import DOMPurify -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Character</title>
@@ -135,6 +133,9 @@
         }
 
     </style>
+    <!-- Import DOMPurify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
+
 </head>
 <body>
 
@@ -764,10 +765,17 @@ imageInput.addEventListener('change', function() {
 });
 
 function cleanInput(input) {
-    // Sanitize the input and then apply other cleaning as needed
-    return DOMPurify.sanitize(input)
-        .replace(/“|”/g, '"')
-        .replace(/‘|’/g, "'");
+    // Sanitize the input with DOMPurify
+    let sanitizedInput = DOMPurify.sanitize(input);
+
+    // Replace curly quotes with straight quotes
+    sanitizedInput = sanitizedInput.replace(/“|”/g, '"').replace(/‘|’/g, "'");
+
+    // Optionally, you can also trim whitespace and handle other characters if needed
+    sanitizedInput = sanitizedInput.trim();
+
+    // Return the cleaned input
+    return sanitizedInput;
 }
 
     </script>
