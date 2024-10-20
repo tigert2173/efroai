@@ -753,16 +753,16 @@ function displayMessage(content, sender, isFinal = false) {
         messageHeader.innerHTML = `
         `;
 
-        // Create or update the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
-        }
+        // // Create or update the current bot message element
+        // if (!currentBotMessageElement) {
+        //     currentBotMessageElement = document.createElement('div');
+        //     currentBotMessageElement.className = `message ${sender}`;
+        //     chatContainer.appendChild(currentBotMessageElement);
+        // }
 
-        // Append message header and content
-        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        currentBotMessageElement.innerHTML += sanitizedContent;
+        // // Append message header and content
+        // chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        // currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
             messages.push(messageObject);
