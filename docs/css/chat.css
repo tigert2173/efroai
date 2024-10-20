@@ -405,7 +405,7 @@ input[type="checkbox"]:not(:checked) + label {
     bottom: 0;
     right: 0;
     width: 150px;
-    animation: santaEntrance 10s ease-out forwards;
+    animation: santaEntrance 3s ease-out forwards;
 }
 
 @keyframes santaEntrance {
