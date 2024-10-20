@@ -718,7 +718,7 @@ function displayBotMessage(message, type) {
 let userName = '{{user}}';
 let currentBotMessageElement = null;
 let botMessages = []; // Array to store bot messages
-let currentBotMessageIndex = -1; // Index to track current bot message
+let currentBotMessageIndex = -1; // Index for navigation
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
@@ -734,7 +734,8 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        .replace(/{{user}}/g, userName); // Replace {{user}} with the actual user name
+        //.replace(/{{user}}/g, userName); // Replace {{user}} with the actual user name
+        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format
     const messageObject = {
@@ -801,16 +802,16 @@ function displayMessage(content, sender, isFinal = false) {
 }
 
 // Additional functions remain the same
+let lastUserMessage = null; // Track the last user message
 
 function regenerateMessage() {
     if (lastUserMessage) {
-        settings.context = settings.context.replace(lastBotMessage, '').trim();
-
+        // Clear current bot message and regenerate
         clearCurrentBotMessage();
-        isResend = true;
-        document.getElementById('user-input').value = lastUserMessage;
 
-        sendMessage(); // Resend the last user message
+        // Resend the last user message
+        document.getElementById('user-input').value = lastUserMessage;
+        sendMessage(); // Use sendMessage to trigger bot response
     } else {
         displayMessage('No previous user message found to regenerate.', 'bot');
     }
