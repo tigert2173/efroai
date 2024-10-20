@@ -642,49 +642,21 @@ async function sendMessage() {
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-        
+
             const chunk = decoder.decode(value, { stream: true });
-            console.log("Raw chunk:", chunk); // Log raw chunk data
-        
-            // Remove the 'data: ' prefix if present
-            const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
-        
-            // Clean up the chunk by removing unwanted trailing characters
-            const cleanedChunk = jsonChunk.trim();
-        
-            // Try to parse the cleaned JSON
-            let parsedChunk;
-            try {
-                parsedChunk = JSON.parse(cleanedChunk);
-            } catch (error) {
-                console.error("Error parsing chunk:", error);
-                console.log("Skipped chunk (not parsed):", cleanedChunk); // Log the skipped chunk
-                parsedChunk = { choices: [{ delta: { content: cleanedChunk } }] }; // Force content to be used
-            }
-        
-            // Check if parsed chunk has the expected structure
-            if (parsedChunk.choices && parsedChunk.choices.length > 0) {
-                // Extract the content from the chunk
-                const content = parsedChunk.choices[0].delta.content;
-                if (content) {
-                    bufferedContent += content; // Append the extracted content
-        
-                    // Update the display with the current buffered content
-                    clearCurrentBotMessage();
-                    displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
-                }
-            } else {
-                console.log("No valid choices found in chunk:", parsedChunk); // Log if no valid choices were found
+            const matches = chunk.match(/"content":\s*"([^"]*)"/);
+            if (matches && matches[1]) {
+                const content = matches[1];
+                result += content;
+                clearCurrentBotMessage();
+                displayMessage(result, 'bot', false);
             }
         }
-        
-        
-        // Final display of the complete buffered content
-        if (bufferedContent) {
+
+        if (result) {
             clearCurrentBotMessage();
-            displayMessage(bufferedContent.trim(), 'bot', true); // Display the final complete message
+            displayMessage(result, 'bot', true);
         }
-        
     } else {
         const data = await response.json();
         const botMessage = data.choices[0].message.content;
