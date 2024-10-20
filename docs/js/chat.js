@@ -787,14 +787,44 @@ function getLastAssistantMessage() {
 }
 
 function showSnowflakes() {
-    // Display falling snowflakes
-    const snowflake = document.createElement('div');
-    snowflake.classList.add('snowflake');
-    snowflake.textContent = '❄️';
-    document.body.appendChild(snowflake);
-    // Remove the snowflake after animation
-    setTimeout(() => snowflake.remove(), 5000);
+    // Function to create a snowflake at a random position
+    function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.textContent = '❄️';
+        
+        // Random horizontal position between 0 and 100% of the viewport width
+        const randomX = Math.random() * 100;
+        snowflake.style.left = `${randomX}%`;
+        
+        // Random size between 10px and 50px
+        const randomSize = Math.random() * 40 + 10;
+        snowflake.style.fontSize = `${randomSize}px`;
+        
+        // Add the snowflake to the document body
+        document.body.appendChild(snowflake);
+        
+        // Animate snowflake falling from the top
+        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;  // Adjust fall speed based on size
+        
+        // Remove the snowflake after the animation completes
+        setTimeout(() => snowflake.remove(), 5000);
+    }
+
+    // Function to generate snowflakes over a period of time
+    function generateSnowflakes() {
+        const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
+        createSnowflake();
+        
+        // Keep generating snowflakes at random intervals
+        setTimeout(generateSnowflakes, interval);
+    }
+
+    // Start generating snowflakes
+    generateSnowflakes();
 }
+
+
 
 function showSantaImage() {
     const santaImage = document.createElement('img');
