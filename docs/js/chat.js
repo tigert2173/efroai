@@ -718,21 +718,34 @@ function displayBotMessage(message, type) {
 function regenerateMessage() {
     isResend = true;
     const lastAssistantMessage = getLastAssistantMessage();
+    
     if (lastAssistantMessage) {
-        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
+        // Find the last user message
+        let lastUserMessage = null;
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === 'user') {
+                lastUserMessage = messages[i].content[0].text; // Get the last user message
+                break; // Exit once we find the last user message
+            }
+        }
 
-        // Update the user input with the last user message
-        document.getElementById('user-input').value = lastUserMessage;
+        if (lastUserMessage) {
+            // Update the user input with the last user message
+            document.getElementById('user-input').value = lastUserMessage;
 
-        // Clear current bot message content to regenerate
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+            // Clear current bot message content to regenerate
+            currentBotMessageElement.innerHTML = ''; // Clear current bot message
 
-        // Send the last user message again
-        sendMessage(); // Ensure this function is defined to handle sending the message
+            // Send the last user message again
+            sendMessage(); // Ensure this function is defined to handle sending the message
+        } else {
+            displayMessage('No previous user message found to regenerate.', 'bot');
+        }
     } else {
         displayMessage('No previous assistant message found to regenerate.', 'bot');
     }
 }
+
 
 // Update this function to get the last assistant message correctly
 function getLastAssistantMessage() {
