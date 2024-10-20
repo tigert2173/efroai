@@ -786,6 +786,35 @@ function getLastAssistantMessage() {
     return null; // Return null if no assistant message is found
 }
 
+function getChristmasMessageResponse(message) {
+    if (message.includes("Merry Christmas")) {
+        triggerSpecialEffect('merry-christmas');
+        return `<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>`;
+    } else if (message.includes("Santa")) {
+        triggerSpecialEffect('santa');
+        return `<span class="christmas-font">Ho ho ho! Santa is here! 🎁</span>`;
+    } else if (message.includes("gifts")) {
+        triggerSpecialEffect('gifts');
+        return `<span class="christmas-italic">You have some Christmas gifts waiting for you! 🎁</span>`;
+    }
+    return message;
+}
+
+function triggerSpecialEffect(effect) {
+    if (effect === 'merry-christmas') {
+        document.getElementById('christmas-music').play();
+        showSnowflakes();
+    } else if (effect === 'santa') {
+        showSantaImage();
+        playSantaVoice();
+    } else if (effect === 'gifts') {
+        showGiftBoxes();
+    }
+}
+
+// Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
+
+
 let userName = '{{user}}';
 let lastBotMsg = null;
 

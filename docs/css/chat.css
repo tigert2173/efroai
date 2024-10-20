@@ -383,41 +383,46 @@ input[type="checkbox"]:not(:checked) + label {
 }
 
 
-/* Christmas themed colors */
-.christmas-bold {
-    font-weight: bold;
-    color: red;
+/* Snowflake animation */
+.snowflake {
+    position: fixed;
+    top: -10%;
+    left: random number;
+    animation: snowflakes 10s linear infinite;
+    font-size: 24px;
+    color: white;
 }
 
-.christmas-italic {
-    font-style: italic;
-    color: green;
-}
-
-.christmas-code {
-    background-color: #f4f4f4;
-    padding: 5px;
-    border: 1px solid #ddd;
-    color: #d35400;
-}
-
-.christmas-font {
-    font-family: 'Great Vibes', cursive; /* A festive cursive font */
-    color: #e74c3c;
-}
-
-/* Optional: Add snowfall animation */
 @keyframes snowflakes {
     0% {top: -10%;}
     100% {top: 100%;}
 }
 
-.snowflake {
+/* Santa image */
+.santa-image {
     position: fixed;
-    top: -10%;
-    left: random number;
-    opacity: 0.8;
-    animation: snowflakes 10s linear infinite;
-    font-size: 24px;
-    color: white;
+    bottom: 0;
+    right: 0;
+    width: 150px;
+    animation: santaEntrance 3s ease-out forwards;
+}
+
+@keyframes santaEntrance {
+    0% {right: -200px;}
+    100% {right: 0;}
+}
+
+/* Gift box animation */
+.gift-box {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    animation: giftBounce 2s infinite;
+}
+
+@keyframes giftBounce {
+    0%, 100% {transform: translateX(-50%) translateY(0);}
+    50% {transform: translateX(-50%) translateY(-20px);}
 }
