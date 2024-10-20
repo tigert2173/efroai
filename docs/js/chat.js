@@ -808,7 +808,7 @@ function regenerateMessage(newMessageContent) {
     }
 
     // Push the new message content and update the index
-    botMessages.push(newMessageContent);
+    botMessages.push(messages[messages.length - 1]);
     currentBotMessageIndex = botMessages.length - 1;
 
     // Update the message in the chat container
