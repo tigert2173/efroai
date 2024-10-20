@@ -506,19 +506,11 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 //     sessionId: 1,
 // };
 
-function sanitizeForJson(value) {
-    // Convert the value to a string if it isn't already
-    let sanitizedValue = String(value);
-
-    // Replace special characters with Unicode
-    sanitizedValue = sanitizedValue.replace(/[\u0000-\u001F\u2028\u2029]/g, (char) => {
-        return '\\u' + ('0000' + char.charCodeAt(0).toString(16)).slice(-4);
+function sanitizeToUnicode(input) {
+    return input.replace(/[\u007F-\uFFFF]/g, function (c) {
+        return '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
     });
-
-    return sanitizedValue;
 }
-
-
 
 const isFirstMessage = true; 
 let isResend = false;
@@ -553,6 +545,17 @@ async function sendMessage() {
         `,
     };
 
+    const sanitizedSystemPrompt = {
+        role: "system",
+        content: sanitizeToUnicode(`${settings.systemPrompt}
+        Persona: ${settings.persona}
+        Scenario: ${settings.scenario}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `),
+    };
+
+    console.log("sanitizeToUnicode: " + sanitizedSystemPrompt.content);
     try {    
         await updateSettings();
         // Construct the conversation context
@@ -569,7 +572,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
+                messages: [sanitizedSystemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
@@ -587,17 +590,17 @@ async function sendMessage() {
                 top_p: settings.top_p,
                 t_max_predict_ms: 300000, //timeout after 5 minutes
             };            
-
-       // displayMessage(systemPrompt, 'system');
-       console.log('Sanitized Request Data:', JSON.stringify(requestData, null, 2));
         
-        const response = await fetch("https://botbridgeai.net/api/send", {
+       // displayMessage(systemPrompt, 'system');
+        console.log('Request Data:', requestData);
+        
+        const response = await fetch("https://api.botbridge.net/api/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
-            body: JSON.stringify(requestData)
+            body: requestData
         });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
