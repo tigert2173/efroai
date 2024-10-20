@@ -571,7 +571,7 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
             ...msg,
             content: msg.content.map(item => ({
                 ...item,
-                text: item.text.replace(/\\+/g, '') // Remove backslashes but keep newlines
+                text: item.text.replace(/\\/g, '') // Remove backslashes but keep newlines
             }))
         }));
 
