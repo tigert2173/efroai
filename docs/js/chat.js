@@ -161,11 +161,11 @@ function populateCharacterSettings() {
 
             // Populate each field with the character's data
             document.getElementById('user-name').value = userID || "{{user}";
-            document.getElementById('persona').value = characterData.persona;
-            document.getElementById('context').value = characterData.context;
-            document.getElementById('scenario').value = characterData.scenario;
-            document.getElementById('greeting').value = characterData.greeting;
-            document.getElementById('exampledialogue').value = characterData.exampledialogue;
+            // document.getElementById('persona').value = characterData.persona;
+            // document.getElementById('context').value = characterData.context;
+            // document.getElementById('scenario').value = characterData.scenario;
+            // document.getElementById('greeting').value = characterData.greeting;
+            // document.getElementById('exampledialogue').value = characterData.exampledialogue;
 
             // Update settings
             settings.persona = characterData.persona;
@@ -184,9 +184,9 @@ function populateCharacterSettings() {
 function updateSettings() {
     checkAPIStatus();
     //processMessageDataImportance();
-    settings.persona = document.getElementById('persona').value;
-    settings.context = document.getElementById('context').value;
-    settings.greeting = document.getElementById('greeting').value;
+    // settings.persona = document.getElementById('persona').value;
+    // settings.context = document.getElementById('context').value;
+    // settings.greeting = document.getElementById('greeting').value;
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
@@ -529,15 +529,15 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     // Define the system message
-    const systemPrompt = {
-        role: "system",
-        content: `${settings.systemPrompt}
-        Persona: ${settings.persona}
-        Scenario: ${settings.scenario}
-        ${settings.context ? `Context: ${settings.context}` : ''}
-        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        `,
-    };
+    // const systemPrompt = {
+    //     role: "system",
+    //     content: `${settings.systemPrompt}
+    //     Persona: ${settings.persona}
+    //     Scenario: ${settings.scenario}
+    //     ${settings.context ? `Context: ${settings.context}` : ''}
+    //     ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+    //     `,
+    // };
 
     // Sanitize the system prompt
     const sanitizedSystemPrompt = {
@@ -575,7 +575,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
+                messages: [systemPrompt, ...sanitizedMessages],
                 stream: true, // Enables streaming responses
             
 
