@@ -506,12 +506,6 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 //     sessionId: 1,
 // };
 
-function sanitizeToUnicode(input) {
-    return input.replace(/[\u007F-\uFFFF]/g, function (c) {
-        return '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
-    });
-}
-
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
@@ -544,18 +538,8 @@ async function sendMessage() {
         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
         `,
     };
+    
 
-    const sanitizedSystemPrompt = {
-        role: "system",
-        content: sanitizeToUnicode(`${settings.systemPrompt}
-        Persona: ${settings.persona}
-        Scenario: ${settings.scenario}
-        ${settings.context ? `Context: ${settings.context}` : ''}
-        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        `),
-    };
-
-    console.log("sanitizeToUnicode: " + sanitizedSystemPrompt.content);
     try {    
         await updateSettings();
         // Construct the conversation context
@@ -572,7 +556,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...messages],
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
@@ -592,7 +576,7 @@ async function sendMessage() {
             };            
         
        // displayMessage(systemPrompt, 'system');
-        console.log('Request Data:', requestData);
+        console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
         const response = await fetch("https://api.botbridge.net/api/send", {
             method: 'POST',
@@ -600,7 +584,7 @@ async function sendMessage() {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
-            body: requestData
+            body: JSON.stringify(requestData)
         });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
