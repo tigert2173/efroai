@@ -785,6 +785,7 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
+// script.js
 let isEffectActive = false; // Flag to track if an effect is active
 
 function showSnowflakes() {
@@ -792,13 +793,11 @@ function showSnowflakes() {
     isEffectActive = true; // Set flag to active
 
     const chatContainer = document.getElementById('chat-container'); // Get the chat container
-    const chatContainerTop = chatContainer.offsetTop; // Get the top position of the chat container
-    const chatContainerHeight = chatContainer.offsetHeight; // Get the height of the chat container
 
     function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄️';
+        snowflake.textContent = '❄️'; // Snowflake character
 
         // Random horizontal position between 0 and 100% of the viewport width
         const randomX = Math.random() * 100;
@@ -836,6 +835,9 @@ function showSnowflakes() {
         isEffectActive = false;
     }, 10000);
 }
+
+// Start the snowflakes when the script loads
+showSnowflakes();
 
 
 
