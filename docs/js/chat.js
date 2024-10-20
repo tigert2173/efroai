@@ -507,7 +507,7 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 // };
 
 const isFirstMessage = true; 
-
+let isResend = false;
 async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
@@ -716,6 +716,7 @@ function displayBotMessage(message, type) {
 }
 
 function regenerateMessage() {
+    isResend = true;
     const lastAssistantMessage = getLastAssistantMessage();
     if (lastAssistantMessage) {
         const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
