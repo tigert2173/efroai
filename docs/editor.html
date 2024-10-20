@@ -772,9 +772,7 @@ function cleanInput(input) {
     sanitizedInput = sanitizedInput.replace(/“|”/g, '"').replace(/‘|’/g, "'");
 
     // Optionally, you can also trim whitespace and handle other characters if needed
-    sanitizedInput = sanitizedInput
-        .replace(/\\/g, '').trim()
-        .trim();
+    sanitizedInput = sanitizedInput.trim();
 
     // Return the cleaned input
     return sanitizedInput;
