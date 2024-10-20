@@ -925,9 +925,12 @@ function displayMessage(content, sender, isFinal = false) {
  .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
- .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>'); // Snowflakes for the word "snow"
-    
-   // Check for Christmas keywords to trigger special effects
+ .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
+      // Add colorful text formatting
+      .replace(/(red|blue|green|yellow|purple|orange|pink|brown)/gi, '<span class="color-$1">$1</span>'); // Wrap color words in spans
+   
+   
+      // Check for Christmas keywords to trigger special effects
    if (content.match(/Merry Christmas/i)) {
     triggerSpecialEffect('merry-christmas');
 } else if (content.match(/Santa/i)) {
