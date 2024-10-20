@@ -207,6 +207,7 @@ code {
 }
 #chat-container {
     width: 100%;
+    z-index: 2000;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 8px;
