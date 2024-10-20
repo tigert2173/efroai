@@ -649,7 +649,17 @@ async function sendMessage() {
          //   const matches = chunk.match(/"content":"(.*?)"/);
          const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"(.*?)"\}\]/g);
 
-
+         if (matches) {
+            matches.forEach(match => {
+                // Extracting the content from each match
+                const content = match.match(/"text":"(.*?)"/)[1];
+                bufferedContent += content; // Accumulate content
+    
+                // Always update the current display
+                clearCurrentBotMessage();
+                displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
+            });
+        }
            //  const matches = chunk.match(/"content":"([^"]*)"/); 
            if (matches && matches[1]) {
                 const content = matches[1];
