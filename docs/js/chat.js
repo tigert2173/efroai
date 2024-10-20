@@ -716,10 +716,9 @@ function displayBotMessage(message, type) {
 }
 
 function regenerateMessage() {
-    // Log the messages array for debugging
     console.log('Messages array before regeneration:', messages);
 
-    // Check if there are messages and the last one is from the user
+    // Check if there are messages
     if (messages.length > 0) {
         // Find the last user message
         for (let i = messages.length - 1; i >= 0; i--) {
@@ -729,8 +728,10 @@ function regenerateMessage() {
                 // Update the user input with the last user message for resending
                 document.getElementById('user-input').value = lastUserMessage;
 
-                // Clear the current bot message content to prepare for regeneration
-                currentBotMessageElement.innerHTML = ''; // Clear current bot message
+                // Use the existing bot message element instead of clearing or creating a new one
+                if (currentBotMessageElement) {
+                    currentBotMessageElement.innerHTML = ''; // Clear current bot message content
+                }
 
                 // Reset current bot message index if needed
                 currentBotMessageIndex = -1;
