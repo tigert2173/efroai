@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <!-- Import DOMPurify -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Character</title>
@@ -759,7 +761,6 @@ imageInput.addEventListener('change', function() {
         }
     }
 });
-import DOMPurify from 'dompurify';
 
 function cleanInput(input) {
     // Sanitize the input and then apply other cleaning as needed
