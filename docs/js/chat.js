@@ -494,6 +494,12 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 const isFirstMessage = true; 
 
 async function sendMessage() {
+    const lastAssistantMessage = getLastAssistantMessage();
+    if (lastAssistantMessage) {
+        console.log('Last assistant message:', lastAssistantMessage);
+    } else {
+        console.log('No assistant messages found.');
+    }
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
@@ -762,12 +768,7 @@ function displayMessage(content, sender, isFinal = false) {
         messageHeader.className = 'message-header';
         messageHeader.innerHTML = `
         `;
-        const lastAssistantMessage = getLastAssistantMessage();
-        if (lastAssistantMessage) {
-            console.log('Last assistant message:', lastAssistantMessage);
-        } else {
-            console.log('No assistant messages found.');
-        }
+
         // Create or update the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
