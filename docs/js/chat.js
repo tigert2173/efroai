@@ -649,12 +649,13 @@ async function sendMessage() {
             // Remove the 'data: ' prefix if present
             const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
         
-            // Parse the cleaned chunk as JSON
+            // Try to parse the JSON
             let parsedChunk;
             try {
                 parsedChunk = JSON.parse(jsonChunk);
             } catch (error) {
                 console.error("Error parsing chunk:", error);
+                console.log("Skipped chunk:", jsonChunk); // Log the skipped chunk
                 continue; // Skip this iteration if there's a parsing error
             }
         
@@ -670,7 +671,7 @@ async function sendMessage() {
                     displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
                 }
             } else {
-                console.log("No valid choices found in chunk."); // Log if no valid choices were found
+                console.log("No valid choices found in chunk:", parsedChunk); // Log if no valid choices were found
             }
         }
         
@@ -794,11 +795,11 @@ function displayMessage(content, sender, isFinal = false) {
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
-        // .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-        // .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-        // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-        // .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        // .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format
