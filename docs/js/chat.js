@@ -636,23 +636,29 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let result = '';
-
-        let bufferedContent = '';
-
+    
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-
+    
+            // Decode the current chunk
             const chunk = decoder.decode(value, { stream: true });
-            const matches = chunk.match(/"content":\s*"([^"]*)"/);
-            if (matches && matches[1]) {
-                const content = matches[1];
-                result += content;
-                clearCurrentBotMessage();
-                displayMessage(result, 'bot', false);
+    
+            // If the chunk is complete JSON, parse it directly
+            // Here we will assume each chunk is a full JSON object; otherwise, you would need to buffer until complete JSON
+            try {
+                const jsonResponse = JSON.parse(chunk);
+                if (jsonResponse.choices && jsonResponse.choices.length > 0) {
+                    const content = jsonResponse.choices[0].delta.content;
+                    result += content;
+                    clearCurrentBotMessage();
+                    displayMessage(result, 'bot', false);
+                }
+            } catch (error) {
+                console.error('Failed to parse JSON:', error);
             }
         }
-
+    
         if (result) {
             clearCurrentBotMessage();
             displayMessage(result, 'bot', true);
