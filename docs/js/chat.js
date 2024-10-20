@@ -665,7 +665,7 @@ async function sendMessage() {
         }
     } else {
         const data = await response.json();
-        const botMessage = data.choices[0].message.content;
+         botMessage = data.choices[0].message.content;
         
         const botMessage = {
             role: 'assistant',
