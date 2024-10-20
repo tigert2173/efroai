@@ -410,7 +410,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 @keyframes santaEntrance {
     0% {right: -200px;}
-    100% {right: 100%;}
+    100% {right: 100% + 200px;}
 }
 
 /* Gift box animation */
