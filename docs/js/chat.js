@@ -529,15 +529,15 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     // Define the system message
-    // const systemPrompt = {
-    //     role: "system",
-    //     content: `${settings.systemPrompt}
-    //     Persona: ${settings.persona}
-    //     Scenario: ${settings.scenario}
-    //     ${settings.context ? `Context: ${settings.context}` : ''}
-    //     ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-    //     `,
-    // };
+    const systemPrompt = {
+        role: "system",
+        content: `${settings.systemPrompt}
+        Persona: ${settings.persona}
+        Scenario: ${settings.scenario}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
+    };
 
     // Sanitize the system prompt
     const sanitizedSystemPrompt = {
@@ -575,7 +575,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
+                messages: [systemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
