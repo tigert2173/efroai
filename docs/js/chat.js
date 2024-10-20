@@ -799,8 +799,8 @@ function showSnowflakes() {
         snowflake.classList.add('snowflake');
         snowflake.textContent = '❄️';
         
-        // Random horizontal position between 0 and 100% of the viewport width
-        const randomX = Math.random() * 100;
+        // Random horizontal position favoring the right 25% of the viewport width
+        const randomX = Math.random() * 25 + 75; // Generate a value between 75% and 100%
         snowflake.style.left = `${randomX}%`;
         
         // Random size between 10px and 50px
@@ -815,7 +815,7 @@ function showSnowflakes() {
         
         // Remove the snowflake after the animation completes
         setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
-    }
+    }    
 
     // Function to generate snowflakes over a period of time
     function generateSnowflakes() {
