@@ -173,33 +173,34 @@ function populateCharacterSettings() {
             return response.json();
         })
         .then(character => {
-            // Define the character object
-            const characterData = {
-                uploader: character.uploader || '',
-                persona: character.persona || '',
-                context: character.context || '',
-                scenario: character.scenario || '',
-                greeting: character.greeting || '',
-                exampledialogue: character.exampledialogue || ''
+            // Function to sanitize strings by removing backslashes but keeping newlines
+            const sanitizeString = (str) => {
+                return str.replace(/\\/g, ''); // Remove backslashes
             };
-
+        
+            // Define the character object with sanitized values
+            const characterData = {
+                uploader: sanitizeString(character.uploader) || '',
+                persona: sanitizeString(character.persona) || '',
+                context: sanitizeString(character.context) || '',
+                scenario: sanitizeString(character.scenario) || '',
+                greeting: sanitizeString(character.greeting) || '',
+                exampledialogue: sanitizeString(character.exampledialogue) || ''
+            };
+        
             // Populate each field with the character's data
             document.getElementById('user-name').value = userID || "{{user}";
-            // document.getElementById('persona').value = characterData.persona;
-            // document.getElementById('context').value = characterData.context;
-            // document.getElementById('scenario').value = characterData.scenario;
-            // document.getElementById('greeting').value = characterData.greeting;
-            // document.getElementById('exampledialogue').value = characterData.exampledialogue;
-
+        
             // Update settings
             settings.persona = characterData.persona;
             settings.context = characterData.context;
             settings.greeting = characterData.greeting;
             settings.scenario = characterData.scenario;
             settings.exampledialogue = characterData.exampledialogue;
+        
             // Display the greeting as a bot message
             displayMessage(characterData.greeting, 'bot', true); // Display greeting as bot message
-        })
+        })        
         .catch(error => {
             console.error('Error fetching character data:', error);
         });
