@@ -785,10 +785,6 @@ function displayMessage(content, sender, isFinal = false) {
         content: [{ type: 'text', text: content }]
     };
 
-    // Add the message object to the messages array
-    messages.push(messageObject);
-    console.log('Messages array:', messages); // Debugging to view the array
-
     if (sender === 'bot') {
         // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
@@ -824,6 +820,9 @@ function displayMessage(content, sender, isFinal = false) {
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
+        // Add the message object to the messages array
+        messages.push(messageObject);
+        console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
         updateArrowStates();
     } else {
