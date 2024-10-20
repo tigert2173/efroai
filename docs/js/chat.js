@@ -717,11 +717,11 @@ function displayBotMessage(message, type) {
 
 let userName = '{{user}}';
 let currentBotMessageElement = null;
-let botMessages = []; // Array to store bot messages
 let currentBotMessageIndex = -1; // Index for navigation
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
 
 function displayMessage(content, sender, isFinal = false) {
     userName = document.getElementById('user-name').value.trim();
@@ -734,7 +734,6 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        //.replace(/{{user}}/g, userName); // Replace {{user}} with the actual user name
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format
@@ -742,20 +741,15 @@ function displayMessage(content, sender, isFinal = false) {
         role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user', // 'assistant' for bot, 'system' for system messages, 'user' otherwise
         content: [{ type: 'text', text: content }]
     };
-    
-    // Add the message object to the messages array
-    if (sender === 'user') {
-        messages.push(messageObject);
-        console.log('Messages array:', messages); // Debugging to view the array
-    }
 
     // Add the message object to the messages array
-    if (sender === 'system') {
-        messages.push(messageObject);
-        console.log('Messages array:', messages); // Debugging to view the array
-    }
+    messages.push(messageObject);
+    console.log('Messages array:', messages); // Debugging to view the array
 
     if (sender === 'bot') {
+        // Store bot message in the botMessages array
+        botMessages.push(sanitizedContent);
+        
         // Remove previous bot message header if exists
         const previousHeader = document.querySelector('.message-header');
         if (previousHeader) {
@@ -782,10 +776,7 @@ function displayMessage(content, sender, isFinal = false) {
         currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
-            messages.push(messageObject);
-            console.log('Messages array:', messages); // Debugging to view the array
-            //botMessages.push(currentBotMessageElement.innerHTML);
-            currentBotMessageIndex = botMessages.length - 1;
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
         }
 
         // Update arrow states
@@ -801,43 +792,25 @@ function displayMessage(content, sender, isFinal = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Additional functions remain the same
-
 function regenerateMessage() {
-    if (messages && messages.length > 0) {
-        let lastUserMessage = null;
-        let lastBotMessage = null;
+    const lastAssistantMessage = getLastAssistantMessage();
+    if (lastAssistantMessage) {
+        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
 
-        // Loop backwards to find the last user and bot messages
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (!lastBotMessage && messages[i].role === 'bot') {
-                lastBotMessage = messages[i].content;
-            }
-            if (!lastUserMessage && messages[i].role === 'user') {
-                lastUserMessage = messages[i].content;
-            }
-            if (lastUserMessage && lastBotMessage) {
-                break;
-            }
-        }
+        // Update the user input with the last user message
+        document.getElementById('user-input').value = lastUserMessage;
+        
+        // Optionally remove the last assistant message from the chat
+        currentBotMessageElement.innerHTML = ''; // Clear current bot message to regenerate
 
-        if (lastUserMessage) {
-            // Remove the last bot message from the context
-            settings.context = settings.context.replace(lastBotMessage, '').trim();
-
-            clearCurrentBotMessage();
-            isResend = true;
-            document.getElementById('user-input').value = lastUserMessage;
-
-            sendMessage(); // Resend the last user message
-        } else {
-            displayMessage('No previous user message found to regenerate.', 'bot');
-        }
+        // Resend the last user message
+        sendMessage(); // Ensure this function is defined to handle sending the message
     } else {
-        displayMessage('No messages found in history.', 'bot');
+        displayMessage('No previous assistant message found to regenerate.', 'bot');
     }
 }
 
+// Navigation functions remain the same
 
 function navigateBotMessages(direction) {
     if (currentBotMessageIndex === -1) return;
