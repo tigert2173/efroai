@@ -121,9 +121,9 @@ function loadCharacter(charName, listItem) {
     const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
     if (characterData) {
         settings = JSON.parse(characterData);
-        document.getElementById('persona').value = settings.persona;
-        document.getElementById('context').value = settings.context;
-        document.getElementById('greeting').value = settings.greeting;
+        // document.getElementById('persona').value = settings.persona;
+        // document.getElementById('context').value = settings.context;
+        // document.getElementById('greeting').value = settings.greeting;
         document.getElementById('temperature').value = settings.temperature;
         document.getElementById('model').value = settings.model;
         highlightCharacter(listItem);
@@ -132,6 +132,30 @@ function loadCharacter(charName, listItem) {
         alert('Character not found.');
     }
 }
+
+//Shortwave Config
+let settings = {
+    persona: '',
+    context: '',
+    scenario: '',
+    greeting: '',
+    exampledialogue: '',
+    temperature: 1.10,
+    maxTokens: 256,
+    model: '',
+    top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
+    typical_p: 1, 
+    min_p: 0.00, //Sets a minimum base probability threshold for token selection.
+    top_k: 33, //Limit the next token selection to the K most probable tokens.
+    prescence_penalty: 0.00, //Slightly encourge new topics
+    frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
+    repeat_penalty: 1.07,
+    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
+    negativePrompt: "Do not talk about sexual topics or explicit content.",
+    context: "",
+    enablePreload: false, // Default to false if not provided
+    sessionId: 1,
+};
 
 function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
@@ -447,30 +471,6 @@ function getAllMessagesExceptLast() {
         updateSettingParameters(selectedOption);
     });
 
-//Shortwave Config
-let settings = {
-    persona: '',
-    context: '',
-    scenario: '',
-    greeting: '',
-    exampledialogue: '',
-    temperature: 1.10,
-    maxTokens: 256,
-    model: '',
-    top_p: 0.64, //Limit the next token selection to a subset of tokens with a cumulative probability above a threshold P.
-    typical_p: 1, 
-    min_p: 0.00, //Sets a minimum base probability threshold for token selection.
-    top_k: 33, //Limit the next token selection to the K most probable tokens.
-    prescence_penalty: 0.00, //Slightly encourge new topics
-    frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-    repeat_penalty: 1.07,
-    systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
-    negativePrompt: "Do not talk about sexual topics or explicit content.",
-    context: "",
-    enablePreload: false, // Default to false if not provided
-    sessionId: 1,
-};
-
 // Function to update systemPrompt in settings
 function updateSystemPrompt() {
     const selectElement = document.getElementById('systemPrompt');
@@ -528,16 +528,16 @@ async function sendMessage() {
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
-    // Define the system message
-    // const systemPrompt = {
-    //     role: "system",
-    //     content: `${settings.systemPrompt}
-    //     Persona: ${settings.persona}
-    //     Scenario: ${settings.scenario}
-    //     ${settings.context ? `Context: ${settings.context}` : ''}
-    //     ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-    //     `,
-    // };
+    Define the system message
+    const systemPrompt = {
+        role: "system",
+        content: `${settings.systemPrompt}
+        Persona: ${settings.persona}
+        Scenario: ${settings.scenario}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
+    };
 
     // Sanitize the system prompt
     const sanitizedSystemPrompt = {
