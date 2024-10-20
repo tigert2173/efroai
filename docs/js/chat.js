@@ -506,6 +506,12 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 //     sessionId: 1,
 // };
 
+function sanitizeToUnicode(input) {
+    return input.replace(/[\u007F-\uFFFF]/g, function (c) {
+        return '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
+    });
+}
+
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
@@ -537,6 +543,17 @@ async function sendMessage() {
         ${settings.context ? `Context: ${settings.context}` : ''}
         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
         `,
+    };
+
+    const sanitizedSystemPrompt = {
+
+        role: "system",
+        content: sanitizeToUnicode(`${settings.systemPrompt}
+        Persona: ${settings.persona}
+        Scenario: ${settings.scenario}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `),
     };
 
     try {    
