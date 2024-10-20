@@ -108,6 +108,7 @@ function displayCharacters(characters) {
         characterGrid.appendChild(card);
         cardCounter++; // Increment the counter after adding a card
 
+        console.log(adExempt);
         // Check if ads should be displayed
         if (!adExempt) {
         // Check if it's time to insert an ad
