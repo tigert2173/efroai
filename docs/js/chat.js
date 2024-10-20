@@ -665,18 +665,18 @@ async function sendMessage() {
             displayMessage(result, 'bot', true);
         }
     } else {
-        const data = await response.json();
-        const botMessage = data.choices[0].message.content;
+        // const data = await response.json();
+        // const botMessage = data.choices[0].message.content;
         
-        // Append the final message to the botMessages array
-        const botMessageObject = {
-            role: 'assistant',
-            content: [{ type: 'text', text: botMessage }]
-        };
-        // messages.push(botMessageObject);
+        // // Append the final message to the botMessages array
+        // const botMessageObject = {
+        //     role: 'assistant',
+        //     content: [{ type: 'text', text: botMessage }]
+        // };
+        // // messages.push(botMessageObject);
 
-        // Display the final bot message in the chat
-        displayMessage(botMessage, 'bot', true);
+        // // Display the final bot message in the chat
+        // displayMessage(botMessage, 'bot', true);
     }
 } catch (error) {
     console.error('Error:', error);
