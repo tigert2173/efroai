@@ -218,7 +218,8 @@
             const honeypot = document.getElementById('confirmUsername').value; // Get the honeypot value
             if (honeypot) {
                 errorMessage.textContent = 'Bot detected!'; // Or handle as needed
-                return;
+                window.location.href = 'error/timeout.html'; // Redirect to timeout page
+                return; // Stop further execution
             }
 
             errorMessage.textContent = ''; // Clear previous error messages
