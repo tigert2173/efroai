@@ -731,7 +731,7 @@ let currentBotMessageIndex = -1; // Index for navigation
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot message HTML elements
+let botMessages = []; // Array to store bot messages
 
 function displayMessage(content, sender, isFinal = false) {
     userName = document.getElementById('user-name').value.trim();
@@ -757,38 +757,50 @@ function displayMessage(content, sender, isFinal = false) {
     console.log('Messages array:', messages); // Debugging to view the array
 
     if (sender === 'bot') {
-        // Create a new message element for the bot
-        const botMessageElement = document.createElement('div');
-        botMessageElement.className = `message ${sender}`;
-        botMessageElement.innerHTML = sanitizedContent;
-
-        // Append the bot message element to the chat container
-        chatContainer.appendChild(botMessageElement);
+        // Store bot message in the botMessages array
+        botMessages.push(sanitizedContent);
         
-        // Add the bot message element to the botMessages array
-        botMessages.push(botMessageElement);
-        console.log('Bot messages array:', botMessages); // Debugging to view the array
+        // Remove previous bot message header if exists
+        const previousHeader = document.querySelector('.message-header');
+        if (previousHeader) {
+            previousHeader.remove();
+        }
 
-        // Update arrow states if necessary
+        // Create a new message header with navigation arrows
+        const messageHeader = document.createElement('div');
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+        `;
+
+        // Create or update the current bot message element
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
+        }
+
+    
+        if (isFinal) {
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+             // Append message header and content
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+            currentBotMessageElement.innerHTML += sanitizedContent;
+        }
+
+        // Update arrow states
         updateArrowStates();
     } else {
-        // Create a new message element for user/system
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = sanitizedContent;
         chatContainer.appendChild(messageElement);
     }
 
-    // If it's the final bot message, handle it accordingly
-    if (isFinal) {
-        console.log('Final bot message added to the array:', messageObject);
-        // No need to push again to the messages array as it's already done above
-    }
-
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
-
 
 function regenerateMessage() {
     const lastAssistantMessage = getLastAssistantMessage();
