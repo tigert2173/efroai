@@ -804,6 +804,7 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\\n/g, '<br>') // Convert literal \n to <br>
         // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/__*__*(.*?)\__\__/g, '<u>$1</u>') // Convert **text** to <b>text</b>
         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // Convert **text** to <b>text</b>
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
         .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
