@@ -551,7 +551,7 @@ const sanitizedSystemPrompt = {
 };
 
 // Prepare messages array
-const messages = [
+const messages1 = [
     { role: "system", content: sanitizedSystemPrompt.content },
     ...messages.map(msg => ({ role: msg.role, content: msg.content.replace(/\\/g, '') })) // Ensure no backslashes
 ];
@@ -575,7 +575,7 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: messages,
+                messages: messages1,
                 stream: true, // Enables streaming responses
             
 
