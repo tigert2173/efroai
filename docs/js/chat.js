@@ -575,7 +575,7 @@ async function sendMessage() {
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
+                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
                 stream: true, // Enables streaming responses
             
 
