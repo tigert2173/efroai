@@ -800,11 +800,11 @@ function displayMessage(content, sender, isFinal = false) {
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
-        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
+        // .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        // .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        // .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        // .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format
