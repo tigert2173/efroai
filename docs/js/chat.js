@@ -838,6 +838,43 @@ function showSnowflakes() {
 }
 
 
+
+function showSantaImage() {
+    const santaImage = document.createElement('img');
+    santaImage.src = 'santa.png';
+    santaImage.classList.add('santa-image');
+    document.body.appendChild(santaImage);
+    // Remove the Santa image after a few seconds
+    setTimeout(() => santaImage.remove(), 11000);
+}
+
+function showGiftBoxes() {
+    const giftBox = document.createElement('div');
+    giftBox.classList.add('gift-box');
+    giftBox.textContent = '🎁';
+    document.body.appendChild(giftBox);
+    // Remove the gift box after animation
+    setTimeout(() => giftBox.remove(), 5000);
+}
+
+function triggerSpecialEffect(effect) {
+    if (effect === 'merry-christmas') {
+        document.getElementById('christmas-music').play();
+        showSnowflakes();
+    } else if (effect === 'santa') {
+        showSantaImage();
+        playSantaVoice();
+    } else if (effect === 'gifts') {
+        showGiftBoxes();
+    }
+}
+  // Example of playing sound when 'Santa' is mentioned
+  function playSantaVoice() {
+    document.getElementById('santa-voice').play();
+}
+// Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
+
+
 let userName = '{{user}}';
 let lastBotMsg = null;
 
