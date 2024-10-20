@@ -653,6 +653,9 @@ async function sendMessage() {
 
         if (result) {
             // Append the final message to the botMessages array
+            clearCurrentBotMessage();
+            displayMessage(result, 'bot', true);
+
             const botMessage = {
                 role: 'assistant',
                 content: [{ type: 'text', text: result }]
@@ -660,8 +663,11 @@ async function sendMessage() {
            // messages.push(botMessage);
 
             // Display the final bot message in the chat
-            clearCurrentBotMessage();
-            displayMessage(result, 'bot', true);
+            botMessages.push(botMessage); // Now push to the array here
+            resolve(result); // Resolve the promise with the final result
+        } else {
+            // Handle the case where no result is obtained
+            reject(new Error('No result obtained from the response'));
         }
     } else {
         const data = await response.json();
@@ -673,9 +679,10 @@ async function sendMessage() {
             content: [{ type: 'text', text: botMessage }]
         };
         // messages.push(botMessageObject);
-
+        botMessages.push(botMessageObject);
         // Display the final bot message in the chat
         displayMessage(botMessage, 'bot', true);
+        resolve(botMessage); // Resolve the promise
     }
 } catch (error) {
     console.error('Error:', error);
@@ -715,7 +722,7 @@ function displayBotMessage(message, type) {
     }, 10000); // Adjust the duration as needed
 }
 
-function regenerateMessage() {
+async function regenerateMessage() {
     console.log('Messages array before regeneration:', messages);
 
     // Check if there are messages
@@ -724,15 +731,19 @@ function regenerateMessage() {
         for (let i = messages.length - 1; i >= 0; i--) {
             if (messages[i].role === 'user') {
                 const lastUserMessage = messages[i].content[0].text; // Get the last user message
-                
+
                 // Set isResend to true for sending the last user message again
                 isResend = true;
 
                 // Update the user input with the last user message for resending
                 document.getElementById('user-input').value = lastUserMessage;
 
-                // Send the last user message again
-                sendMessage(); // This will handle sending the message and receiving streaming response
+                // Send the last user message again and wait for the final response
+                try {
+                    await sendMessage(); // Wait for the message to be sent and processed
+                } catch (error) {
+                    console.error('Failed to regenerate message:', error);
+                }
                 return; // Exit once the message is sent
             }
         }
