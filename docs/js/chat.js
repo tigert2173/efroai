@@ -786,6 +786,34 @@ function getLastAssistantMessage() {
     return null; // Return null if no assistant message is found
 }
 
+function showSnowflakes() {
+    // Display falling snowflakes
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    snowflake.textContent = '❄️';
+    document.body.appendChild(snowflake);
+    // Remove the snowflake after animation
+    setTimeout(() => snowflake.remove(), 5000);
+}
+
+function showSantaImage() {
+    const santaImage = document.createElement('img');
+    santaImage.src = 'santa.png';
+    santaImage.classList.add('santa-image');
+    document.body.appendChild(santaImage);
+    // Remove the Santa image after a few seconds
+    setTimeout(() => santaImage.remove(), 5000);
+}
+
+function showGiftBoxes() {
+    const giftBox = document.createElement('div');
+    giftBox.classList.add('gift-box');
+    giftBox.textContent = '🎁';
+    document.body.appendChild(giftBox);
+    // Remove the gift box after animation
+    setTimeout(() => giftBox.remove(), 5000);
+}
+
 function triggerSpecialEffect(effect) {
     if (effect === 'merry-christmas') {
         document.getElementById('christmas-music').play();
