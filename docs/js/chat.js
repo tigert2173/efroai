@@ -786,20 +786,6 @@ function getLastAssistantMessage() {
     return null; // Return null if no assistant message is found
 }
 
-function getChristmasMessageResponse(message) {
-    if (message.includes("Merry Christmas")) {
-        triggerSpecialEffect('merry-christmas');
-        return `<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>`;
-    } else if (message.includes("Santa")) {
-        triggerSpecialEffect('santa');
-        return `<span class="christmas-font">Ho ho ho! Santa is here! 🎁</span>`;
-    } else if (message.includes("gifts")) {
-        triggerSpecialEffect('gifts');
-        return `<span class="christmas-italic">You have some Christmas gifts waiting for you! 🎁</span>`;
-    }
-    return message;
-}
-
 function triggerSpecialEffect(effect) {
     if (effect === 'merry-christmas') {
         document.getElementById('christmas-music').play();
@@ -847,7 +833,18 @@ function displayMessage(content, sender, isFinal = false) {
  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>'); // Snowflakes for the word "snow"
-    // Prepare message object in the desired format
+    
+   // Check for Christmas keywords to trigger special effects
+   if (content.match(/Merry Christmas/i)) {
+    triggerSpecialEffect('merry-christmas');
+} else if (content.match(/Santa/i)) {
+    triggerSpecialEffect('santa');
+} else if (content.match(/gifts/i)) {
+    triggerSpecialEffect('gifts');
+} else if (content.match(/snow/i)) {
+    triggerSpecialEffect('snow');
+}
+ // Prepare message object in the desired format
     const messageObject = {
         role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
         content: [{ type: 'text', text: content }]
