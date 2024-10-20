@@ -228,7 +228,7 @@
             if (honeypot2) {
                 errorMessage.textContent = 'Bot detected!'; // Or handle as needed
                 document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
-                window.location.href = 'error/timeout.html'; // Redirect to timeout page
+                window.location.href = 'error/botdetected.html'; // Redirect to timeout page
                 return; // Stop further execution
             }
 
