@@ -539,16 +539,19 @@ async function sendMessage() {
         `,
     };
 
-    // Sanitize the system prompt
-    const sanitizedSystemPrompt = {
-        role: "system",
-        content: `${settings.systemPrompt}
-        Persona: ${settings.persona}
-        Scenario: ${settings.scenario}
-        ${settings.context ? `Context: ${settings.context}` : ''}
-        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        `.replace(/\\/g, '') // Remove backslashes but keep newlines
-    };
+ // Sanitize the system prompt
+const sanitizedSystemPrompt = {
+    role: "system",
+    content: `${settings.systemPrompt}
+    Persona: ${settings.persona}
+    Scenario: ${settings.scenario}
+    ${settings.context ? `Context: ${settings.context}` : ''}
+    ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+    `.replace(/\\+/g, '') // Remove all backslashes
+};
+
+// Log the sanitized content for debugging
+console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
 
     try {    
         await updateSettings();
