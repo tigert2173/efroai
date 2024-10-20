@@ -799,9 +799,18 @@ function showSnowflakes() {
         snowflake.classList.add('snowflake');
         snowflake.textContent = '❄️';
         
-        // Random horizontal position favoring the right 25% of the viewport width
-        const randomX = Math.random() * 25; // Generate a value between 0 and 25%
-        snowflake.style.right = `${randomX}%`; // Position the snowflake using the right property
+        // Randomly decide whether to position the snowflake on the left or right
+        const isLeftSide = Math.random() < 0.5; // 50% chance for left side
+    
+        if (isLeftSide) {
+            // Random horizontal position favoring the left 25% of the viewport width
+            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+            snowflake.style.left = `${randomX}%`; // Position using the left property
+        } else {
+            // Random horizontal position favoring the right 25% of the viewport width
+            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+            snowflake.style.right = `${randomX}%`; // Position using the right property
+        }
     
         // Random size between 10px and 50px
         const randomSize = Math.random() * 40 + 10;
