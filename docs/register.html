@@ -141,8 +141,11 @@
     <main>
         <div class="form-container">
             <form id="registerForm">
+
                 <label for="username">Username:</label>
                 <input type="text" id="username" required>
+                <!-- Invisible honeypot field -->
+                <input type="text" id="confirmUsername" name="confirmUsername" style="display:none" tabindex="-1" autocomplete="off">
                 <br>
                 <label for="password">Password:</label>
                 <div class="password-container">
@@ -295,6 +298,17 @@
             } else {
                 passwordInput.type = 'password';
                 revealPasswordBtn.textContent = '👁️'; // Change icon to indicate hidden
+            }
+        });
+
+        // Assuming you're handling form submission with JavaScript:
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            const botField = document.getElementById('confirmUsername').value;
+            
+            if (botField !== "") {
+                // Prevent form submission if the bot-field is filled
+                event.preventDefault();
+                alert("Bot detected. Please try again.");
             }
         });
     </script>
