@@ -927,8 +927,10 @@ function displayMessage(content, sender, isFinal = false) {
  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
       // Add colorful text formatting
-      .replace(/(red|blue|green|yellow|purple|orange|pink|brown)/gi, '<span class="color-$1">$1</span>'); // Wrap color words in spans
-   
+    .replace(/(red|blue|green|yellow|purple|orange|pink|brown)/gi, (match) => {
+        // Return the word wrapped in a span with a class for styling
+        return `<span style="color:${match};">${match}</span>`;
+    });
    
       // Check for Christmas keywords to trigger special effects
    if (content.match(/Merry Christmas/i)) {
