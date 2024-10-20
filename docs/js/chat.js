@@ -646,7 +646,7 @@ async function sendMessage() {
            // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
           // const matches = chunk.match(/"content":\s*"([^"]*)"/);
         //   const matches = chunk.match(/"content":\s*"((?:[^"\\]|\\.)*)"/);
-            const matches = chunk.match(/"content":"((?:[^"\\]|\\.)*?)"/);
+        const matches = chunk.match(/"delta":\s*{[^}]*"content":\s*"((?:[^"\\]|\\.)*?)"/);
 
            //  const matches = chunk.match(/"content":"([^"]*)"/); 
            if (matches && matches[1]) {
