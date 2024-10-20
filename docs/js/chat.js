@@ -541,7 +541,6 @@ async function sendMessage() {
 
  // Sanitize the system prompt
 const sanitizedSystemPrompt = {
-    role: "system",
     content: `${settings.systemPrompt}
     Persona: ${settings.persona}
     Scenario: ${settings.scenario}
@@ -578,7 +577,10 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
+                messages: [
+                    { role: "system", content: sanitizedSystemPrompt.content }, // Wrap the system prompt in an object
+                        ...sanitizedMessages // Ensure sanitizedMessages is structured correctly as an array of objects
+                    ],
                 stream: true, // Enables streaming responses
             
 
