@@ -197,8 +197,8 @@ function updateSettings() {
      //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
 }
 
-let lastBotMessage = ''; // Variable to store the last bot message
-let lastUserMessage = ''; // Variable to store the last user message
+// let lastBotMessage = ''; // Variable to store the last bot message
+// let lastUserMessage = ''; // Variable to store the last user message
 
 // Function to clear the content of the current bot message element
 function clearCurrentBotMessage() {
@@ -515,9 +515,9 @@ async function sendMessage() {
    // if (!message) return;
     //if (!isResend) {
        // processMessageDataImportance();
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+       // lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
-        lastUserMessage = message;
+        //lastUserMessage = message;
         messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
@@ -801,50 +801,59 @@ function displayMessage(content, sender, isFinal = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function regenerateMessage(newMessageContent) {
-    // Store the current message content in botMessages
-    if (currentBotMessageElement) {
-        botMessages[currentBotMessageIndex] = currentBotMessageElement.innerHTML;
+// Additional functions remain the same
+
+function regenerateMessage() {
+    if (messages && messages.length > 0) {
+        let lastUserMessage = null;
+        let lastBotMessage = null;
+
+        // Loop backwards to find the last user and bot messages
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (!lastBotMessage && messages[i].role === 'bot') {
+                lastBotMessage = messages[i].content;
+            }
+            if (!lastUserMessage && messages[i].role === 'user') {
+                lastUserMessage = messages[i].content;
+            }
+            if (lastUserMessage && lastBotMessage) {
+                break;
+            }
+        }
+
+        if (lastUserMessage) {
+            // Remove the last bot message from the context
+            settings.context = settings.context.replace(lastBotMessage, '').trim();
+
+            clearCurrentBotMessage();
+            isResend = true;
+            document.getElementById('user-input').value = lastUserMessage;
+
+            sendMessage(); // Resend the last user message
+        } else {
+            displayMessage('No previous user message found to regenerate.', 'bot');
+        }
+    } else {
+        displayMessage('No messages found in history.', 'bot');
     }
-
-    // Push the new message content and update the index
-    botMessages.push(messages[messages.length - 1]);
-    currentBotMessageIndex = botMessages.length - 1;
-
-    // Update the message in the chat container
-    updateBotMessage(newMessageContent);
-    updateArrowStates(); // Ensure navigation arrows are updated accordingly
 }
 
-
-function updateBotMessage(content) {
-    const chatContainer = document.getElementById('chat-container');
-
-    // Create a new message element if needed
-    if (!currentBotMessageElement) {
-        currentBotMessageElement = document.createElement('div');
-        currentBotMessageElement.className = 'message bot';
-        chatContainer.appendChild(currentBotMessageElement);
-    }
-
-    // Update the message content
-    currentBotMessageElement.innerHTML = content;
-
-    // Scroll to the bottom of the chat container
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
 
 function navigateBotMessages(direction) {
-    // Update index based on direction (1 = forward, -1 = backward)
-    const newIndex = currentBotMessageIndex + direction;
+    if (currentBotMessageIndex === -1) return;
 
+    const newIndex = currentBotMessageIndex + direction;
     if (newIndex >= 0 && newIndex < botMessages.length) {
         currentBotMessageIndex = newIndex;
-        updateBotMessage(botMessages[currentBotMessageIndex]); // Display the selected message
-        updateArrowStates(); // Update the navigation arrows
+        const content = botMessages[currentBotMessageIndex];
+        currentBotMessageElement.innerHTML = content;
+
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
+
+        updateArrowStates();
     }
 }
-
 
 function updateArrowStates() {
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
