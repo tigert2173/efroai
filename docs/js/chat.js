@@ -785,66 +785,76 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
+let isEffectActive = false; // Flag to track if an effect is active
 
 function showSnowflakes() {
-    // Function to create a snowflake at a random position
+    if (isEffectActive) return; // Prevent triggering if another effect is active
+    isEffectActive = true; // Set flag to active
+
     function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
         snowflake.textContent = '❄️';
         
-        // Random horizontal position between 0 and 100% of the viewport width
         const randomX = Math.random() * 100;
         snowflake.style.left = `${randomX}%`;
         
-        // Random size between 10px and 50px
         const randomSize = Math.random() * 40 + 10;
         snowflake.style.fontSize = `${randomSize}px`;
         
-        // Add the snowflake to the document body
         document.body.appendChild(snowflake);
+        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;
         
-        // Animate snowflake falling from the top
-        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;  // Adjust fall speed based on size
-        
-        // Remove the snowflake after the animation completes
         setTimeout(() => snowflake.remove(), 5000);
     }
 
-    // Function to generate snowflakes over a period of time
     function generateSnowflakes() {
-        const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
+        const interval = Math.random() * 1000 + 500;
         createSnowflake();
-        
-        // Keep generating snowflakes at random intervals
         setTimeout(generateSnowflakes, interval);
     }
 
-    // Start generating snowflakes
     generateSnowflakes();
+
+    // Deactivate effect after 10 seconds
+    setTimeout(() => {
+        isEffectActive = false;
+    }, 10000);
 }
 
-
-
 function showSantaImage() {
+    if (isEffectActive) return; // Prevent triggering if another effect is active
+    isEffectActive = true; // Set flag to active
+
     const santaImage = document.createElement('img');
     santaImage.src = 'santa.png';
     santaImage.classList.add('santa-image');
     document.body.appendChild(santaImage);
-    // Remove the Santa image after a few seconds
-    setTimeout(() => santaImage.remove(), 11000);
+
+    setTimeout(() => {
+        santaImage.remove();
+        isEffectActive = false; // Reset flag after Santa image is removed
+    }, 11000);
 }
 
 function showGiftBoxes() {
+    if (isEffectActive) return; // Prevent triggering if another effect is active
+    isEffectActive = true; // Set flag to active
+
     const giftBox = document.createElement('div');
     giftBox.classList.add('gift-box');
     giftBox.textContent = '🎁';
     document.body.appendChild(giftBox);
-    // Remove the gift box after animation
-    setTimeout(() => giftBox.remove(), 5000);
+
+    setTimeout(() => {
+        giftBox.remove();
+        isEffectActive = false; // Reset flag after gift boxes are removed
+    }, 5000);
 }
 
 function triggerSpecialEffect(effect) {
+    if (isEffectActive) return; // Don't trigger if an effect is already running
+
     if (effect === 'merry-christmas') {
         document.getElementById('christmas-music').play();
         showSnowflakes();
@@ -855,11 +865,6 @@ function triggerSpecialEffect(effect) {
         showGiftBoxes();
     }
 }
-  // Example of playing sound when 'Santa' is mentioned
-  function playSantaVoice() {
-    document.getElementById('santa-voice').play();
-}
-// Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 
 
 let userName = '{{user}}';
