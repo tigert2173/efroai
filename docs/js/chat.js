@@ -522,7 +522,7 @@ async function sendMessage() {
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
-        //botMessages = [];
+        botMessages = [];
         currentBotMessageElement = null;
   //  }
 
@@ -665,18 +665,17 @@ async function sendMessage() {
         }
     } else {
         const data = await response.json();
-         botMessage = data.choices[0].message.content;
+        const botMessage = data.choices[0].message.content;
         
-        const botMessage = {
+        // Append the final message to the botMessages array
+        const botMessageObject = {
             role: 'assistant',
-            content: [{ type: 'text', text: result }] // Assuming 'result' holds the bot's response text
+            content: [{ type: 'text', text: botMessage }]
         };
-        messages.push(botMessage);
-        oldMessages.push(botMessage); // Store in old messages for regeneration
-        currentMessageIndex = -1; // Reset index for new messages
+        // messages.push(botMessageObject);
 
         // Display the final bot message in the chat
-        displayMessages(); // Display updated messages
+        displayMessage(botMessage, 'bot', true);
     }
 } catch (error) {
     console.error('Error:', error);
@@ -686,7 +685,6 @@ async function sendMessage() {
 }
 }
 
-displayMessages();
 
 function usernameupdated () {
 
@@ -730,94 +728,130 @@ function getLastAssistantMessage() {
 let userName = '{{user}}';
 let lastBotMsg = null;
 
-let messages = []; // Array to store current messages
-let oldMessages = []; // Array to store old messages for regeneration
-let currentMessageIndex = -1; // Index for navigating through old messages
+let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
+let currentBotMessageElement; // To store the current bot message element
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
-// Function to display messages from the messages array
-function displayMessages() {
-    const messagesDisplay = document.getElementById('messages-display');
-    messagesDisplay.innerHTML = ''; // Clear current display
+function displayMessage(content, sender, isFinal = false) {
+    let userName = document.getElementById('user-name').value.trim();
+    if (!userName) { userName = "{{user}}"; }
 
-    messages.forEach((msg, index) => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = msg.role === 'user' ? 'user-message' : 'bot-message';
-        messageDiv.innerHTML = `
-            ${msg.content.map(content => content.text).join('')}
-            <button class="delete-message" data-index="${index}">❌</button>
-        `;
-        messagesDisplay.appendChild(messageDiv);
-    });
+    const chatContainer = document.getElementById('chat-container');
+    const sanitizedContent = content
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
+        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
-    // Update navigation buttons based on the messages array
-    updateNavigationButtons();
+    // Prepare message object in the desired format
+    const messageObject = {
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        content: [{ type: 'text', text: content }]
+    };
 
-    // Add event listeners to delete buttons
-    const deleteButtons = document.querySelectorAll('.delete-message');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const indexToDelete = parseInt(button.getAttribute('data-index'), 10);
-            deleteMessage(indexToDelete);
-        });
-    });
-}
+    // Add the message object to the messages array
+    messages.push(messageObject);
+    console.log('Messages array:', messages); // Debugging to view the array
 
-// Function to delete a specific message
-function deleteMessage(index) {
-    if (index >= 0 && index < messages.length) {
-        // Remove message from both arrays
-        const deletedMessage = messages.splice(index, 1)[0]; // Remove from messages
-        oldMessages = oldMessages.filter(msg => msg !== deletedMessage); // Remove from oldMessages
-
-        // Adjust currentMessageIndex if needed
-        if (currentMessageIndex >= index) {
-            currentMessageIndex = Math.max(currentMessageIndex - 1, -1); // Move up the index if needed
+    if (sender === 'bot') {
+        // Store bot message in the botMessages array
+        botMessages.push(sanitizedContent);
+        
+        // Create or reuse the current bot message element
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
         }
 
-        displayMessages(); // Refresh the message display
+        // Update the content of the existing bot message element
+        currentBotMessageElement.innerHTML = sanitizedContent;
+
+        // If the message is final, update the navigation header
+        if (isFinal) {
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            
+            // Remove previous bot message header if exists
+            const previousHeader = document.querySelector('.message-header');
+            if (previousHeader) {
+                previousHeader.remove();
+            }
+
+            // Create a new message header with navigation arrows
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.innerHTML = `
+            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+            `;
+
+            // Append message header to the chat container
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        }
+
+        // Update arrow states
+        updateArrowStates();
+    } else {
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${sender}`;
+        messageElement.innerHTML = sanitizedContent;
+        chatContainer.appendChild(messageElement);
+    }
+
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function regenerateMessage() {
+    const lastAssistantMessage = getLastAssistantMessage();
+    if (lastAssistantMessage) {
+        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
+
+        // Update the user input with the last user message
+        document.getElementById('user-input').value = lastUserMessage;
+        
+        // Clear current bot message content to regenerate
+        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+
+        // Resend the last user message
+        sendMessage(); // Ensure this function is defined to handle sending the message
+    } else {
+        displayMessage('No previous assistant message found to regenerate.', 'bot');
     }
 }
 
-// Function to update navigation buttons visibility
-function updateNavigationButtons() {
-    const previousButton = document.getElementById('previous-message');
-    const nextButton = document.getElementById('next-message');
+// Navigation functions remain the same
 
-    if (currentMessageIndex > 0) {
-        previousButton.style.display = 'inline'; // Show previous button
-    } else {
-        previousButton.style.display = 'none'; // Hide previous button
-    }
+function navigateBotMessages(direction) {
+    if (currentBotMessageIndex === -1) return;
 
-    if (currentMessageIndex < oldMessages.length - 1) {
-        nextButton.style.display = 'inline'; // Show next button
-    } else {
-        nextButton.style.display = 'none'; // Hide next button
+    const newIndex = currentBotMessageIndex + direction;
+    if (newIndex >= 0 && newIndex < botMessages.length) {
+        currentBotMessageIndex = newIndex;
+        const content = botMessages[currentBotMessageIndex];
+        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
+
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
+
+        updateArrowStates();
     }
 }
 
-// Navigation functions (previous/next message)
-document.getElementById('previous-message').addEventListener('click', () => {
-    if (currentMessageIndex > 0) {
-        currentMessageIndex--;
-        displayMessages();
-    }
-});
+function updateArrowStates() {
+    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
+    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
 
-document.getElementById('next-message').addEventListener('click', () => {
-    if (currentMessageIndex < oldMessages.length - 1) {
-        currentMessageIndex++;
-        displayMessages();
+    if (leftArrow) {
+        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
     }
-});
-
-// Button to delete all messages
-document.getElementById('delete-all-messages').addEventListener('click', () => {
-    messages = [];
-    oldMessages = [];
-    currentMessageIndex = -1;
-    displayMessages();
-});
+    if (rightArrow) {
+        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
+    }
+}
 
 
 
