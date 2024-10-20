@@ -384,6 +384,34 @@ input[type="checkbox"]:not(:checked) + label {
 }
 
 
+.color-red {
+    color: red;
+}
+.color-blue {
+    color: blue;
+}
+.color-green {
+    color: green;
+}
+.color-yellow {
+    color: yellow;
+}
+.color-purple {
+    color: purple;
+}
+.color-orange {
+    color: orange;
+}
+.color-pink {
+    color: pink;
+}
+.color-brown {
+    color: brown;
+}
+
+
+
+
 /* Snowflake animation */
 .snowflake {
     position: fixed;
