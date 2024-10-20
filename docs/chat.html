@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+    <audio id="christmas-music" loop>
+        <source src="christmas_jingle.mp3" type="audio/mpeg">
+      </audio>
+      
+      <audio id="santa-voice">
+        <source src="ho_ho_ho.mp3" type="audio/mpeg">
+      </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - EFRO.AI</title>
@@ -415,21 +421,5 @@ function hideTooltip() {
     });
 </script>
 <script src="js/menu.js"></script>
-<audio id="christmas-music" loop>
-    <source src="christmas_jingle.mp3" type="audio/mpeg">
-  </audio>
-  
-  <audio id="santa-voice">
-    <source src="ho_ho_ho.mp3" type="audio/mpeg">
-  </audio>
-  
-  <script>
-  // Example of playing sound when 'Santa' is mentioned
-  function playSantaVoice() {
-      document.getElementById('santa-voice').play();
-  }
-  </script>
-  
-
 </body>
 </html>

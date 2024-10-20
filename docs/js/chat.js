@@ -811,7 +811,10 @@ function triggerSpecialEffect(effect) {
         showGiftBoxes();
     }
 }
-
+  // Example of playing sound when 'Santa' is mentioned
+  function playSantaVoice() {
+    document.getElementById('santa-voice').play();
+}
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 
 
