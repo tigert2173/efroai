@@ -730,11 +730,12 @@ let lastBotMsg = null;
 
 let messages = []; // Array to store messages
 let botMessages = []; // Array to store bot messages
-let currentBotMessageElement = null; // Initialize to hold the current bot message element
-let currentBotMessageIndex = -1; // Track the current index of bot messages
+let currentBotMessageElement; // To store the current bot message element
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 function displayMessage(content, sender, isFinal = false) {
-    const userName = document.getElementById('user-name').value.trim() || "{{user}}"; // Set default user name if empty
+    let userName = document.getElementById('user-name').value.trim();
+    if (!userName) { userName = "{{user}}"; }
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
@@ -758,15 +759,7 @@ function displayMessage(content, sender, isFinal = false) {
     if (sender === 'bot') {
         // Store bot message in the botMessages array
         botMessages.push(sanitizedContent);
-
-        // Create a new message header with navigation arrows
-        const messageHeader = document.createElement('div');
-        messageHeader.className = 'message-header';
-        messageHeader.innerHTML = `
-            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-        `;
-
+        
         // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
@@ -774,16 +767,30 @@ function displayMessage(content, sender, isFinal = false) {
             chatContainer.appendChild(currentBotMessageElement);
         }
 
-        // Append message header and content
-        if (isFinal) {
-            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-        }
-
-        // Update the bot message element with the sanitized content
+        // Update the content of the existing bot message element
         currentBotMessageElement.innerHTML = sanitizedContent;
 
-        // Insert the message header before the current bot message element
-        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        // If the message is final, update the navigation header
+        if (isFinal) {
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            
+            // Remove previous bot message header if exists
+            const previousHeader = document.querySelector('.message-header');
+            if (previousHeader) {
+                previousHeader.remove();
+            }
+
+            // Create a new message header with navigation arrows
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.innerHTML = `
+            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+            `;
+
+            // Append message header to the chat container
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        }
 
         // Update arrow states
         updateArrowStates();
@@ -805,9 +812,9 @@ function regenerateMessage() {
 
         // Update the user input with the last user message
         document.getElementById('user-input').value = lastUserMessage;
-
-        // Clear current bot message to regenerate
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message to regenerate
+        
+        // Clear current bot message content to regenerate
+        currentBotMessageElement.innerHTML = ''; // Clear current bot message
 
         // Resend the last user message
         sendMessage(); // Ensure this function is defined to handle sending the message
@@ -825,9 +832,10 @@ function navigateBotMessages(direction) {
     if (newIndex >= 0 && newIndex < botMessages.length) {
         currentBotMessageIndex = newIndex;
         const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content;
+        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
 
-        console.log('Updated lastBotMsg (navigated):', currentBotMessageElement.innerHTML);
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
 
         updateArrowStates();
     }
@@ -844,6 +852,7 @@ function updateArrowStates() {
         rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
     }
 }
+
 
 
 async function updateQueueCounter() {
