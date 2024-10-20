@@ -820,12 +820,6 @@ function displayMessage(content, sender, isFinal = false) {
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
-        if (isFinal || sender === 'user'){
-        // Add the message object to the messages array
-        messages.push(messageObject);
-        console.log('Messages array:', messages); // Debugging to view the array
-        // Update arrow states
-        }
         updateArrowStates();
     } else {
         const messageElement = document.createElement('div');
@@ -833,7 +827,13 @@ function displayMessage(content, sender, isFinal = false) {
         messageElement.innerHTML = sanitizedContent;
         chatContainer.appendChild(messageElement);
     }
-
+    
+    if (isFinal || sender === 'user'){
+        // Add the message object to the messages array
+        messages.push(messageObject);
+        console.log('Messages array:', messages); // Debugging to view the array
+        // Update arrow states
+        }
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
