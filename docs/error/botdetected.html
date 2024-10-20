@@ -7,19 +7,34 @@
     <style>
         body {
             display: flex;
+            flex-direction: column; /* Stack elements vertically */
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             color: #333;
+            text-align: center; /* Center align text */
         }
         h1 {
             font-size: 2em;
+            margin-bottom: 20px; /* Space below the heading */
+        }
+        p {
+            font-size: 1.2em; /* Adjust paragraph size */
+            margin: 0; /* Remove default margin */
+        }
+        a {
+            color: #007bff; /* Link color */
+            text-decoration: none; /* Remove underline */
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
         }
     </style>
 </head>
 <body>
     <h1>Bot Detected! Access Denied.</h1>
+    <p>If you think this is a mistake, please contact us at <a href="mailto:support@efroai.net">support@efroai.net</a> or wait 24 hours.</p>
 </body>
 </html>
