@@ -214,6 +214,13 @@
             const role = document.getElementById('role').value;
             const errorMessage = document.getElementById('errorMessage');
             
+            // Honeypot field check
+            const honeypot = document.getElementById('confirmUsername').value; // Get the honeypot value
+            if (honeypot) {
+                errorMessage.textContent = 'Bot detected!'; // Or handle as needed
+                return;
+            }
+
             errorMessage.textContent = ''; // Clear previous error messages
 
             // Ensure the username is not an email
@@ -298,17 +305,6 @@
             } else {
                 passwordInput.type = 'password';
                 revealPasswordBtn.textContent = '👁️'; // Change icon to indicate hidden
-            }
-        });
-
-        // Assuming you're handling form submission with JavaScript:
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            const botField = document.getElementById('confirmUsername').value;
-            
-            if (botField !== "") {
-                // Prevent form submission if the bot-field is filled
-                event.preventDefault();
-                alert("Bot detected. Please try again.");
             }
         });
     </script>
