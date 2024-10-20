@@ -566,19 +566,10 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt);
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         
-        // Sanitize messages to remove escape characters except for newlines
-        const sanitizedMessages = messages.map(msg => ({
-            ...msg,
-            content: msg.content.map(item => ({
-                ...item,
-                text: item.text.replace(/\\/g, '') // Remove backslashes but keep newlines
-            }))
-        }));
-
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
+                messages: [sanitizedSystemPrompt, ...messages],
                 stream: true, // Enables streaming responses
             
 
