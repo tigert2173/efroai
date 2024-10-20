@@ -832,7 +832,7 @@ function showSantaImage() {
     santaImage.classList.add('santa-image');
     document.body.appendChild(santaImage);
     // Remove the Santa image after a few seconds
-    setTimeout(() => santaImage.remove(), 5000);
+    setTimeout(() => santaImage.remove(), 11000);
 }
 
 function showGiftBoxes() {
