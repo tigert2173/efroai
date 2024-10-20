@@ -806,18 +806,20 @@ function displayMessage(content, sender, isFinal = false) {
 }
 
 function regenerateMessage() {
-    // Get the last bot message to regenerate
+    // Check if there is a last bot message to regenerate
     if (currentBotMessageIndex >= 0 && currentBotMessageIndex < botMessages.length) {
-        const lastBotMessageContent = botMessages[currentBotMessageIndex]; // Get the current message to regenerate
         const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
-
-        // Update the user input with the last user message
+        
+        // Set user input with the last user message
         document.getElementById('user-input').value = lastUserMessage;
 
-        // Optionally clear the current bot message element to regenerate
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+        // Clear the current bot message element for regeneration
+        currentBotMessageElement.innerHTML = ''; // Optionally clear current bot message
 
-        // Resend the last user message
+        // Optional: Display a temporary loading message or indicator while regenerating
+        displayMessage('Regenerating last response...', 'bot');
+
+        // Call a function to send the last user message for regeneration
         sendMessage(); // Ensure this function is defined to handle sending the message
     } else {
         displayMessage('No previous assistant message found to regenerate.', 'bot');
