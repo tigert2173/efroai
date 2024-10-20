@@ -646,10 +646,13 @@ async function sendMessage() {
             const chunk = decoder.decode(value, { stream: true });
             console.log("Raw chunk:", chunk); // Log raw chunk data
         
-            // Parse the chunk as JSON
+            // Remove the 'data: ' prefix if present
+            const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
+        
+            // Parse the cleaned chunk as JSON
             let parsedChunk;
             try {
-                parsedChunk = JSON.parse(chunk);
+                parsedChunk = JSON.parse(jsonChunk);
             } catch (error) {
                 console.error("Error parsing chunk:", error);
                 continue; // Skip this iteration if there's a parsing error
