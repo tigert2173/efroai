@@ -87,37 +87,53 @@ function displayCharacters(characters) {
         card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
         characterGrid.appendChild(card);
-
-  // Insert ad after every 3 characters
-  if ((index + 1) % 3 === 0) {
-    const adContainer = document.createElement('div');
-    adContainer.className = 'ad-container';
-
-    // Insert the <ins> element for the ad
-    const insElement = document.createElement('ins');
-    insElement.className = 'eas6a97888e2';
-    insElement.setAttribute('data-zoneid', '5449604');
-    adContainer.appendChild(insElement);
-
-    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-    insElement.setAttribute('data-keywords', keywords);
-
-
-    // Insert the script tag for the ad provider
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-    scriptElement.onload = function() {
-        (AdProvider = window.AdProvider || []).push({"serve": {}});
-    };
-    document.body.appendChild(scriptElement); // Append script to body
-
-    // Append the ad container to the grid
-    characterGrid.appendChild(adContainer);
-    }
+        insertAds(characterGrid);
 
     });
 }
+
+
+// Function to insert ads at random intervals
+function insertAds(characterGrid) {
+    const totalCharacters = characterGrid.children.length; // Assuming each child is a character
+    const minInterval = 3;  // Minimum interval for ad insertion
+    const maxInterval = 20; // Maximum interval for ad insertion
+
+    for (let index = 0; index < totalCharacters; index++) {
+        // Generate a random number of characters to skip for the next ad
+        const randomSkip = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
+
+        // Check if the current index is the right position for ad insertion
+        if ((index + 1) % randomSkip === 0) {
+            const adContainer = document.createElement('div');
+            adContainer.className = 'ad-container';
+
+            // Insert the <ins> element for the ad
+            const insElement = document.createElement('ins');
+            insElement.className = 'eas6a97888e2';
+            insElement.setAttribute('data-zoneid', '5449604');
+            adContainer.appendChild(insElement);
+
+            // Define keywords for the ad
+            const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+            insElement.setAttribute('data-keywords', keywords);
+
+            // Insert the script tag for the ad provider
+            const scriptElement = document.createElement('script');
+            scriptElement.async = true;
+            scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+            scriptElement.onload = function() {
+                (AdProvider = window.AdProvider || []).push({"serve": {}});
+            };
+            document.body.appendChild(scriptElement); // Append script to body
+
+            // Append the ad container to the grid
+            characterGrid.appendChild(adContainer);
+        }
+    }
+}
+
+// Call the function with your character grid element
 
 
 function likeCharacter(characterId, uploader) {
