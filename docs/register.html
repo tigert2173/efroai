@@ -180,7 +180,9 @@
                             <em>(Your email will be hashed; we cannot contact you directly.)</em>
                         </small>
                     </div>
-                
+                    <!-- Invisible honeypot field -->
+                    <input type="text" id="confirmEmail" name="confirmEmail" style="display:none" tabindex="-1" autocomplete="off">
+                    <br>
                     <div>
                         <label for="discordID">Discord ID (optional for notifications):</label>
                         <input type="text" id="discordID" placeholder="123456789012345678" style="margin: 0px 0;">
@@ -217,6 +219,12 @@
             // Honeypot field check
             const honeypot = document.getElementById('confirmUsername').value; // Get the honeypot value
             if (honeypot) {
+                errorMessage.textContent = 'Bot detected!'; // Or handle as needed
+                window.location.href = 'error/timeout.html'; // Redirect to timeout page
+                return; // Stop further execution
+            }
+            const honeypot2 = document.getElementById('confirmEmail').value; // Get the honeypot value
+            if (honeypot2) {
                 errorMessage.textContent = 'Bot detected!'; // Or handle as needed
                 window.location.href = 'error/timeout.html'; // Redirect to timeout page
                 return; // Stop further execution
