@@ -513,7 +513,7 @@ async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
    // if (!message) return;
-    if (!isResend) {
+    // if (!isResend) {
        // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
@@ -524,7 +524,7 @@ async function sendMessage() {
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
-    }
+    // }
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
@@ -733,7 +733,7 @@ function regenerateMessage() {
                 document.getElementById('user-input').value = lastUserMessage;
 
                 // Send the last user message again
-                //sendMessage(); // This will handle sending the message and receiving streaming response
+                sendMessage(); // This will handle sending the message and receiving streaming response
                 return; // Exit once the message is sent
             }
         }
