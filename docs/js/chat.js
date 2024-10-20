@@ -769,7 +769,10 @@ function displayMessage(content, sender, isFinal = false) {
             console.log('Messages array:', messages); // Debugging to view the array
             //botMessages.push(currentBotMessageElement.innerHTML);
         }
-
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${sender}`;
+        messageElement.innerHTML = sanitizedContent;
+        chatContainer.appendChild(messageElement);
         // Update arrow states
         updateArrowStates();
     } else {
