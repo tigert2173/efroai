@@ -717,7 +717,7 @@ function displayBotMessage(message, type) {
 
 function regenerateMessage() {
     // Check if there are messages and the last one is from the user
-    if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
+    if (messages.length > 0 && messages[messages.length - 2].role === 'user') {
         // Get the last user message
         const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
         
