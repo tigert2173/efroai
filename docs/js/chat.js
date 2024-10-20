@@ -747,13 +747,11 @@ function displayMessage(content, sender, isFinal = false) {
             previousHeader.remove();
         }
 
-        // // Create a new message header with navigation arrows
-        // const messageHeader = document.createElement('div');
-        // messageHeader.className = 'message-header';
-        // messageHeader.innerHTML = `
-        // <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-        // <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-        // `;
+        // Create a new message header with navigation arrows
+        const messageHeader = document.createElement('div');
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+        `;
 
         // Create or update the current bot message element
         if (!currentBotMessageElement) {
