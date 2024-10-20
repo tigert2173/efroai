@@ -883,6 +883,8 @@ function triggerSpecialEffect(effect) {
     } else if (effect === 'santa') {
         showSantaImage();
         playSantaVoice();
+    } else if (effect === 'snow') {
+        showSnowflakes();
     } else if (effect === 'gifts') {
         showGiftBoxes();
     }
