@@ -805,7 +805,7 @@ function displayMessage(content, sender, isFinal = false) {
         // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-       // .replace(/\**(.*?)\**/g, '<b>$1</b>') // Convert **text** to <b>text</b>
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>'); // Convert **text** to <b>text</b>
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format
