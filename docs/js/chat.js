@@ -529,14 +529,25 @@ async function sendMessage() {
     lastBotMsg = lastBotMsg || settings.greeting;
 
     // Define the system message
-    const systemPrompt = {
+    // const systemPrompt = {
+    //     role: "system",
+    //     content: `${settings.systemPrompt}
+    //     Persona: ${settings.persona}
+    //     Scenario: ${settings.scenario}
+    //     ${settings.context ? `Context: ${settings.context}` : ''}
+    //     ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+    //     `,
+    // };
+
+    // Sanitize the system prompt
+    const sanitizedSystemPrompt = {
         role: "system",
         content: `${settings.systemPrompt}
         Persona: ${settings.persona}
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        `,
+        `.replace(/\\/g, '') // Remove backslashes but keep newlines
     };
 
     try {    
@@ -551,10 +562,20 @@ async function sendMessage() {
 
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
+        
+        // Sanitize messages to remove escape characters except for newlines
+        const sanitizedMessages = messages.map(msg => ({
+            ...msg,
+            content: msg.content.map(item => ({
+                ...item,
+                text: item.text.replace(/\\/g, '') // Remove backslashes but keep newlines
+            }))
+        }));
+
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
+                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
                 stream: true, // Enables streaming responses
             
 
