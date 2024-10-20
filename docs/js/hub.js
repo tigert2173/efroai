@@ -90,7 +90,7 @@ function displayCharacters(characters) {
         characterGrid.appendChild(card);
 
         // Insert ad based on a random condition
-        const randomInterval = Math.floor(Math.random() * (20 - 3 + 1)) + 3;
+        const randomInterval = Math.floor(Math.random() * (10 - 3 + 1)) + 3;
         if ((index + 1) % randomInterval === 0) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
