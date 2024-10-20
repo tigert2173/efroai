@@ -519,6 +519,7 @@ function sanitizeForJson(value) {
 }
 
 
+
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
@@ -597,7 +598,7 @@ async function sendMessage() {
         });
 
        // displayMessage(systemPrompt, 'system');
-        console.log('Request Data:', JSON.stringify(sanitizedArray));
+       console.log('Sanitized Request Data:', JSON.stringify(requestData, null, 2));
         
         const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
