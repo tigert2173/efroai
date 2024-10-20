@@ -78,7 +78,7 @@ function displayCharacters(characters) {
             <div class="button-container">
                 <button class="view-btn" onclick="viewCharacter('${character.id}')">View Character</button>
                 <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                    <span role="img" aria-hidden="true">❤️</span> <!-- Fart emoji for humor -->
+                    <span role="img" aria-hidden="true">❤️</span>
                 </button>
             </div>
         `;
@@ -86,43 +86,42 @@ function displayCharacters(characters) {
         // Append the image element after setting the card innerHTML
         card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
+        // Append the character card to the grid
         characterGrid.appendChild(card);
 
-  // Loop through the characters in your characterGrid (or any iterable source)
-  for (let index = 0; index < characterGrid.children.length; index++) {
-    // Generate a random number between 3 and 20
-    const randomInterval = Math.floor(Math.random() * (20 - 3 + 1)) + 3;
-
-    // Check if it's time to insert an ad based on the random interval
-    if ((index + 1) % randomInterval === 0) {
-        const adContainer = document.createElement('div');
-        adContainer.className = 'ad-container';
-
-        // Insert the <ins> element for the ad
-        const insElement = document.createElement('ins');
-        insElement.className = 'eas6a97888e2';
-        insElement.setAttribute('data-zoneid', '5449604');
-        adContainer.appendChild(insElement);
-
-        const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-        insElement.setAttribute('data-keywords', keywords);
-
-        // Insert the script tag for the ad provider
-        const scriptElement = document.createElement('script');
-        scriptElement.async = true;
-        scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-        scriptElement.onload = function() {
-            (AdProvider = window.AdProvider || []).push({"serve": {}});
-        };
-        document.body.appendChild(scriptElement); // Append script to body
-
-        // Append the ad container to the grid
-        characterGrid.appendChild(adContainer);
-    }
-}
-
+        // Randomly insert ads between character cards
+        if ((index + 1) % (Math.floor(Math.random() * (20 - 3 + 1)) + 3) === 0) {
+            insertAd(characterGrid);
+        }
     });
 }
+
+function insertAd(characterGrid) {
+    const adContainer = document.createElement('div');
+    adContainer.className = 'ad-container';
+
+    // Insert the <ins> element for the ad
+    const insElement = document.createElement('ins');
+    insElement.className = 'eas6a97888e2';
+    insElement.setAttribute('data-zoneid', '5449604');
+    adContainer.appendChild(insElement);
+
+    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+    insElement.setAttribute('data-keywords', keywords);
+
+    // Insert the script tag for the ad provider
+    const scriptElement = document.createElement('script');
+    scriptElement.async = true;
+    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+    scriptElement.onload = function() {
+        (AdProvider = window.AdProvider || []).push({"serve": {}});
+    };
+    document.body.appendChild(scriptElement); // Append script to body
+
+    // Append the ad container to the grid
+    characterGrid.appendChild(adContainer);
+}
+
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
