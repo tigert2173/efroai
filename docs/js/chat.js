@@ -512,11 +512,13 @@ async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
+   // if (!message) return;
     if (!isResend) {
+       // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent++;
+        messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
@@ -526,6 +528,7 @@ async function sendMessage() {
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
+    // Define the system message
     const systemPrompt = {
         role: "system",
         content: `${settings.systemPrompt}
@@ -536,51 +539,111 @@ async function sendMessage() {
         `,
     };
 
-    try {
+    try {    
         await updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
 
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         const requestData = {
-            model: "nephra_v1.0.Q4_K_M.gguf",
-            n_predict: parseInt(settings.maxTokens, 10),
-            messages: [systemPrompt, ...messages],
-            stream: true,
-            temperature: settings.temperature,
-            prescence_penalty: settings.prescence_penalty,
-            frequency_penalty: settings.frequency_penalty,
-            repeat_penalty: settings.repeat_penalty,
-            min_p: settings.min_p,
-            top_k: settings.top_k,
-            top_p: settings.top_p,
-            t_max_predict_ms: 300000,
-        };
+                model: "nephra_v1.0.Q4_K_M.gguf",
+                n_predict: parseInt(settings.maxTokens, 10),
+                messages: [systemPrompt, ...messages],
+                stream: true, // Enables streaming responses
+            
 
+                // The combined prompt for the AI
+               // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
+            
+                // AI parameters
+               // max_tokens: settings.maxTokens,
+                temperature: settings.temperature,
+                prescence_penalty: settings.prescence_penalty,
+                frequency_penalty: settings.frequency_penalty,
+                repeat_penalty: settings.repeat_penalty,
+                min_p: settings.min_p,
+                top_k: settings.top_k,
+                top_p: settings.top_p,
+                t_max_predict_ms: 300000, //timeout after 5 minutes
+            };            
+        
+       // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
-
+        
         const response = await fetch("https://api.botbridge.net/api/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
             body: JSON.stringify(requestData)
         });
+        
+        // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         // Add any other headers that were in axios
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
+        
+        // const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //      //   'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+            
+        //     body: JSON.stringify(requestData)
+        // });
+        
+        console.log(sessionStorage.getItem('token'));
 
         if (!response.ok) {
-            // Handle errors as in your previous code
-            // ...
-            return;
+            if (response.status === 451) {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
+                const errorData = await response.json();
+                displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+            } else if (response.status === 400) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
+            return; // Exit early if the request failed
         }
-
-        let result = '';
+    }
+    
+    if (response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
+        let result = '';
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             const chunk = decoder.decode(value, { stream: true });
-            const matches = chunk.match(/"content":"([^"]*)"/);
-            if (matches && matches[1]) {
+            //console.log(chunk);
+
+           // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
+           const matches = chunk.match(/"content":"([^"]*)"/); 
+           if (matches && matches[1]) {
                 const content = matches[1];
                 result += content;
                 clearCurrentBotMessage();
@@ -594,22 +657,33 @@ async function sendMessage() {
                 role: 'assistant',
                 content: [{ type: 'text', text: result }]
             };
-
-            // Only add to botMessages if it's a final response
-            botMessages.push(result);
+           // messages.push(botMessage);
 
             // Display the final bot message in the chat
             clearCurrentBotMessage();
             displayMessage(result, 'bot', true);
         }
-    } catch (error) {
-        console.error('Error:', error);
-        displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
-    } finally {
-        isResend = false;
-    }
-}
+    } else {
+        const data = await response.json();
+        const botMessage = data.choices[0].message.content;
+        
+        // Append the final message to the botMessages array
+        const botMessageObject = {
+            role: 'assistant',
+            content: [{ type: 'text', text: botMessage }]
+        };
+        // messages.push(botMessageObject);
 
+        // Display the final bot message in the chat
+        displayMessage(botMessage, 'bot', true);
+    }
+} catch (error) {
+    console.error('Error:', error);
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+} finally {
+    isResend = false;
+}
+}
 
 
 function usernameupdated () {
