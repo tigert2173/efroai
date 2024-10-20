@@ -45,7 +45,7 @@
     </table>
 
     <script>
-        const backendUrl = 'https://characters.efroai.net:3000'; // Set your backend URL here
+        const backendUrl = 'https://characters.efroai.net:3000/api'; // Set your backend URL here
 
         async function fetchUsers() {
             try {
@@ -85,7 +85,7 @@
 
         async function suspendUser(username) {
             try {
-                const response = await fetch(`${backendUrl}/api/users/suspend`, {
+                const response = await fetch(`${backendUrl}/users/suspend`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
