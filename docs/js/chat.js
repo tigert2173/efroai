@@ -645,8 +645,8 @@ async function sendMessage() {
 
            // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
           // const matches = chunk.match(/"content":\s*"([^"]*)"/);
-           const matches = chunk.match(/"content":\s*"((?:[^"\\]|\\.)*)"/);
-
+        //   const matches = chunk.match(/"content":\s*"((?:[^"\\]|\\.)*)"/);
+            const matches = chunk.match(/"content":"(.*?)"/);
 
            //  const matches = chunk.match(/"content":"([^"]*)"/); 
            if (matches && matches[1]) {
@@ -783,7 +783,7 @@ function displayMessage(content, sender, isFinal = false) {
 
     const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
-        //.replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
         .replace(/\\n/g, '<br>') // Convert literal \n to <br>
         .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
