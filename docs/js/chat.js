@@ -847,7 +847,7 @@ function showSnowflakes() {
 function showSantaImage() {
     if (isSantaActive) return; // Prevent triggering if Santa effect is active
     isSantaActive = true; // Set flag to active
-
+    playSantaVoice();
     const santaImage = document.createElement('img');
     santaImage.src = 'santa.png';
     santaImage.classList.add('santa-image');
@@ -882,7 +882,6 @@ function triggerSpecialEffect(effect) {
         showSnowflakes();
     } else if (effect === 'santa') {
         showSantaImage();
-        playSantaVoice();
     } else if (effect === 'snow') {
         showSnowflakes();
     } else if (effect === 'gifts') {
