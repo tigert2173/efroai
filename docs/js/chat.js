@@ -809,8 +809,12 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
         .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
         .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // monospace with single backticks
-        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
-
+        .replace(/{{user}}|{user}/g, userName) // Replace both {{user}} and {user} with the actual user name
+ // Add custom Christmas formatting:
+ .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
+ .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
+ .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
+ .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>'); // Snowflakes for the word "snow"
     // Prepare message object in the desired format
     const messageObject = {
         role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
