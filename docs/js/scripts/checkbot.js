@@ -18,6 +18,6 @@ window.onload = function() {
             </div>
         `;
         // Optionally redirect to a different page:
-        // window.location.href = 'restricted.html'; // Redirect to a restricted access page
+        window.location.href = '../../error/botdetected.html'; // Redirect to a restricted access page
     }
 };
