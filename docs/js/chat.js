@@ -569,7 +569,7 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt);
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt.stringify, ...messages],
+                messages: [sanitizedSystemPrompt.replace(/\\+/g, ''), ...messages],
                 stream: true, // Enables streaming responses
             
 
