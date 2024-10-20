@@ -555,10 +555,12 @@ const formattedMessages = [
     { role: "system", content: sanitizedSystemPrompt.content },
     ...messages.map(msg => ({
         role: msg.role,
-        content: msg.content.replace(/\\/g, '') // Ensure no backslashes
+        content: typeof msg.content === 'string' ? msg.content.replace(/\\/g, '') : '', // Ensure content is a string
     })),
 ];
 
+// Log the formatted messages for debugging
+console.log('Formatted Messages:', formattedMessages);
 // Log the sanitized content for debugging
 console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
 
