@@ -551,7 +551,7 @@ const sanitizedSystemPrompt = {
 };
 
 // Log the sanitized content for debugging
-console.log('Sanitized System Prompt:', sanitizedSystemPrompt);
+console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
 
     try {    
         await updateSettings();
