@@ -785,44 +785,69 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
+let isEffectActive = false; // Flag to track if an effect is active
 
-function showSnowflakes() {
-    // Function to create a snowflake at a random position
-    function createSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄️';
-        
-        // Random horizontal position between 0 and 100% of the viewport width
-        const randomX = Math.random() * 100;
-        snowflake.style.left = `${randomX}%`;
-        
-        // Random size between 10px and 50px
-        const randomSize = Math.random() * 40 + 10;
-        snowflake.style.fontSize = `${randomSize}px`;
-        
-        // Add the snowflake to the document body
-        document.body.appendChild(snowflake);
-        
-        // Animate snowflake falling from the top
-        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;  // Adjust fall speed based on size
-        
-        // Remove the snowflake after the animation completes
-        setTimeout(() => snowflake.remove(), 5000);
-    }
+   function showSnowflakes() {
+            if (isEffectActive) return; // Prevent triggering if another effect is active
+            isEffectActive = true; // Set flag to active
 
-    // Function to generate snowflakes over a period of time
-    function generateSnowflakes() {
-        const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
-        createSnowflake();
-        
-        // Keep generating snowflakes at random intervals
-        setTimeout(generateSnowflakes, interval);
-    }
+            function createSnowflake() {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄️'; // Snowflake character
 
-    // Start generating snowflakes
-    generateSnowflakes();
-}
+                // Random horizontal position between 0 and 100% of the viewport width
+                const randomX = Math.random() * 100;
+                snowflake.style.left = `${randomX}%`;
+
+                // Random size between 10px and 50px
+                const randomSize = Math.random() * 40 + 10;
+                snowflake.style.fontSize = `${randomSize}px`;
+
+                // Start the snowflake above the viewport
+                snowflake.style.top = `${-randomSize}px`; // Start just above the viewport
+
+                // Prevent snowflakes from falling in the chat container area
+                const chatContainer = document.getElementById('chat-container');
+                const chatContainerRect = chatContainer.getBoundingClientRect();
+                const chatContainerBottom = chatContainerRect.bottom;
+
+                // Randomly decide whether to position the snowflake above or to the side of the chat container
+                if (Math.random() > 0.5) {
+                    // Position above the chat container
+                    snowflake.style.top = `${-randomSize}px`; // Start above
+                } else {
+                    // Position on the sides of the chat container
+                    const randomSideX = Math.random() < 0.5 ? -randomSize : window.innerWidth + randomSize; // Randomly left or right
+                    snowflake.style.left = `${randomSideX}px`;
+                    snowflake.style.top = `${Math.random() * (chatContainerBottom - randomSize)}px`; // Position within chat area height
+                }
+
+                // Add the snowflake to the document body
+                document.body.appendChild(snowflake);
+
+                // Animate snowflake falling from the top
+                snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`;
+
+                // Remove the snowflake after the animation completes
+                setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
+            }
+
+            function generateSnowflakes() {
+                const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
+                createSnowflake();
+
+                // Keep generating snowflakes at random intervals
+                setTimeout(generateSnowflakes, interval);
+            }
+
+            generateSnowflakes();
+
+            // Deactivate effect after 10 seconds
+            setTimeout(() => {
+                isEffectActive = false;
+            }, 10000);
+        }
 
 
 
@@ -832,7 +857,7 @@ function showSantaImage() {
     santaImage.classList.add('santa-image');
     document.body.appendChild(santaImage);
     // Remove the Santa image after a few seconds
-    setTimeout(() => santaImage.remove(), 5000);
+    setTimeout(() => santaImage.remove(), 11000);
 }
 
 function showGiftBoxes() {
