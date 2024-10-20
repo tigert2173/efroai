@@ -24,24 +24,25 @@
 </div>
 
 <script>
-    // Create a test ad element
-    var adTest = document.createElement('div');
-    adTest.innerHTML = '&nbsp;';
-    adTest.className = 'adsbox'; // Class name commonly used by ad networks
-    document.body.appendChild(adTest);
-
-    // Check if the ad element is hidden
-    window.setTimeout(function() {
-        if (adTest.offsetHeight === 0) {
-            // Ad blocker is active
-            document.getElementById('adBlockMessage').style.display = 'block';
-        } else {
-            // Ad blocker is not active
+    // Function to check for ad blocker
+    function detectAdBlocker() {
+        // Create a test image element
+        var img = new Image();
+        img.src = 'https://pagead2.googlesyndication.com/pagead/imgad?id=CAAQy5Z5y1cYwGoJ6gM1GQgPShTqlNTRx4WEJ8IY'; // A test image URL that is typically blocked
+        img.onload = function() {
+            // If the image loads, no ad blocker is detected
             console.log('No ad blocker detected.');
-        }
-        // Remove the test element
-        adTest.remove();
-    }, 100); // Timeout to allow rendering
+        };
+        img.onerror = function() {
+            // If the image fails to load, an ad blocker is likely active
+            document.getElementById('adBlockMessage').style.display = 'block';
+        };
+        // Append the image to the body (hidden)
+        document.body.appendChild(img);
+    }
+
+    // Run the detection function
+    detectAdBlocker();
 </script>
 
 </body>
