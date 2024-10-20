@@ -592,7 +592,7 @@ async function sendMessage() {
             };            
         
        // displayMessage(systemPrompt, 'system');
-        console.log('Request Data:', JSON.stringify(requestData, null, 2));
+        console.log('Request Data:', requestData);
         
         const response = await fetch("https://api.botbridge.net/api/send", {
             method: 'POST',
