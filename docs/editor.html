@@ -569,7 +569,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
-        tags: cleanInput(document.getElementById('tags').value.split(',').map(tag => tag.trim())),
+        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
         chardescription: cleanInput(document.getElementById('chardescription').value),
         persona: cleanInput(document.getElementById('persona').value),
         greeting: cleanInput(document.getElementById('greeting').value),
@@ -654,7 +654,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
-        tags: cleanInput(document.getElementById('tags').value.split(',').map(tag => tag.trim())),
+        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
         chardescription: cleanInput(document.getElementById('chardescription').value),
         persona: cleanInput(document.getElementById('persona').value),
         greeting: cleanInput(document.getElementById('greeting').value),
@@ -765,8 +765,8 @@ imageInput.addEventListener('change', function() {
 function cleanInput(input) {
     // Sanitize the input and then apply other cleaning as needed
     return DOMPurify.sanitize(input)
-        // .replace(/“|”/g, '"')
-        // .replace(/‘|’/g, "'");
+        .replace(/“|”/g, '"')
+        .replace(/‘|’/g, "'");
 }
 
     </script>
