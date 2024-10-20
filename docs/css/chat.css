@@ -385,11 +385,11 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Snowflake animation */
 .snowflake {
-    position: fixed;
-    top: -50px; /* Start above the viewport */
-    color: white;
-    z-index: 9999; /* Ensure it's on top */
+    position: fixed; /* Fixed positioning to allow free falling */
+    color: white; /* Color of the snowflake */
+    z-index: 9999; /* Ensure it's on top of other elements */
     pointer-events: none; /* Snowflakes should not interfere with clicks */
+    transition: transform 0.5s ease; /* Add a smooth transition */
 }
 
 @keyframes fall {
