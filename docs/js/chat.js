@@ -192,7 +192,7 @@ function updateSettings() {
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
 
     //Controlled Message Data Importance
-    messagedataimportance.lusermsg = lastUserMessage;
+  //  messagedataimportance.lusermsg = lastUserMessage;
 
      //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
 }
