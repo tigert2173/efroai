@@ -388,7 +388,7 @@ input[type="checkbox"]:not(:checked) + label {
     position: fixed;
     top: -50px; /* Start above the viewport */
     color: white;
-    z-index: 9999; /* Ensure it's on top */
+    z-index: 1; /* Ensure it's on top */
     pointer-events: none; /* Snowflakes should not interfere with clicks */
 }
 
