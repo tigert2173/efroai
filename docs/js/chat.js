@@ -667,15 +667,16 @@ async function sendMessage() {
         const data = await response.json();
         const botMessage = data.choices[0].message.content;
         
-        // Append the final message to the botMessages array
-        const botMessageObject = {
+        const botMessage = {
             role: 'assistant',
-            content: [{ type: 'text', text: botMessage }]
+            content: [{ type: 'text', text: result }] // Assuming 'result' holds the bot's response text
         };
-        // messages.push(botMessageObject);
+        messages.push(botMessage);
+        oldMessages.push(botMessage); // Store in old messages for regeneration
+        currentMessageIndex = -1; // Reset index for new messages
 
         // Display the final bot message in the chat
-        displayMessage(botMessage, 'bot', true);
+        displayMessages(); // Display updated messages
     }
 } catch (error) {
     console.error('Error:', error);
@@ -685,6 +686,7 @@ async function sendMessage() {
 }
 }
 
+displayMessages();
 
 function usernameupdated () {
 
