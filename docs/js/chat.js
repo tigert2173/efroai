@@ -848,6 +848,7 @@ function showSnowflakes() {
         isEffectActive = false;
     }, 10000);
 }
+showSnowflakes();
 
 
 
