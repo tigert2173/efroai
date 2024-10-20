@@ -204,7 +204,7 @@ function updateSettings() {
 function clearCurrentBotMessage() {
     if (currentBotMessageElement) {
         currentBotMessageElement.innerHTML = ''; // Clear the existing content
-        lastBotMessage = ''; // Clear the last bot message content
+      //  lastBotMessage = ''; // Clear the last bot message content
     }
 }
 
