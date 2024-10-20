@@ -857,7 +857,7 @@ function showSantaImage() {
     setTimeout(() => {
         santaImage.remove();
         isSantaActive = false; // Deactivate the Santa effect
-    }, 11000);
+    }, 20000);
 }
 
 function showGiftBoxes() {
