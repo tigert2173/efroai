@@ -643,8 +643,8 @@ async function sendMessage() {
             const chunk = decoder.decode(value, { stream: true });
             //console.log(chunk);
 
-           // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
-           const matches = chunk;
+            const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
+         //  const matches = chunk.match(/"content":"([^"]*)"/); 
            if (matches && matches[1]) {
                 const content = matches[1];
                 result += content;
