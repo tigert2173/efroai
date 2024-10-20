@@ -512,54 +512,125 @@ async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (!message) return;
+   // if (!message) return;
+    //if (!isResend) {
+       // processMessageDataImportance();
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg:', lastBotMsg);
+        lastUserMessage = message;
+        messagessent = messagessent + 1;
+        document.getElementById('messages-sent').value = messagessent;
+        displayMessage(message, 'user');
+        userInput.value = '';
+        botMessages = [];
+        currentBotMessageElement = null;
+  //  }
 
-    // Store the last user message
-    lastUserMessage = message;
-    displayMessage(message, 'user');
-    userInput.value = '';
+    lastBotMsg = lastBotMsg || settings.greeting;
 
-    // Prepare system prompt and requestData
+    // Define the system message
     const systemPrompt = {
         role: "system",
         content: `${settings.systemPrompt}
         Persona: ${settings.persona}
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
-        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}`
+        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        `,
     };
 
-    const requestData = {
-        model: "nephra_v1.0.Q4_K_M.gguf",
-        n_predict: parseInt(settings.maxTokens, 10),
-        messages: [systemPrompt, ...messages],
-        stream: true,
-        temperature: settings.temperature,
-        prescence_penalty: settings.prescence_penalty,
-        frequency_penalty: settings.frequency_penalty,
-        repeat_penalty: settings.repeat_penalty,
-        min_p: settings.min_p,
-        top_k: settings.top_k,
-        top_p: settings.top_p,
-        t_max_predict_ms: 300000,
-    };
+    try {    
+        await updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
 
-    try {
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
+        const requestData = {
+                model: "nephra_v1.0.Q4_K_M.gguf",
+                n_predict: parseInt(settings.maxTokens, 10),
+                messages: [systemPrompt, ...messages],
+                stream: true, // Enables streaming responses
+            
+
+                // The combined prompt for the AI
+               // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
+            
+                // AI parameters
+               // max_tokens: settings.maxTokens,
+                temperature: settings.temperature,
+                prescence_penalty: settings.prescence_penalty,
+                frequency_penalty: settings.frequency_penalty,
+                repeat_penalty: settings.repeat_penalty,
+                min_p: settings.min_p,
+                top_k: settings.top_k,
+                top_p: settings.top_p,
+                t_max_predict_ms: 300000, //timeout after 5 minutes
+            };            
+        
+       // displayMessage(systemPrompt, 'system');
+        console.log('Request Data:', JSON.stringify(requestData, null, 2));
+        
         const response = await fetch("https://api.botbridge.net/api/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
             body: JSON.stringify(requestData)
         });
+        
+        // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         // Add any other headers that were in axios
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
+        
+        // const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //      //   'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+            
+        //     body: JSON.stringify(requestData)
+        // });
+        
+        console.log(sessionStorage.getItem('token'));
 
         if (!response.ok) {
-            // Handle response errors here...
-            return;
+            if (response.status === 451) {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
+                const errorData = await response.json();
+                displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+            } else if (response.status === 400) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
+            return; // Exit early if the request failed
         }
-
-        // Handle streaming response
+    }
+    
+    if (response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let result = '';
@@ -568,40 +639,114 @@ async function sendMessage() {
             const { done, value } = await reader.read();
             if (done) break;
             const chunk = decoder.decode(value, { stream: true });
-            const matches = chunk.match(/"content":"([^"]*)"/);
-            if (matches && matches[1]) {
+            //console.log(chunk);
+
+           // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
+           const matches = chunk.match(/"content":"([^"]*)"/); 
+           if (matches && matches[1]) {
                 const content = matches[1];
                 result += content;
+                clearCurrentBotMessage();
                 displayMessage(result, 'bot', false);
             }
         }
 
         if (result) {
-            finalMessage(result);
+            // Append the final message to the botMessages array
+            const botMessage = {
+                role: 'assistant',
+                content: [{ type: 'text', text: result }]
+            };
+           // messages.push(botMessage);
+
+            // Display the final bot message in the chat
+            clearCurrentBotMessage();
+            displayMessage(result, 'bot', true);
         }
-    } catch (error) {
-        console.error('Error:', error);
-        displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+    } else {
+        const data = await response.json();
+        const botMessage = data.choices[0].message.content;
+        
+        // Append the final message to the botMessages array
+        const botMessageObject = {
+            role: 'assistant',
+            content: [{ type: 'text', text: botMessage }]
+        };
+        // messages.push(botMessageObject);
+
+        // Display the final bot message in the chat
+        displayMessage(botMessage, 'bot', true);
+    }
+} catch (error) {
+    console.error('Error:', error);
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+} finally {
+    isResend = false;
+}
+}
+
+
+function usernameupdated () {
+
+    if ( messagessent == 0) {
+        currentBotMessageElement.innerHTML = '';
+        const greeting = settings.greeting;
+        displayMessage(greeting, 'bot');
     }
 }
 
-// Function to handle the final message display
-function finalMessage(content) {
-    // Create a bot message object and store it
-    const botMessage = {
-        role: 'assistant',
-        content: [{ type: 'text', text: content }]
-    };
-
-    // Store current messages and add to old messages array
-    messages.push(botMessage);
-    oldMessages.push(botMessage);
-    currentMessageIndex = messages.length - 1;
-
-    // Display the final message
-    displayMessage(content, 'bot', true);
-    isFinal = true;
+function sendGreeting() {
+    messagessent = 0;
+    const greeting = settings.greeting;
+    if (greeting) {
+        displayMessage(greeting, 'bot', true);
+    }
 }
+
+function displayBotMessage(message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'bot-message ' + type; // Add type for specific styling
+    messageElement.textContent = message;
+    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
+
+    // Automatically remove the notice after a few seconds
+    setTimeout(() => {
+        messageElement.remove();
+    }, 10000); // Adjust the duration as needed
+}
+
+function regenerateMessage() {
+    const lastAssistantMessage = getLastAssistantMessage();
+    if (lastAssistantMessage) {
+        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
+
+        // Update the user input with the last user message
+        document.getElementById('user-input').value = lastUserMessage;
+
+        // Clear current bot message content to regenerate
+        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+
+        // Send the last user message again
+        sendMessage(); // Ensure this function is defined to handle sending the message
+    } else {
+        displayMessage('No previous assistant message found to regenerate.', 'bot');
+    }
+}
+
+// Update this function to get the last assistant message correctly
+function getLastAssistantMessage() {
+    // Find the last message in the messages array with the role 'assistant'
+    for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].role === 'assistant') {
+            return messages[i];
+        }
+    }
+    return null; // Return null if no assistant message is found
+}
+
+let userName = '{{user}}';
+let lastBotMsg = null;
+
 let messages = []; // Array to store messages
 let botMessages = []; // Array to store bot messages
 let currentBotMessageElement; // To store the current bot message element
@@ -679,301 +824,35 @@ function displayMessage(content, sender, isFinal = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function regenerateMessage() {
-    const lastAssistantMessage = getLastAssistantMessage();
-    if (lastAssistantMessage) {
-        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
+function navigateBotMessages(direction) {
+    if (currentBotMessageIndex === -1) return;
 
-        // Update the user input with the last user message
-        document.getElementById('user-input').value = lastUserMessage;
-        
-        // Clear current bot message content to regenerate
-        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+    const newIndex = currentBotMessageIndex + direction;
+    if (newIndex >= 0 && newIndex < botMessages.length) {
+        currentBotMessageIndex = newIndex;
+        const content = botMessages[currentBotMessageIndex];
+        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
 
-        // Resend the last user message
-        sendMessage(); // Ensure this function is defined to handle sending the message
-    } else {
-        displayMessage('No previous assistant message found to regenerate.', 'bot');
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
+
+        updateArrowStates();
     }
 }
 
-// async function sendMessage() {
-//     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
-//     const userInput = document.getElementById('user-input');
-//     const message = userInput.value.trim();
-//    // if (!message) return;
-//     //if (!isResend) {
-//        // processMessageDataImportance();
-//         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-//         console.log('Updated lastBotMsg:', lastBotMsg);
-//         lastUserMessage = message;
-//         messagessent = messagessent + 1;
-//         document.getElementById('messages-sent').value = messagessent;
-//         displayMessage(message, 'user');
-//         userInput.value = '';
-//         botMessages = [];
-//         currentBotMessageElement = null;
-//   //  }
+function updateArrowStates() {
+    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
+    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
 
-//     lastBotMsg = lastBotMsg || settings.greeting;
-
-//     // Define the system message
-//     const systemPrompt = {
-//         role: "system",
-//         content: `${settings.systemPrompt}
-//         Persona: ${settings.persona}
-//         Scenario: ${settings.scenario}
-//         ${settings.context ? `Context: ${settings.context}` : ''}
-//         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-//         `,
-//     };
-
-//     try {    
-//         await updateSettings();
-//         // Construct the conversation context
-//         // conversationContext.push(`User: ${settings.message}`); // Append user message
-
-//         // // Limit the context size
-//         // if (conversationContext.length > 4096) {
-//         //     conversationContext.shift(); // Remove the oldest message
-//         // }
-
-//         // Create the full prompt for the bot
-//         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
-//         const requestData = {
-//                 model: "nephra_v1.0.Q4_K_M.gguf",
-//                 n_predict: parseInt(settings.maxTokens, 10),
-//                 messages: [systemPrompt, ...messages],
-//                 stream: true, // Enables streaming responses
-            
-
-//                 // The combined prompt for the AI
-//                // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
-            
-//                 // AI parameters
-//                // max_tokens: settings.maxTokens,
-//                 temperature: settings.temperature,
-//                 prescence_penalty: settings.prescence_penalty,
-//                 frequency_penalty: settings.frequency_penalty,
-//                 repeat_penalty: settings.repeat_penalty,
-//                 min_p: settings.min_p,
-//                 top_k: settings.top_k,
-//                 top_p: settings.top_p,
-//                 t_max_predict_ms: 300000, //timeout after 5 minutes
-//             };            
-        
-//        // displayMessage(systemPrompt, 'system');
-//         console.log('Request Data:', JSON.stringify(requestData, null, 2));
-        
-//         const response = await fetch("https://api.botbridge.net/api/send", {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
-//             },
-//             body: JSON.stringify(requestData)
-//         });
-        
-//         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
-//         //     method: 'POST',
-//         //     headers: {
-//         //         'Content-Type': 'application/json',
-//         //         // Add any other headers that were in axios
-//         //     },
-//         //     body: JSON.stringify(requestData)
-//         // });
-        
-//         // const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
-//         //     method: 'POST',
-//         //     headers: {
-//         //         'Content-Type': 'application/json',
-//         //      //   'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
-//         //     },
-            
-//         //     body: JSON.stringify(requestData)
-//         // });
-        
-//         console.log(sessionStorage.getItem('token'));
-
-//         if (!response.ok) {
-//             if (response.status === 451) {
-//             const errorData = await response.json();
-//             displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
-//             return; // Exit early if the request failed
-//         } else if (response.status === 401) {
-//                 const errorData = await response.json();
-//                 displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
-//                 return; // Exit early if the request failed
-//         } else if (response.status === 406) {
-//                     const errorData = await response.json();
-//                     displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
-//                     return; // Exit early if the request failed
-//             } else if (response.status === 400) {
-//                     const errorData = await response.json();
-//                     displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
-//                     return; // Exit early if the request failed
-//         } else {
-//             const errorData = await response.json();
-//             displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
-//             return; // Exit early if the request failed
-//         }
-//     }
-    
-//     if (response.body) {
-//         const reader = response.body.getReader();
-//         const decoder = new TextDecoder();
-//         let result = '';
-
-//         while (true) {
-//             const { done, value } = await reader.read();
-//             if (done) break;
-//             const chunk = decoder.decode(value, { stream: true });
-//             //console.log(chunk);
-
-//            // const matches = chunk.match(/"content":\s*\[\{"type":"text","text":"([^"]*)"\}\]/);
-//            const matches = chunk.match(/"content":"([^"]*)"/); 
-//            if (matches && matches[1]) {
-//                 const content = matches[1];
-//                 result += content;
-//                 clearCurrentBotMessage();
-//                 displayMessage(result, 'bot', false);
-//             }
-//         }
-
-//         if (result) {
-//             // Append the final message to the botMessages array
-//             const botMessage = {
-//                 role: 'assistant',
-//                 content: [{ type: 'text', text: result }]
-//             };
-//            // messages.push(botMessage);
-
-//             // Display the final bot message in the chat
-//             clearCurrentBotMessage();
-//             displayMessage(result, 'bot', true);
-//         }
-//     } else {
-//         const data = await response.json();
-//         const botMessage = data.choices[0].message.content;
-        
-//         // Append the final message to the botMessages array
-//         const botMessageObject = {
-//             role: 'assistant',
-//             content: [{ type: 'text', text: botMessage }]
-//         };
-//         // messages.push(botMessageObject);
-
-//         // Display the final bot message in the chat
-//         displayMessage(botMessage, 'bot', true);
-//     }
-// } catch (error) {
-//     console.error('Error:', error);
-//     displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
-// } finally {
-//     isResend = false;
-// }
-// }
-
-
-function usernameupdated () {
-
-    if ( messagessent == 0) {
-        currentBotMessageElement.innerHTML = '';
-        const greeting = settings.greeting;
-        displayMessage(greeting, 'bot');
+    if (leftArrow) {
+        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
+    }
+    if (rightArrow) {
+        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
     }
 }
 
-function sendGreeting() {
-    messagessent = 0;
-    const greeting = settings.greeting;
-    if (greeting) {
-        displayMessage(greeting, 'bot', true);
-    }
-}
 
-function displayBotMessage(message, type) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'bot-message ' + type; // Add type for specific styling
-    messageElement.textContent = message;
-    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
-
-    // Automatically remove the notice after a few seconds
-    setTimeout(() => {
-        messageElement.remove();
-    }, 10000); // Adjust the duration as needed
-}
-
-function getLastAssistantMessage() {
-    // Find the last message in the messages array with the role 'assistant'
-    for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === 'assistant') {
-            return messages[i];
-        }
-    }
-    return null; // Return null if no assistant message is found
-}
-
-let userName = '{{user}}';
-let lastBotMsg = null;
-
-// Function to handle the final message display
-function finalMessage(content) {
-    // Create a bot message object and store it
-    const botMessage = {
-        role: 'assistant',
-        content: [{ type: 'text', text: content }]
-    };
-
-    // Store current messages and add to old messages array
-    messages.push(botMessage);
-    oldMessages.push(botMessage);
-    currentMessageIndex = messages.length - 1;
-
-    // Display the final message
-    displayMessage(content, 'bot', true);
-    isFinal = true;
-}
-
-// Function to navigate to the previous message
-function showPreviousMessage() {
-    if (currentMessageIndex > 0) {
-        currentMessageIndex--;
-        const message = messages[currentMessageIndex].content[0].text;
-        displayMessage(message, 'bot', true);
-    }
-}
-
-// Function to navigate to the next message
-function showNextMessage() {
-    if (currentMessageIndex < messages.length - 1) {
-        currentMessageIndex++;
-        const message = messages[currentMessageIndex].content[0].text;
-        displayMessage(message, 'bot', true);
-    }
-}
-
-// Function to clear all messages
-function clearAllMessages() {
-    messages = [];
-    oldMessages = [];
-    currentMessageIndex = -1;
-    document.getElementById('chat-container').innerHTML = ''; // Assuming chat-container displays messages
-    displayMessage('All messages have been cleared.', 'temporary-notice');
-}
-
-// Function to add message navigation controls
-function addNavigationControls() {
-    const navigationContainer = document.getElementById('navigation-controls');
-    navigationContainer.innerHTML = `
-        <button id="prev-button" onclick="showPreviousMessage()">&#8592; Previous</button>
-        <button id="next-button" onclick="showNextMessage()">Next &#8594;</button>
-        <button id="clear-button" onclick="clearAllMessages()">Clear All Messages</button>
-    `;
-}
-
-// Call this function once to set up the navigation controls in your HTML
-addNavigationControls();
 
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
