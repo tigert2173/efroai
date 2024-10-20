@@ -646,36 +646,46 @@ async function sendMessage() {
             const chunk = decoder.decode(value, { stream: true });
             console.log("Raw chunk:", chunk); // Log raw chunk data
         
-            // Remove the 'data: ' prefix if present
-            const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
+            // Remove the 'data: ' prefix if present and trim whitespace
+            const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6).trim() : chunk.trim();
         
-            // Trim any trailing characters after a complete JSON object
-            const endIndex = jsonChunk.indexOf('}');
-            const trimmedChunk = endIndex !== -1 ? jsonChunk.slice(0, endIndex + 1) : jsonChunk;
-        
-            // Try to parse the JSON
+            // Attempt to parse the JSON, catch errors and handle them
             let parsedChunk;
             try {
-                parsedChunk = JSON.parse(trimmedChunk);
-            } catch (error) {
-                console.error("Error parsing chunk:", error);
-                console.log("Skipped chunk:", trimmedChunk); // Log the skipped chunk
-                continue; // Skip this iteration if there's a parsing error
-            }
+                // Use regex to find complete JSON objects in the chunk
+                const jsonMatches = jsonChunk.match(/(\{.*?\})/g); // Match all JSON objects
         
-            // Check if parsed chunk has the expected structure
-            if (parsedChunk.choices && parsedChunk.choices.length > 0) {
-                // Extract the content from the chunk
-                const content = parsedChunk.choices[0].delta.content;
-                if (content) {
-                    bufferedContent += content; // Append the extracted content
+                if (jsonMatches) {
+                    for (const match of jsonMatches) {
+                        try {
+                            parsedChunk = JSON.parse(match); // Parse each JSON object
+                        } catch (error) {
+                            console.error("Error parsing individual chunk:", error);
+                            console.log("Skipped chunk:", match); // Log the skipped chunk
+                            continue; // Skip this iteration if there's a parsing error
+                        }
         
-                    // Update the display with the current buffered content
-                    clearCurrentBotMessage();
-                    displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
+                        // Check if parsed chunk has the expected structure
+                        if (parsedChunk.choices && parsedChunk.choices.length > 0) {
+                            // Extract the content from the chunk
+                            const content = parsedChunk.choices[0].delta.content;
+                            if (content) {
+                                bufferedContent += content; // Append the extracted content
+        
+                                // Update the display with the current buffered content
+                                clearCurrentBotMessage();
+                                displayMessage(bufferedContent.trim(), 'bot', false); // Show current buffer state
+                            }
+                        } else {
+                            console.log("No valid choices found in chunk:", parsedChunk); // Log if no valid choices were found
+                        }
+                    }
+                } else {
+                    console.log("No JSON objects found in chunk:", jsonChunk); // Log if no valid JSON was found
                 }
-            } else {
-                console.log("No valid choices found in chunk:", parsedChunk); // Log if no valid choices were found
+            } catch (error) {
+                console.error("Error processing chunk:", error);
+                console.log("Skipped chunk:", jsonChunk); // Log the skipped chunk
             }
         }
         
