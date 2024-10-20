@@ -512,19 +512,19 @@ async function sendMessage() {
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-//    // if (!message) return;
-//     if (!isResend) {
-//        // processMessageDataImportance();
-//         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-//         console.log('Updated lastBotMsg:', lastBotMsg);
-//         lastUserMessage = message;
-//         messagessent = messagessent + 1;
-//         document.getElementById('messages-sent').value = messagessent;
-//         displayMessage(message, 'user');
-//         userInput.value = '';
-//         botMessages = [];
-//         currentBotMessageElement = null;
-//     }
+   // if (!message) return;
+    if (!isResend) {
+       // processMessageDataImportance();
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg:', lastBotMsg);
+        lastUserMessage = message;
+        messagessent = messagessent + 1;
+        document.getElementById('messages-sent').value = messagessent;
+        displayMessage(message, 'user');
+        userInput.value = '';
+        botMessages = [];
+        currentBotMessageElement = null;
+    }
 
     lastBotMsg = lastBotMsg || settings.greeting;
 
@@ -657,6 +657,7 @@ async function sendMessage() {
                 role: 'assistant',
                 content: [{ type: 'text', text: result }]
             };
+            console.log("done");
            // messages.push(botMessage);
 
             // Display the final bot message in the chat
