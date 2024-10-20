@@ -806,8 +806,8 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // Convert **text** to <b>text</b>
         .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Block code with triple backticks
-        .replace(/`([^`]+)`/g, '<code>$1</code>') // Inline code with single backticks
+        .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
+        .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // Inline code with single backticks
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
     // Prepare message object in the desired format

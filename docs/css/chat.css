@@ -192,6 +192,13 @@ a:active {
 }
 
 /* Style for inline code */
+codelight {
+    /* background-color: #2e2e2e; */
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: "Courier New", Courier, monospace;
+}
+/* Style for inline code */
 code {
     background-color: #2e2e2e;
     border-radius: 3px;
