@@ -24,12 +24,14 @@ function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
 
-    characters.forEach((character, index) => {
+    let cardCounter = 0; // Counter to keep track of the number of displayed cards
+
+    characters.forEach((character) => {
         const card = document.createElement('div');
         card.className = 'character-card';
 
         const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-        
+
         // Create image element
         const imgElement = document.createElement('img');
         imgElement.alt = `${character.name} image`;
@@ -88,10 +90,10 @@ function displayCharacters(characters) {
         card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
         characterGrid.appendChild(card);
+        cardCounter++; // Increment the counter after adding a card
 
-        // Insert ad based on a random condition
-        const randomInterval = Math.floor(Math.random() * (10 - 3 + 1)) + 3;
-        if ((index + 1) % randomInterval === 0) {
+        // Check if it's time to insert an ad
+        if (cardCounter % 3 === 0 && cardCounter <= 10) { // Ad after every 3 cards up to 10
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
 
@@ -118,6 +120,7 @@ function displayCharacters(characters) {
         }
     });
 }
+
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
