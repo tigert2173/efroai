@@ -776,7 +776,7 @@ function displayMessage(content, sender, isFinal = false) {
     messages.push(messageObject);
     console.log('Messages array:', messages); // Debugging to view the array
 
-    if (sender === 'bot') {
+    if (sender === 'bot' ||  isResend === true ) {
         // Store bot message in the botMessages array
         botMessages.push(sanitizedContent);
         
