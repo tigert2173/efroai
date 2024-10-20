@@ -636,6 +636,7 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let result = '';
+        let bufferedData = '';
     
         while (true) {
             const { done, value } = await reader.read();
@@ -643,26 +644,40 @@ async function sendMessage() {
     
             // Decode the current chunk
             const chunk = decoder.decode(value, { stream: true });
+            bufferedData += chunk; // Accumulate the data in the buffer
     
-            // If the chunk is complete JSON, parse it directly
-            // Here we will assume each chunk is a full JSON object; otherwise, you would need to buffer until complete JSON
-            try {
-                const jsonResponse = JSON.parse(chunk);
-                if (jsonResponse.choices && jsonResponse.choices.length > 0) {
-                    const content = jsonResponse.choices[0].delta.content;
-                    result += content;
-                    clearCurrentBotMessage();
-                    displayMessage(result, 'bot', false);
+            // Split the buffered data into potential complete JSON objects
+            let lines = bufferedData.split('\n');
+    
+            // Process each line
+            for (let line of lines) {
+                // Check if the line contains JSON data
+                if (line.startsWith('data: ')) {
+                    const jsonString = line.substring(6).trim(); // Remove the 'data: ' prefix
+    
+                    try {
+                        const jsonResponse = JSON.parse(jsonString);
+                        if (jsonResponse.choices && jsonResponse.choices.length > 0) {
+                            const content = jsonResponse.choices[0].delta.content;
+                            result += content;
+                            clearCurrentBotMessage();
+                            displayMessage(result, 'bot', false);
+                        }
+                    } catch (error) {
+                        console.error('Failed to parse JSON:', error);
+                    }
                 }
-            } catch (error) {
-                console.error('Failed to parse JSON:', error);
             }
+    
+            // Keep any leftover buffered data
+            // This could happen if the last line doesn't end with a newline
+            bufferedData = bufferedData.endsWith('\n') ? '' : lines.pop(); // Store any partial data
         }
     
         if (result) {
             clearCurrentBotMessage();
             displayMessage(result, 'bot', true);
-        }
+        }    
     } else {
         const data = await response.json();
         const botMessage = data.choices[0].message.content;
