@@ -571,14 +571,14 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
             ...msg,
             content: msg.content.map(item => ({
                 ...item,
-                text: item.text.replace(/\\/g, '') // Remove backslashes but keep newlines
+                text: item.text.replace(/\\+/g, '') // Remove backslashes but keep newlines
             }))
         }));
 
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: [sanitizedSystemPrompt, ...sanitizedMessages],
+                messages: [sanitizedSystemPrompt.content, ...sanitizedMessages.content],
                 stream: true, // Enables streaming responses
             
 
