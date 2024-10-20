@@ -99,9 +99,9 @@ function displayCharacters(characters) {
     insElement.setAttribute('data-zoneid', '5449604');
     adContainer.appendChild(insElement);
 
-    //Add keywords to the <ins> element
-    const keywords = 'ai,chatbots,chatbot,fart,fartfetish,footfetish,aigirlfriend'; // Replace this with your actual keywords
+    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
     insElement.setAttribute('data-keywords', keywords);
+
 
     // Insert the script tag for the ad provider
     const scriptElement = document.createElement('script');
