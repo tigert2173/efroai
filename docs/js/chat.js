@@ -550,10 +550,13 @@ const sanitizedSystemPrompt = {
     `.replace(/\\+/g, '') // Remove all backslashes
 };
 
-// Prepare messages array
-const messages = [
+// Prepare the messages array for the request
+const formattedMessages = [
     { role: "system", content: sanitizedSystemPrompt.content },
-    ...messages.map(msg => ({ role: msg.role, content: msg.content.replace(/\\/g, '') })) // Ensure no backslashes
+    ...messages.map(msg => ({
+        role: msg.role,
+        content: msg.content.replace(/\\/g, '') // Ensure no backslashes
+    })),
 ];
 
 // Log the sanitized content for debugging
@@ -575,7 +578,7 @@ console.log('Sanitized System Prompt:', sanitizedSystemPrompt.content);
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                messages: messages,
+                messages: formattedMessages,
                 stream: true, // Enables streaming responses
             
 
