@@ -79,8 +79,16 @@
 </nav>
     </header>
     <div id="main-content">
-        <div id="chat-container"></div>
-
+        <!-- <div id="chat-container"></div> -->
+        <div id="chat-container">
+            <div id="messages-display"></div>
+            <div id="message-navigation">
+                <button id="delete-all-messages">Delete All Messages</button>
+                <button id="previous-message" style="display: none;">⬅️</button>
+                <button id="next-message" style="display: none;">➡️</button>
+            </div>
+        </div>
+        
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
             <button onclick="sendMessage()">Send</button>
