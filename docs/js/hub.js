@@ -8,7 +8,7 @@ function isAdExempt(token) {
     const payload = token.split('.')[1]; // Get the payload part
     const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
 
-    return decodedPayload['Ad-Exempt'] === true; // Check the Ad-Exempt claim
+    return decodedPayload['AdExempt'] === true; // Check the Ad-Exempt claim
 }
 
 let adExempt = false // Check if the user is Ad-Exempt
