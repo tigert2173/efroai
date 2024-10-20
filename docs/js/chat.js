@@ -650,12 +650,12 @@ async function sendMessage() {
             if (matches && matches[1]) {
                 const content = matches[1];
                 bufferedContent += content; // Buffer the content instead of displaying immediately
-        
+                result = content;
                 // Optional: Check if the content ends with a full stop or other ending punctuation
                 if (content.endsWith('.') || content.endsWith('!') || content.endsWith('?') || content.endsWith('\n')) {
                     clearCurrentBotMessage();
                     displayMessage(bufferedContent.trim(), 'bot', false);
-                   // bufferedContent = ''; // Clear the buffer after displaying
+                    bufferedContent = ''; // Clear the buffer after displaying
                 } else {
                     clearCurrentBotMessage();
                     displayMessage(bufferedContent.trim(), 'bot', false); // Update display with buffered content
@@ -668,7 +668,7 @@ async function sendMessage() {
             clearCurrentBotMessage();
             displayMessage(bufferedContent.trim(), 'bot', true); // Display remaining content as final
         }
-
+        
         if (result) {
             // Append the final message to the botMessages array
             const botMessage = {
