@@ -11,6 +11,8 @@ function isAdExempt(token) {
     return decodedPayload['Ad-Exempt'] === true; // Check the Ad-Exempt claim
 }
 
+const adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
+
 // Function to load characters from the backend
 function loadCharacters() {
     fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
@@ -26,7 +28,7 @@ function loadCharacters() {
     })
     .then(characters => {
         const userToken = sessionStorage.getItem('token'); // Replace with your method of obtaining the token
-        const adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
+        adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
         displayCharacters(characters);
     })
     .catch(error => console.error('Error fetching characters:', error));
