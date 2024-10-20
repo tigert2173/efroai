@@ -650,7 +650,7 @@ async function sendMessage() {
             const jsonChunk = chunk.startsWith('data: ') ? chunk.slice(6) : chunk;
         
             // Clean up the chunk by removing unwanted trailing characters
-            const cleanedChunk = jsonChunk.trim().replace(/[^{}\[\],":\d\w\s.-]/g, '');
+            const cleanedChunk = jsonChunk;
         
             // Try to parse the cleaned JSON
             let parsedChunk;
