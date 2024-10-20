@@ -220,12 +220,14 @@
             const honeypot = document.getElementById('confirmUsername').value; // Get the honeypot value
             if (honeypot) {
                 errorMessage.textContent = 'Bot detected!'; // Or handle as needed
+                document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
                 window.location.href = 'error/timeout.html'; // Redirect to timeout page
                 return; // Stop further execution
             }
             const honeypot2 = document.getElementById('confirmEmail').value; // Get the honeypot value
             if (honeypot2) {
                 errorMessage.textContent = 'Bot detected!'; // Or handle as needed
+                document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
                 window.location.href = 'error/timeout.html'; // Redirect to timeout page
                 return; // Stop further execution
             }
