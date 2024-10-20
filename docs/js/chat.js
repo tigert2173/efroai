@@ -655,13 +655,20 @@ async function sendMessage() {
                 if (line.startsWith('data: ')) {
                     const jsonString = line.substring(6).trim(); // Remove the 'data: ' prefix
     
+                    // Skip the '[DONE]' message
+                    if (jsonString === '[DONE]') {
+                        continue; // Skip this line
+                    }
+    
                     try {
                         const jsonResponse = JSON.parse(jsonString);
                         if (jsonResponse.choices && jsonResponse.choices.length > 0) {
                             const content = jsonResponse.choices[0].delta.content;
-                            result += content;
-                            clearCurrentBotMessage();
-                            displayMessage(result, 'bot', false);
+                            if (content) { // Only append non-empty content
+                                result += content;
+                                clearCurrentBotMessage();
+                                displayMessage(result, 'bot', false);
+                            }
                         }
                     } catch (error) {
                         console.error('Failed to parse JSON:', error);
@@ -674,6 +681,7 @@ async function sendMessage() {
             bufferedData = bufferedData.endsWith('\n') ? '' : lines.pop(); // Store any partial data
         }
     
+        // Final display outside the loop
         if (result) {
             clearCurrentBotMessage();
             displayMessage(result, 'bot', true);
