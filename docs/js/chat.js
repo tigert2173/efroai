@@ -555,6 +555,7 @@ async function sendMessage() {
         `),
     };
 
+    console.log("sanitizeToUnicode: " + sanitizedSystemPrompt);
     try {    
         await updateSettings();
         // Construct the conversation context
