@@ -494,12 +494,6 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 const isFirstMessage = true; 
 
 async function sendMessage() {
-    const lastAssistantMessage = getLastAssistantMessage();
-    if (lastAssistantMessage) {
-        console.log('Last assistant message:', lastAssistantMessage);
-    } else {
-        console.log('No assistant messages found.');
-    }
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
@@ -763,28 +757,17 @@ function displayMessage(content, sender, isFinal = false) {
             previousHeader.remove();
         }
 
-        // Create a new message header with navigation arrows
-        const messageHeader = document.createElement('div');
-        messageHeader.className = 'message-header';
-        messageHeader.innerHTML = `
-        `;
-
-        // Create or update the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
+        const lastAssistantMessage = getLastAssistantMessage();
+        if (lastAssistantMessage) {
+            console.log('Last assistant message:', lastAssistantMessage);
+        } else {
+            console.log('No assistant messages found.');
         }
-
-        // Append message header and content
-        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
             messages.push(messageObject);
             console.log('Messages array:', messages); // Debugging to view the array
             //botMessages.push(currentBotMessageElement.innerHTML);
-            currentBotMessageIndex = botMessages.length - 1;
         }
 
         // Update arrow states
