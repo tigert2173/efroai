@@ -190,22 +190,7 @@ function updateSettings() {
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
-
-    //Controlled Message Data Importance
-  //  messagedataimportance.lusermsg = lastUserMessage;
-
      //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
-}
-
-// let lastBotMessage = ''; // Variable to store the last bot message
-// let lastUserMessage = ''; // Variable to store the last user message
-
-// Function to clear the content of the current bot message element
-function clearCurrentBotMessage() {
-    if (currentBotMessageElement) {
-        currentBotMessageElement.innerHTML = ''; // Clear the existing content
-      //  lastBotMessage = ''; // Clear the last bot message content
-    }
 }
 
 let messagedataimportance = {
@@ -799,72 +784,6 @@ function displayMessage(content, sender, isFinal = false) {
 
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// Additional functions remain the same
-
-function regenerateMessage() {
-    if (messages && messages.length > 0) {
-        let lastUserMessage = null;
-        let lastBotMessage = null;
-
-        // Loop backwards to find the last user and bot messages
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (!lastBotMessage && messages[i].role === 'bot') {
-                lastBotMessage = messages[i].content;
-            }
-            if (!lastUserMessage && messages[i].role === 'user') {
-                lastUserMessage = messages[i].content;
-            }
-            if (lastUserMessage && lastBotMessage) {
-                break;
-            }
-        }
-
-        if (lastUserMessage) {
-            // Remove the last bot message from the context
-            settings.context = settings.context.replace(lastBotMessage, '').trim();
-
-            clearCurrentBotMessage();
-            isResend = true;
-            document.getElementById('user-input').value = lastUserMessage;
-
-            sendMessage(); // Resend the last user message
-        } else {
-            displayMessage('No previous user message found to regenerate.', 'bot');
-        }
-    } else {
-        displayMessage('No messages found in history.', 'bot');
-    }
-}
-
-
-function navigateBotMessages(direction) {
-    if (currentBotMessageIndex === -1) return;
-
-    const newIndex = currentBotMessageIndex + direction;
-    if (newIndex >= 0 && newIndex < botMessages.length) {
-        currentBotMessageIndex = newIndex;
-        const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content;
-
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
-
-        updateArrowStates();
-    }
-}
-
-function updateArrowStates() {
-    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
-    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
-
-    if (leftArrow) {
-        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
-    }
-    if (rightArrow) {
-        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
-    }
 }
 
 
