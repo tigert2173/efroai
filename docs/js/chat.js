@@ -591,7 +591,7 @@ async function sendMessage() {
        // displayMessage(systemPrompt, 'system');
        console.log('Sanitized Request Data:', JSON.stringify(requestData, null, 2));
         
-        const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
+        const response = await fetch("https://botbridgeai.net/api/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
