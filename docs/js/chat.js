@@ -801,9 +801,6 @@ function displayMessage(content, sender, isFinal = false) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Additional functions remain the same
-let lastUserMessage = null; // Track the last user message
-
 function regenerateMessage() {
     if (lastUserMessage) {
         // Clear current bot message and regenerate
