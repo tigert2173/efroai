@@ -811,7 +811,7 @@ function displayMessage(content, sender, isFinal = false) {
         .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // monospace with single backticks
         .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
 
-        if (sanitizedContent.includes("Christmas") || input.includes("holiday")) {
+        if (sanitizedContent.includes("Christmas") || sanitizedContent.includes("holiday")) {
             return "Ho ho ho! Merry Christmas! 🎅 How can I make your holidays even merrier?";
         }
         return "Happy holidays! Let me know if you need help with anything.";
