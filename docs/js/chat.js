@@ -700,6 +700,16 @@ function displayBotMessage(message, type) {
     }, 10000); // Adjust the duration as needed
 }
 
+function getLastAssistantMessage() {
+    // Find the last message in the messages array with the role 'assistant'
+    for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].role === 'assistant') {
+            return messages[i];
+        }
+    }
+    return null; // Return null if no assistant message is found
+}
+
 let userName = '{{user}}';
 let currentBotMessageElement = null;
 let botMessages = []; // Array to store bot messages
@@ -752,17 +762,22 @@ function displayMessage(content, sender, isFinal = false) {
         messageHeader.className = 'message-header';
         messageHeader.innerHTML = `
         `;
+        const lastAssistantMessage = getLastAssistantMessage();
+        if (lastAssistantMessage) {
+            console.log('Last assistant message:', lastAssistantMessage);
+        } else {
+            console.log('No assistant messages found.');
+        }
+        // Create or update the current bot message element
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
+        }
 
-        // // Create or update the current bot message element
-        // if (!currentBotMessageElement) {
-        //     currentBotMessageElement = document.createElement('div');
-        //     currentBotMessageElement.className = `message ${sender}`;
-        //     chatContainer.appendChild(currentBotMessageElement);
-        // }
-
-        // // Append message header and content
-        // chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        // currentBotMessageElement.innerHTML += sanitizedContent;
+        // Append message header and content
+        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
             messages.push(messageObject);
