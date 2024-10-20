@@ -817,21 +817,34 @@ function regenerateMessage(newMessageContent) {
 }
 
 
-function navigateBotMessages(direction) {
-    if (currentBotMessageIndex === -1) return;
+function updateBotMessage(content) {
+    const chatContainer = document.getElementById('chat-container');
 
+    // Create a new message element if needed
+    if (!currentBotMessageElement) {
+        currentBotMessageElement = document.createElement('div');
+        currentBotMessageElement.className = 'message bot';
+        chatContainer.appendChild(currentBotMessageElement);
+    }
+
+    // Update the message content
+    currentBotMessageElement.innerHTML = content;
+
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function navigateBotMessages(direction) {
+    // Update index based on direction (1 = forward, -1 = backward)
     const newIndex = currentBotMessageIndex + direction;
+
     if (newIndex >= 0 && newIndex < botMessages.length) {
         currentBotMessageIndex = newIndex;
-        const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content;
-
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
-
-        updateArrowStates();
+        updateBotMessage(botMessages[currentBotMessageIndex]); // Display the selected message
+        updateArrowStates(); // Update the navigation arrows
     }
 }
+
 
 function updateArrowStates() {
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
