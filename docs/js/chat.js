@@ -759,7 +759,7 @@ function displayMessage(content, sender, isFinal = false) {
     if (sender === 'bot') {
         // Store bot message in the botMessages array
         botMessages.push(sanitizedContent);
-        
+
         // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
@@ -806,14 +806,15 @@ function displayMessage(content, sender, isFinal = false) {
 }
 
 function regenerateMessage() {
-    const lastAssistantMessage = getLastAssistantMessage();
-    if (lastAssistantMessage) {
+    // Get the last bot message to regenerate
+    if (currentBotMessageIndex >= 0 && currentBotMessageIndex < botMessages.length) {
+        const lastBotMessageContent = botMessages[currentBotMessageIndex]; // Get the current message to regenerate
         const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
 
         // Update the user input with the last user message
         document.getElementById('user-input').value = lastUserMessage;
-        
-        // Clear current bot message content to regenerate
+
+        // Optionally clear the current bot message element to regenerate
         currentBotMessageElement.innerHTML = ''; // Clear current bot message
 
         // Resend the last user message
@@ -852,6 +853,7 @@ function updateArrowStates() {
         rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
     }
 }
+
 
 
 
