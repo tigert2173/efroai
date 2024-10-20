@@ -779,9 +779,6 @@ function displayMessage(content, sender, isFinal = false) {
     console.log('Messages array:', messages); // Debugging to view the array
 
     if (sender === 'bot' ) {
-        // Store bot message in the botMessages array
-        botMessages.push(sanitizedContent);
-        
         // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
@@ -795,7 +792,9 @@ function displayMessage(content, sender, isFinal = false) {
         // If the message is final, update the navigation header
         if (isFinal) {
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            
+                   // Store bot message in the botMessages array
+        botMessages.push(sanitizedContent);
+        
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
