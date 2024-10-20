@@ -728,134 +728,94 @@ function getLastAssistantMessage() {
 let userName = '{{user}}';
 let lastBotMsg = null;
 
-let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot messages
-let currentBotMessageElement; // To store the current bot message element
-let currentBotMessageIndex = -1; // Index for tracking the current bot message
+let messages = []; // Array to store current messages
+let oldMessages = []; // Array to store old messages for regeneration
+let currentMessageIndex = -1; // Index for navigating through old messages
 
-function displayMessage(content, sender, isFinal = false) {
-    let userName = document.getElementById('user-name').value.trim();
-    if (!userName) { userName = "{{user}}"; }
+// Function to display messages from the messages array
+function displayMessages() {
+    const messagesDisplay = document.getElementById('messages-display');
+    messagesDisplay.innerHTML = ''; // Clear current display
 
-    const chatContainer = document.getElementById('chat-container');
-    const sanitizedContent = content
-        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
+    messages.forEach((msg, index) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = msg.role === 'user' ? 'user-message' : 'bot-message';
+        messageDiv.innerHTML = `
+            ${msg.content.map(content => content.text).join('')}
+            <button class="delete-message" data-index="${index}">❌</button>
+        `;
+        messagesDisplay.appendChild(messageDiv);
+    });
 
-    // Prepare message object in the desired format
-    const messageObject = {
-        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
-        content: [{ type: 'text', text: content }]
-    };
+    // Update navigation buttons based on the messages array
+    updateNavigationButtons();
 
-    // Add the message object to the messages array
-    messages.push(messageObject);
-    console.log('Messages array:', messages); // Debugging to view the array
+    // Add event listeners to delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-message');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const indexToDelete = parseInt(button.getAttribute('data-index'), 10);
+            deleteMessage(indexToDelete);
+        });
+    });
+}
 
-    if (sender === 'bot') {
-        // Store bot message in the botMessages array
-        botMessages.push(sanitizedContent);
+// Function to delete a specific message
+function deleteMessage(index) {
+    if (index >= 0 && index < messages.length) {
+        // Remove message from both arrays
+        const deletedMessage = messages.splice(index, 1)[0]; // Remove from messages
+        oldMessages = oldMessages.filter(msg => msg !== deletedMessage); // Remove from oldMessages
 
-        // Create or reuse the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
+        // Adjust currentMessageIndex if needed
+        if (currentMessageIndex >= index) {
+            currentMessageIndex = Math.max(currentMessageIndex - 1, -1); // Move up the index if needed
         }
 
-        // Update the content of the existing bot message element
-        currentBotMessageElement.innerHTML = sanitizedContent;
+        displayMessages(); // Refresh the message display
+    }
+}
 
-        // If the message is final, update the navigation header
-        if (isFinal) {
-            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            
-            // Remove previous bot message header if exists
-            const previousHeader = document.querySelector('.message-header');
-            if (previousHeader) {
-                previousHeader.remove();
-            }
+// Function to update navigation buttons visibility
+function updateNavigationButtons() {
+    const previousButton = document.getElementById('previous-message');
+    const nextButton = document.getElementById('next-message');
 
-            // Create a new message header with navigation arrows
-            const messageHeader = document.createElement('div');
-            messageHeader.className = 'message-header';
-            messageHeader.innerHTML = `
-            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            `;
-
-            // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-        }
-
-        // Update arrow states
-        updateArrowStates();
+    if (currentMessageIndex > 0) {
+        previousButton.style.display = 'inline'; // Show previous button
     } else {
-        const messageElement = document.createElement('div');
-        messageElement.className = `message ${sender}`;
-        messageElement.innerHTML = sanitizedContent;
-        chatContainer.appendChild(messageElement);
+        previousButton.style.display = 'none'; // Hide previous button
     }
 
-    // Scroll to the bottom of the chat container
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function regenerateMessage() {
-    // Check if there is a last bot message to regenerate
-    if (currentBotMessageIndex >= 0 && currentBotMessageIndex < botMessages.length) {
-        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
-        
-        // Set user input with the last user message
-        document.getElementById('user-input').value = lastUserMessage;
-
-        // Clear the current bot message element for regeneration
-        currentBotMessageElement.innerHTML = ''; // Optionally clear current bot message
-
-        // Optional: Display a temporary loading message or indicator while regenerating
-        displayMessage('Regenerating last response...', 'bot');
-
-        // Call a function to send the last user message for regeneration
-        sendMessage(); // Ensure this function is defined to handle sending the message
+    if (currentMessageIndex < oldMessages.length - 1) {
+        nextButton.style.display = 'inline'; // Show next button
     } else {
-        displayMessage('No previous assistant message found to regenerate.', 'bot');
+        nextButton.style.display = 'none'; // Hide next button
     }
 }
 
-// Navigation functions remain the same
-
-function navigateBotMessages(direction) {
-    if (currentBotMessageIndex === -1) return;
-
-    const newIndex = currentBotMessageIndex + direction;
-    if (newIndex >= 0 && newIndex < botMessages.length) {
-        currentBotMessageIndex = newIndex;
-        const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
-
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
-
-        updateArrowStates();
+// Navigation functions (previous/next message)
+document.getElementById('previous-message').addEventListener('click', () => {
+    if (currentMessageIndex > 0) {
+        currentMessageIndex--;
+        displayMessages();
     }
-}
+});
 
-function updateArrowStates() {
-    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
-    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
-
-    if (leftArrow) {
-        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
+document.getElementById('next-message').addEventListener('click', () => {
+    if (currentMessageIndex < oldMessages.length - 1) {
+        currentMessageIndex++;
+        displayMessages();
     }
-    if (rightArrow) {
-        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
-    }
-}
+});
 
+// Button to delete all messages
+document.getElementById('delete-all-messages').addEventListener('click', () => {
+    messages = [];
+    oldMessages = [];
+    currentMessageIndex = -1;
+    displayMessages();
+});
 
 
 
