@@ -602,6 +602,100 @@ function finalMessage(content) {
     displayMessage(content, 'bot', true);
     isFinal = true;
 }
+let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
+let currentBotMessageElement; // To store the current bot message element
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
+
+function displayMessage(content, sender, isFinal = false) {
+    let userName = document.getElementById('user-name').value.trim();
+    if (!userName) { userName = "{{user}}"; }
+
+    const chatContainer = document.getElementById('chat-container');
+    const sanitizedContent = content
+        .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
+        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
+        .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
+        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
+        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
+        .replace(/{{user}}|{user}/g, userName); // Replace both {{user}} and {user} with the actual user name
+
+    // Prepare message object in the desired format
+    const messageObject = {
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        content: [{ type: 'text', text: content }]
+    };
+
+    // Add the message object to the messages array
+    messages.push(messageObject);
+    console.log('Messages array:', messages); // Debugging to view the array
+
+    if (sender === 'bot') {
+        // Store bot message in the botMessages array
+        botMessages.push(sanitizedContent);
+        
+        // Create or reuse the current bot message element
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
+        }
+
+        // Update the content of the existing bot message element
+        currentBotMessageElement.innerHTML = sanitizedContent;
+
+        // If the message is final, update the navigation header
+        if (isFinal) {
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            
+            // Remove previous bot message header if exists
+            const previousHeader = document.querySelector('.message-header');
+            if (previousHeader) {
+                previousHeader.remove();
+            }
+
+            // Create a new message header with navigation arrows
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.innerHTML = `
+            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+            `;
+
+            // Append message header to the chat container
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        }
+
+        // Update arrow states
+        updateArrowStates();
+    } else {
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${sender}`;
+        messageElement.innerHTML = sanitizedContent;
+        chatContainer.appendChild(messageElement);
+    }
+
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function regenerateMessage() {
+    const lastAssistantMessage = getLastAssistantMessage();
+    if (lastAssistantMessage) {
+        const lastUserMessage = messages[messages.length - 1].content[0].text; // Get the last user message
+
+        // Update the user input with the last user message
+        document.getElementById('user-input').value = lastUserMessage;
+        
+        // Clear current bot message content to regenerate
+        currentBotMessageElement.innerHTML = ''; // Clear current bot message
+
+        // Resend the last user message
+        sendMessage(); // Ensure this function is defined to handle sending the message
+    } else {
+        displayMessage('No previous assistant message found to regenerate.', 'bot');
+    }
+}
 
 // async function sendMessage() {
 //     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
