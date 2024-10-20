@@ -731,7 +731,7 @@ let currentBotMessageIndex = -1; // Index for navigation
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
-let botMessages = []; // Array to store non-final bot messages
+let botMessages = []; // Array to store bot message HTML elements
 
 function displayMessage(content, sender, isFinal = false) {
     userName = document.getElementById('user-name').value.trim();
@@ -748,7 +748,7 @@ function displayMessage(content, sender, isFinal = false) {
 
     // Prepare message object in the desired format
     const messageObject = {
-        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user', // 'assistant' for bot, 'system' for system messages, 'user' otherwise
         content: [{ type: 'text', text: content }]
     };
 
@@ -756,34 +756,18 @@ function displayMessage(content, sender, isFinal = false) {
     messages.push(messageObject);
     console.log('Messages array:', messages); // Debugging to view the array
 
-    // Handle bot messages
     if (sender === 'bot') {
-        // Create a new message header with navigation arrows
-        const messageHeader = document.createElement('div');
-        messageHeader.className = 'message-header';
-        messageHeader.innerHTML = `
-            <!-- Add your navigation buttons or icons here -->
-        `;
-
-        // Create a new bot message element
+        // Create a new message element for the bot
         const botMessageElement = document.createElement('div');
         botMessageElement.className = `message ${sender}`;
         botMessageElement.innerHTML = sanitizedContent;
 
-        // Append message header and bot message to the chat container
-        chatContainer.appendChild(messageHeader);
+        // Append the bot message element to the chat container
         chatContainer.appendChild(botMessageElement);
-
-        // Store non-final bot messages in the botMessages array
-        if (!isFinal) {
-            botMessages.push(messageObject);
-            console.log('Non-final bot messages array:', botMessages); // Debugging to view the array
-        }
-
-        // If it's the final bot message, add it to messages array
-        if (isFinal) {
-            console.log('Final bot message added to the array:', messageObject);
-        }
+        
+        // Add the bot message element to the botMessages array
+        botMessages.push(botMessageElement);
+        console.log('Bot messages array:', botMessages); // Debugging to view the array
 
         // Update arrow states if necessary
         updateArrowStates();
@@ -793,6 +777,12 @@ function displayMessage(content, sender, isFinal = false) {
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = sanitizedContent;
         chatContainer.appendChild(messageElement);
+    }
+
+    // If it's the final bot message, handle it accordingly
+    if (isFinal) {
+        console.log('Final bot message added to the array:', messageObject);
+        // No need to push again to the messages array as it's already done above
     }
 
     // Scroll to the bottom of the chat container
