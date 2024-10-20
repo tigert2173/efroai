@@ -386,17 +386,18 @@ input[type="checkbox"]:not(:checked) + label {
 /* Snowflake animation */
 .snowflake {
     position: fixed;
-    top: -10%;
-    left: random number;
-    animation: snowflakes 10s linear infinite;
-    font-size: 24px;
+    top: -50px; /* Start above the viewport */
     color: white;
+    z-index: 9999; /* Ensure it's on top */
+    pointer-events: none; /* Snowflakes should not interfere with clicks */
 }
 
-@keyframes snowflakes {
-    0% {top: -10%;}
-    100% {top: 100%;}
+@keyframes fall {
+    to {
+        transform: translateY(100vh); /* Fall to the bottom of the viewport */
+    }
 }
+
 
 /* Santa image */
 .santa-image {
