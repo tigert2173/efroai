@@ -580,9 +580,9 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
 
     // Include either scenario or context
     if (document.getElementById('scenario').value.trim() !== '') {
-        character.scenario = document.getElementById('scenario').value;
+        character.scenario = cleanInput(document.getElementById('scenario').value);
     } else if (document.getElementById('context').value.trim() !== '') {
-        character.context = document.getElementById('context').value;
+        character.context = cleanInput(document.getElementById('context').value);
     } else {
         document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
         return;
@@ -665,9 +665,9 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
 
     // Include either scenario or context
     if (document.getElementById('scenario').value.trim() !== '') {
-        character.scenario = document.getElementById('scenario').value;
+        character.scenario = cleanInput(document.getElementById('scenario').value);
     } else if (document.getElementById('context').value.trim() !== '') {
-        character.context = document.getElementById('context').value;
+        character.context = cleanInput(document.getElementById('context').value);
     } else {
         document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
         return;
@@ -772,7 +772,9 @@ function cleanInput(input) {
     sanitizedInput = sanitizedInput.replace(/“|”/g, '"').replace(/‘|’/g, "'");
 
     // Optionally, you can also trim whitespace and handle other characters if needed
-    sanitizedInput = sanitizedInput.trim();
+    sanitizedInput = sanitizedInput
+        .replace(/\\/g, '').trim()
+        .trim();
 
     // Return the cleaned input
     return sanitizedInput;
