@@ -813,7 +813,7 @@ function showSnowflakes() {
         }
     
         // Random size between 10px and 50px
-        const randomSize = Math.random() * 40 + 10;
+        const randomSize = Math.random() * 40 + 20;
         snowflake.style.fontSize = `${randomSize}px`;
         
         // Add the snowflake to the document body

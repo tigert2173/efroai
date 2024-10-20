@@ -395,7 +395,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 @keyframes fall {
     to {
-        transform: translateY(100vh); /* Fall to the bottom of the viewport */
+        transform: translateY(200vh); /* Fall to the bottom of the viewport */
     }
 }
 
