@@ -190,7 +190,22 @@ function updateSettings() {
     settings.temperature = parseFloat(document.getElementById('temperature').value);
     settings.model = document.getElementById('model').value;
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
+
+    //Controlled Message Data Importance
+    messagedataimportance.lusermsg = lastUserMessage;
+
      //document.getElementById('advanced-debugging').value = messagedataimportance.lusermsg;
+}
+
+let lastBotMessage = ''; // Variable to store the last bot message
+let lastUserMessage = ''; // Variable to store the last user message
+
+// Function to clear the content of the current bot message element
+function clearCurrentBotMessage() {
+    if (currentBotMessageElement) {
+        currentBotMessageElement.innerHTML = ''; // Clear the existing content
+        lastBotMessage = ''; // Clear the last bot message content
+    }
 }
 
 let messagedataimportance = {
@@ -500,9 +515,9 @@ async function sendMessage() {
    // if (!message) return;
     //if (!isResend) {
        // processMessageDataImportance();
-       // lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
-        //lastUserMessage = message;
+        lastUserMessage = message;
         messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
@@ -700,16 +715,6 @@ function displayBotMessage(message, type) {
     }, 10000); // Adjust the duration as needed
 }
 
-function getLastAssistantMessage() {
-    // Find the last message in the messages array with the role 'assistant'
-    for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === 'assistant') {
-            return messages[i];
-        }
-    }
-    return null; // Return null if no assistant message is found
-}
-
 let userName = '{{user}}';
 let currentBotMessageElement = null;
 let botMessages = []; // Array to store bot messages
@@ -756,22 +761,31 @@ function displayMessage(content, sender, isFinal = false) {
         if (previousHeader) {
             previousHeader.remove();
         }
-        const messageElement = document.createElement('div');
-        messageElement.className = `message ${sender}`;
-        messageElement.innerHTML = sanitizedContent;
-        await chatContainer.appendChild(messageElement);
-        
-        const lastAssistantMessage = getLastAssistantMessage();
-        if (lastAssistantMessage) {
-            console.log('Last assistant message:', lastAssistantMessage);
-        } else {
-            console.log('No assistant messages found.');
+
+        // Create a new message header with navigation arrows
+        const messageHeader = document.createElement('div');
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+        `;
+
+        // Create or update the current bot message element
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
         }
+
+        // Append message header and content
+        chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+        currentBotMessageElement.innerHTML += sanitizedContent;
 
         if (isFinal) {
             messages.push(messageObject);
             console.log('Messages array:', messages); // Debugging to view the array
             //botMessages.push(currentBotMessageElement.innerHTML);
+            currentBotMessageIndex = botMessages.length - 1;
         }
 
         // Update arrow states
@@ -785,6 +799,72 @@ function displayMessage(content, sender, isFinal = false) {
 
     // Scroll to the bottom of the chat container
     chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Additional functions remain the same
+
+function regenerateMessage() {
+    if (messages && messages.length > 0) {
+        let lastUserMessage = null;
+        let lastBotMessage = null;
+
+        // Loop backwards to find the last user and bot messages
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (!lastBotMessage && messages[i].role === 'bot') {
+                lastBotMessage = messages[i].content;
+            }
+            if (!lastUserMessage && messages[i].role === 'user') {
+                lastUserMessage = messages[i].content;
+            }
+            if (lastUserMessage && lastBotMessage) {
+                break;
+            }
+        }
+
+        if (lastUserMessage) {
+            // Remove the last bot message from the context
+            settings.context = settings.context.replace(lastBotMessage, '').trim();
+
+            clearCurrentBotMessage();
+            isResend = true;
+            document.getElementById('user-input').value = lastUserMessage;
+
+            sendMessage(); // Resend the last user message
+        } else {
+            displayMessage('No previous user message found to regenerate.', 'bot');
+        }
+    } else {
+        displayMessage('No messages found in history.', 'bot');
+    }
+}
+
+
+function navigateBotMessages(direction) {
+    if (currentBotMessageIndex === -1) return;
+
+    const newIndex = currentBotMessageIndex + direction;
+    if (newIndex >= 0 && newIndex < botMessages.length) {
+        currentBotMessageIndex = newIndex;
+        const content = botMessages[currentBotMessageIndex];
+        currentBotMessageElement.innerHTML = content;
+
+        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg (navigated):', lastBotMsg);
+
+        updateArrowStates();
+    }
+}
+
+function updateArrowStates() {
+    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
+    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
+
+    if (leftArrow) {
+        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
+    }
+    if (rightArrow) {
+        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
+    }
 }
 
 
