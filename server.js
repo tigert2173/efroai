@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     if (['/capacity/capacity.html', '/capacity/styles.css', '/images/AtCapacityBotTransparent.png', '/images/logotransparent.png'].includes(req.path)) {
         return next();
     }
-
+    console.log(activeUsers);
     // Clean up inactive users
     cleanupInactiveUsers();
 
