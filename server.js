@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   // Check if the IP is in the blocked list
   if (blockedIps.includes(userIp)) {
       console.log(`Blocked access from IP: ${userIp}`);
-      return res.status(403).send('You have been IP banned, if you think this is an issue reach us at: appeal@efroai.net'); // Return a 403 Forbidden response
+      return res.status(403).send('You have been IP banned for suspisous activity, if you think this is an issue reach us at: appeal@efroai.net'); // Return a 403 Forbidden response
   }
   next(); // Allow access for non-blocked IPs
 });
