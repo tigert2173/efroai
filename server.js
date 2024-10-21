@@ -19,13 +19,13 @@ app.use((req, res, next) => {
 
 // User tracking by IP
 let activeUsers = new Map();
-const MAX_ACTIVE_USERS = 5; // Set to 5 for production
+const waitingQueue = []; // Array to hold waiting users
+const MAX_ACTIVE_USERS = 50; // Max active users
 const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
-const TIMEOUT_LIMIT = 1 * 30 * 60 * 1000; // 30 minutes
+const TIMEOUT_LIMIT = 30 * 60 * 1000; // 30 minutes
 
 // Middleware to check active users
 app.use((req, res, next) => {
-    // Get the user's IP address
     const userIp = req.ip; // Use req.headers['x-forwarded-for'] for proxies
     console.log(`Request from IP: ${userIp}, Path: ${req.path}`);
 
@@ -58,9 +58,10 @@ app.use((req, res, next) => {
         console.log(`User ${userIp} added to active users. Total active users: ${activeUsers.size}`);
         next(); // Proceed to the requested page
     } else {
-        // Redirect to waitlist page with 302 status
-        console.log(`User ${userIp} redirected to waitlist due to user limit exceeded. Active users: ${activeUsers.size}`);
-        res.redirect('/capacity/capacity.html');
+        // Add user to waiting queue
+        waitingQueue.push(userIp);
+        console.log(`User ${userIp} added to the waiting queue. Waiting queue length: ${waitingQueue.length}`);
+        res.redirect('/capacity/capacity.html'); // Redirect to waitlist page
     }
 });
 
@@ -86,8 +87,8 @@ app.get('/', (req, res) => {
 
 // New endpoint to get waiting user count
 app.get('/api/waiting-count', (req, res) => {
-  const waitingCount = activeUsers.size < MAX_ACTIVE_USERS ? 0 : activeUsers.size - MAX_ACTIVE_USERS;
-  res.json({ waitingCount });
+    const waitingCount = waitingQueue.length;
+    res.json({ waitingCount });
 });
 
 // Cleanup inactive users based on their last active time
@@ -97,6 +98,14 @@ const cleanupInactiveUsers = () => {
         if (now - lastActiveTime > TIMEOUT_LIMIT) {
             console.log(`User ${ip} is inactive and will be removed from active users.`);
             activeUsers.delete(ip); // Remove inactive users
+            // If a user is removed from active, check the waiting queue
+            if (waitingQueue.length > 0) {
+                const nextUserIp = waitingQueue.shift(); // Get the next user in the queue
+                console.log(`User ${nextUserIp} is being allowed in from the waiting queue.`);
+                activeUsers.set(nextUserIp, Date.now()); // Add next user to active
+                // Notify the user via WebSocket (if needed)
+                // You can send a message to the user here if you have their WebSocket connection
+            }
         }
     }
 };
@@ -121,7 +130,7 @@ wss.on('connection', (ws, req) => {
 
     console.log(`WebSocket connection established for IP: ${userIp}`);
     
-    // Send a ping every 10 seconds to check if the client is still connected
+    // Send a ping every 30 seconds to check if the client is still connected
     const pingInterval = setInterval(() => {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send('ping'); // Send a ping message
