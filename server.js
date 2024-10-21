@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'docs')));
 
 // Middleware to check user count before serving any page
 const checkUserCount = (req, res, next) => {
-  console.log(`Current users: ${currentUsers}`); // Log current user count
+  console.log(`Current users before check: ${currentUsers}`); // Log current user count before the check
 
   if (currentUsers >= maxConcurrentUsers) {
     console.log('User limit reached, redirecting to waitlist...'); // Log when user limit is reached
@@ -27,9 +27,6 @@ const checkUserCount = (req, res, next) => {
   // Increment the current user count
   currentUsers++;
   console.log(`User added. New count: ${currentUsers}`); // Log new user count
-
-  // Store the session ID (could be used for further enhancements)
-  req.sessionId = currentUsers; 
 
   // Decrement user count when the response is finished
   res.on('finish', () => {
@@ -65,7 +62,7 @@ https.createServer(options, app).listen(443, () => {
 app.post('/close-session', (req, res) => {
   if (currentUsers > 0) {
     currentUsers--;
-    console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
+    console.log(`User session closed manually. New count: ${currentUsers}`); // Log when a session is closed manually
   }
   res.sendStatus(200); // Respond with success
 });
