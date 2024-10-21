@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 // User tracking
 let activeUsers = [];
-const MAX_ACTIVE_USERS = 1; // Set to 1 for testing
+const MAX_ACTIVE_USERS = 2; // Set to 1 for testing
 
 // Middleware to check active users
 app.use((req, res, next) => {
