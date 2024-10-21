@@ -35,7 +35,7 @@ app.use((req, res, next) => {
     next(); // Proceed to the requested page
   } else {
     // Redirect to waitlist page with 302 status
-    res.redirect(302, '/waitlist.html');
+    res.redirect('/waitlist.html');
   }
 });
 
