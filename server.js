@@ -37,7 +37,7 @@ app.use((req, res, next) => {
     }
 
     // Check if the request is for the waitlist page
-    if (req.path === '/images/AtCapacityBotTransparent.jpg') {
+    if (req.path === '/images/AtCapacityBotTransparent.png') {
       // Allow access to the waitlist page without counting the user as active
       return next();
     }
