@@ -41,16 +41,6 @@ app.use((req, res, next) => {
 // Serve static files from the public directory (this must come after the user tracking middleware)
 app.use(express.static(path.join(__dirname, 'docs')));
 
-// Serve the waitlist page
-app.get('/capacity/capacity.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
-        if (err) {
-            console.error('Error serving waitlist page:', err);
-            res.status(err.status).end(); // End the response with the error status
-        }
-    });
-});
-
 // Example route for the main page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
