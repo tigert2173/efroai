@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 // User tracking by IP
 let activeUsers = new Map();
 const MAX_ACTIVE_USERS = 5; // Set to 5 for production
-const RECONNECT_TIME_LIMIT = 60 * 1000; // 1 minute
+const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
 
 // Middleware to check active users
 app.use((req, res, next) => {
@@ -119,7 +119,7 @@ wss.on('connection', (ws, req) => {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send('ping'); // Send a ping message
         }
-    }, 10000); // Ping every 10 seconds
+    }, 30000); // Ping every 30 seconds
 
     // Handle incoming messages from the client
     ws.on('message', (message) => {
