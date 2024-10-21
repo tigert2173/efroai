@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 // User tracking by IP
 let activeUsers = new Map();
-const MAX_ACTIVE_USERS = 15; // Set to 5 for production
+const MAX_ACTIVE_USERS = 5; // Set to 5 for production
 const RECONNECT_TIME_LIMIT = 60 * 1000; // 1 minute
 
 // Middleware to check active users
@@ -40,9 +40,6 @@ app.use((req, res, next) => {
         // Check if the user is still within the reconnect time limit
         if (Date.now() - lastActiveTime < RECONNECT_TIME_LIMIT) {
             return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too soon
-        } else {
-            // Remove the user if the reconnect time limit has expired
-            activeUsers.delete(userIp);
         }
     }
 
