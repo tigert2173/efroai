@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 // User tracking by IP
 let activeUsers = new Map();
 const waitingQueue = []; // Array to hold waiting users
-const MAX_ACTIVE_USERS = 0; // Max active users
+const MAX_ACTIVE_USERS = 50; // Max active users
 const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
 const TIMEOUT_LIMIT = 30 * 60 * 1000; // 30 minutes
 
