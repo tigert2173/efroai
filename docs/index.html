@@ -268,15 +268,6 @@
     <script src="js/menu.js"></script>
 <script>
 
-// Function to close the session when the user navigates away or closes the application
-window.addEventListener('beforeunload', () => {
-  fetch('/close-session', {
-    method: 'POST',
-    credentials: 'include' // Include credentials if needed
-  });
-});
-
-
 // Function to show the maintenance mode
 function showMaintenanceMode() {
     document.getElementById('maintenance-overlay').style.display = 'block';

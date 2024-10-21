@@ -5,47 +5,11 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const maxConcurrentUsers = 1; // Maximum concurrent users
-let currentUsers = 0; // Track current active users
-
 // Use CORS middleware
 app.use(cors());
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'docs')));
-
-// Middleware to check user count before serving any page
-const checkUserCount = (req, res, next) => {
-  console.log(`Current users before check: ${currentUsers}`); // Log current user count before the check
-
-  if (currentUsers >= maxConcurrentUsers) {
-    console.log('User limit reached, redirecting to waitlist...'); // Log when user limit is reached
-    // Redirect to waitlist page
-    return res.redirect('/capacity/capacity.html');
-  }
-
-  // Increment the current user count
-  currentUsers++;
-  console.log(`User added. New count: ${currentUsers}`); // Log new user count
-
-  // Decrement user count when the response is finished
-  res.on('finish', () => {
-    currentUsers--;
-    console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
-  });
-
-  next();
-};
-
-// Apply the middleware to the routes that need user count checks
-app.get('/', checkUserCount, (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'index.html')); // Serve the main application page
-});
-
-// Route for waitlist page
-app.get('/capacity/capacity.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'capacity/capacity.html')); // Serve the waitlist page
-});
 
 // Read your SSL certificate and private key
 const options = {
@@ -53,16 +17,46 @@ const options = {
   cert: fs.readFileSync('certs/domain.cert.pem'),
 };
 
+// User tracking
+let activeUsers = [];
+const MAX_ACTIVE_USERS = 5;
+
+// Middleware to check active users
+app.use((req, res, next) => {
+  // Create a unique session identifier for each user
+  const sessionId = req.headers['x-session-id'] || Date.now().toString();
+  
+  if (activeUsers.length < MAX_ACTIVE_USERS) {
+    // Allow the user to proceed
+    if (!activeUsers.includes(sessionId)) {
+      activeUsers.push(sessionId);
+    }
+    res.setHeader('x-session-id', sessionId); // Send session ID back to the client
+    next();
+  } else {
+    // Redirect to waitlist page
+    res.redirect('/waitlist.html');
+  }
+});
+
+// Serve the waitlist page
+app.get('/waitlist.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html'));
+});
+
+// Cleanup active users on disconnect (if using WebSockets or similar)
+const cleanupUser = (sessionId) => {
+  activeUsers = activeUsers.filter(user => user !== sessionId);
+};
+
+// Example route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', 'index.html'));
+});
+
 // Start the HTTPS server
 https.createServer(options, app).listen(443, () => {
   console.log('HTTPS Server running on port 443');
 });
 
-// Endpoint to close session (this should be called when a user closes the session)
-app.post('/close-session', (req, res) => {
-  if (currentUsers > 0) {
-    currentUsers--;
-    console.log(`User session closed manually. New count: ${currentUsers}`); // Log when a session is closed manually
-  }
-  res.sendStatus(200); // Respond with success
-});
+// Here you can implement WebSocket or other mechanisms to track user disconnects and call cleanupUser(sessionId)
