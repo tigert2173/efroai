@@ -268,7 +268,7 @@
     <script src="js/menu.js"></script>
 <script>
 
-    // Function to close the session when the user navigates away or closes the application
+// Function to close the session when the user navigates away or closes the application
 window.addEventListener('beforeunload', () => {
   fetch('/close-session', {
     method: 'POST',
