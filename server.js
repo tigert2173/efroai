@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   if (currentUsers >= maxConcurrentUsers) {
     console.log('User limit reached, redirecting to waitlist...'); // Log when user limit is reached
     // Redirect to waitlist page
-    return res.redirect('/waitlist.html');
+    return res.redirect('/capacity/capacity.html');
   }
 
   // Increment the current user count
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 
 // Route for waitlist page
 app.get('/waitlist.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'waitlist.html')); // Serve the waitlist page
+  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html')); // Serve the waitlist page
 });
 
 // Read your SSL certificate and private key
