@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const maxConcurrentUsers = 1; // Maximum concurrent users
+const maxConcurrentUsers = 0; // Maximum concurrent users
 let currentUsers = 0; // Track current active users
 
 // Use CORS middleware
