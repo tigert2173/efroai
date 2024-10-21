@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 
 // Serve the waitlist page
 app.get('/waitlist.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'capacity/capacity.html'));
+  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html'));
 });
 
 // Cleanup active users on disconnect (if using WebSockets or similar)
