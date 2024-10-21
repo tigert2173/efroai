@@ -34,12 +34,12 @@ const checkUserCount = (req, res, next) => {
   // Store the session information (this is optional, just for reference)
   req.sessionId = currentUsers; // Use the current user count as a session ID
 
-  // Set up a response interceptor to handle closing sessions
-  res.on('finish', () => {
-    // Here, we will decrement the count
-    currentUsers--; // Decrement the count when the response is finished
-    console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
-  });
+  // // Set up a response interceptor to handle closing sessions
+  // res.on('finish', () => {
+  //   // Here, we will decrement the count
+  //   currentUsers--; // Decrement the count when the response is finished
+  //   console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
+  // });
 
   next();
 };
