@@ -67,7 +67,6 @@ https.createServer(options, app).listen(443, () => {
 
 // Endpoint to close session (this should be called when a user closes the session)
 app.post('/close-session', (req, res) => {
-  currentUsers--;
   console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
   res.sendStatus(200); // Respond with success
 });
