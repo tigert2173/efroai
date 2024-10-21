@@ -235,7 +235,7 @@
             document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
             // Log bot detection
             try {
-                await fetch('/log-bot', { method: 'POST' });
+                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
@@ -248,7 +248,7 @@
             document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
             // Log bot detection
             try {
-                await fetch('/log-bot', { method: 'POST' });
+                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
@@ -264,7 +264,7 @@
             document.cookie = "botDetected=true; path=/; max-age=900"; // Set a cookie for 15 minutes
             // Log bot detection
             try {
-                await fetch('/log-bot', { method: 'POST' });
+                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
