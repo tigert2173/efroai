@@ -23,9 +23,13 @@ const MAX_ACTIVE_USERS = 1;
 
 // Middleware to check active users
 app.use((req, res, next) => {
-  // Create a unique session identifier for each user
   const sessionId = req.headers['x-session-id'] || Date.now().toString();
-  
+
+  // Check if the user is already on the waitlist page
+  if (req.path === '/waitlist.html') {
+    return next(); // Allow access to the waitlist page
+  }
+
   if (activeUsers.length < MAX_ACTIVE_USERS) {
     // Allow the user to proceed
     if (!activeUsers.includes(sessionId)) {
@@ -41,13 +45,8 @@ app.use((req, res, next) => {
 
 // Serve the waitlist page
 app.get('/waitlist.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html'));
+  res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'));
 });
-
-// Cleanup active users on disconnect (if using WebSockets or similar)
-const cleanupUser = (sessionId) => {
-  activeUsers = activeUsers.filter(user => user !== sessionId);
-};
 
 // Example route
 app.get('/', (req, res) => {
@@ -58,5 +57,10 @@ app.get('/', (req, res) => {
 https.createServer(options, app).listen(443, () => {
   console.log('HTTPS Server running on port 443');
 });
+
+// Cleanup active users on disconnect if needed
+const cleanupUser = (sessionId) => {
+  activeUsers = activeUsers.filter(user => user !== sessionId);
+};
 
 // Here you can implement WebSocket or other mechanisms to track user disconnects and call cleanupUser(sessionId)
