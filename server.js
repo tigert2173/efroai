@@ -15,7 +15,7 @@ const blockedIps = [
   '128.14.174.186', //Path: /showLogin.cc & /api/session/properties & /solr/ && /login.do <<-- suspicious request 
   '128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
   '128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
-  '69.174.135.234'
+  '::ffff:69.174.135.234'
 ]; 
 
 // Middleware to block specific IPs
