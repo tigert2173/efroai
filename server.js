@@ -35,6 +35,19 @@ app.use((req, res, next) => {
       // Allow access to the waitlist page without counting the user as active
       return next();
     }
+
+    // Check if the request is for the waitlist page
+    if (req.path === '/images/AtCapacityBot.jpg') {
+      // Allow access to the waitlist page without counting the user as active
+      return next();
+    }
+
+    // Check if the request is for the waitlist page
+    if (req.path === '/images/logotransparent.jpg') {
+      // Allow access to the waitlist page without counting the user as active
+      return next();
+    }
+  
   
 
     if (activeUsers.length < MAX_ACTIVE_USERS) {
