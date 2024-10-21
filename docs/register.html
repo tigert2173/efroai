@@ -231,27 +231,32 @@
         // Honeypot field check
         const honeypot = document.getElementById('confirmUsername').value; // Get the honeypot value
         if (honeypot) {
-            errorMessage.textContent = 'Bot detected!'; // Or handle as needed
-            document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
-            // Log bot detection
+            // Trigger bot detection and log
+            errorMessage.textContent = 'Bot detected!';
+            document.cookie = "botDetected=true; path=/; max-age=86400";
             try {
-                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                const response = await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                // Handle response...
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
-            window.location.href = 'error/timeout.html'; // Redirect to timeout page
+            // Redirect...
+            window.location.href = 'error/botdetected.html'; // Redirect to timeout page
             return; // Stop further execution
         }
+
         const honeypot2 = document.getElementById('confirmEmail').value; // Get the honeypot value
         if (honeypot2) {
-            errorMessage.textContent = 'Bot detected!'; // Or handle as needed
-            document.cookie = "botDetected=true; path=/; max-age=86400"; // Set a cookie for 24 hours
-            // Log bot detection
+                        // Trigger bot detection and log
+                        errorMessage.textContent = 'Bot detected!';
+            document.cookie = "botDetected=true; path=/; max-age=86400";
             try {
-                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                const response = await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                // Handle response...
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
+            // Redirect...
             window.location.href = 'error/botdetected.html'; // Redirect to timeout page
             return; // Stop further execution
         }
@@ -264,7 +269,8 @@
             document.cookie = "botDetected=true; path=/; max-age=900"; // Set a cookie for 15 minutes
             // Log bot detection
             try {
-                await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                const response = await fetch('https://characters.efroai.net/log-bot', { method: 'POST' });
+                // Handle response...
             } catch (error) {
                 console.error('Error logging bot:', error);
             }
