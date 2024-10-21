@@ -40,7 +40,7 @@ app.use((req, res, next) => {
         const lastActiveTime = activeUsers.get(userIp);
         console.log(`User ${userIp} is already active. Last active time: ${new Date(lastActiveTime).toLocaleString()}`);
         // Check if the user is still within the reconnect time limit
-        if (Date.now() - lastActiveTime < RECONNECT_TIME_LIMIT) {
+        if (Date.now() - lastActiveTime > RECONNECT_TIME_LIMIT) {
             console.log(`User ${userIp} redirected to waitlist due to reconnect timeout.`);
             return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too soon
         }
