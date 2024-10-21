@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 let activeUsers = new Map();
 const MAX_ACTIVE_USERS = 5; // Set to 5 for production
 const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
+const TIMEOUT_LIMIT = 1 * 60 * 60 * 1000; // 1 hours
 
 // Middleware to check active users
 app.use((req, res, next) => {
@@ -83,11 +84,17 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
+// New endpoint to get waiting user count
+app.get('/api/waiting-count', (req, res) => {
+  const waitingCount = activeUsers.size < MAX_ACTIVE_USERS ? 0 : activeUsers.size - MAX_ACTIVE_USERS;
+  res.json({ waitingCount });
+});
+
 // Cleanup inactive users based on their last active time
 const cleanupInactiveUsers = () => {
     const now = Date.now();
     for (const [ip, lastActiveTime] of activeUsers) {
-        if (now - lastActiveTime > RECONNECT_TIME_LIMIT) {
+        if (now - lastActiveTime > TIMEOUT_LIMIT) {
             console.log(`User ${ip} is inactive and will be removed from active users.`);
             activeUsers.delete(ip); // Remove inactive users
         }
@@ -104,6 +111,19 @@ const options = {
 const server = https.createServer(options, app).listen(443, () => {
     console.log('HTTPS Server running on port 443');
 });
+
+
+
+// Cleanup inactive users based on their last active time
+const cleanupInactiveUsers = () => {
+  const now = Date.now();
+  for (const [ip, lastActiveTime] of activeUsers) {
+      if (now - lastActiveTime > RECONNECT_TIME_LIMIT) {
+          console.log(`User ${ip} is inactive and will be removed from active users.`);
+          activeUsers.delete(ip); // Remove inactive users
+      }
+  }
+};
 
 // Create a WebSocket server
 const wss = new WebSocket.Server({ server });

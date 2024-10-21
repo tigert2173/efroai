@@ -114,10 +114,26 @@
     const waitTimePerPerson = 2; // Estimated time in minutes per person
 
     function updateWaitingInfo() {
-      waitingCount++;
-      document.getElementById('waitingCount').textContent = waitingCount;
-      document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+      fetch('/api/waiting-count')
+        .then(response => response.json())
+        .then(data => {
+          waitingCount = data.waitingCount;
+          document.getElementById('waitingCount').textContent = waitingCount;
+          document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+
+          // Check if a slot is available
+          if (waitingCount < 1) {
+            window.location.href = '/'; // Redirect to the main page if a slot is free
+          }
+        })
+        .catch(error => console.error('Error fetching waiting count:', error));
     }
+
+    // function updateWaitingInfo() {
+    //   waitingCount++;
+    //   document.getElementById('waitingCount').textContent = waitingCount;
+    //   document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+    // }
 
     // Simulate users joining the queue
     setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
