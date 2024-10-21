@@ -23,7 +23,7 @@
     <h1>Oops! Our site is at full capacity 💨</h1>
     <p2><b>We’ve got a bit of a crowd, but don’t worry!</b>
     <br>Number of users waiting: <span id="waitingCount">0</span>
-    <br>Your position in the queue: <span id="waitingPosition">0</span>
+    <p>Your position in the queue: <span id="waitingPosition">0</span></p>
     <br>Estimated wait time: <span id="waitTime">0</span> minutes</p>
     <p>We’ll get you in soon!
     <br>In the meantime, have a laugh 😅 </p>
@@ -123,8 +123,8 @@
                 waitingPosition = data.waitingPosition;
 
                 document.getElementById('waitingCount').textContent = waitingCount;
-                document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
                 document.getElementById('waitingPosition').textContent = waitingPosition; // Show position
+                document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
 
                 // Check if a slot is available
                 if (waitingCount < 1) {
@@ -134,9 +134,9 @@
             .catch(error => console.error('Error fetching waiting info:', error));
     }
 
-    // Call the update function periodically
-    setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
-    updateWaitingInfo(); // Initial call
+// Call the update function periodically
+setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
+updateWaitingInfo(); // Initial call
 
     // function updateWaitingInfo() {
     //   waitingCount++;
