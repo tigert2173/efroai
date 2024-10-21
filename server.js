@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     if (['/capacity/capacity.html', '/capacity/styles.css', '/images/AtCapacityBotTransparent.png', '/images/logotransparent.png'].includes(req.path)) {
         return next();
     }
-    console.log(activeUsers);
+
     // Clean up inactive users
     cleanupInactiveUsers();
 
@@ -40,6 +40,9 @@ app.use((req, res, next) => {
         // Check if the user is still within the reconnect time limit
         if (Date.now() - lastActiveTime < RECONNECT_TIME_LIMIT) {
             return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too soon
+        } else {
+            // Remove the user if the reconnect time limit has expired
+            activeUsers.delete(userIp);
         }
     }
 
