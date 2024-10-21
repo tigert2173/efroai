@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 let activeUsers = new Map();
 const MAX_ACTIVE_USERS = 5; // Set to 5 for production
 const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
-const TIMEOUT_LIMIT = 1 * 60 * 60 * 1000; // 1 hours
+const TIMEOUT_LIMIT = 1 * 30 * 60 * 1000; // 30 minutes
 
 // Middleware to check active users
 app.use((req, res, next) => {
