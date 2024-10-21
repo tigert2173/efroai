@@ -21,15 +21,14 @@ const blockedIps = [
 
 // Middleware to block specific IPs
 app.use((req, res, next) => {
-  const userIp = req.headers['x-forwarded-for'] || req.ip; // Use x-forwarded-for or fall back to req.ip
+  const userIp = req.headers['x-forwarded-for'] || req.ip;
+  console.log(`Incoming request from IP: ${userIp}`);
   if (blockedIps.includes(userIp)) {
       console.log(`Blocked access from IP: ${userIp}`);
-      return res.status(403).send('Access denied.'); // Return a 403 Forbidden response
+      return res.status(403).send('Access denied.');
   }
-  next(); // Allow access for non-blocked IPs
+  next();
 });
-
-
 
 // Disable caching for all responses
 app.use((req, res, next) => {
