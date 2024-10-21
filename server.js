@@ -5,8 +5,9 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const maxConcurrentUsers = 0; // Maximum concurrent users
+const maxConcurrentUsers = 30; // Maximum concurrent users
 let currentUsers = 0; // Track current active users
+const waitlist = []; // Array to track waitlisted users
 
 // Use CORS middleware
 app.use(cors());
@@ -16,21 +17,30 @@ app.use(express.static(path.join(__dirname, 'docs')));
 
 // Middleware to handle concurrent user limit
 app.use((req, res, next) => {
-  // Check if the user is allowed to proceed
   if (currentUsers >= maxConcurrentUsers) {
-    // Redirect to waitlist page if limit is reached
-    return res.redirect('/capacity/capacity.html');
+    // Redirect to waitlist page
+    return res.redirect('/waitlist.html');
   }
-  
+
   // Increment the current user count
   currentUsers++;
   
   // Set up a response interceptor to decrement the count on response end
   res.on('finish', () => {
     currentUsers--;
+    // If there are users waiting, allow the next one in
+    if (waitlist.length > 0) {
+      const nextUser = waitlist.shift(); // Remove the first user from the waitlist
+      nextUser(); // Allow the next user in
+    }
   });
   
   next();
+});
+
+// Route for waitlist page
+app.get('/waitlist.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', 'waitlist.html')); // Serve the waitlist page
 });
 
 // Read your SSL certificate and private key
