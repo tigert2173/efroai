@@ -5,8 +5,8 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const maxConcurrentUsers = 0; // Maximum concurrent users
-let currentUsers = 1; // Track current active users
+const maxConcurrentUsers = 30; // Maximum concurrent users
+let currentUsers = 0; // Track current active users
 
 // Use CORS middleware
 app.use(cors());
@@ -16,8 +16,9 @@ app.use(express.static(path.join(__dirname, 'docs')));
 
 // Middleware to handle concurrent user limit
 app.use((req, res, next) => {
+  // Check if the user is allowed to proceed
   if (currentUsers >= maxConcurrentUsers) {
-    // Redirect to waitlist page
+    // Redirect to waitlist page if limit is reached
     return res.redirect('/capacity/capacity.html');
   }
   
