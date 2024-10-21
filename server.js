@@ -159,7 +159,7 @@ wss.on('connection', (ws, req) => {
         if (ws.readyState === WebSocket.OPEN) {
             ws.send('ping'); // Send a ping message
         }
-    }, 30000); // Ping every 30 seconds
+    }, 3000); // Ping every 30 seconds
 
     // Handle incoming messages from the client
     ws.on('message', (message) => {
