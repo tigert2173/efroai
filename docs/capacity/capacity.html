@@ -8,11 +8,16 @@
 </head>
 <body>
   <script>
-        // Automatically redirect to the waitlist page
-        window.onload = function() {
-            // Unload the current page
-            window.location.href = '/capacity/capacity.html'; // Adjust the path if necessary
-        };
+        // Check user capacity
+    const maxConcurrentUsers = 30; // Define the max number of concurrent users
+    let currentUsers = 25; // Placeholder for current user count, replace with actual logic
+
+    window.onload = function() {
+      if (currentUsers < maxConcurrentUsers) {
+        // Redirect to the hub page if the site is not at capacity
+        window.location.href = '/hub'; // Adjust the path to your hub page
+      }
+    };
     </script>
   <div class="logo-container">
     <img src="../images/logotransparent.png" alt="Logo" class="logo">
