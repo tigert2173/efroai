@@ -91,13 +91,6 @@ app.get('/api/waiting-count', (req, res) => {
     res.json({ waitingCount });
 });
 
-// New endpoint to get waiting user count and position
-app.get('/api/waiting-info', (req, res) => {
-  const waitingCount = waitingQueue.length;
-  const waitingPosition = waitingQueue.indexOf(req.ip) + 1; // +1 to make it human-readable (1-based index)
-  res.json({ waitingCount, waitingPosition });
-});
-
 // Cleanup inactive users based on their last active time
 const cleanupInactiveUsers = () => {
     const now = Date.now();

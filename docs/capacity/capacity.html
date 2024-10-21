@@ -22,9 +22,8 @@
   <div class="message">
     <h1>Oops! Our site is at full capacity 💨</h1>
     <p2><b>We’ve got a bit of a crowd, but don’t worry!</b>
-    <br>Number of users waiting: <span id="waitingCount">0</span>
-    <br>Your position in the queue: <span id="waitingPosition">0</span>
-    <br>Estimated wait time: <span id="waitTime">0</span> minutes</p>
+    <br>Number of users waiting: <span id="waitingCount">0</span><br>
+    Estimated wait time: <span id="waitTime">0</span> minutes</p2>
     <p>We’ll get you in soon!
     <br>In the meantime, have a laugh 😅 </p>
   </div>
@@ -109,34 +108,34 @@
     setInterval(showFartJoke, Math.random() * 4000 + 12500);
 
     showFartJoke();
-        
-    // Waiting info logic
-    let waitingCount = 0;
-    let waitingPosition = 0;
-    const waitTimePerPerson = 2; // Estimated time in minutes per person
+      
+  // Waiting info logic
+  let waitingCount = 0;
+  let waitingPosition = 0;
+  const waitTimePerPerson = 2; // Estimated time in minutes per person
 
-    function updateWaitingInfo() {
-        fetch('/api/waiting-info') // Fetch from the new endpoint
-            .then(response => response.json())
-            .then(data => {
-                waitingCount = data.waitingCount;
-                waitingPosition = data.waitingPosition;
+  function updateWaitingInfo() {
+      fetch('/api/waiting-info') // Fetch from the new endpoint
+          .then(response => response.json())
+          .then(data => {
+              waitingCount = data.waitingCount;
+              waitingPosition = data.waitingPosition;
 
-                document.getElementById('waitingCount').textContent = waitingCount;
-                document.getElementById('waitingPosition').textContent = waitingPosition; // Show position
-                document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+              document.getElementById('waitingCount').textContent = waitingCount;
+              document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
+              document.getElementById('waitingPosition').textContent = waitingPosition; // Show position
 
-                // Check if a slot is available
-                if (waitingCount < 1) {
-                    window.location.href = '/'; // Redirect to the main page if a slot is free
-                }
-            })
-            .catch(error => console.error('Error fetching waiting info:', error));
-    }
+              // Check if a slot is available
+              if (waitingCount < 1) {
+                  window.location.href = '/'; // Redirect to the main page if a slot is free
+              }
+          })
+          .catch(error => console.error('Error fetching waiting info:', error));
+  }
 
-// Call the update function periodically
-setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
-updateWaitingInfo(); // Initial call
+  // Call the update function periodically
+  setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
+  updateWaitingInfo(); // Initial call
 
     // function updateWaitingInfo() {
     //   waitingCount++;
