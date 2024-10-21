@@ -28,19 +28,13 @@ const checkUserCount = (req, res, next) => {
   currentUsers++;
   console.log(`User added. New count: ${currentUsers}`); // Log new user count
 
-  // Add a custom header to track user sessions
-  res.setHeader('X-User-Session', currentUsers);
+  // Store the session ID (could be used for further enhancements)
+  req.sessionId = currentUsers; 
 
-  // Store the session information (this is optional, just for reference)
-  req.sessionId = currentUsers; // Use the current user count as a session ID
-
-  // Store user session for proper decrement
+  // Decrement user count when the response is finished
   res.on('finish', () => {
-    // Decrement only if it's a valid session
-    if (currentUsers > 0) {
-      currentUsers--; // Decrement the count when the response is finished
-      console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
-    }
+    currentUsers--;
+    console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
   });
 
   next();
@@ -69,7 +63,6 @@ https.createServer(options, app).listen(443, () => {
 
 // Endpoint to close session (this should be called when a user closes the session)
 app.post('/close-session', (req, res) => {
-  // Ensure we do not go negative
   if (currentUsers > 0) {
     currentUsers--;
     console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
