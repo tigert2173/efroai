@@ -108,34 +108,26 @@
     setInterval(showFartJoke, Math.random() * 4000 + 12500);
 
     showFartJoke();
-      
-  // Waiting info logic
-  let waitingCount = 0;
-  let waitingPosition = 0;
-  const waitTimePerPerson = 2; // Estimated time in minutes per person
 
-  function updateWaitingInfo() {
-      fetch('/api/waiting-info') // Fetch from the new endpoint
-          .then(response => response.json())
-          .then(data => {
-              waitingCount = data.waitingCount;
-              waitingPosition = data.waitingPosition;
+    // Waiting info logic
+    let waitingCount = 0;
+    const waitTimePerPerson = 2; // Estimated time in minutes per person
 
-              document.getElementById('waitingCount').textContent = waitingCount;
-              document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
-              document.getElementById('waitingPosition').textContent = waitingPosition; // Show position
+    function updateWaitingInfo() {
+      fetch('/api/waiting-count')
+        .then(response => response.json())
+        .then(data => {
+          waitingCount = data.waitingCount;
+          document.getElementById('waitingCount').textContent = waitingCount;
+          document.getElementById('waitTime').textContent = Math.ceil(waitingCount * waitTimePerPerson);
 
-              // Check if a slot is available
-              if (waitingCount < 1) {
-                  window.location.href = '/'; // Redirect to the main page if a slot is free
-              }
-          })
-          .catch(error => console.error('Error fetching waiting info:', error));
-  }
-
-  // Call the update function periodically
-  setInterval(updateWaitingInfo, 3000); // Update every 3 seconds
-  updateWaitingInfo(); // Initial call
+          // Check if a slot is available
+          if (waitingCount < 1) {
+            window.location.href = '/'; // Redirect to the main page if a slot is free
+          }
+        })
+        .catch(error => console.error('Error fetching waiting count:', error));
+    }
 
     // function updateWaitingInfo() {
     //   waitingCount++;
