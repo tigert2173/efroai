@@ -276,11 +276,6 @@ function hideMaintenanceMode() {
 // Event listener for the "Continue Anyway" button
 document.getElementById('continue-btn').addEventListener('click', hideMaintenanceMode);
 
-// Call the function to show maintenance mode based on config
-if (config.maintenanceMode) {
-    showMaintenanceMode();
-}
-
     // Fetch the configuration and check maintenance mode
 fetch('config.json')
     .then(response => response.json())
