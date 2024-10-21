@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 // User tracking by IP
 let activeUsers = new Map();
-const MAX_ACTIVE_USERS = 5; // Set to 5 for production
+const MAX_ACTIVE_USERS = 15; // Set to 5 for production
 const RECONNECT_TIME_LIMIT = 60 * 1000; // 1 minute
 
 // Middleware to check active users
