@@ -29,18 +29,18 @@ app.use((req, res, next) => {
   currentUsers++;
   console.log(`User added. New count: ${currentUsers}`); // Log new user count
 
-  // Set up a response interceptor to decrement the count on session end
-  req.on('close', () => {
-    currentUsers--; // Decrement user count when the request is closed
-    console.log(`User session ended. New count: ${currentUsers}`); // Log when a user session ends
-    // If there are users waiting, allow the next one in
-    if (waitlist.length > 0) {
-      const nextUser = waitlist.shift(); // Remove the first user from the waitlist
-      nextUser(); // Allow the next user in
-      console.log('Next user allowed in from waitlist.'); // Log next user allowed in
-    }
-  });
+  // Add a custom header to track user sessions
+  res.setHeader('X-User-Session', currentUsers);
 
+  // Store the session information (this is optional, just for reference)
+  req.sessionId = currentUsers; // Use the current user count as a session ID
+
+  // Set up a response interceptor to handle closing sessions
+  res.on('finish', () => {
+    // Here, we will not decrement the count
+    // Instead, you can implement a manual close mechanism later
+  });
+  
   next();
 });
 
@@ -58,4 +58,11 @@ const options = {
 // Start the HTTPS server
 https.createServer(options, app).listen(443, () => {
   console.log('HTTPS Server running on port 443');
+});
+
+// Endpoint to close session (this should be called when a user closes the session)
+app.post('/close-session', (req, res) => {
+  currentUsers--;
+  console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
+  res.sendStatus(200); // Respond with success
 });
