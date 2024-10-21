@@ -72,7 +72,7 @@ app.use((req, res, next) => {
         } else {
             console.log(`User ${userIp} redirected to waitlist due to reconnect timeout.`);
             activeUsers.delete(userIP);
-            return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too late
+            //return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too late
         }
     }
 
