@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
+const WebSocket = require('ws'); // Import WebSocket library
 
 const app = express();
 // Use CORS middleware
@@ -41,13 +42,13 @@ app.use((req, res, next) => {
         console.log(`User ${userIp} is already active. Last active time: ${new Date(lastActiveTime).toLocaleString()}`);
         
         // Allow access if the user is within the reconnect time limit
-         if (Date.now() - lastActiveTime <= RECONNECT_TIME_LIMIT) {
-          console.log(`User ${userIp} is within the reconnect grace period. Allowing access.`);
-          return next(); // Allow access without redirecting
-      } else {
-          console.log(`User ${userIp} redirected to waitlist due to reconnect timeout.`);
-          return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too late
-      }
+        if (Date.now() - lastActiveTime <= RECONNECT_TIME_LIMIT) {
+            console.log(`User ${userIp} is within the reconnect grace period. Allowing access.`);
+            return next(); // Allow access without redirecting
+        } else {
+            console.log(`User ${userIp} redirected to waitlist due to reconnect timeout.`);
+            return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too late
+        }
     }
 
     if (activeUsers.size < MAX_ACTIVE_USERS) {
@@ -100,6 +101,34 @@ const options = {
 };
 
 // Start the HTTPS server
-https.createServer(options, app).listen(443, () => {
+const server = https.createServer(options, app).listen(443, () => {
     console.log('HTTPS Server running on port 443');
+});
+
+// Create a WebSocket server
+const wss = new WebSocket.Server({ server });
+
+// Handle WebSocket connections
+wss.on('connection', (ws, req) => {
+    const userIp = req.socket.remoteAddress; // Get the user's IP address
+
+    console.log(`WebSocket connection established for IP: ${userIp}`);
+    
+    // Send a ping every 10 seconds to check if the client is still connected
+    const pingInterval = setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send('ping'); // Send a ping message
+        }
+    }, 10000); // Ping every 10 seconds
+
+    // Handle incoming messages from the client
+    ws.on('message', (message) => {
+        console.log(`Received message from ${userIp}: ${message}`);
+    });
+
+    // Handle WebSocket closure
+    ws.on('close', () => {
+        clearInterval(pingInterval);
+        console.log(`WebSocket connection closed for IP: ${userIp}`);
+    });
 });
