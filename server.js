@@ -18,19 +18,19 @@ const blockedIps = [
   '69.174.135.234'
 ]; 
 
-app.set('trust proxy', true); // Trust the proxy for real IP address
-
 // Middleware to block specific IPs
 app.use((req, res, next) => {
-  const userIp = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : req.ip; // Get the real IP address
+  // Get user's IP address
+  const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
   console.log(`Incoming request from IP: ${userIp}`);
+
+  // Check if the IP is in the blocked list
   if (blockedIps.includes(userIp)) {
       console.log(`Blocked access from IP: ${userIp}`);
       return res.status(403).send('Access denied.'); // Return a 403 Forbidden response
   }
   next(); // Allow access for non-blocked IPs
 });
-
 
 // Disable caching for all responses
 app.use((req, res, next) => {
