@@ -247,7 +247,7 @@
         errorMessage.textContent = ''; // Clear previous error messages
 
         // Add a check for how quickly the form was filled
-        if (timeTaken < 5) {  // Less than 5 seconds (adjust time limit as needed)
+        if (timeTaken < 35) {  // Less than 5 seconds (adjust time limit as needed)
             errorMessage.textContent = 'Form filled out too quickly. Potential bot activity detected.';
             return;
         }
