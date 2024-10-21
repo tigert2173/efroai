@@ -18,12 +18,18 @@ app.use((req, res, next) => {
 
 // User tracking
 let activeUsers = [];
-const MAX_ACTIVE_USERS = 2; // Set to 1 for testing
+const MAX_ACTIVE_USERS = 1; // Set to 1 for testing
 
 // Middleware to check active users
 app.use((req, res, next) => {
     // Create a unique session identifier for each user
     const sessionId = req.headers['x-session-id'] || Date.now().toString();
+
+    // Check if the request is for the waitlist page
+    if (req.path === '/capacity/capacity.html') {
+        // Allow access to the waitlist page without counting the user as active
+        return next();
+    }
 
     if (activeUsers.length < MAX_ACTIVE_USERS) {
         // Allow the user to proceed
@@ -38,8 +44,18 @@ app.use((req, res, next) => {
     }
 });
 
-// Serve static files from the public directory (this must come after the user tracking middleware)
+// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'docs')));
+
+// Serve the waitlist page
+app.get('/capacity/capacity.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
+        if (err) {
+            console.error('Error serving waitlist page:', err);
+            res.status(err.status).end(); // End the response with the error status
+        }
+    });
+});
 
 // Example route for the main page
 app.get('/', (req, res) => {
