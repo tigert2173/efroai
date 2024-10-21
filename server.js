@@ -14,11 +14,10 @@ app.use(cors());
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'docs')));
 
-// Middleware to handle concurrent user limit
-app.use((req, res, next) => {
+// Middleware to check user count before serving any page
+const checkUserCount = (req, res, next) => {
   console.log(`Current users: ${currentUsers}`); // Log current user count
 
-  // Check if the current user limit is reached
   if (currentUsers >= maxConcurrentUsers) {
     console.log('User limit reached, redirecting to waitlist...'); // Log when user limit is reached
     // Redirect to waitlist page
@@ -37,15 +36,16 @@ app.use((req, res, next) => {
 
   // Set up a response interceptor to handle closing sessions
   res.on('finish', () => {
-    currentUsers--; // Decrement the user count on response finish
+    // Here, we will decrement the count
+    currentUsers--; // Decrement the count when the response is finished
     console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
   });
 
   next();
-});
+};
 
-// Route for the index page
-app.get('/', (req, res) => {
+// Apply the middleware to the routes that need user count checks
+app.get('/', checkUserCount, (req, res) => {
   res.sendFile(path.join(__dirname, 'docs', 'index.html')); // Serve the main application page
 });
 
@@ -63,4 +63,11 @@ const options = {
 // Start the HTTPS server
 https.createServer(options, app).listen(443, () => {
   console.log('HTTPS Server running on port 443');
+});
+
+// Endpoint to close session (this should be called when a user closes the session)
+app.post('/close-session', (req, res) => {
+  currentUsers--;
+  console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
+  res.sendStatus(200); // Respond with success
 });
