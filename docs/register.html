@@ -240,7 +240,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ reason: "honeypot: " + honeypot }), // Send the honeypot value
+                body: JSON.stringify({ reason: "honeypot usernameConfirm: " + honeypot }), // Send the honeypot value
             });
 
             if (!response.ok) {
@@ -268,7 +268,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ reason: "honeypot2: " + honeypot2 }), // Send the honeypot value
+                body: JSON.stringify({ reason: "honeypot2 email: " + honeypot2 }), // Send the honeypot value
             });
 
             if (!response.ok) {
