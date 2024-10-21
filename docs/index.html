@@ -54,6 +54,9 @@
     <title>EFRO.AI Character Hub</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/menu2.0.css">
+
+    <script src="config.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -205,6 +208,17 @@
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
 <script>
+
+    // Fetch the configuration and check maintenance mode
+fetch('config.json')
+    .then(response => response.json())
+    .then(data => {
+        if (data.maintenanceMode) {
+            showMaintenanceMode();
+        }
+    })
+    .catch(error => console.error('Error loading config:', error));
+
               // Function to get the value of a specific cookie by name
               function getCookie(name) {
             let cookieArr = document.cookie.split(";");
