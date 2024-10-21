@@ -19,40 +19,45 @@ const options = {
 
 // User tracking
 let activeUsers = [];
-const MAX_ACTIVE_USERS = 1;
+const MAX_ACTIVE_USERS = 1; // Set to 1 for testing
 
 // Middleware to check active users
 app.use((req, res, next) => {
   // Create a unique session identifier for each user
   const sessionId = req.headers['x-session-id'] || Date.now().toString();
-  
+
   if (activeUsers.length < MAX_ACTIVE_USERS) {
     // Allow the user to proceed
     if (!activeUsers.includes(sessionId)) {
       activeUsers.push(sessionId);
     }
     res.setHeader('x-session-id', sessionId); // Send session ID back to the client
-    next();
+    next(); // Proceed to the requested page
   } else {
-    // Redirect to waitlist page
-    res.redirect('/waitlist.html');
+    // Redirect to waitlist page with 302 status
+    res.redirect(302, '/waitlist.html');
   }
 });
 
 // Serve the waitlist page
 app.get('/waitlist.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html'));
+  res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
+    if (err) {
+      console.error('Error serving waitlist page:', err);
+      res.status(err.status).end(); // End the response with the error status
+    }
+  });
+});
+
+// Example route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
 // Cleanup active users on disconnect (if using WebSockets or similar)
 const cleanupUser = (sessionId) => {
   activeUsers = activeUsers.filter(user => user !== sessionId);
 };
-
-// Example route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'index.html'));
-});
 
 // Start the HTTPS server
 https.createServer(options, app).listen(443, () => {
