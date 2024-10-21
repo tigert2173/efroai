@@ -9,6 +9,28 @@ const app = express();
 // Use CORS middleware
 app.use(cors());
 
+const blockedIps = [
+  '128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
+  '128.14.173.115',  // Path: /cf_scripts/scripts/ajax/ckeditor/ckeditor.js && Path: /Telerik.Web.UI.WebResource.axd && /static/historypage.js <<-- suspicious request 
+  '128.14.174.186', //Path: /showLogin.cc & /api/session/properties & /solr/ && /login.do <<-- suspicious request 
+  '128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
+  '128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
+  '69.174.135.234'
+]; 
+
+
+// Middleware to block specific IPs
+app.use((req, res, next) => {
+  const userIp = req.headers['x-forwarded-for'] || req.ip; // Use x-forwarded-for or fall back to req.ip
+  if (blockedIps.includes(userIp)) {
+      console.log(`Blocked access from IP: ${userIp}`);
+      return res.status(403).send('Access denied.'); // Return a 403 Forbidden response
+  }
+  next(); // Allow access for non-blocked IPs
+});
+
+
+
 // Disable caching for all responses
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
@@ -16,6 +38,7 @@ app.use((req, res, next) => {
     res.setHeader('Expires', '0');
     next();
 });
+
 
 // User tracking by IP
 let activeUsers = new Map();
