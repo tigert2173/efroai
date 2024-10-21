@@ -19,7 +19,7 @@ const options = {
 
 // User tracking
 let activeUsers = [];
-const MAX_ACTIVE_USERS = 5;
+const MAX_ACTIVE_USERS = 1;
 
 // Middleware to check active users
 app.use((req, res, next) => {
