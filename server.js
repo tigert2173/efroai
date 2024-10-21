@@ -16,46 +16,36 @@ app.use((req, res, next) => {
     next();
 });
 
-// User tracking
-let activeUsers = [];
-const MAX_ACTIVE_USERS = 5; // Set to 1 for testing
+// User tracking by IP
+let activeUsers = new Map();
+const MAX_ACTIVE_USERS = 5; // Set to 5 for production
+const RECONNECT_TIME_LIMIT = 60 * 1000; // 1 minute
 
 // Middleware to check active users
 app.use((req, res, next) => {
-    // Create a unique session identifier for each user
-    const sessionId = req.headers['x-session-id'] || Date.now().toString();
+    // Get the user's IP address
+    const userIp = req.ip; // Use req.headers['x-forwarded-for'] for proxies
 
-    // Check if the request is for the waitlist page
-    if (req.path === '/capacity/capacity.html') {
-        // Allow access to the waitlist page without counting the user as active
+    // Check if the request is for static assets (do not count as active users)
+    if (['/capacity/capacity.html', '/capacity/styles.css', '/images/AtCapacityBotTransparent.png', '/images/logotransparent.png'].includes(req.path)) {
         return next();
     }
-    // Check if the request is for the waitlist page
-    if (req.path === '/capacity/styles.css') {
-      // Allow access to the waitlist page without counting the user as active
-      return next();
-    }
 
-    // Check if the request is for the waitlist page
-    if (req.path === '/images/AtCapacityBotTransparent.png') {
-      // Allow access to the waitlist page without counting the user as active
-      return next();
-    }
+    // Clean up inactive users
+    cleanupInactiveUsers();
 
-    // Check if the request is for the waitlist page
-    if (req.path === '/images/logotransparent.png') {
-      // Allow access to the waitlist page without counting the user as active
-      return next();
-    }
-  
-  
-
-    if (activeUsers.length < MAX_ACTIVE_USERS) {
-        // Allow the user to proceed
-        if (!activeUsers.includes(sessionId)) {
-            activeUsers.push(sessionId);
+    // Check if the user is already active
+    if (activeUsers.has(userIp)) {
+        const lastActiveTime = activeUsers.get(userIp);
+        // Check if the user is still within the reconnect time limit
+        if (Date.now() - lastActiveTime < RECONNECT_TIME_LIMIT) {
+            return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too soon
         }
-        res.setHeader('x-session-id', sessionId); // Send session ID back to the client
+    }
+
+    if (activeUsers.size < MAX_ACTIVE_USERS) {
+        // Allow the user to proceed
+        activeUsers.set(userIp, Date.now()); // Update the last active time
         next(); // Proceed to the requested page
     } else {
         // Redirect to waitlist page with 302 status
@@ -81,9 +71,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
-// Cleanup active users on disconnect (if using WebSockets or similar)
-const cleanupUser = (sessionId) => {
-    activeUsers = activeUsers.filter(user => user !== sessionId);
+// Cleanup inactive users based on their last active time
+const cleanupInactiveUsers = () => {
+    const now = Date.now();
+    for (const [ip, lastActiveTime] of activeUsers) {
+        if (now - lastActiveTime > RECONNECT_TIME_LIMIT) {
+            activeUsers.delete(ip); // Remove inactive users
+        }
+    }
 };
 
 // Read your SSL certificate and private key
@@ -97,4 +92,4 @@ https.createServer(options, app).listen(443, () => {
     console.log('HTTPS Server running on port 443');
 });
 
-// Here you can implement WebSocket or other mechanisms to track user disconnects and call cleanupUser(sessionId)
+// Here you can implement WebSocket or other mechanisms to track user disconnects
