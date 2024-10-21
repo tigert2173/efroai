@@ -35,12 +35,12 @@ app.use((req, res, next) => {
     next(); // Proceed to the requested page
   } else {
     // Redirect to waitlist page with 302 status
-    res.redirect('/waitlist.html');
+    res.redirect('/capacity/capacity.html');
   }
 });
 
 // Serve the waitlist page
-app.get('/waitlist.html', (req, res) => {
+app.get('/capacity/capacity.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
     if (err) {
       console.error('Error serving waitlist page:', err);
