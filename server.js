@@ -25,6 +25,7 @@ const RECONNECT_TIME_LIMIT = 60 * 1000; // 1 minute
 app.use((req, res, next) => {
     // Get the user's IP address
     const userIp = req.ip; // Use req.headers['x-forwarded-for'] for proxies
+    console.log(`Request from IP: ${userIp}, Path: ${req.path}`);
 
     // Check if the request is for static assets (do not count as active users)
     if (['/capacity/capacity.html', '/capacity/styles.css', '/images/AtCapacityBotTransparent.png', '/images/logotransparent.png'].includes(req.path)) {
@@ -37,8 +38,10 @@ app.use((req, res, next) => {
     // Check if the user is already active
     if (activeUsers.has(userIp)) {
         const lastActiveTime = activeUsers.get(userIp);
+        console.log(`User ${userIp} is already active. Last active time: ${new Date(lastActiveTime).toLocaleString()}`);
         // Check if the user is still within the reconnect time limit
         if (Date.now() - lastActiveTime < RECONNECT_TIME_LIMIT) {
+            console.log(`User ${userIp} redirected to waitlist due to reconnect timeout.`);
             return res.redirect('/capacity/capacity.html'); // Redirect if reconnecting too soon
         }
     }
@@ -46,9 +49,11 @@ app.use((req, res, next) => {
     if (activeUsers.size < MAX_ACTIVE_USERS) {
         // Allow the user to proceed
         activeUsers.set(userIp, Date.now()); // Update the last active time
+        console.log(`User ${userIp} added to active users. Total active users: ${activeUsers.size}`);
         next(); // Proceed to the requested page
     } else {
         // Redirect to waitlist page with 302 status
+        console.log(`User ${userIp} redirected to waitlist due to user limit exceeded. Active users: ${activeUsers.size}`);
         res.redirect('/capacity/capacity.html');
     }
 });
@@ -58,6 +63,7 @@ app.use(express.static(path.join(__dirname, 'docs')));
 
 // Serve the waitlist page
 app.get('/capacity/capacity.html', (req, res) => {
+    console.log(`Serving waitlist page to IP: ${req.ip}`);
     res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
         if (err) {
             console.error('Error serving waitlist page:', err);
@@ -68,6 +74,7 @@ app.get('/capacity/capacity.html', (req, res) => {
 
 // Example route for the main page
 app.get('/', (req, res) => {
+    console.log(`Serving main page to IP: ${req.ip}`);
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
@@ -76,6 +83,7 @@ const cleanupInactiveUsers = () => {
     const now = Date.now();
     for (const [ip, lastActiveTime] of activeUsers) {
         if (now - lastActiveTime > RECONNECT_TIME_LIMIT) {
+            console.log(`User ${ip} is inactive and will be removed from active users.`);
             activeUsers.delete(ip); // Remove inactive users
         }
     }
@@ -91,5 +99,3 @@ const options = {
 https.createServer(options, app).listen(443, () => {
     console.log('HTTPS Server running on port 443');
 });
-
-// Here you can implement WebSocket or other mechanisms to track user disconnects
