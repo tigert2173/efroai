@@ -42,6 +42,21 @@
     font-size: 18px;
 }
 
+#continue-btn {
+    padding: 10px 20px;
+    background-color: #4285f4; /* Bright Blue */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease; /* Transition effect */
+}
+
+#continue-btn:hover {
+    background-color: #3367d6; /* Darker blue on hover */
+}
+
     </style>
 </head>
 <body>
@@ -239,8 +254,10 @@
         <div class="maintenance-content">
             <h1>Maintenance Mode</h1>
             <p>We're currently undergoing maintenance. Please check back later!</p>
+            <button id="continue-btn">Continue Anyway</button>
         </div>
     </div>
+    
     
     <!-- Scripts -->
     <script src="js/hub.js"></script>
@@ -250,6 +267,20 @@
 function showMaintenanceMode() {
     document.getElementById('maintenance-overlay').style.display = 'block';
 }
+
+// Function to hide the maintenance mode
+function hideMaintenanceMode() {
+    document.getElementById('maintenance-overlay').style.display = 'none';
+}
+
+// Event listener for the "Continue Anyway" button
+document.getElementById('continue-btn').addEventListener('click', hideMaintenanceMode);
+
+// Call the function to show maintenance mode based on config
+if (config.maintenanceMode) {
+    showMaintenanceMode();
+}
+
     // Fetch the configuration and check maintenance mode
 fetch('config.json')
     .then(response => response.json())
