@@ -18,6 +18,7 @@ const blockedIps = [
   '69.174.135.234'
 ]; 
 
+app.set('trust proxy', true); // Trust the proxy for real IP address
 
 // Middleware to block specific IPs
 app.use((req, res, next) => {
