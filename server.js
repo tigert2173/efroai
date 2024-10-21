@@ -112,19 +112,6 @@ const server = https.createServer(options, app).listen(443, () => {
     console.log('HTTPS Server running on port 443');
 });
 
-
-
-// Cleanup inactive users based on their last active time
-const cleanupInactiveUsers = () => {
-  const now = Date.now();
-  for (const [ip, lastActiveTime] of activeUsers) {
-      if (now - lastActiveTime > RECONNECT_TIME_LIMIT) {
-          console.log(`User ${ip} is inactive and will be removed from active users.`);
-          activeUsers.delete(ip); // Remove inactive users
-      }
-  }
-};
-
 // Create a WebSocket server
 const wss = new WebSocket.Server({ server });
 
