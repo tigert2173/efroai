@@ -11,6 +11,37 @@
             margin: 20px;
             border-radius: 5px;
         }
+
+        #maintenance-overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    top: 0; /* Stay at the top */
+    left: 0; /* Stay at the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with transparency */
+    z-index: 9999; /* Sit on top */
+    color: #fff; /* Text color */
+    text-align: center; /* Center the text */
+    padding: 20px; /* Padding */
+}
+
+.maintenance-content {
+    position: absolute; /* Position it */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset for perfect centering */
+}
+
+#maintenance-overlay h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+#maintenance-overlay p {
+    font-size: 18px;
+}
+
     </style>
 </head>
 <body>
@@ -208,7 +239,10 @@
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
 <script>
-
+// Function to show the maintenance mode
+function showMaintenanceMode() {
+    document.getElementById('maintenance-overlay').style.display = 'block';
+}
     // Fetch the configuration and check maintenance mode
 fetch('config.json')
     .then(response => response.json())
