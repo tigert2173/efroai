@@ -29,10 +29,10 @@ app.use((req, res, next) => {
   currentUsers++;
   console.log(`User added. New count: ${currentUsers}`); // Log new user count
 
-  // Set up a response interceptor to decrement the count on response end
-  res.on('finish', () => {
-    currentUsers--;
-    console.log(`User left. New count: ${currentUsers}`); // Log when a user leaves
+  // Set up a response interceptor to decrement the count on session end
+  req.on('close', () => {
+    currentUsers--; // Decrement user count when the request is closed
+    console.log(`User session ended. New count: ${currentUsers}`); // Log when a user session ends
     // If there are users waiting, allow the next one in
     if (waitlist.length > 0) {
       const nextUser = waitlist.shift(); // Remove the first user from the waitlist
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
       console.log('Next user allowed in from waitlist.'); // Log next user allowed in
     }
   });
-  
+
   next();
 });
 
