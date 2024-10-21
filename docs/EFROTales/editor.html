@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Story</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            overflow-y: none;
+        }
+        .sidebar h2 {
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #007BFF;
+            cursor: pointer;
+        }
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+        .delete-btn {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background: #ff3b3b;
+        }
+        .container {
+            margin-left: 255px; /* Adjusted to fit the sidebar */
+            margin-right: 10px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            max-width: calc(100% - 270px);
+        }
+        .output {
+            margin-top: 20px;
+        }
+        .ql-container {
+            height: 400px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .background {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .back-link {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        /* Style for the popup overlay */
+        #popupOverlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1000;
+        }
+
+        /* Style for the popup content */
+        #popupContent {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+        }
+
+        /* Style for the close button */
+        #closePopup {
+            float: right;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #closePopup:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Stories</h2>
+	<p><i>**Disclamer: Always back up your files! We do not store editor files they are stored locally in your browser.</i></p>
+        <ul id="storyList"></ul>
+        <input type="file" id="fileInput" accept=".docx" />
+        <button onclick="loadFile()">Load File</button>
+        <button onclick="saveStory()">Save Story</button>
+        <button onclick="downloadFile()">Download HTML</button>
+        <button onclick="downloadFileREADERINSERT()">{{Reader-Insert}} HTML</button>
+	<a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+    </div>
+    <div class="container">
+        <h1>Create Your Story</h1>
+        <div id="editor-container"></div>
+
+        <a href="https://forms.gle/4GBimXuE8newHkpq8" target="_blank">Form to upload your story!</a>
+        <h2>Enter your story details below:
+        <div class="form-group">
+        <input type="text" id="userInput" placeholder="Author"></div>
+        <div class="form-group">
+        <input type="text" id="userInput1" placeholder="Tags (seperated by commas)"></div>
+        <div class="form-group">
+        <input type="text" id="userInput2" placeholder="Description"></div></h2>
+
+        <script>
+            function storeInput() {
+                // Get the value from the input field
+                var input = document.getElementById("userInput").value;
+                var input1 = document.getElementById("userInput1").value;
+                var input2 = document.getElementById("userInput2").value;
+
+                // Store the input in a variable
+                var author = input;
+                var tags = input1;
+                var description = input2;                
+            }
+        </script>
+
+        <button onclick="generateHTML()">Generate HTML</button>
+        <div class="output">
+            <h2>Generated HTML</h2>
+            <textarea id="htmlOutput" readonly></textarea>
+        </div>
+        <div class="output">
+            <h2>Generated Details</h2>
+            <textarea id="detailsOutput" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script>
+        // Initialize Quill editor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link', 'image'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', 'medium', 'large', 'huge'] }]
+                ]
+            }
+        });
+
+        function generateHTML() {
+ 	    // Retrieve the HTML content from the Quill editor
+            const html = quill.root.innerHTML;
+            // Update the output textarea with the HTML content
+            document.getElementById('htmlOutput').value = `
+               <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                    var content = document.getElementById('content').innerText;
+                    var firstLine = content.split('/\n')[0];
+                    document.title = firstLine;
+                });
+            <\/script>
+		<head>
+   		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<title>Dynamic Title</title>
+    		<style>
+        	body {
+            		font-family: 'Georgia', serif;
+            		background-color: #fdfaf4;
+            		margin: 0;
+            		padding: 0;
+            		display: flex;
+            		justify-content: center;
+            		align-items: center;
+            		min-height: 100vh;
+        		}
+				h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+	    h2 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+       
+        h3 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-indent: 25px;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-indent: 0px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            font-weight: lighter;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+		    .paper {
+            		background: #fff url('https://www.transparenttextures.com/patterns/old-mathematics.png') repeat center center;
+            		width: 80%;
+            		max-width: 800px;
+            		min-height: 90vh;
+            		padding: 40px;
+            		border: 1px solid #ddd;
+           		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+           		margin: 20px;
+            		line-height: 1.6;
+            		color: #333;
+        		}
+        	.back-link:hover {
+            		text-decoration: underline;
+        		}	
+		   </style>
+	    </head>
+			
+		<body>
+            <div class="paper">
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+			<script>
+				function personalizename() {
+					 const name = document.getElementById("nameInput").value;
+					const userPlaceholders = document.querySelectorAll(".user");
+					userPlaceholders.forEach(function(element) {
+						element.textContent = name;
+					});
+				}
+			<\/script>
+			
+			<script>
+				function personalizecharname() {
+					 const name = document.getElementById("charnameInput").value;
+					const userPlaceholders = document.querySelectorAll(".char");
+					userPlaceholders.forEach(function(element) {
+						element.textContent = name;
+					});
+				}
+		    <\/script>
+			
+			    <h2 align="center">Please enter your name:
+				<br><input type="text" id="nameInput" placeholder="Enter your name">
+				<button onclick="personalizename()">Submit</button></h2>
+			
+			    <h2 align="center">Please enter character's name:
+				<br><input type="text" id="charnameInput" placeholder="Enter character's name">
+				<button onclick="personalizecharname()">Submit</button></h2>
+				
+				<h5 align="center"><em>**Disclaimer: this information is only used so the story feels more immersive to the readers!</em></h5>
+		    <div id="content">
+                	${html}
+		    </div>
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+                </div>
+        </body>
+            `;
+            // Show the output textarea if it's hidden
+            document.getElementById('htmlOutput').style.display = 'block';
+        
+        }
+
+    function generateDetails() {
+        const html = quill.root.innerHTML;
+
+    // Use DOMParser to parse the HTML content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract the first line of text
+    let firstLineText = '';
+    const paragraphs = doc.querySelectorAll('h4, h3, h2, h1, p');
+    if (paragraphs.length > 0) {
+        firstLineText = paragraphs[0].textContent.trim().split('\n')[0];
+    } else {
+        firstLineText = doc.body.textContent.trim().split('\n')[0];
+    }
+
+    // Fallback to a default filename if firstLineText is empty
+    const fileName = sanitizeFilename(firstLineText) || 'Untitled_Story';
+
+function storeInput() {
+            // Get the value from the input field
+            var userInput = document.getElementById("userInput").value;
+            var userInput1 = document.getElementById("userInput1").value;
+            var userInput2 = document.getElementById("userInput2").value;
+
+            // Store the value in a variable (for demonstration)
+            var author = userInput;
+            var tags = userInput1;
+            var description = userInput2;
+
+        }
+
+          // Get the value from the input field
+          var input = document.getElementById("userInput").value;
+          var input1 = document.getElementById("userInput1").value;
+          var input2 = document.getElementById("userInput2").value;
+
+
+// Store the input in a variable
+var author = input;
+var tags = input1;
+var description = input2;
+
+    // Read the HTML file contents
+    const fileContent = `${html}`;
+    document.getElementById('detailsOutput').value = `
+        <div class="story" data-tags=${tags}>
+            <h2><a href="/EFRO/Stories/${fileName}.html">${fileName}</a></h2>
+            <p><b>Author:</b> ${author}</p>    
+            <p><i>Topics:</i> ${tags}</p>
+            <p>${description}</p>
+        <\/div>
+    `;
+
+    //<p>${description}</p>
+    // Show the output textarea if it's hidden
+    document.getElementById('detailsOutput').style.display = 'block'; 
+    }
+
+    function downloadFile() {
+    // Retrieve the HTML content from the Quill editor
+    const html = quill.root.innerHTML;
+
+    // Use DOMParser to parse the HTML content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract the first line of text
+    let firstLineText = '';
+    const paragraphs = doc.querySelectorAll('h4, h3, h2, h1, p');
+    if (paragraphs.length > 0) {
+        firstLineText = paragraphs[0].textContent.trim().split('\n')[0];
+    } else {
+        firstLineText = doc.body.textContent.trim().split('\n')[0];
+    }
+
+    // Fallback to a default filename if firstLineText is empty
+    const fileName = firstLineText || 'Untitled_Story';
+
+    // Create the HTML file content
+    const fileContent = `
+       
+                ${html}
+              
+    `;
+
+    // Create a Blob from the file content
+    const blob = new Blob([fileContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element and trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}.html`;
+    a.click();
+
+    // Clean up
+    URL.revokeObjectURL(url);
+}
+
+function downloadFile() {
+    generateHTML();
+    generateDetails();
+    // Retrieve the HTML content from the Quill editor
+    const html = quill.root.innerHTML;
+
+    // Use DOMParser to parse the HTML content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract the first line of text
+    let firstLineText = '';
+    const paragraphs = doc.querySelectorAll('h4, h3, h2, h1, p');
+    if (paragraphs.length > 0) {
+        firstLineText = paragraphs[0].textContent.trim().split('\n')[0];
+    } else {
+        firstLineText = doc.body.textContent.trim().split('\n')[0];
+    }
+
+    // Fallback to a default filename if firstLineText is empty
+    const fileName = sanitizeFilename(firstLineText) || 'Untitled_Story';
+
+    // Read the HTML file contents
+    const fileContent = `
+            <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                    var content = document.getElementById('content').innerText;
+                    var firstLine = content.split('/\n')[0];
+                    document.title = firstLine;
+                });
+            <\/script>
+		<head>
+   		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<title>Dynamic Title</title>
+    		<style>
+        	body {
+            		font-family: 'Georgia', serif;
+            		background-color: #fdfaf4;
+            		margin: 0;
+            		padding: 0;
+            		display: flex;
+            		justify-content: center;
+            		align-items: center;
+            		min-height: 100vh;
+        		}
+				h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+	    h2 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+       
+        h3 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-indent: 25px;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-indent: 0px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            font-weight: lighter;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+		    .paper {
+            		background: #fff url('https://www.transparenttextures.com/patterns/old-mathematics.png') repeat center center;
+            		width: 80%;
+            		max-width: 800px;
+            		min-height: 90vh;
+            		padding: 40px;
+            		border: 1px solid #ddd;
+           		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+           		margin: 20px;
+            		line-height: 1.6;
+            		color: #333;
+        		}
+        	.back-link:hover {
+            		text-decoration: underline;
+        		}	
+                     .slider-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .slider-container input {
+            margin-top: 10px;
+        }
+        .menu-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+        }
+        .menu-button span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+            margin: 5px 0;
+        }
+		</style>
+	    </head>
+			
+		<body>
+            <div class="paper">
+                    <button class="menu-button" id="menuButton">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="slider-container" id="sliderContainer">
+        <label for="fontSizeSlider">Font Size:</label>
+        <input type="range" id="fontSizeSlider" min="10" max="40" value="16">
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const sliderContainer = document.getElementById('sliderContainer');
+        const slider = document.getElementById('fontSizeSlider');
+        const body = document.body;
+
+        menuButton.addEventListener('click', () => {
+            if (sliderContainer.style.display === 'none' || sliderContainer.style.display === '') {
+                sliderContainer.style.display = 'flex';
+            } else {
+                sliderContainer.style.display = 'none';
+            }
+        });
+
+        slider.addEventListener('input', function() {
+            const fontSize = slider.value + 'px';
+            body.style.fontSize = fontSize;
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!sliderContainer.contains(event.target) && !menuButton.contains(event.target)) {
+                sliderContainer.style.display = 'none';
+            }
+        });
+<\/script>
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+		    <div id="content">
+                	${html}
+		    </div>
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+                </div>
+        </body>
+	`;
+
+    // Create a Blob from the file content
+    const blob = new Blob([fileContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element and trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}.html`;
+    a.click();
+
+    // Clean up
+    URL.revokeObjectURL(url);
+}
+
+function downloadFileREADERINSERT() {
+    generateHTML();
+    generateDetails();
+    openPopup();
+    // Retrieve the HTML content from the Quill editor
+    const html = quill.root.innerHTML;
+
+    // Use DOMParser to parse the HTML content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract the first line of text
+    let firstLineText = '';
+    const paragraphs = doc.querySelectorAll('h4, h3, h2, h1, p');
+    if (paragraphs.length > 0) {
+        firstLineText = paragraphs[0].textContent.trim().split('\n')[0];
+    } else {
+        firstLineText = doc.body.textContent.trim().split('\n')[0];
+    }
+
+    // Fallback to a default filename if firstLineText is empty
+    const fileName = sanitizeFilename(firstLineText) || 'Untitled_Story';
+
+    // Read the HTML file contents
+    const fileContent = `
+        <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                    var content = document.getElementById('content').innerText;
+                    var firstLine = content.split('/\n')[0];
+                    document.title = firstLine;
+                });
+            <\/script>
+		<head>
+   		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<title>Dynamic Title</title>
+    		<style>
+        	body {
+            		font-family: 'Georgia', serif;
+            		background-color: #fdfaf4;
+            		margin: 0;
+            		padding: 0;
+            		display: flex;
+            		justify-content: center;
+            		align-items: center;
+            		min-height: 100vh;
+        		}
+				h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+	    h2 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+       
+        h3 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-indent: 25px;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-indent: 0px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            font-weight: lighter;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+		    .paper {
+            		background: #fff url('https://www.transparenttextures.com/patterns/old-mathematics.png') repeat center center;
+            		width: 80%;
+            		max-width: 800px;
+            		min-height: 90vh;
+            		padding: 40px;
+            		border: 1px solid #ddd;
+           		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+           		margin: 20px;
+            		line-height: 1.6;
+            		color: #333;
+        		}
+        	.back-link:hover {
+            		text-decoration: underline;
+        		}	
+                     .slider-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .slider-container input {
+            margin-top: 10px;
+        }
+        .menu-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+        }
+        .menu-button span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+            margin: 5px 0;
+        }
+		   </style>
+	    </head>
+			
+		<body>
+            <div class="paper">
+                    <button class="menu-button" id="menuButton">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="slider-container" id="sliderContainer">
+        <label for="fontSizeSlider">Font Size:</label>
+        <input type="range" id="fontSizeSlider" min="10" max="40" value="16">
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const sliderContainer = document.getElementById('sliderContainer');
+        const slider = document.getElementById('fontSizeSlider');
+        const body = document.body;
+
+        menuButton.addEventListener('click', () => {
+            if (sliderContainer.style.display === 'none' || sliderContainer.style.display === '') {
+                sliderContainer.style.display = 'flex';
+            } else {
+                sliderContainer.style.display = 'none';
+            }
+        });
+
+        slider.addEventListener('input', function() {
+            const fontSize = slider.value + 'px';
+            body.style.fontSize = fontSize;
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!sliderContainer.contains(event.target) && !menuButton.contains(event.target)) {
+                sliderContainer.style.display = 'none';
+            }
+        });
+<\/script>
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+			
+			<script>
+				function personalizename() {
+					 const name = document.getElementById("nameInput").value;
+					const userPlaceholders = document.querySelectorAll(".user");
+					userPlaceholders.forEach(function(element) {
+						element.textContent = name;
+					});
+				}
+			<\/script>
+			
+			<script>
+				function personalizecharname() {
+					 const name = document.getElementById("charnameInput").value;
+					const userPlaceholders = document.querySelectorAll(".char");
+					userPlaceholders.forEach(function(element) {
+						element.textContent = name;
+					});
+				}
+			<\/script>
+			
+			<h2 align="center">Please enter your name:
+				<br><input type="text" id="nameInput" placeholder="Enter your name">
+				<button onclick="personalizename()">Submit</button></h2>
+			
+			<h2 align="center">Please enter character's name:
+				<br><input type="text" id="charnameInput" placeholder="Enter character's name">
+				<button onclick="personalizecharname()">Submit</button></h2>
+				
+				<h5 align="center"><em>**Disclaimer: this information is only used so the story feels more immersive to the readers!</em></h5>
+		    <div id="content">
+                	${html}
+		    </div>
+		    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+                </div>
+        </body>
+	`;
+
+    // Create a Blob from the file content
+    const blob = new Blob([fileContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element and trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}.html`;
+    a.click();
+
+    // Clean up
+    URL.revokeObjectURL(url);
+}
+
+// Function to sanitize the filename
+function sanitizeFilename(filename) {
+    // Replace characters that are not allowed in filenames with underscores
+    return filename.replace(/[\/\\?%*:|"<>]/g, '_');
+}
+        
+
+        function loadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const arrayBuffer = event.target.result;
+                    mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+                        .then(result => {
+                            // Insert the raw HTML content into the Quill editor
+                            quill.root.innerHTML = result.value;
+                        })
+                        .catch(handleError);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        function handleError(err) {
+            console.error('Error converting file:', err);
+        }
+
+        function saveStory() {
+            const title = prompt('Enter a title for the story:');
+            if (title) {
+                const stories = JSON.parse(localStorage.getItem('stories') || '{}');
+                stories[title] = quill.root.innerHTML;
+                localStorage.setItem('stories', JSON.stringify(stories));
+                updateStoryList();
+            }
+        }
+
+        function deleteStory(title) {
+            if (confirm(`Are you sure you want to delete "${title}"?`)) {
+                const stories = JSON.parse(localStorage.getItem('stories') || '{}');
+                delete stories[title];
+                localStorage.setItem('stories', JSON.stringify(stories));
+                updateStoryList();
+            }
+        }
+
+        function loadStory(title) {
+            const stories = JSON.parse(localStorage.getItem('stories') || '{}');
+            if (stories[title]) {
+                quill.root.innerHTML = stories[title];
+            }
+        }
+
+        function updateStoryList() {
+            const storyList = document.getElementById('storyList');
+            const stories = JSON.parse(localStorage.getItem('stories') || '{}');
+            storyList.innerHTML = '';
+            for (const title in stories) {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.textContent = title;
+                link.onclick = () => loadStory(title);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'x';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = (event) => {
+                    event.stopPropagation(); // Prevent link click
+                    deleteStory(title);
+                };
+                li.appendChild(link);
+                li.appendChild(deleteBtn);
+                storyList.appendChild(li);
+            }
+        }
+
+        window.onload = updateStoryList;
+    </script>
+
+    <!-- Popup Overlay -->
+    <div id="popupOverlay">
+        <!-- Popup Content -->
+        <div id="popupContent">
+            <button id="closePopup" onclick="closePopup()">X</button>
+            <h2><b>IMPORTANT DIRECTIONS!</b></h2>
+            <p>For {{Reader-Inserts}} you must open the HTML file in Notepad, do CTRL+H to find all and replace:</p>
+            <p>{{user}} with &lt;span class=&quot;user&quot;&gt;{{user}}&lt;/span&gt;</p>
+            <p>{{char}} with &lt;span class=&quot;char&quot;&gt;{{char}}&lt;/span&gt;</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the popup
+        function openPopup() {
+            document.getElementById('popupOverlay').style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+    </script>
+    
+</body>
+
+</html>

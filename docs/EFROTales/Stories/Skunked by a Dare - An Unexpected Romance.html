@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦨 Skunked by a Dare 🦨</title>
+   
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skunked by a Dare: An Unexpected Romance</h2</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fdfaf4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .paper {
+            background: #fff url('https://www.transparenttextures.com/patterns/old-mathematics.png') repeat center center;
+            width: 80%;
+            max-width: 800px;
+            min-height: 90vh;
+            padding: 40px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+	    h2 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+       
+        h3 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-indent: 25px;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-indent: 0px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            font-weight: lighter;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+	     .slider-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .slider-container input {
+            margin-top: 10px;
+        }
+        .menu-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+        }
+        .menu-button span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+        
+ <div class="paper">
+	     <button class="menu-button" id="menuButton">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="slider-container" id="sliderContainer">
+        <label for="fontSizeSlider">Font Size:</label>
+        <input type="range" id="fontSizeSlider" min="10" max="40" value="16">
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const sliderContainer = document.getElementById('sliderContainer');
+        const slider = document.getElementById('fontSizeSlider');
+        const body = document.body;
+
+        menuButton.addEventListener('click', () => {
+            if (sliderContainer.style.display === 'none' || sliderContainer.style.display === '') {
+                sliderContainer.style.display = 'flex';
+            } else {
+                sliderContainer.style.display = 'none';
+            }
+        });
+
+        slider.addEventListener('input', function() {
+            const fontSize = slider.value + 'px';
+            body.style.fontSize = fontSize;
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!sliderContainer.contains(event.target) && !menuButton.contains(event.target)) {
+                sliderContainer.style.display = 'none';
+            }
+        });
+</script>
+	<a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+	<h1>Skunked by a Dare: <br>An Unexpected Romance</h1>
+
+<script>
+    function personalizename() {
+         const name = document.getElementById("nameInput").value;
+        const userPlaceholders = document.querySelectorAll(".user");
+        userPlaceholders.forEach(function(element) {
+            element.textContent = name;
+        });
+    }
+</script>
+
+<script>
+    function personalizeage() {
+        const userage = document.getElementById("ageInput").value;
+        const useragePlaceholders = document.querySelectorAll(".userage");
+        useragePlaceholders.forEach(function(element) {
+            element.textContent = userage;
+        });
+        var charage = Number(userage) + 1;
+        const charagePlaceholders = document.querySelectorAll(".charage");
+        charagePlaceholders.forEach(function(element) {
+            element.textContent = charage;
+        });
+    }
+</script>
+
+    <h2 align="center">Please enter your name:
+    <br><input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="personalizename()">Submit</button></h2>
+
+    <h2 align="center">Please enter your age:
+        <br><input type="text" id="ageInput" placeholder="Enter your age">
+        <button onclick="personalizeage()">Submit</button></h2>
+
+    <h5 align="center"><em>**Disclaimer: this information is only used so the story feels more immersive to the readers!</em></h5>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Character Image Menu</title>
+        <style>
+            .menu {
+                list-style-type: none;
+                padding: 0;
+            }
+            .menu-item {
+                cursor: pointer;
+                padding: 10px;
+                border: 1px solid #ccc;
+                margin-bottom: 5px;
+                background-color: #f9f9f9;
+            }
+            .menu-item:hover {
+                background-color: #eee;
+            }
+            .image-container {
+                display: none;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .image-container img {
+                max-width: 60%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <h3>Character Image Menu</h3>
+        <ul class="menu">
+            <li class="menu-item" onclick="showImage('Aimee')">Aimee</li>
+            <li class="menu-item" onclick="showImage('Pixie')">Pixie</li>
+            <li class="menu-item" onclick="showImage('Snuffles')">Snuffles</li>
+        </ul>
+        <div id="Aimee" class="image-container">
+            <img src="Aimee.png" alt="Aimee">
+        </div>
+        <div id="Pixie" class="image-container">
+            <img src="Pixie.png" alt="Pixie">
+        </div>
+        <div id="Snuffles" class="image-container">
+            <img src="Snuffles.png" alt="Snuffles">
+        </div>
+    
+        <script>
+            function showImage(id) {
+                // Hide all images
+                var images = document.querySelectorAll('.image-container');
+                images.forEach(function(img) {
+                    img.style.display = 'none';
+                });
+    
+                // Show the selected image
+                var selectedImage = document.getElementById(id);
+                selectedImage.style.display = 'block';
+            }
+        </script>
+    
+    </body>
+    </html>
+    <h1>Part 1</h1>
+
+    <p>Aimee sits on the dirty sidewalk, huddling close with a group of other skunk girls. The scent of the city mixes with their own musk, creating an atmosphere that most would find unbearable. But to them, it was home, a sanctuary where they can be themselves without judgment.</p>
+
+    <p>The girls are in the middle of a raucous game of Truth or Dare and their laughter echoes down the alleyway. The dim light of a nearby streetlamp flickers above them, casting long shadows across the cracked pavement.</p>
+
+    <p>"Truth or dare, Aimee! Choose wisely..." Pixie, a small skunk girl with bright pink streaks in her hair, smirks mischievously as she eyes Aimee.</p>
+
+    <p>Aimee hesitates, glancing around at the expectant faces of her friends. She wasn't the bravest of the bunch, often shying away from the more outrageous dares, but tonight, something in the air makes her want to prove herself.</p>
+
+    <p>"Uh... I'll choose dare, I guess," she finally says, her voice wavering slightly. As she speaks, she shifts nervously, letting out a soft <em>“prrpt”</em> that wafts up between her legs, adding to the already potent aroma surrounding them.</p>
+
+    <p>"Ooh, perfect!” a girl named Snuffles claps her hands together in excitement. Snuffles is a tall, sturdy skunk girl with a rebellious streak that matches her appearance. Her fur was mostly a deep, inky black, except for a striking white stripe that ran down to the tip of her bushy tail. “There's a super hot guy over there. You gotta go ask him out on a date in front of everyone!" She pointed down the alley at a well-dressed man waiting to cross the street.</p>
+
+    <p>Aimee's heart skipped a beat as she followed Snuffles’ gaze. The man stood out sharply against the backdrop of the dingy street, his clean-cut appearance almost otherworldly in contrast. Her stomach churned with anxiety, a mix of nerves and the lingering effects of the cheap taco she'd eaten earlier.</p>
+
+    <p>"Go on, Aimee!" Pixie urged, her eyes gleaming with anticipation. "You can do it!"</p>
+
+    <p>“I-I umm…” Aimee gulped and went pale under her fur. But then her competitive streak kicked in, “pssh, fine!”</p>
+
+    <p>Taking a deep breath, Aimee pushed herself up from the ground. She dusted off her worn jeans, though it hardly made a difference, and started walking toward you. Each step felt like an eternity, her mind racing with a thousand possible outcomes, none of them good.</p>  
+    
+    <p>Aimee marched right up to you until she was standing mere inches away. She looked up at him with smoldering eyes, hands on her hips. Her ample chest heaved with each breath.</p>
+    
+    <p>“Well, hello there, handsome,” Aimee said, gazing up at you through her lashes. Despite the butterflies in her stomach, she stood her ground, her heart pounding with a mix of nerves and thrilling excitement. She could already feel the heat of impending humiliation, but she pushed through, determined to see it through.</p>  
+    
+    <p>You smiled down at her, a little surprised by her boldness. “Hi there,” you replied, your voice warm. “What’s your name? I’m <span class="user">{{user}}</span>!” You could tell she was expecting rejection, but something in her eyes made you hesitate, curious to see where this might lead.</p>
+        
+    <p>Aimee couldn't believe what she was doing, approaching a total stranger like this. You are way out of her league, so polished and put-together while she is grimy, barefoot, and hasn’t showered in weeks. What would someone like <span class="user">{{user}}</span> ever see in her?
+    “Um, it's Aimee,” she says quietly, glancing away shyly, “and actually...the reason I came over is…” Aimee pauses, psyching herself up. “Here goes nothing,” her tummy flutters anxiously as she mutters the words.</p>
+
+    <p>“You see, I kinda...was dared by my friends to...ask you out. On a d-date,” she blushes beet red and avoids your eyes because she is certain you are going to reject her flat out.</p>
+    
+    <p>"Oh? Is that so?" I say, glancing over at her friends with a smirk. "How old are you? I'm <span class="userage">{{userage}}</span>!"</p>
+    
+    <p>Aimee’s cheeks burned crimson as she shifted nervously from foot to foot. Her friends snickered from across the alleyway, clearly enjoying her discomfort. Aimee mumbled, barely audible, “Uh, I’m <span class="charage">{{charage}}</span>...” her gaze flickers up at you through her lashes, hoping you just say what we both know should be coming.</p>
+
+    <p>Part of her wishes you'd just reject her outright so she could escape the embarrassment and salvage what was left of her bruised ego. <em>Why are you dragging this on? We both know what you're going to say—so just say it alread!</em></p> 
+    
+    <p>“L-look, nevermind, okay?” there's a tremble in her voice as she begins turning away. “I shouldn’t have bothered you. Forget I even said anything…”</p>
+    
+    <p>You hesitate and your face flushes. “No—wait, Aimee…” you take a deep breath, summoning the courage to speak. “Y-yes… I’d like to go out with you. How about a movie at my place?”</p>
+
+    <p>Aimee froze, her heart skipping a beat as she turns back around, wide-eyed, her mouth hanging open in shock. She was certain she must have misheard you. Did you really just agree to go out with her?! She blinks rapidly, stunned. In the background you can hear her friends letting out delighted squeals of surprise across the alley.</p>
+
+    <p>"Wh-whaaaat? Really?? You...you want to go out with ME??" she sputters as her face turns a bright shade of pink. "Like, seriously? To watch a movie? At your house!"</p>
+    
+    <p>You smile nervously, trying to reassure her. “Yeah, really. I mean, if you’re up for it… I’d love to hang out and watch a movie together.”</p>
+
+    <p>It seemed almost too good to be true! <em>Was this some kind of prank?</em> Aimee's eyes dart suspiciously between you and her friends, expecting one of them to shout "Gotcha!" any moment.</p>
+    
+    <p>"Okay, um, yeah! Sure thing! I mean, I'd love to!" she blurts out quickly before you could change your mind. She turns around to walk back towards her friends.</p>
+
+    <p>"Hey wait!" you giggle at how cute she is being, "you forgot about key information!" You shout your address towards her, "8pm tonight!"</p>
+
+    <p>Aimee turns back around on her heels, grinning, "I'll be there! Thanks, uh 8pm, got it!, thanks so much!" she babbles excitedly, practically bouncing on her toes. "Don't worry, I won't forget!" she chirps giving you a wink.</p>
+    
+    <p>She makes her way back to her friends nodding vigorously, committing your address to memory. As she does you can't help but notice how enthusiastically her tail wags behind her. Just before she makes it to her friends she turns around and shouts, "thanks again, <span class="user">{{user}}</span>! I'll see you tonight!" before scurrying the last bit of distance to her friends.</p>
+    
+    <h1>Part 2</h1>
+    
+    <p>Aimee could hardly believe her luck! The hottest guy ever had agreed to go out with her, little ol' smelly homeless Aimee!</p>
+    
+    <p>"Eeeee!" she squeales gleefully, jumping up and down. "Can you believe it? He actually said yes!"</p>
+
+    <p>But as the girls chattered excitedly amongst themselves, Aimee's euphoria slowly deflates. "Wait...I'm supposed to meet him at his house in a few hours, and I look—and smell—like a literal dumpster fire!" she moans, "uuuuaah, what am I going to do?! Oh crap, oh crap!"</p>
+    
+    <p>The other skunk girls erupt into laughter, mercilessly teasing Aimee.</p>
+    
+    <p>“Hahaha, did you see the look on his face when he said yes? I bet he only agreed because he felt sorry for you!” Pixie taunted, chuckling.</p>
+
+    <p>“Yeah, he probably didn’t realize what a mess you are underneath all that grime!” Snuffles added, giggling cruelly. “When’s the last time you even washed those nasty clothes?”</p>
+
+    <p>Aimee’s ears drooped, their words cutting deep. It was true—she was a disaster: filthy, smelly, and gross. How could anyone stand to be near her? Maybe Pixie was right. Maybe <span class="user">{{user}}</span> did only pity her...</p>
+
+    <p>“I should call it off,” Aimee says miserably. “He deserves so much better than a freak like me…”</p>
+    
+    <p>But then, a spark of defiant stubbornness flared up inside Aimee. No! Damn it, if she had the guts to ask him out in the first place, she wasn’t about to sabotage everything now by assuming the worst and backing down!</p>
+    
+    <p>"Hey...back off, guys! Geez, I just scored an epic win here and YOU'RE trying to harsh my mellow?" Aimee plants her hands on her hips. "<span class="user">{{user}}</span> seemed pretty darn willing to give me a chance, AND showed interest, which you ladies are clearly jealous of!"</p>
+    
+    <p>Aimee narrows  her eyes. "Quit raining on my parade! Or else...OR ELSE..." Quick as a whip, Aimee whips a firm cheek outward and lets loose a thunderous <b><em>“BRRRAAAAP"</em></b> directly at Pixie and Snuffles. "Take that!"</p>
+    
+    <p>The toxic cloud envelops her dumbfounded friends, forcing them to recoil into a gagging fit at the horrible stench. Pixie and Snuffles stagger backwards, frantically waving the vile gas away as they choke on the foul odor.</p>
+   
+    <p>"OH MY GODDDD, AIMEE, WHAT THE HELL???" Pixie wheezed in outrage. "That was pure concentrated liquid DOOM!!"</p>
+   
+    <p>“Hey, hey wait a sec…” Pixie snaps her fingers and her eyes grow wide with arealization. “Didn't <span class="user">{{user}}</span> seem weirdly unphased by how badly you reeeeek though? Like almost...interested?”</p>
+
+    <p>The other skunks exchanged glances, their eyes widening as they began nodding in unison. One by one, they murmured their agreement, their faces lighting up with realization.</p>
+    
+    <p>Snuffles speaks up next, “Holy crap, what if <span class="user">{{user}}</span> has a thing for gross stinky chicks? There ARE dudes who dig that sorta stuff…” Snuffles rubs her chin thoughtfully, “I once knew a guy once who went absolutely wild over bad body odor. He even begged his girlfriend not to wear deodorant anymore! Isn’t that just wild?”</p>
+    
+    <p>“This is HUGE Aims!” Pixie exclaims, practically vibrating with excitement. “If you can bankroll on being yourself, he might think you're irresistible instead of repulsive!”
+
+    <p>“That can't be true, surely?” Aimee protests, her voice tinges with disbelief. “Guys prefer glamorous beauties, not mangy tramps like me!”</p>
+    
+    <p>Yet even as she dismisses the idea, hope blossoms hotly in her chest. <em>Could Pixie really be right? Was it possible she was lucky enough to catch a skunk enthusiast?</em> She feels giddy, like fireworks were exploding under her fur at the possibility!</p>
+    
+    <p>“Okay y'all, we need to figure out if <span class="user">{{user}}</span> really cool with my super stank without straight-up asking! Any ideas?”</p>
+    
+    <p>“Welllllll...we COULD try subtly seducing him with your signature brand of foul funkiness..” Snuffles suggests impishly, waggling her eyebrows.</p>
+    
+    <P>“Yeah—give him a lil taste of the stinky goods and see how he reacts! C'mon Aimes, channel your inner trash demon and floor him with FARTillery!" Pixie cackles, her eyes twinkling with mischief.</P>
+
+    <p>“Ha! Oh man, he won't know what hit him!” Snuffles chuckles, “But seriously, start small. See how close you can get, how bad you can get away with being around him…” Snuffles advised sagely, “Once you're sure you should say something in playfully naughty way that would be teasing him with your stink!”</p>
+    
+    <p>“If he bolts screaming for air freshener within ten minutes, he's probably a lost cause for stinky broads like us!” Snuffles declares with a grin, and they all dissolve into raucous laughter.</p>
+    
+    <p>“Alright, alright, I hear ya!” Aimee says grinning, “I’ll play it smooth and subtle at first, feel him out, and then bust out the big guns if needed! Thanks for the advice, everyone. You guys are...well, you’re something!” she flashes a mischievous grin at her friends.</p>
+    
+    <p>“I'mma bounce though, gotta get ready for my date!” Aimee glances down at herself and wrinkles her nose in distaste. <em>Ugh, I'm disgusting…</em></p>
+    
+    <p>With a wave goodbye, Aimee sets off towards <span class="user">{{user}}</span>'s neighborhood, nerves jangling with anticipation. This was it—her shot at scoring a real boyfriend despite her chronic funk issues!
+
+    <p><em>Don't blow it, Aimee...</em> she mutters to herself sternly as she walks. <em>Play. It. Cool. Be casual, friendly—NOT a desperate stinker hag…</em></p>
+    
+    <h1>Part 3</h1>
+        <h4 align="center"><em>Coming Soon!</em></h4>
+    <span class="charage">{{charage}}</span>
+
+    <span class="user">{{user}}</span>
+
+    <a class="back-link" href="/EFRO/index.html">Back to Story Catalog</a>
+
+    <body>
+        <h1>Comments</h1>
+        <iframe width="100%" height="1000"src="https://docs.google.com/forms/d/e/1FAIpQLScjIXS55wDNhatcbwKPb9zxIBdXA1NHyQOU7HwfdsdgUd3RpA/viewform?embedded=true" width="640" height="493" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        <iframe width="100%" height="10000" src="https://docs.google.com/spreadsheets/d/1gEMJBTVSNYwFIepGkkAyU-_TGkN7iuE7XsqPhyyPkRI/pubhtml?gid=2096875974&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+    </body>
+    
+    
+      
+    </div>
+</body>
+</html>
+
+

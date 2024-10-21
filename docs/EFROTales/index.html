@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO Story Catalog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            margin: 0;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .catalog {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .story {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .story:last-child {
+            border-bottom: none;
+        }
+        .story h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+        .story p {
+            margin: 0 0 10px;
+        }
+        .story a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .story a:hover {
+            text-decoration: underline;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-bar input[type="text"] {
+            width: calc(100% - 120px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+        .search-bar button.active {
+            background-color: #0056b3;
+        }
+        .tags {
+            margin-bottom: 20px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 5px 10px;
+            margin-right: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .tag.selected {
+            background-color: #0056b3;
+        }
+        .faded {
+            color: #888; /* Faded text color */
+        }
+        .matches-section {
+            margin-bottom: 20px;
+        }
+        .matches-section h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Story Catalog</h1>
+        <nav>
+            <a href="/EFROTails/index.html">Stories</a>
+            <a href="/index.html">EFRO.AI</a>
+            <a href="/EFROTales/editor.html">Editor & Uploading</a>
+            <a href="https://discord.gg/E7TRzsEMkD">Discord</a>
+            <a href="/EFROTales/features.html">Upcomming Features</a>
+        </nav>
+    </div>
+
+    <div class="catalog">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for stories...">
+        </div>
+
+        <!-- Tagging System -->
+        <div class="tags">
+            <span class="tag" onclick="toggleTagSelection(this, 'Reader-Insert')">{Reader-Insert}</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Skunk')">Skunk</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Fart')">Fart</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Burp')">Burp</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Fantasy')">Fantasy</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Romantic Comedy')">Romantic Comedy</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Adventure')">Adventure</span>
+        </div>
+        
+        <!-- Matches Sections -->
+        <div class="matches-section" id="exactMatches">
+            <h3>Exact Matches</h3>
+        </div>
+
+        <div class="matches-section" id="nearMatches">
+            <h3>Near Matches</h3>
+        </div>
+
+        <div class="matches-section" id="closeMatches">
+            <h3>Close Matches</h3>
+        </div>
+
+        <div class="matches-section" id="looseMatches">
+            <h3>Partial Matches</h3>
+        </div>
+
+        <div class="matches-section" id="possibleMatches">
+            <h3>Could this be what you're looking for?</h3>
+        </div>
+
+        <div class="story" data-tags="{{Reader-Insert}}, [Skunks]">
+            <h2><a href="/EFRO/Stories/The Pillory.html">The Pillory</a></h2>
+            <p><b>Author:</b> SolamenteCelia</p>    
+            <p><i>Topics:</i> {{Reader-Insert}}, Skunk</p>
+            <p>When a rotten man is locked up in the pillory, a skunk he'd wronged takes the opportunity to get her revenge on him.</p>
+        </div>
+        
+        <!-- Story List -->
+        <div class="story" data-tags="{{Reader-Insert}}, [Skunks], [Farts], [Burps]">
+            <h2><a href="/EFRO/Stories/Skunked by a Dare - An Unexpected Romance.html">Skunked by a Dare: An Unexpected Romance</a></h2>
+            <p><b>Author:</b> TigerT2173</p>    
+            <p><i>Topics:</i> {{Reader-Insert}}, [Skunks], [Farts], [Burps]</p>
+            <p>During a game of Truth or Dare, homeless skunk girl, Aimee is dared to ask you out!</p>
+        </div>
+
+        <div class="story" data-tags="Fantasy">
+            <h2><a href="story1.html">The Skunk Hybrid's Dilemma</a></h2>
+            <p><i>Genre:</i> Fantasy</p>
+            <p>A tale of a skunk hybrid girl navigating a world where she's seen as an outcast due to her unique abilities and challenges.</p>
+        </div>
+
+        <div class="story" data-tags="Romantic Comedy">
+            <h2><a href="story2.html">Midnight at MicroCenter</a></h2>
+            <p><i>Genre:</i> Romantic Comedy</p>
+            <p>A quirky romance unfolds when two socially awkward individuals meet at a computer store after hours.</p>
+        </div>
+
+        <div class="story" data-tags="Adventure">
+            <h2><a href="story3.html">The Quest for the Perfect PC</a></h2>
+            <p><i>Genre:</i> Adventure</p>
+            <p>Follow a group of friends as they embark on an epic journey to build the ultimate gaming PC, facing unexpected challenges along the way.</p>
+        </div>
+        
+        <!-- Add more stories as needed -->
+    </div>
+
+    <script>
+        let selectedTags = new Set();
+        let searchInTitle = false; // Default to searching all content
+
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const input = this.value.toLowerCase();
+            filterStories(input, selectedTags);
+        });
+
+        function toggleTagSelection(tagElement, tag) {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag);
+                tagElement.classList.remove('selected');
+            } else {
+                selectedTags.add(tag);
+                tagElement.classList.add('selected');
+            }
+            filterStories(document.getElementById('searchInput').value.toLowerCase(), selectedTags);
+        }
+
+        function filterStories(input, tags) {
+    const stories = document.getElementsByClassName('story');
+    const storiesArray = Array.from(stories);
+    const exactMatches = [];
+    const nearMatches = [];
+    const closeMatches = [];
+    const looseMatches = [];
+    const possibleMatches = [];
+    let anyStoryVisible = true;
+
+    // Normalize input
+    const normalizedInput = input.toLowerCase().trim();
+   
+    // Create a regular expression for the input, ignoring case
+    const regex = new RegExp(normalizedInput.split(' ').map(word => `(?=.*${word})`).join(''), 'i');
+
+    storiesArray.forEach(story => {
+        const title = story.querySelector('h2').innerText.toLowerCase();
+        const content = story.innerText.toLowerCase();
+        const storyTags = story.getAttribute('data-tags').split(', ').map(tag => tag.toLowerCase());
+
+        // Normalize tags for matching
+        const normalizedTags = storyTags.map(tag => tag.trim());
+        
+        //For percent Revelvance
+        const numberOfSelectedTags = tags.size;
+        
+        let matchCount = 0;
+        tags.forEach(tag => {
+            const normalizedTag = tag.toLowerCase().replace(/s$/, '');
+            if (normalizedTags.some(storyTag => storyTag.includes(normalizedTag))) {
+                matchCount++;
+            }
+        });
+
+        // Check if the normalized input partially matches any tag
+        const matchesATag = Array.from(tags).some(tag => normalizedTags.some(storyTag => storyTag.includes(tag.toLowerCase())));
+        //const matchesATags = Array.from(tags).some(tag => storyTags.includes(tag));
+        const matchesTags = Array.from(tags).every(tag => normalizedTags.some(storyTag => storyTag.includes(tag.toLowerCase())));
+
+        //const matchesTags = Array.from(tags).every(tag => storyTags.includes(tag));
+        const matchesContent = searchInTitle ? regex.test(title) : regex.test(content);
+
+        if (matchesATag || matchesTags || matchesContent) {
+            let score = 0;
+            let isExactMatch = false;
+            let isNearMatch = false;
+            let isCloseMatch = false;
+            let isPossibleMatch = false;
+
+            const percentofselectedtags = (matchCount/numberOfSelectedTags)*100;
+
+            // Check for exact matches
+            // Slider functionality
+            if (searchInTitle && title.includes(input) && matchesTags) {
+                score = 2; // Full match on title
+                isExactMatch = true;
+            } else if (!searchInTitle && content.includes(input) && matchesTags) {
+                score = 2; // Full match on content
+                isExactMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 90) {
+                score = 2; // Full match on title
+                isExactMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 90) {
+                score = 2; // Full match on content
+                isExactMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 60) {
+                score = 2; // Full match on title
+                isNearMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 60) {
+                score = 2; // Full match on content
+                isNearMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 30) {
+                score = 2; // Full match on title
+                isCloseMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 30) {
+                score = 2; // Full match on content
+                isCloseMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 1) {
+                score = 1; // Partial match on title
+                isPossibleMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 1) {
+                score = content.startsWith(input) ? 2 : 1; // Full or partial match on content
+                isPossibleMatch = true;
+            }
+            
+            if (isExactMatch) {
+                exactMatches.push(story);
+            } else if (isNearMatch) {
+                nearMatches.push(story);
+            } else if (isCloseMatch) {
+                closeMatches.push(story);
+            } else if (isPossibleMatch) {
+                looseMatches.push(story);
+            } else if (matchesContent) {
+                possibleMatches.push(story);
+            }
+    
+
+            anyStoryVisible = true;
+        }
+    });
+
+    // Clear previous results
+    //document.getElementById('exactMatches').innerHTML = '<h3>Exact Matches</h3>';
+   // document.getElementById('closeMatches').innerHTML = '<h3>Close Matches</h3>';
+
+    // Display exact matches
+    exactMatches.forEach(story => {
+        document.getElementById('exactMatches').appendChild(story);
+    });
+
+    // Display near matches
+        nearMatches.forEach(story => {
+        document.getElementById('nearMatches').appendChild(story);
+    });
+
+    // Display close matches
+    closeMatches.forEach(story => {
+        document.getElementById('closeMatches').appendChild(story);
+    });
+
+    possibleMatches.forEach(story => {
+        document.getElementById('possibleMatches').appendChild(story);
+    });
+    
+    looseMatches.forEach(story => {
+        document.getElementById('looseMatches').appendChild(story);
+    });
+
+    // Ensure all stories not in either match section are displayed if no filter is applied
+    storiesArray.forEach(story => {
+        if (!exactMatches.includes(story) && !nearMatches.includes(story) && !closeMatches.includes(story) && !possibleMatches.includes(story) && !looseMatches.includes(story)) {
+            story.style.display = 'none';
+        } else {
+            story.style.display = '';
+        }
+    });
+
+    // If no filters are applied, ensure all stories are visible
+    if (!anyStoryVisible) {
+        storiesArray.forEach(story => {
+            story.style.display = '';
+        });
+    }
+}
+    </script>
+</body>
+</html>
