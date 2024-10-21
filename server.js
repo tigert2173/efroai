@@ -7,7 +7,6 @@ const path = require('path');
 const app = express();
 const maxConcurrentUsers = 1; // Maximum concurrent users
 let currentUsers = 0; // Track current active users
-const waitlist = []; // Array to track waitlisted users
 
 // Use CORS middleware
 app.use(cors());
@@ -19,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'docs')));
 app.use((req, res, next) => {
   console.log(`Current users: ${currentUsers}`); // Log current user count
 
+  // Check if the current user limit is reached
   if (currentUsers >= maxConcurrentUsers) {
     console.log('User limit reached, redirecting to waitlist...'); // Log when user limit is reached
     // Redirect to waitlist page
@@ -37,21 +37,21 @@ app.use((req, res, next) => {
 
   // Set up a response interceptor to handle closing sessions
   res.on('finish', () => {
-    // Here, we will not decrement the count
-    // Instead, you can implement a manual close mechanism later
+    currentUsers--; // Decrement the user count on response finish
+    console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
   });
 
   next();
 });
 
-// Endpoint to load the index page
+// Route for the index page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'docs', 'index.html')); // Serve the main application page
 });
 
 // Route for waitlist page
 app.get('/capacity/capacity.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', '/capacity/capacity.html')); // Serve the waitlist page
+  res.sendFile(path.join(__dirname, 'docs', 'capacity/capacity.html')); // Serve the waitlist page
 });
 
 // Read your SSL certificate and private key
@@ -63,10 +63,4 @@ const options = {
 // Start the HTTPS server
 https.createServer(options, app).listen(443, () => {
   console.log('HTTPS Server running on port 443');
-});
-
-// Endpoint to close session (this should be called when a user closes the session)
-app.post('/close-session', (req, res) => {
-  console.log(`User session closed. New count: ${currentUsers}`); // Log when a session is closed
-  res.sendStatus(200); // Respond with success
 });
