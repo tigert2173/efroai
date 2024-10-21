@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'docs')));
+//app.use(express.static(path.join(__dirname, 'docs')));
 
 // Read your SSL certificate and private key
 const options = {
@@ -43,9 +43,9 @@ app.use((req, res, next) => {
   });
 });
 
-// Example route for your main application (e.g., home page)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'index.html')); // Serve your main application page
+// Routes
+app.get('/hub', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs', 'index.html')); // Serve your hub page
 });
 
 // Start the HTTPS server
