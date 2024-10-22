@@ -329,6 +329,7 @@ html { /*body*/
     border-radius: 5px;
     text-align: center;
     min-width: 100px;
+    max-height: 30px;
 }
 
 .login-status:not(:empty) {
