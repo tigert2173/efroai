@@ -36,11 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
-        loginStatusElement.style.display = 'none'; // Hide if not logged in
+        loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
     } else {
-        const username = getUsernameFromToken(token);
         loginStatusElement.textContent = `Logged in as: ${username}`;
-        loginStatusElement.style.display = 'block'; // Show if logged in
+        loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
     }
 });
 
