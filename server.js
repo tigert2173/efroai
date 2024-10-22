@@ -106,22 +106,22 @@ const isExternalRequest = (path) => {
   return externalSources.some(regex => regex.test(path));
 };
 
-// // Serve static files from the public directory with caching headers
-// app.use(express.static(path.join(__dirname, 'docs'), {
-//   setHeaders: (res, path) => {
-//       // Do not cache external requests
-//       if (isExternalRequest(path)) {
-//           return; // Skip setting headers for external requests
-//       }
-//       // Set Cache-Control and Expires headers for caching
-//       res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
-//       res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
-//   }
-// }));
+// Serve static files from the public directory with caching headers
+app.use(express.static(path.join(__dirname, 'docs'), {
+  setHeaders: (res, path) => {
+      // Do not cache external requests
+      if (isExternalRequest(path)) {
+          return; // Skip setting headers for external requests
+      }
+      // Set Cache-Control and Expires headers for caching
+      res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
+      res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
+  }
+}));
 
 
   // // Serve static files from the public directory
-   app.use(express.static(path.join(__dirname, 'docs')));
+  // app.use(express.static(path.join(__dirname, 'docs')));
 
   // Serve the waitlist page
   app.get('/capacity/capacity.html', (req, res) => {
