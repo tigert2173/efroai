@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to filter characters based on search and filters
+// Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
@@ -219,12 +220,20 @@ function filterCharacters() {
         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-        const matchesFilters = filters.length === 0 || filters.every(filter => {
+        
+        // Log the current card's name and tags for debugging
+        console.log(`Card: ${name}, Tags: ${tags}, Matches Search: ${matchesSearch}`);
+
+        const matchesFilters = filters.length === 0 || filters.some(filter => {
             // Split the filter value by '/'
             const filterTags = filter.split('/').map(tag => tag.trim());
-            // Check if at least one of the filter tags matches any tag in the character's tags
+            console.log(`Filter Tags: ${filterTags}`); // Log filter tags for debugging
+            
+            // Check if any of the filter tags matches any tag in the character's tags
             return filterTags.some(tag => tags.includes(tag));
         });
+
+        console.log(`Matches Filters: ${matchesFilters}`); // Log filter match result
 
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
