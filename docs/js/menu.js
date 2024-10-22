@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginStatusElement.textContent = 'You are not logged in.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
     } else {
-        loginStatusElement.textContent = `Logged in as: ${username}`;
+        loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
     }
 });
