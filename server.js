@@ -26,7 +26,7 @@ const setExpiresHeaders = (req, res, next) => {
   if (filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.gif')) {
     res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day
   } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
-    res.set('Expires', new Date(Date.now() + 31536000).toUTCString()); // 1 year
+    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day
   } else {
     res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day for other assets
   }
