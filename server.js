@@ -107,8 +107,8 @@ app.use(express.static(path.join(__dirname, 'docs'), {
 }));
 
 
-  // Serve static files from the public directory
-  app.use(express.static(path.join(__dirname, 'docs')));
+  // // Serve static files from the public directory
+  // app.use(express.static(path.join(__dirname, 'docs')));
 
   // Serve the waitlist page
   app.get('/capacity/capacity.html', (req, res) => {
