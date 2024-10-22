@@ -18,6 +18,12 @@
     '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
   ]; 
 
+// Middleware to make URLs case-insensitive
+app.use((req, res, next) => {
+  req.url = req.url.toLowerCase();
+  next();
+});
+
   // Use compression middleware with Brotli support
 app.use(compression({
   // Custom options for Brotli compression
