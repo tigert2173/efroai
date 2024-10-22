@@ -22,22 +22,21 @@ const blockedIps = [
 // Add compression middleware with Brotli support
 app.use(
   compression({
-    // For Gzip compression (optional)
-    level: 1, // Set Gzip compression level (0-9)
-
-    // For Brotli compression
+    level: 6, // Set Gzip compression level (0-9)
     brotli: {
       enabled: true,
       zlib: {
         level: 6, // Set Brotli compression level (0-11)
       },
     },
-    threshold: 1024, // Minimum size in bytes to compress the response (default is 1kb)
+    threshold: 1024, // Minimum size in bytes to compress the response
   })
+);
 
 // Middleware to block specific IPs
 app.use((req, res, next) => {
   // Get user's IP address
+  
   const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
   console.log(`Incoming request from IP: ${userIp}`);
 
@@ -49,13 +48,14 @@ app.use((req, res, next) => {
   next(); // Allow access for non-blocked IPs
 });
 
-// Disable caching for all responses
-// app.use((req, res, next) => {
-//     res.setHeader('Cache-Control', 'no-store');
-//     res.setHeader('Pragma', 'no-cache');
-//     res.setHeader('Expires', '0');
-//     next();
-// });
+//Disable caching for all responses
+app.use((req, res, next) => {
+    // res.setHeader('Cache-Control', 'no-store');
+    // res.setHeader('Pragma', 'no-cache');
+  //  res.setHeader('Expires', '0');
+    res.set('Accept-Encoding', 'br'); // Override the Accept-Encoding header
+    next();
+});
 
 
 // User tracking by IP
