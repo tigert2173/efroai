@@ -493,6 +493,18 @@ footer p {
     }
 }
 
+
+.container {
+    background-color: #2f3136; /* Dark card background */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px; /* Limit width for larger screens */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 .login-status {
     padding: 15px;
     margin-top: 20px;
