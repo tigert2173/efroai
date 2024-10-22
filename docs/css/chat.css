@@ -488,7 +488,7 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container button {
-        width: 100%; /* Full width for button */
+        width: 50%; /* Full width for button */
         min-width: 0; /* Remove min-width to fit */
     }
 
