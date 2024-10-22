@@ -925,7 +925,7 @@ function displayMessage(content, sender, isFinal = false) {
  .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
- .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
+//  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
       // Add colorful text formatting for specific syntax |color|text|color|
     .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
         // Return the text wrapped in a span with the corresponding color
