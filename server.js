@@ -22,7 +22,7 @@ const blockedIps = [
 // Add compression middleware with Brotli support
 app.use(
   compression({
-    level: 6, // Set Gzip compression level (0-9)
+    level: 0, // Set Gzip compression level (0-9)
     brotli: {
       enabled: true,
       zlib: {
@@ -32,6 +32,14 @@ app.use(
     threshold: 1024, // Minimum size in bytes to compress the response
   })
 );
+
+app.use((req, res, next) => {
+  // res.setHeader('Cache-Control', 'no-store');
+  // res.setHeader('Pragma', 'no-cache');
+//  res.setHeader('Expires', '0');
+  res.set('Accept-Encoding', 'br'); // Override the Accept-Encoding header
+  next();
+});
 
 // Middleware to block specific IPs
 app.use((req, res, next) => {
@@ -46,15 +54,6 @@ app.use((req, res, next) => {
       return res.status(403).send('You have been IP banned for suspisous activity, if you think this is an issue reach us at: appeal@efroai.net'); // Return a 403 Forbidden response
   }
   next(); // Allow access for non-blocked IPs
-});
-
-//Disable caching for all responses
-app.use((req, res, next) => {
-    // res.setHeader('Cache-Control', 'no-store');
-    // res.setHeader('Pragma', 'no-cache');
-  //  res.setHeader('Expires', '0');
-    res.set('Accept-Encoding', 'br'); // Override the Accept-Encoding header
-    next();
 });
 
 
