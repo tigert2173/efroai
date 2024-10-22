@@ -482,7 +482,7 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container input {
-        width: 100%; /* Full width */
+        width: 80%; /* Full width */
         margin-bottom: 5px; /* Space between input and button */
     }
 
@@ -513,16 +513,5 @@ input[type="checkbox"]:not(:checked) + label {
 
     #speed-indicator-container {
         width: 100%; /* Full width for speed indicator */
-    }
-}
-
-/* Adjust other sizes if needed for smaller devices */
-@media (max-width: 480px) {
-    .gift-box {
-        font-size: 30px; /* Smaller font size for mobile */
-    }
-
-    .santa-image {
-        width: 50px; /* Smaller image for mobile */
     }
 }
