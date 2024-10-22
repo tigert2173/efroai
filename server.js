@@ -19,7 +19,23 @@ const blockedIps = [
   '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
 ]; 
 
+// Middleware to set Expires headers
+const setExpiresHeaders = (req, res, next) => {
+  const filePath = req.path;
 
+  if (filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.gif')) {
+    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day
+  } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
+    res.set('Expires', new Date(Date.now() + 31536000).toUTCString()); // 1 year
+  } else {
+    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day for other assets
+  }
+
+  next();
+};
+
+// Use the static middleware and set Expires headers
+app.use(setExpiresHeaders);
 
 // Add compression middleware with Brotli support
 // app.use(
