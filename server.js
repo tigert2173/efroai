@@ -114,8 +114,8 @@ app.use(express.static(path.join(__dirname, 'docs'), {
           return; // Skip setting headers for external requests
       }
       // Set Cache-Control and Expires headers for caching
-      res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
-      res.setHeader('Expires', new Date(Date.now() + 31536000000).toUTCString()); // Expires in 1 year
+      res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
+      res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
   }
 }));
 
