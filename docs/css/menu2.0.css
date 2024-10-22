@@ -243,7 +243,14 @@ html { /*body*/
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 943px) {
+@media (max-width: 950px) {
+    .search-bar {
+        display: none; /* Hide search bar on small screens */
+    }
+}
+
+
+@media (max-width: 843px) {
     .search-bar {
         display: none; /* Hide search bar on small screens */
     }
