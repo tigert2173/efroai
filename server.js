@@ -19,53 +19,19 @@ const blockedIps = [
   '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
 ]; 
 
-// Middleware to set Expires headers
-const setExpiresHeaders = (req, res, next) => {
-  const filePath = req.path;
-
-  if (filePath.endsWith('.jpg') || filePath.endsWith('.png') || filePath.endsWith('.gif')) {
-    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day
-  } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
-    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day
-  } else {
-    res.set('Expires', new Date(Date.now() + 86400000).toUTCString()); // 1 day for other assets
-  }
-
-  next();
-};
-
-// Use the static middleware and set Expires headers
-app.use(setExpiresHeaders);
-
-// Add compression middleware with Brotli support
-// app.use(
-//   compression({
-//     level: 9, // Set Gzip compression level (0-9)
-//     brotli: {
-//       enabled: true,
-//       zlib: {
-//         level: 11, // Set Brotli compression level (0-11)
-//       },
-//     },
-//     threshold: 1024, // Minimum size in bytes to compress the response
-//   })
-// );
-const getCompressionLevel = (req) => {
-  // Define your logic here to determine compression level
-  if (req.path.endsWith('.html')) {
-    return 9; // Maximum compression for HTML
-  } else if (req.path.endsWith('.css')) {
-    return 6; // Moderate compression for CSS
-  } else {
-    return 1; // Fastest for JS or images
-  }
-};
-
-app.use((req, res, next) => {
-  const level = getCompressionLevel(req);
-  // Apply compression dynamically
-  compression({ level })(req, res, next);
-});
+//Add compression middleware with Brotli support
+app.use(
+  compression({
+    level: 9, // Set Gzip compression level (0-9)
+    brotli: {
+      enabled: true,
+      zlib: {
+        level: 11, // Set Brotli compression level (0-11)
+      },
+    },
+    threshold: 1024, // Minimum size in bytes to compress the response
+  })
+);
 
 // app.use((req, res, next) => {
 //   // res.setHeader('Cache-Control', 'no-store');
