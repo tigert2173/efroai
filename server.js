@@ -24,21 +24,16 @@
 //   next();
 // });
 
-// Middleware to make a specific URL case-insensitive and redirect to uppercase
+// Middleware to make the EFROTales route case-insensitive
 app.use('/efrotales', (req, res, next) => {
-    // Convert the URL to lowercase first
-    if (req.url.toLowerCase() === req.url) {
-        // Redirect to the uppercase version
-        res.redirect(301, '/EFROTales');
+    // If the URL is not already uppercase, redirect to the uppercase version
+    if (req.url.toLowerCase() !== req.url) {
+        res.redirect(301, '/EFROTales'); // Redirect to the uppercase URL
     } else {
-        next(); // If already uppercase, move on
+        next(); // If already uppercase, proceed to the next middleware
     }
 });
 
-// Route for the uppercase URL
-app.get('/EFROTales', (req, res) => {
-    res.send('Welcome to EFROTales!');
-});
   // Use compression middleware with Brotli support
 app.use(compression({
   // Custom options for Brotli compression
