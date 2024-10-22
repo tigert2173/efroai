@@ -207,35 +207,52 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to filter characters based on search and filters
-// Function to filter characters based on search and filters
+// Function to filter and sort characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
     // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked')).map(filter => filter.value);
 
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
+    const characterCards = Array.from(document.querySelectorAll('.character-card'));
+
+    // Calculate scores for each character card
+    const scoredCards = characterCards.map(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-        
-        // Log the current card's name and tags for debugging
-        console.log(`Card: ${name}, Tags: ${tags}, Matches Search: ${matchesSearch}`);
+        // Initialize score
+        let score = 0;
 
-        const matchesFilters = filters.length === 0 || filters.some(filter => {
-            // Split the filter value by '/'
-            const filterTags = filter.split('/').map(tag => tag.trim());
-            console.log(`Filter Tags: ${filterTags}`); // Log filter tags for debugging
-            
-            // Check if any of the filter tags matches any tag in the character's tags
-            return filterTags.some(tag => tags.includes(tag));
-        });
+        // Check for search match
+        if (name.includes(searchQuery)) {
+            score += 2; // Higher score for name match
+        }
+        if (tags.includes(searchQuery)) {
+            score += 1; // Lower score for tag match
+        }
 
-        console.log(`Matches Filters: ${matchesFilters}`); // Log filter match result
+        // Check filters
+        if (filters.length > 0) {
+            const filterMatches = filters.some(filter => {
+                const filterTags = filter.split('/').map(tag => tag.trim());
+                return filterTags.some(tag => tags.includes(tag));
+            });
 
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+            if (filterMatches) {
+                score += 1; // Increment score if any filter matches
+            }
+        }
+
+        return { card, score }; // Return the card and its score
+    });
+
+    // Sort cards based on score (higher scores first)
+    scoredCards.sort((a, b) => b.score - a.score);
+
+    // Display the cards based on the sorted order
+    scoredCards.forEach(({ card, score }) => {
+        card.style.display = score > 0 ? 'block' : 'none'; // Show only if score is greater than 0
     });
 }
 
