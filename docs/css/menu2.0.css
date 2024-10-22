@@ -29,7 +29,7 @@ html { /*body*/
     display: flex;
     align-items: center;
     gap: 20px; /* Add space between items */
-    padding-right: 100px;
+    /* padding-right: 100px; */
     padding-left: 35px;
 }
 
