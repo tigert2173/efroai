@@ -17,22 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function isTokenExpired(token) {
-    if (!token) return true; // No token, it's expired
-    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the JWT
-    const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-    return payload.exp < currentTime; // Check if token is expired
-}
+// Utility functions to handle JWT
+const isTokenExpired = (token) => {
+    if (!token) return true;
+    const exp = JSON.parse(atob(token.split('.')[1])).exp;
+    return exp < Math.floor(Date.now() / 1000);
+};
 
-function getUsernameFromToken(token) {
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.username; // Assuming username is in the payload
-}
+const getUsernameFromToken = (token) => {
+    return token ? JSON.parse(atob(token.split('.')[1])).username : null;
+};
 
+// Check login status and display username
 document.addEventListener('DOMContentLoaded', () => {
     const token = sessionStorage.getItem('token'); // Retrieve the JWT from local storage
-    const loginStatusElement = document.getElementById('login-status'); // Assume you have an element for displaying login status
+    const loginStatusElement = document.getElementById('login-status');
+    const username = getUsernameFromToken(token);
 
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
@@ -42,4 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
     }
 });
+
 
