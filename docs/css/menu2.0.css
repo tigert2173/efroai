@@ -243,7 +243,7 @@ html { /*body*/
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 843px) {
+@media (max-width: 943px) {
     .search-bar {
         display: none; /* Hide search bar on small screens */
     }
