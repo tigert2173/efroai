@@ -4,6 +4,8 @@ const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 const WebSocket = require('ws'); // Import WebSocket library
+const compression = require('compression'); // Import compression middleware
+const zlib = require('zlib'); // Import zlib for custom compression levels
 
 const app = express();
 // Use CORS middleware
@@ -16,6 +18,24 @@ const blockedIps = [
   '::ffff:128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
   '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
 ]; 
+
+// Add compression middleware with Brotli support and custom compression levels
+app.use(
+  compression({
+    // For Gzip compression
+    level: 6, // Set Gzip compression level (0-9)
+
+    // For Brotli compression
+    brotli: {
+      enabled: true,
+      zlib: {
+        // Specify Brotli compression level (0-11)
+        level: 6, // Set Brotli compression level (0-11)
+      },
+    },
+    threshold: 1024, // Minimum size in bytes to compress the response (default is 1kb)
+  })
+);
 
 // Middleware to block specific IPs
 app.use((req, res, next) => {
@@ -32,12 +52,12 @@ app.use((req, res, next) => {
 });
 
 // Disable caching for all responses
-app.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'no-store');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader('Cache-Control', 'no-store');
+//     res.setHeader('Pragma', 'no-cache');
+//     res.setHeader('Expires', '0');
+//     next();
+// });
 
 
 // User tracking by IP
