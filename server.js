@@ -20,19 +20,19 @@ const blockedIps = [
 ]; 
 
 // Add compression middleware with Brotli support
-// app.use(
-//   compression({
-//     // Enable Brotli compression
-//     brotli: {
-//       enabled: true,
-//       zlib: {
-//         level: 11, // Set Brotli compression level (0-11) (11 is max)
-//       },
-//     },
-//     level: 9, // Set Gzip compression level (0-9)
-//     threshold: 1024, // Minimum size in bytes to compress the response (default is 1kb)
-//   })
-// );
+app.use(
+  compression({
+    // Enable Brotli compression
+    brotli: {
+      enabled: true,
+      zlib: {
+        level: 11, // Set Brotli compression level (0-11) (11 is max)
+      },
+    },
+  //  level: 9, // Set Gzip compression level (0-9)
+    threshold: 1024, // Minimum size in bytes to compress the response (default is 1kb)
+  })
+);
 // Middleware to block specific IPs
 app.use((req, res, next) => {
   // Get user's IP address
