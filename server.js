@@ -35,6 +35,10 @@ app.use('/efrotales', (req, res, next) => {
     }
 });
 
+// Route for the uppercase URL
+app.get('/EFROTales', (req, res) => {
+    res.send('Welcome to EFROTales!');
+});
   // Use compression middleware with Brotli support
 app.use(compression({
   // Custom options for Brotli compression
