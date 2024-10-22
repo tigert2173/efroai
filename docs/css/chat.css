@@ -479,6 +479,7 @@ input[type="checkbox"]:not(:checked) + label {
     #input-container {
         flex-direction: row; /* Stack input and button vertically */
         align-items: stretch; /* Full width for both */
+        min-width: 50%;
     }
 
     #input-container input {
