@@ -328,6 +328,7 @@ html { /*body*/
     margin-top: 0px;
     border-radius: 5px;
     text-align: center;
+    min-width: 200px;
 }
 
 .login-status:not(:empty) {
