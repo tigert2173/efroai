@@ -502,6 +502,7 @@ footer p {
     max-width: 400px; /* Limit width for larger screens */
     text-align: center;
     margin: auto; /* Center the container */
+    font-size: 8px;
 }
 
 .login-status {
