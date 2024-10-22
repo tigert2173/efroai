@@ -509,9 +509,6 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
-    // Scroll to the bottom of the chat container
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
@@ -1000,6 +997,8 @@ function displayMessage(content, sender, isFinal = false) {
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
         }
+    // // Scroll to the bottom of the chat container
+    // chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 function navigateBotMessages(direction) {
