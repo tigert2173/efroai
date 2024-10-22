@@ -23,7 +23,7 @@ const blockedIps = [
 app.use(
   compression({
     // For Gzip compression (optional)
-    level: 0, // Set Gzip compression level (0-9)
+    level: 1, // Set Gzip compression level (0-9)
 
     // For Brotli compression
     brotli: {
