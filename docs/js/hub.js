@@ -1,4 +1,4 @@
-const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+const backendurl = 'https://74.208.46.27:3000'; // Ensure this points to your backend
 
 // Function to decode JWT and check for the Ad-Exempt claim
 function isAdExempt(token) {
