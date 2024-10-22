@@ -22,18 +22,34 @@ const blockedIps = [
 
 
 // Add compression middleware with Brotli support
-app.use(
-  compression({
-    level: 9, // Set Gzip compression level (0-9)
-    brotli: {
-      enabled: true,
-      zlib: {
-        level: 11, // Set Brotli compression level (0-11)
-      },
-    },
-    threshold: 11024, // Minimum size in bytes to compress the response
-  })
-);
+// app.use(
+//   compression({
+//     level: 9, // Set Gzip compression level (0-9)
+//     brotli: {
+//       enabled: true,
+//       zlib: {
+//         level: 11, // Set Brotli compression level (0-11)
+//       },
+//     },
+//     threshold: 1024, // Minimum size in bytes to compress the response
+//   })
+// );
+const getCompressionLevel = (req) => {
+  // Define your logic here to determine compression level
+  if (req.path.endsWith('.html')) {
+    return 9; // Maximum compression for HTML
+  } else if (req.path.endsWith('.css')) {
+    return 6; // Moderate compression for CSS
+  } else {
+    return 1; // Fastest for JS or images
+  }
+};
+
+app.use((req, res, next) => {
+  const level = getCompressionLevel(req);
+  // Apply compression dynamically
+  compression({ level })(req, res, next);
+});
 
 // app.use((req, res, next) => {
 //   // res.setHeader('Cache-Control', 'no-store');
