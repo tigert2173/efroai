@@ -22,7 +22,7 @@ const blockedIps = [
 // Add compression middleware with Brotli support
 app.use(
   compression({
-    level: 0, // Set Gzip compression level (0-9)
+    level: 1, // Set Gzip compression level (0-9)
     brotli: {
       enabled: true,
       zlib: {
