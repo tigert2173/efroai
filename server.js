@@ -21,7 +21,7 @@
   // Use compression middleware with Brotli support
 app.use(compression({
   // Custom options for Brotli compression
-  level: 0, // Compression level (0-11), 11 is maximum
+  level: 1, // Compression level (0-11), 11 is maximum
 }));
 
   //Add compression middleware with Brotli support
