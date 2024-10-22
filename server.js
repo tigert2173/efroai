@@ -24,14 +24,15 @@
 //   next();
 // });
 
-// Middleware to make a specific URL case-insensitive
-app.use('/EFROTALES', (req, res, next) => {
-  if (req.url.toLowerCase() === req.url) {
-      next(); // If already lowercase, move on
-  } else {
-      req.url = req.url.toLowerCase();
-      next(); // Convert to lowercase and continue
-  }
+// Middleware to make a specific URL case-insensitive and redirect to uppercase
+app.use('/efrotales', (req, res, next) => {
+    // Convert the URL to lowercase first
+    if (req.url.toLowerCase() === req.url) {
+        // Redirect to the uppercase version
+        res.redirect(301, '/EFROTales');
+    } else {
+        next(); // If already uppercase, move on
+    }
 });
 
   // Use compression middleware with Brotli support
