@@ -33,6 +33,10 @@ app.use('/efrotales', (req, res, next) => {
         next(); // If already uppercase, proceed to the next middleware
     }
 });
+// Route for the uppercase URL serving the specific page
+app.get('/EFROTales', (req, res) => {
+    res.send('<h1>Welcome to EFROTales!</h1><p>This is your case-insensitive page.</p>'); // Serve your specific page content here
+});
 
   // Use compression middleware with Brotli support
 app.use(compression({
