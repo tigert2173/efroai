@@ -41,7 +41,7 @@ const getCompressionLevel = (req) => {
   } else if (req.path.endsWith('.css')) {
     return 6; // Moderate compression for CSS
   } else {
-    return 9; // Fastest for JS or images
+    return 1; // Fastest for JS or images
   }
 };
 
