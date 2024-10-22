@@ -133,7 +133,7 @@ main {
 }
 
 .card-header {
-    border-bottom: 2px solid #5f28a7; /* Green bottom border for modern look */
+    border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
     padding-bottom: 10px; /* Space below header */
 }
 
