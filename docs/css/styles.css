@@ -138,7 +138,7 @@ main {
 }
 
 .card-header h3 {
-    color: #28a745; /* Bright green for the name */
+    color: #a72828; /* Bright green for the name */
     font-size: 1.6em; /* Slightly larger font size */
     margin: 0; /* Remove default margin */
     font-weight: 600; /* Bold header */
