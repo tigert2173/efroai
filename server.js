@@ -26,7 +26,7 @@ app.use(
     brotli: {
       enabled: true,
       zlib: {
-        level: 0, // Set Brotli compression level (0-11)
+        level: 11, // Set Brotli compression level (0-11)
       },
     },
     threshold: 1024, // Minimum size in bytes to compress the response
