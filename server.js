@@ -19,15 +19,7 @@ const blockedIps = [
   '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
 ]; 
 
-app.use((req, res, next) => {
-  // Force Brotli if supported, else use Gzip
-  if (req.headers['accept-encoding'].includes('br')) {
-    res.set('Content-Encoding', 'br');
-  } else {
-    res.set('Content-Encoding', 'gzip');
-  }
-  next();
-});
+
 
 // Add compression middleware with Brotli support
 app.use(
@@ -42,7 +34,15 @@ app.use(
     threshold: 1024, // Minimum size in bytes to compress the response
   })
 );
-
+app.use((req, res, next) => {
+  // Force Brotli if supported, else use Gzip
+  if (req.headers['accept-encoding'].includes('br')) {
+    res.set('Content-Encoding', 'br');
+  } else {
+    res.set('Content-Encoding', 'gzip');
+  }
+  next();
+});
 // app.use((req, res, next) => {
 //   // res.setHeader('Cache-Control', 'no-store');
 //   // res.setHeader('Pragma', 'no-cache');
