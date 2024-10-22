@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginStatusElement.style.display = 'none'; // Hide if not logged in
     } else {
         const username = getUsernameFromToken(token);
-        loginStatusElement.textContent = `Logged in: ${username}`;
+        loginStatusElement.textContent = `Logged in as: ${username}`;
         loginStatusElement.style.display = 'block'; // Show if logged in
     }
 });
