@@ -477,12 +477,12 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container {
-        flex-direction: column; /* Stack input and button vertically */
+        flex-direction: row; /* Stack input and button vertically */
         align-items: stretch; /* Full width for both */
     }
 
     #input-container input {
-        width: 80%; /* Full width */
+        width: 100%; /* Full width */
         margin-bottom: 5px; /* Space between input and button */
     }
 
