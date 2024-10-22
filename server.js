@@ -97,9 +97,22 @@ app.use(compression({
       }
   });
 
-  // Serve static files from the public directory with caching headers
+  // Function to determine if a request is for an external source
+const isExternalRequest = (path) => {
+  // Define external sources (you can adjust this based on your requirements)
+  const externalSources = [
+      /^https?:\/\//, // Matches any URL starting with http or https
+  ];
+  return externalSources.some(regex => regex.test(path));
+};
+
+// Serve static files from the public directory with caching headers
 app.use(express.static(path.join(__dirname, 'docs'), {
   setHeaders: (res, path) => {
+      // Do not cache external requests
+      if (isExternalRequest(path)) {
+          return; // Skip setting headers for external requests
+      }
       // Set Cache-Control and Expires headers for caching
       res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
       res.setHeader('Expires', new Date(Date.now() + 31536000000).toUTCString()); // Expires in 1 year
