@@ -207,55 +207,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to filter characters based on search and filters
-// Function to filter and sort characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
     // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked')).map(filter => filter.value);
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
 
-    const characterCards = Array.from(document.querySelectorAll('.character-card'));
-
-    // Calculate scores for each character card
-    const scoredCards = characterCards.map(card => {
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-        // Initialize score
-        let score = 0;
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-        // Check for search match
-        if (name.includes(searchQuery)) {
-            score += 2; // Higher score for name match
-        }
-        if (tags.includes(searchQuery)) {
-            score += 1; // Lower score for tag match
-        }
+        // Split filters by comma and trim whitespace
+        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
-        // Check filters
-        if (filters.length > 0) {
-            const filterMatches = filters.some(filter => {
-                const filterTags = filter.split('/').map(tag => tag.trim());
-                return filterTags.some(tag => tags.includes(tag));
-            });
-
-            if (filterMatches) {
-                score += 1; // Increment score if any filter matches
-            }
-        }
-
-        return { card, score }; // Return the card and its score
-    });
-
-    // Sort cards based on score (higher scores first)
-    scoredCards.sort((a, b) => b.score - a.score);
-
-    // Display the cards based on the sorted order
-    scoredCards.forEach(({ card, score }) => {
-        card.style.display = score > 0 ? 'block' : 'none'; // Show only if score is greater than 0
+        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
 }
-
 
 // Function to show upload character form
 function showUploadForm() {
