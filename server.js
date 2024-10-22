@@ -45,13 +45,13 @@ app.use(compression({
   level: 1, // Compression level (0-11), 11 is maximum
 }));
 
-//No caching for development
-app.use((req, res, next) => {
-    // res.setHeader('Cache-Control', 'no-store');
-    // res.setHeader('Pragma', 'no-cache');
-  //  res.setHeader('Expires', '0');
-    next();
-  });
+  //Add compression middleware with Brotli support
+  // app.use((req, res, next) => {
+  //   // res.setHeader('Cache-Control', 'no-store');
+  //   // res.setHeader('Pragma', 'no-cache');
+  // //  res.setHeader('Expires', '0');
+  //   next();
+  // });
 
   // Middleware to block specific IPs
   app.use((req, res, next) => {
@@ -128,17 +128,17 @@ const isExternalRequest = (path) => {
 };
 
 // Serve static files from the public directory with caching headers
-                // app.use(express.static(path.join(__dirname, 'docs'), {
-                //   setHeaders: (res, path) => {
-                //       // Do not cache external requests
-                //       if (isExternalRequest(path)) {
-                //           return; // Skip setting headers for external requests
-                //       }
-                //       // Set Cache-Control and Expires headers for caching
-                //       res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
-                //       res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
-                //   }
-                // }));
+app.use(express.static(path.join(__dirname, 'docs'), {
+  setHeaders: (res, path) => {
+      // Do not cache external requests
+      if (isExternalRequest(path)) {
+          return; // Skip setting headers for external requests
+      }
+      // Set Cache-Control and Expires headers for caching
+      res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
+      res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
+  }
+}));
 
 
   // // Serve static files from the public directory
