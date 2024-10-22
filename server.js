@@ -18,10 +18,20 @@
     '::ffff:128.14.173.114' //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
   ]; 
 
-// Middleware to make URLs case-insensitive
-app.use((req, res, next) => {
-  req.url = req.url.toLowerCase();
-  next();
+// // Middleware to make URLs case-insensitive
+// app.use((req, res, next) => {
+//   req.url = req.url.toLowerCase();
+//   next();
+// });
+
+// Middleware to make a specific URL case-insensitive
+app.use('/EFROTALES', (req, res, next) => {
+  if (req.url.toLowerCase() === req.url) {
+      next(); // If already lowercase, move on
+  } else {
+      req.url = req.url.toLowerCase();
+      next(); // Convert to lowercase and continue
+  }
 });
 
   // Use compression middleware with Brotli support
