@@ -488,8 +488,8 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container button {
-        width: 50%; /* Full width for button */
-        min-width: 0; /* Remove min-width to fit */
+        width: 20%; /* Full width for button */
+        min-width: 10; /* Remove min-width to fit */
     }
 
     #settings-container, #api-status {
