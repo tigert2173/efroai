@@ -502,7 +502,7 @@ footer p {
     width: 100%;
     max-width: 400px; /* Limit width for larger screens */
     text-align: center;
-    margin-bottom: 10px;
+    margin: auto; /* Center the container */
 }
 
 .login-status {
@@ -510,7 +510,6 @@ footer p {
     margin-top: 20px;
     border-radius: 5px;
     text-align: center;
-    border-radius: 5px;
 }
 
 .login-status:not(:empty) {
@@ -525,6 +524,12 @@ footer p {
     background-color: #e0f7fa;
     color: #00695c;
     border: 1px solid #4db6ac;
+}
+
+.login-status.logged-out {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef5350;
 }
 
 .login-status.logged-out {
