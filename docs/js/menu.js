@@ -31,7 +31,7 @@ function getUsernameFromToken(token) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('jwtToken'); // Retrieve the JWT from local storage
+    const token = sessionStorage.getItem('token'); // Retrieve the JWT from local storage
     const loginStatusElement = document.getElementById('login-status'); // Assume you have an element for displaying login status
 
     if (isTokenExpired(token)) {
