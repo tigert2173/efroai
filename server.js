@@ -26,10 +26,10 @@ app.use(
     brotli: {
       enabled: true,
       zlib: {
-        level: 11, // Set Brotli compression level (0-11) (11 is max)
+        level: 1, // Set Brotli compression level (0-11) (11 is max)
       },
     },
-  //  level: 9, // Set Gzip compression level (0-9)
+    level: 9, // Set Gzip compression level (0-9)
     threshold: 1024, // Minimum size in bytes to compress the response (default is 1kb)
   })
 );
