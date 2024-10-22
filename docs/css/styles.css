@@ -495,21 +495,19 @@ footer p {
 
 
 .container {
-    background-color: #2f3136; /* Dark card background */
+    background: #2f3136; /* Dark card background */
     border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px; /* Limit width for larger screens */
+    padding: 15px; /* Reduced padding */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    max-width: 300px; /* Further reduced max width */
     text-align: center;
     margin: auto; /* Center the container */
 }
 
 .login-status {
-    padding: 15px;
-    margin-top: 20px;
+    padding: 10px; /* Reduced padding */
+    margin-top: 15px; /* Reduced margin */
     border-radius: 5px;
-    text-align: center;
 }
 
 .login-status:not(:empty) {
@@ -521,19 +519,13 @@ footer p {
 }
 
 .login-status.logged-in {
-    background-color: #e0f7fa;
-    color: #00695c;
-    border: 1px solid #4db6ac;
+    background: #e0f7fa; /* Light background for logged-in */
+    color: #00695c; /* Dark green text */
+    border: 1px solid #4db6ac; /* Green border */
 }
 
 .login-status.logged-out {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef5350;
-}
-
-.login-status.logged-out {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef5350;
+    background: #ffebee; /* Light background for logged-out */
+    color: #c62828; /* Dark red text */
+    border: 1px solid #ef5350; /* Red border */
 }
