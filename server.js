@@ -31,7 +31,7 @@ app.use(
         level: 11, // Set Brotli compression level (0-11)
       },
     },
-    threshold: 0, // Minimum size in bytes to compress the response
+    threshold: 11024, // Minimum size in bytes to compress the response
   })
 );
 
