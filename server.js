@@ -26,7 +26,7 @@ app.use(
     brotli: {
       enabled: true,
       zlib: {
-        level: 1, // Set Brotli compression level (0-11) (11 is max)
+        level: 0, // Set Brotli compression level (0-11) (11 is max)
       },
     },
     level: 0, // Set Gzip compression level (0-9)
