@@ -208,11 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to filter characters based on search and filters
 function filterCharacters() {
-    //console.log('Filter function triggered'); // Debugging line
     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
     // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked')).map(filter => filter.id);
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked')).map(filter => filter.value);
 
     const characterCards = document.querySelectorAll('.character-card');
     characterCards.forEach(card => {
@@ -220,11 +219,17 @@ function filterCharacters() {
         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-        const matchesFilters = filters.length === 0 || filters.every(filter => tags.includes(filter)); // Updated logic
+        const matchesFilters = filters.length === 0 || filters.every(filter => {
+            // Split the filter value by '/'
+            const filterTags = filter.split('/').map(tag => tag.trim());
+            // Check if at least one of the filter tags matches any tag in the character's tags
+            return filterTags.some(tag => tags.includes(tag));
+        });
 
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
 }
+
 
 // Function to show upload character form
 function showUploadForm() {
