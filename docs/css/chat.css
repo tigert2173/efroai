@@ -225,14 +225,14 @@ code {
     background-color: #353b48; /* Dark grey */
 }
 
-.user {
-    text-align: right;
-    background-color: #1b663e; /* Softer neon green background for user */
-}
-
 .assistant {
     text-align: left;
     background-color: #124429; /* Orange background for bot */
+}
+
+.user {
+    text-align: right;
+    background-color: #1b663e; /* Softer neon green background for user */
 }
 
 .system {
