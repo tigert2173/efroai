@@ -642,3 +642,51 @@ input[type="checkbox"]:not(:checked) + label {
     font-size: 14px; /* Adjust font size if needed */
     text-align: center; /* Center the notice */
 }
+
+/* Inline editing area styles */
+.edit-area {
+    width: 100%;
+    height: 60px; /* Fixed height for consistency */
+    resize: none; /* Disable resizing */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Button styles */
+.edit-btn {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+.edit-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Message header styles for navigation */
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Navigation arrow styles */
+.nav-arrows {
+    cursor: pointer;
+    color: #007bff; /* Blue color for arrows */
+    font-size: 18px;
+}
+
+.nav-arrows.disabled {
+    color: #ccc; /* Grey out arrows when disabled */
+    cursor: not-allowed; /* Change cursor to indicate unclickable */
+}
