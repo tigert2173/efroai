@@ -328,6 +328,12 @@
             return;
         }
 
+        // Ensure the username is not an email
+        if (username.includes(' ')) {
+            errorMessage.textContent = 'Username cannot contain spaces';
+            return;
+        }
+
         if (password !== confirmPassword) {
             errorMessage.textContent = 'Passwords do not match. Please try again.';
             return;
