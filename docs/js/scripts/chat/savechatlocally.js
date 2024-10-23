@@ -40,10 +40,10 @@ updateSavedChatsList();
 
 function loadChat(index) {
     const selectedChat = savedChats[index];
+    clearAllMessages();
+
     if (selectedChat) {
         messages = []; // Clear current messages array
-
-        clearAllMessages();
         
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
