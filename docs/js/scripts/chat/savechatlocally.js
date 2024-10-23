@@ -48,11 +48,9 @@ function loadChat(index) {
 
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
-            // Check if the content array has at least one message
+            // Check the structure of the message before displaying
             if (msg.content && msg.content.length > 0) {
-                const messageText = msg.content[0].text; // Get the message text
-                const sender = msg.role === 'assistant' ? 'bot' : 'user'; // Determine sender
-                displayMessage(messageText, sender); // Call displayMessage with the text and sender
+                displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : 'user', true);
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }
@@ -63,6 +61,5 @@ function loadChat(index) {
         alert('No chat found at this index.');
     }
 }
-
 
 // Export the necessary functions
