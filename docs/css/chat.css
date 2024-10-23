@@ -522,21 +522,29 @@ input[type="checkbox"]:not(:checked) + label {
     }
 }
 
-#context-menu {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    z-index: 1000;
+
+/* Styles for the saved chats list */
+#saved-chats-list {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove padding */
 }
 
-#saved-chats {
-    margin-top: 20px;
+/* Styles for each saved chat item */
+#saved-chats-list li {
+    padding: 5px; /* Padding for each chat item */
+    border: 1px solid #ccc; /* Light grey border */
+    margin: 5px 0; /* Margin for spacing between items */
+    cursor: pointer; /* Pointer cursor on hover */
+    position: relative; /* For positioning the delete button */
+    background-color: #f9f9f9; /* Light background for better visibility */
+    transition: background-color 0.3s; /* Smooth background color change */
 }
-#saved-chats-list {
-    list-style-type: none;
-    padding: 0;
+
+/* Change background color on hover */
+#saved-chats-list li:hover {
+    background-color: #e9e9e9; /* Slightly darker on hover */
 }
+
 .delete-button {
     position: absolute;
     right: 0;
