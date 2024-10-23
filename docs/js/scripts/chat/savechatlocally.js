@@ -56,11 +56,10 @@ function showPopupMenu(event, index) {
     popupMenu.style.display = 'block';
     popupMenu.style.left = `${event.pageX}px`;
     popupMenu.style.top = `${event.pageY}px`;
+    
+    popupMenu.innerHTML = ''; // Clear previous items
 
-    // Clear previous items
-    popupMenu.innerHTML = '';
-
-    // Create delete button for the popup menu
+    // Create the Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.className = 'popup-delete-button'; // Apply class for styling
@@ -70,9 +69,40 @@ function showPopupMenu(event, index) {
     };
     popupMenu.appendChild(deleteButton);
 
+    // Create the Download button
+    const downloadButton = document.createElement('button');
+    downloadButton.textContent = 'Download';
+    downloadButton.className = 'popup-download-button'; // Apply class for styling
+    downloadButton.onclick = (e) => {
+        e.stopPropagation();
+        downloadChat(index);
+    };
+    popupMenu.appendChild(downloadButton);
+
     // Close the popup when clicking elsewhere
     document.addEventListener('click', closePopup);
 }
+
+// Function to download a chat as JSON
+function downloadChat(index) {
+    const chatData = savedChats[index];
+    if (chatData) {
+        const jsonString = JSON.stringify(chatData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${chatData.name}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Chat downloaded successfully!');
+    } else {
+        alert('Chat not found. Please ensure you entered the correct index.');
+    }
+}
+
 
 // Function to close the popup menu
 function closePopup() {
