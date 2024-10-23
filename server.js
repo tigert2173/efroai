@@ -61,8 +61,8 @@ app.use(compression({
     
     //const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
     const forwarded = req.headers['cf-connecting-ip'];
-    req.ip = forwarded || req.connection.remoteAddress;
-    
+    const userIp = forwarded || req.connection.remoteAddress;
+
     console.log(`Incoming request from IP: ${userIp}`);
 
     // Check if the IP is in the blocked list
@@ -83,7 +83,8 @@ app.use(compression({
 
   // Middleware to check active users
   app.use((req, res, next) => {
-      const userIp = req.ip; // Use req.headers['x-forwarded-for'] for proxies
+    const forwarded = req.headers['cf-connecting-ip'];
+    const userIp = forwarded || req.connection.remoteAddress;
       console.log(`Request from IP: ${userIp}, Path: ${req.path}`);
 
       // Check if the request is for static assets (do not count as active users)
@@ -158,7 +159,7 @@ app.use(express.static(path.join(__dirname, 'docs'), {
 
   // Serve the waitlist page
   app.get('/capacity/capacity.html', (req, res) => {
-      console.log(`Serving waitlist page to IP: ${req.ip}`);
+      console.log(`Serving waitlist page to IP: ${userIp}`);
       res.sendFile(path.join(__dirname, 'docs', 'capacity', 'capacity.html'), (err) => {
           if (err) {
               console.error('Error serving waitlist page:', err);
@@ -169,7 +170,7 @@ app.use(express.static(path.join(__dirname, 'docs'), {
 
   // Example route for the main page
   app.get('/', (req, res) => {
-      console.log(`Serving main page to IP: ${req.ip}`);
+      console.log(`Serving main page to IP: ${userIp}`);
       res.sendFile(path.join(__dirname, 'docs', 'index.html'));
   });
 
