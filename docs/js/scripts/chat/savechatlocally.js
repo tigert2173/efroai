@@ -129,7 +129,7 @@ function downloadChatAsJSON() {
         URL.revokeObjectURL(url);
         alert('Chat downloaded successfully!');
     } else {
-        alert('Chat not found.');
+        alert('Chat not found. Please ensure you entered the correct name.');
     }
 }
 
@@ -144,7 +144,7 @@ function uploadChat(event) {
         reader.onload = function(e) {
             try {
                 const uploadedChat = JSON.parse(e.target.result);
-                if (uploadedChat.name && uploadedChat.messages) {
+                if (uploadedChat.name && Array.isArray(uploadedChat.messages)) {
                     savedChats.push(uploadedChat);
                     localStorage.setItem('savedChats', JSON.stringify(savedChats)); // Update local storage
                     updateSavedChatsList(); // Refresh the saved chats list
@@ -157,8 +157,11 @@ function uploadChat(event) {
             }
         };
         reader.readAsText(file);
+    } else {
+        alert('No file selected. Please choose a JSON file to upload.');
     }
 }
+
 
 // Attach event listener to the upload chat input
 document.getElementById('upload-chat-input').addEventListener('change', uploadChat);
