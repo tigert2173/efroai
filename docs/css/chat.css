@@ -548,12 +548,26 @@ input[type="checkbox"]:not(:checked) + label {
 .delete-button {
     position: absolute;
     right: 0;
-    background: red;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-left: 10px;
+    background: transparent; /* Make the background transparent */
+    color: red; /* Red color for the X */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 16px; /* Increase font size for visibility */
+    line-height: 1; /* Adjust line height for centering */
+    padding: 0; /* Remove padding */
+    margin-left: 10px; /* Space between buttons */
+    width: 20px; /* Set a fixed width */
+    height: 20px; /* Set a fixed height */
+    text-align: center; /* Center the text */
 }
+
+.delete-button:before {
+    content: '✖'; /* Use the multiplication sign as an X */
+    font-size: 20px; /* Size of the X */
+    display: inline-block; /* Display as inline block */
+    line-height: 20px; /* Center vertically */
+}
+
 .popup-menu {
     display: none;
     position: absolute;
