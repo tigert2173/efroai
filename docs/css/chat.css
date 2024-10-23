@@ -559,6 +559,7 @@ input[type="checkbox"]:not(:checked) + label {
     width: 20px; /* Set a fixed width */
     height: 20px; /* Set a fixed height */
     text-align: center; /* Center the text */
+    transition: transform 0.2s, color 0.2s; /* Smooth transition for transform and color */
 }
 
 .delete-button:before {
@@ -566,6 +567,12 @@ input[type="checkbox"]:not(:checked) + label {
     font-size: 20px; /* Size of the X */
     display: inline-block; /* Display as inline block */
     line-height: 20px; /* Center vertically */
+}
+
+/* Hover effect */
+.delete-button:hover {
+    transform: scale(1.2); /* Scale up the button */
+    color: darkred; /* Change color to a darker shade */
 }
 
 .popup-menu {
