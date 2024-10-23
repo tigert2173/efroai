@@ -32,6 +32,18 @@ function updateSavedChatsList() {
         listItem.textContent = chat.name;
         listItem.onclick = () => loadChat(index); // Set up an event listener to load the selected chat
         savedChatsList.appendChild(listItem);
+          
+        // Create the delete button
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.onclick = (e) => {
+              e.stopPropagation(); // Prevent the click from triggering the load chat action
+              deleteChat(index);
+          };
+  
+          // Append both buttons to the list item
+          listItem.appendChild(deleteButton);
+          savedChatsList.appendChild(listItem);
     });
 }
 
@@ -60,6 +72,15 @@ function loadChat(index) {
         alert(`Loaded chat: ${selectedChat.name}`);
     } else {
         alert('No chat found at this index.');
+    }
+}
+
+function deleteChat(index) {
+    if (confirm('Are you sure you want to delete this chat?')) {
+        savedChats.splice(index, 1); // Remove the chat from the savedChats array
+        localStorage.setItem('savedChats', JSON.stringify(savedChats)); // Update local storage
+        updateSavedChatsList(); // Refresh the saved chats list
+        alert('Chat deleted successfully!');
     }
 }
 
