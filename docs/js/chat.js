@@ -1,3 +1,6 @@
+const chatContainer = document.getElementById('chat-container');
+
+
 // Function to get a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -910,7 +913,6 @@ function displayMessage(content, sender, isFinal = false) {
     let userName = document.getElementById('user-name').value.trim();
     if (!userName) { userName = "{{user}}"; }
 
-    const chatContainer = document.getElementById('chat-container');
     const sanitizedContent = content
         // .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
         .replace(/\\n/g, '<br>') // Convert literal \n to <br>
