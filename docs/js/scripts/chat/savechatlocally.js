@@ -30,20 +30,21 @@ function updateSavedChatsList() {
     savedChats.forEach((chat, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
+
+        // Create the load chat button
         listItem.onclick = () => loadChat(index); // Set up an event listener to load the selected chat
-        savedChatsList.appendChild(listItem);
-          
+        
         // Create the delete button
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = 'Delete';
-          deleteButton.onclick = (e) => {
-              e.stopPropagation(); // Prevent the click from triggering the load chat action
-              deleteChat(index);
-          };
-  
-          // Append both buttons to the list item
-          listItem.appendChild(deleteButton);
-          savedChatsList.appendChild(listItem);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation(); // Prevent the click from triggering the load chat action
+            deleteChat(index);
+        };
+
+        // Append both buttons to the list item
+        listItem.appendChild(deleteButton);
+        savedChatsList.appendChild(listItem);
     });
 }
 
@@ -52,11 +53,11 @@ updateSavedChatsList();
 
 function loadChat(index) {
     const selectedChat = savedChats[index];
-    
+
     if (selectedChat) {
         messages = []; // Clear current messages array
         clearAllMessages();
-        
+
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
             // Check the structure of the message before displaying
