@@ -198,7 +198,7 @@ function populateCharacterSettings() {
             settings.scenario = characterData.scenario;
             settings.exampledialogue = characterData.exampledialogue;
             // Display the greeting as a bot message
-            displayMessage(characterData.greeting, 'bot', true); // Display greeting as bot message
+            displayMessage(characterData.greeting, 'assistant', true); // Display greeting as bot message
         })
         .catch(error => {
             console.error('Error fetching character data:', error);
@@ -667,7 +667,7 @@ async function sendMessage() {
                             if (content) { // Only append non-empty content
                                 result += content;
                                 clearCurrentBotMessage();
-                                displayMessage(result, 'bot', false);
+                                displayMessage(result, 'assistant', false);
                             }
                         }
                     } catch (error) {
@@ -684,7 +684,7 @@ async function sendMessage() {
         // Final display outside the loop
         if (result) {
             clearCurrentBotMessage();
-            displayMessage(result, 'bot', true);
+            displayMessage(result, 'assistant', true);
         }    
     } else {
         const data = await response.json();
@@ -698,7 +698,7 @@ async function sendMessage() {
         // messages.push(botMessageObject);
 
         // Display the final bot message in the chat
-        displayMessage(botMessage, 'bot', true);
+        displayMessage(botMessage, 'assistant', true);
     }
 } catch (error) {
     console.error('Error:', error);
@@ -714,7 +714,7 @@ function usernameupdated () {
     if ( messagessent == 0) {
         currentBotMessageElement.innerHTML = '';
         const greeting = settings.greeting;
-        displayMessage(greeting, 'bot');
+        displayMessage(greeting, 'assistant');
     }
 }
 
@@ -722,7 +722,7 @@ function sendGreeting() {
     messagessent = 0;
     const greeting = settings.greeting;
     if (greeting) {
-        displayMessage(greeting, 'bot', true);
+        displayMessage(greeting, 'assistant', true);
     }
 }
 
@@ -767,10 +767,10 @@ function regenerateMessage() {
             // Send the last user message again
             sendMessage(); // Ensure this function is defined to handle sending the message
         } else {
-            displayMessage('No previous user message found to regenerate.', 'bot');
+            displayMessage('No previous user message found to regenerate.', 'assistant');
         }
     } else {
-        displayMessage('No previous assistant message found to regenerate.', 'bot');
+        displayMessage('No previous assistant message found to regenerate.', 'assistant');
     }
 }
 
@@ -944,11 +944,11 @@ function displayMessage(content, sender, isFinal = false) {
 }
  // Prepare message object in the desired format
     const messageObject = {
-        role: sender === 'bot' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        role: sender === 'assistant' ? 'assistant' : sender === 'system' ? 'system' : 'user',
         content: [{ type: 'text', text: content }]
     };
 
-    if (sender === 'bot') {
+    if (sender === 'assistant') {
         // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
