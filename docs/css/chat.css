@@ -558,6 +558,13 @@ input[type="checkbox"]:not(:checked) + label {
     transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition */
 }
 
+.delete-button:before {
+    content: '✖'; /* Use the multiplication sign as an X */
+    font-size: 20px; /* Size of the X */
+    display: inline-block; /* Display as inline block */
+    line-height: 20px; /* Center vertically */
+}
+
 .delete-button:hover {
     transform: scale(1.2) rotate(10deg); /* Slightly increases size and rotates */
     background: darkred; /* Darkens the background on hover */
