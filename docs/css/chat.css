@@ -577,8 +577,6 @@ input[type="checkbox"]:not(:checked) + label {
     transform: translateY(-50%) scale(1.25); /* Slight upward movement and scaling */
 }
 
-
-
 .popup-menu {
     display: none;
     position: absolute;
@@ -604,4 +602,12 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 5px; /* Rounded corners */
     margin-left: 10px; /* Space between buttons */
+}
+
+#storage-notice {
+    color: red; /* Red color for visibility */
+    margin: 10px 0; /* Margin for spacing */
+    font-weight: bold; /* Bold text for emphasis */
+    font-size: 14px; /* Adjust font size if needed */
+    text-align: center; /* Center the notice */
 }
