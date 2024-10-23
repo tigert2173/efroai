@@ -44,7 +44,7 @@ function loadChat(index) {
         // Display each message from the saved chat
         messages.forEach(msg => {
            // displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : msg.role, true);
-            displayMessage('No previous user message found to regenerate.', 'bot');
+            displayMessage('No previous user message found to regenerate.', 'user');
 
         });
 
