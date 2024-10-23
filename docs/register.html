@@ -503,7 +503,8 @@ function updatePasswordStrength(password) {
 
 // Function to get the password strength message and color
 function getPasswordStrength(password) {
-    
+    const value = passwordInput.value;    
+
     let strength;
     
     // Check if password is too long
