@@ -59,9 +59,9 @@ app.use(compression({
   app.use((req, res, next) => {
     // Get user's IP address
     
-    //const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
-    const forwarded = req.headers['cf-connecting-ip'];
-    const userIp = forwarded || req.connection.remoteAddress;
+    const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
+   // const forwarded = req.headers['cf-connecting-ip'];
+    //const userIp = forwarded || req.connection.remoteAddress;
 
     console.log(`Incoming request from IP: ${userIp}`);
 
