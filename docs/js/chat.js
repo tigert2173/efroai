@@ -325,7 +325,7 @@ function getAllMessagesExceptLast() {
             settings.min_p = 0.01;                // Allow some rare tokens for variety
             settings.prescence_penalty = 0.10;    // Mild penalty to encourage novelty
             settings.frequency_penalty = 0.05;    // Minimal frequency penalty to avoid too much repetition
-            settings.repeat_penalty = 1.08;       // Slightly higher repeat penalty to avoid excessive looping
+            settings.repeat_penalty = 1.12;       // Slightly higher repeat penalty to avoid excessive looping
             // Add any additional settings updates here
             break;
         
