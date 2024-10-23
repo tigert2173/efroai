@@ -110,27 +110,26 @@ window.addEventListener('click', hideContextMenu);
 // Add event listener to the save chat button
 document.getElementById('save-chat-button').addEventListener('click', saveChat);
 
-// Function to download the selected chat as a JSON file
+// Function to download the currently selected chat as a JSON file
 function downloadChatAsJSON() {
-    const chatName = prompt("Enter a name for the JSON file:");
-    if (chatName) {
-        const chatData = savedChats.find(chat => chat.name === chatName);
-        if (chatData) {
-            const jsonString = JSON.stringify(chatData, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+    const chatName = prompt("Enter the name of the chat you want to download:");
+    const chatData = savedChats.find(chat => chat.name === chatName);
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${chatName}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            alert('Chat downloaded successfully!');
-        } else {
-            alert('Chat not found.');
-        }
+    if (chatData) {
+        const jsonString = JSON.stringify(chatData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${chatData.name}.json`; // Use the chat name for the filename
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Chat downloaded successfully!');
+    } else {
+        alert('Chat not found.');
     }
 }
 
