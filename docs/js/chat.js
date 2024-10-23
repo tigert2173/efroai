@@ -941,38 +941,26 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
     if (!userName) { userName = "{{user}}"; }
 
     const sanitizedContent = content
-        // .replace(/([.!?])(?!\.\.\.)(\s*)/g, "$1 ") // Ensure single space after . ? !
-        .replace(/\\n/g, '<br>') // Convert literal \n to <br>
-        // .replace(/\\(?!n)/g, '') // Remove backslashes not followed by n
-        .replace(/\n/g, '<br>') // Convert newline characters to <br> (if needed)
-        .replace(/_*_*(.*?)\_\_/g, '<u>$1</u>') // Convert __text__ to <u>text</u>
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // Convert **text** to <b>text</b>
-        .replace(/\*(.*?)\*/g, '<i>$1</i>') // Convert *text* to <i>text</i>
-        .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
-        .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // monospace with single backticks
-        .replace(/{{user}}|{user}/g, userName) // Replace both {{user}} and {user} with the actual user name
- // Add custom Christmas formatting:
- .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
- .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
- .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
-//  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
-      // Add colorful text formatting for specific syntax |color|text|color|
-    .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
-        // Return the text wrapped in a span with the corresponding color
-        return `<span style="color:${color};">${text}</span>`;
-    });
-   
-      // Check for Christmas keywords to trigger special effects
-   if (content.match(/Merry Christmas/i)) {
-    triggerSpecialEffect('merry-christmas');
-} else if (content.match(/Santa/i)) {
-    triggerSpecialEffect('santa');
-} else if (content.match(/gifts/i)) {
-    triggerSpecialEffect('gifts');
-} else if (content.match(/snow/i)) {
-    triggerSpecialEffect('snow');
-}
- // Prepare message object in the desired format
+        .replace(/\\n/g, '<br>')
+        .replace(/\n/g, '<br>')
+        .replace(/_*_*(.*?)\_\_/g, '<u>$1</u>')
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+        .replace(/\*(.*?)\*/g, '<i>$1</i>')
+        .replace(/```([\s\S]*?)```/g, '<code>$1</code>')
+        .replace(/`([^`]+)`/g, '<codelight>$1</codelight>')
+        .replace(/{{user}}|{user}/g, userName)
+        .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>')
+        .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>')
+        .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>')
+        .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
+            return `<span style="color:${color};">${text}</span>`;
+        });
+
+    if (content.match(/Merry Christmas/i)) { triggerSpecialEffect('merry-christmas'); }
+    else if (content.match(/Santa/i)) { triggerSpecialEffect('santa'); }
+    else if (content.match(/gifts/i)) { triggerSpecialEffect('gifts'); }
+    else if (content.match(/snow/i)) { triggerSpecialEffect('snow'); }
+
     const messageObject = {
         role: sender,
         content: [{ type: 'text', text: content }]
@@ -982,59 +970,59 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         currentBotMessageElement = '';
     }
 
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${sender}`;
+    messageElement.innerHTML = `
+        ${sanitizedContent}
+        <button class="edit-btn" onclick="editMessage(${messages.length})">Edit</button>
+    `;
+    chatContainer.appendChild(messageElement);
+
     if (sender === 'assistant') {
-        // Create or reuse the current bot message element
-        if (!currentBotMessageElement) {
-            currentBotMessageElement = document.createElement('div');
-            currentBotMessageElement.className = `message ${sender}`;
-            chatContainer.appendChild(currentBotMessageElement);
-        }
-
-        // Update the content of the existing bot message element
-        if (currentBotMessageElement) {
-            currentBotMessageElement.innerHTML = sanitizedContent;
-        }
-        // If the message is final, update the navigation header
         if (isFinal) {
-            // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
-            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            
-            // Remove previous bot message header if exists
+            currentBotMessageIndex = botMessages.length - 1;
             const previousHeader = document.querySelector('.message-header');
-            if (previousHeader) {
-                previousHeader.remove();
-            }
+            if (previousHeader) previousHeader.remove();
 
-            // Create a new message header with navigation arrows
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             `;
-
-            // Append message header to the chat container
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
         updateArrowStates();
-    } else {
-        const messageElement = document.createElement('div');
-        messageElement.className = `message ${sender}`;
-        messageElement.innerHTML = sanitizedContent;
-        chatContainer.appendChild(messageElement);
     }
 
     if (isFinal || sender === 'user'){
-        // Add the message object to the messages array
         messages.push(messageObject);
-        console.log('Messages array:', messages); // Debugging to view the array
-        // Update arrow states
-        }
-    // // Scroll to the bottom of the chat container
-    // chatContainer.scrollTop = chatContainer.scrollHeight;
+        console.log('Messages array:', messages);
+    }
 }
+
+function editMessage(index) {
+    const messageToEdit = messages[index];
+    const currentContent = messageToEdit.content[0].text;
+
+    // Prompt user to edit the content (you can replace this with a more elegant popup or modal)
+    const newContent = prompt("Edit your message:", currentContent);
+
+    if (newContent !== null) {
+        messageToEdit.content[0].text = newContent;
+        // Update the message in the chat display
+        const messageElements = document.querySelectorAll('.message');
+        const messageElement = messageElements[index];
+        messageElement.innerHTML = `
+            ${newContent.replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}
+            <button class="edit-btn" onclick="editMessage(${index})">Edit</button>
+        `;
+        console.log('Updated message:', messages);
+    }
+}
+
 
 function navigateBotMessages(direction) {
     if (currentBotMessageIndex === -1) return;
