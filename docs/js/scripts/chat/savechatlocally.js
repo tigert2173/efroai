@@ -44,7 +44,7 @@ function updateSavedChatsList() {
             deleteChat(index);
         };
 
-        // Append both buttons to the list item
+        // Append both the load chat action and delete button to the list item
         listItem.appendChild(deleteButton);
         savedChatsList.appendChild(listItem);
     });
