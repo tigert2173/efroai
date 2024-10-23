@@ -459,15 +459,6 @@ passwordInput.addEventListener('input', function() {
     passwordStrength.style.color = strength.color;
 });
 
-// Event listener for input on the password field
-passwordInput.addEventListener('input', function() {
-    const value = passwordInput.value;
-    const strength = getPasswordStrength(value);
-    updatePasswordStrength(value);
-    passwordStrength.textContent = strength.message;
-    passwordStrength.style.color = strength.color;
-});
-
 // Function to update the visual strength bar
 function updatePasswordStrength(password) {
     const strengthBar = document.getElementById('strength-bar');
@@ -512,13 +503,11 @@ function updatePasswordStrength(password) {
 
 // Function to get the password strength message and color
 function getPasswordStrength(password) {
-    let strength = { message: 'Very Weak', color: 'red' };
-    
+    const value = passwordInput.value;    
     // Check if password is too long
     if (password.length > 32) {
         strength.message = 'Invalid Password: Exceeds 32 characters';
         strength.color = 'red';
-        strength = 0;
         return strength;
     }
 
@@ -526,7 +515,6 @@ function getPasswordStrength(password) {
     if (password.length < 10) {
         strength.message = 'Invalid Password: Under 10 characters';
         strength.color = 'red';
-        strength = 0;
         return strength;
     }
 
