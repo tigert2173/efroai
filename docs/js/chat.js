@@ -1125,6 +1125,12 @@ function editMessage(index) {
     }
 }
 
+function autoResize() {
+    // Reset the height to shrink it before measuring
+    this.style.height = 'auto'; 
+    // Set the height to the scrollHeight to expand it to fit content
+    this.style.height = `${this.scrollHeight}px`; 
+}
 
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
