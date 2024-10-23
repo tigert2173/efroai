@@ -560,7 +560,7 @@ async function sendMessage() {
 
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
-        console.log("Messages: " + messages[]);
+        console.log("Messages: " + JSON.stringify(messages));
         const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
