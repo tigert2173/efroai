@@ -531,7 +531,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Styles for each saved chat item */
 #saved-chats-list li {
-    padding: 8px 40px 8px 10px; /* Padding for each chat item, with space for the delete button */
+    padding: 5px 40px; /* Padding for each chat item; extra padding on the right for the button */
     border: 1px solid #ccc; /* Light grey border */
     margin: 5px 0; /* Margin for spacing between items */
     cursor: pointer; /* Pointer cursor on hover */
@@ -545,35 +545,34 @@ input[type="checkbox"]:not(:checked) + label {
     background-color: #0ba1007a; /* Slightly darker on hover */
 }
 
-/* Delete button styles */
+/* Delete button styling */
 .delete-button {
-    position: absolute; /* Position it absolutely within the list item */
-    right: 10px; /* Adjusted right position for better alignment */
+    position: absolute;
+    right: 10px; /* Adjusted right position */
     top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust vertical alignment */
-    background: red; /* Red background */
-    color: white; /* White text */
-    border: none; /* No border */
-    cursor: pointer; /* Pointer cursor on hover */
-    padding: 5px; /* Padding for the button */
+    transform: translateY(-50%); /* Center vertically */
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px; /* Uniform padding */
     border-radius: 3px; /* Adds rounded corners */
     transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition */
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     height: 30px; /* Set a specific height for consistency */
-    width: 30px; /* Set a width for the button */
 }
 
-/* X icon styling */
+/* X icon */
 .delete-button:before {
     content: '✖'; /* Use the multiplication sign as an X */
     font-size: 16px; /* Adjusted size for better fit */
 }
 
-/* Hover effect for the delete button */
+/* Hover effects for delete button */
 .delete-button:hover {
-    transform: scale(1.2) rotate(5deg); /* Slightly increases size and rotates */
+    transform: scale(1.2) rotate(10deg); /* Slightly increases size and rotates */
     background: darkred; /* Darkens the background on hover */
 }
 
