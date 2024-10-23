@@ -43,7 +43,6 @@ function loadChat(index) {
     if (selectedChat) {
         messages = []; // Clear current messages array
 
-       
         chatContainer.innerHTML = ''; // Clear current chat
 
         // Load the selected chat's messages
