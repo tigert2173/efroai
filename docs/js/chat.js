@@ -955,10 +955,11 @@ function displayMessage(content, sender, isFinal = false) {
             currentBotMessageElement.className = `message ${sender}`;
             chatContainer.appendChild(currentBotMessageElement);
         }
-    
+
         // Update the content of the existing bot message element
-        currentBotMessageElement.innerHTML = sanitizedContent;
-    
+        if (currentBotMessageElement) {
+            currentBotMessageElement.innerHTML = sanitizedContent;
+        }
         // If the message is final, update the navigation header
         if (isFinal) {
             // Store bot message in the botMessages array
@@ -970,7 +971,7 @@ function displayMessage(content, sender, isFinal = false) {
             if (previousHeader) {
                 previousHeader.remove();
             }
-    
+
             // Create a new message header with navigation arrows
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
@@ -978,17 +979,10 @@ function displayMessage(content, sender, isFinal = false) {
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             `;
-    
-            // Ensure currentBotMessageElement still has a parent
-            if (currentBotMessageElement.parentNode === chatContainer) {
-                // Append message header to the chat container before currentBotMessageElement
-                chatContainer.insertBefore(messageHeader, currentBotMessageElement);
-            } else {
-                // If it does not have a parent, append the messageHeader directly to the chat container
-                chatContainer.appendChild(messageHeader);
-            }
+
+            // Append message header to the chat container
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
-        
 
         updateArrowStates();
     } else {
