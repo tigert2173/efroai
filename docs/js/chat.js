@@ -1117,11 +1117,10 @@ const editArea = document.querySelector('.edit-area');
 
 // Function to auto-resize the edit area based on content
 function autoResize() {
-    // Reset the height to shrink it before measuring
-    this.style.height = 'auto'; 
-    // Set the height to the scrollHeight to expand it to fit content
-    this.style.height = `${this.scrollHeight}px`; 
+    this.style.height = 'auto'; // Reset height to shrink
+    this.style.height = `${this.scrollHeight}px`; // Set height to scrollHeight
 }
+
 
 // Attach the auto-resize function to the input event
 editArea.addEventListener('input', autoResize);
