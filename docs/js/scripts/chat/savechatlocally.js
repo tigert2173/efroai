@@ -28,6 +28,15 @@ function updateSavedChatsList() {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
 
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete-button';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation();
+            deleteChat(index);
+        };
+        
+        listItem.appendChild(deleteButton);
         listItem.onclick = () => loadChat(index); // Load chat on left click
 
         // Right-click context menu
