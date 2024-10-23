@@ -215,7 +215,7 @@ app.use(express.static(path.join(__dirname, 'docs'), {
 
   // Handle WebSocket connections
   wss.on('connection', (ws, req) => {
-      const userIp = req.socket.remoteAddress; // Get the user's IP address
+     // const userIp = req.socket.remoteAddress; // Get the user's IP address
 
       console.log(`WebSocket connection established for IP: ${userIp}`);
       
