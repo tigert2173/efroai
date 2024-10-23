@@ -132,6 +132,11 @@
             font-size: 70%;
             }
         }
+        .password-strength {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
     </style>
 </head>
 <body>
@@ -152,6 +157,7 @@
                     <input type="password" id="password" required>
                     <button type="button" class="reveal-btn" id="revealPassword">👁️</button>
                 </div>
+                <div class="password-strength" id="passwordStrength" style="color: #fbbc04; margin-top: 5px;"></div>
 
                 <label for="confirmPassword">Confirm Password:</label>
                 <div class="password-container">
@@ -205,6 +211,7 @@
     </main>
 
    <script>
+    
     let formStartTime = null;  // Store the time when user starts filling the form
 
     // Capture the first user interaction
@@ -399,6 +406,55 @@
             revealPasswordBtn.textContent = '👁️'; // Change icon to indicate hidden
         }
     });
+
+    const passwordInput = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+
+    passwordInput.addEventListener('input', function() {
+        const value = passwordInput.value;
+        const strength = getPasswordStrength(value);
+        passwordStrength.textContent = strength.message;
+        passwordStrength.style.color = strength.color;
+    });
+
+    function getPasswordStrength(password) {
+        let strength = { message: 'Weak', color: 'red' };
+        const requirements = [
+            /[a-z]/, // Lowercase letter
+            /[A-Z]/, // Uppercase letter
+            /\d/,    // Number
+            /[@$!%*?&._-]/, // Special character
+            /.{10,32}/ // Length
+        ];
+
+        let passed = requirements.filter(req => req.test(password)).length;
+
+        switch (passed) {
+            case 0:
+            case 1:
+                strength.message = 'Very Weak';
+                strength.color = 'red';
+                break;
+            case 2:
+                strength.message = 'Weak';
+                strength.color = 'orange';
+                break;
+            case 3:
+                strength.message = 'Good';
+                strength.color = 'yellow';
+                break;
+            case 4:
+                strength.message = 'Strong';
+                strength.color = 'green';
+                break;
+            case 5:
+                strength.message = 'Very Strong';
+                strength.color = 'darkgreen';
+                break;
+        }
+
+        return strength;
+    }
 </script>
     <script src="js/scripts/checkbot.js"></script>
     
