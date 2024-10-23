@@ -523,6 +523,33 @@ input[type="checkbox"]:not(:checked) + label {
 }
 
 
+/* Additional styles for upload button */
+#upload-button {
+    background-color: #28a745; /* Green for upload */
+}
+
+#upload-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Additional styles for download button */
+#download-button {
+    background-color: #ffc107; /* Yellow for download */
+}
+
+#download-button:hover {
+    background-color: #e0a800; /* Darker yellow on hover */
+}
+
+/* Additional styles for save button */
+#save-button {
+    background-color: #17a2b8; /* Cyan for save */
+}
+
+#save-button:hover {
+    background-color: #138496; /* Darker cyan on hover */
+}
+
 /* Styles for the saved chats list */
 #saved-chats-list {
     list-style-type: none; /* Remove default list styles */
