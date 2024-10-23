@@ -11,11 +11,11 @@
   app.use(cors());
 
   const blockedIps = [
-    '::ffff:128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
-    '::ffff:128.14.173.115',  // Path: /cf_scripts/scripts/ajax/ckeditor/ckeditor.js && Path: /Telerik.Web.UI.WebResource.axd && /static/historypage.js <<-- suspicious request 
-    '::ffff:128.14.174.186', //Path: /showLogin.cc & /api/session/properties & /solr/ && /login.do <<-- suspicious request 
-    '::ffff:128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
-    '::ffff:128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
+    // '::ffff:128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
+    // '::ffff:128.14.173.115',  // Path: /cf_scripts/scripts/ajax/ckeditor/ckeditor.js && Path: /Telerik.Web.UI.WebResource.axd && /static/historypage.js <<-- suspicious request 
+    // '::ffff:128.14.174.186', //Path: /showLogin.cc & /api/session/properties & /solr/ && /login.do <<-- suspicious request 
+    // '::ffff:128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
+    // '::ffff:128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
     // '::ffff:69.174.135.234',
     '::ffff:204.110.223.51' // SchoScure
 ]; 
