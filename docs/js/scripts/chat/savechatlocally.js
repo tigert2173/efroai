@@ -49,8 +49,10 @@ function loadChat(index) {
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
             // Check the structure of the message before displaying
-            if (msg.content && msg.content.length > 0) {
-                displayMessage(msg.content[0].text, msg.role, false);
+            if (msg.content && msg.content.length > 0 && msg.role) {
+                const messageText = msg.content[0].text; // Get the message text
+                const senderRole = msg.role === 'assistant' ? 'bot' : 'user'; // Determine sender role
+                displayMessage(messageText, senderRole, false); // Call displayMessage with correct parameters
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }
