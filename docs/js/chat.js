@@ -1056,5 +1056,3 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
     populateCharacterSettings();
 });
-
-module.exports = { displayMessage };
