@@ -609,4 +609,5 @@ input[type="checkbox"]:not(:checked) + label {
     margin: 10px 0; /* Margin for spacing */
     font-weight: bold; /* Bold text for emphasis */
     font-size: 14px; /* Adjust font size if needed */
+    text-align: center; /* Center the notice */
 }
