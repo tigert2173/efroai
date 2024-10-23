@@ -132,6 +132,11 @@ const isExternalRequest = (path) => {
 // Serve static files from the public directory with caching headers
 app.use(express.static(path.join(__dirname, 'docs'), {
   setHeaders: (res, path) => {
+
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
       // Do not cache external requests
       if (isExternalRequest(path)) {
           return; // Skip setting headers for external requests
@@ -139,8 +144,8 @@ app.use(express.static(path.join(__dirname, 'docs'), {
       // Set Cache-Control and Expires headers for caching
     //   res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
     //   res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
-      res.setHeader('Cache-Control', 'public, max-age=58'); // Cache for 5 minutes
-      res.setHeader('Expires', new Date(Date.now() + 58).toUTCString()); // Expires in 5 minutes (35000)
+    //   res.setHeader('Cache-Control', 'public, max-age=58'); // Cache for 5 minutes
+    //   res.setHeader('Expires', new Date(Date.now() + 58).toUTCString()); // Expires in 5 minutes (35000)
   }
 }));
 
