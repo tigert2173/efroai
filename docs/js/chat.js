@@ -936,6 +936,14 @@ let botMessages = []; // Array to store bot messages
 let currentBotMessageElement = null;
 let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
+let userName = '{{user}}';
+let lastBotMsg = null;
+
+let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
+let currentBotMessageElement = null;
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
+
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
     if (!userName) { userName = "{{user}}"; }
@@ -1023,7 +1031,6 @@ function editMessage(index) {
     }
 }
 
-
 function navigateBotMessages(direction) {
     if (currentBotMessageIndex === -1) return;
 
@@ -1031,26 +1038,24 @@ function navigateBotMessages(direction) {
     if (newIndex >= 0 && newIndex < botMessages.length) {
         currentBotMessageIndex = newIndex;
         const content = botMessages[currentBotMessageIndex];
-        currentBotMessageElement.innerHTML = content; // Update the existing bot message element
-
+        currentBotMessageElement.innerHTML = content;
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg (navigated):', lastBotMsg);
-
         updateArrowStates();
     }
 }
 
 function updateArrowStates() {
-    const leftArrow = document.querySelector('.nav-arrows:first-of-type');
-    const rightArrow = document.querySelector('.nav-arrows:last-of-type');
-
-    if (leftArrow) {
-        leftArrow.classList.toggle('disabled', currentBotMessageIndex === 0);
-    }
-    if (rightArrow) {
-        rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
-    }
+    // Update arrow states based on the currentBotMessageIndex
+    const previousArrow = document.querySelector('.nav-arrows:nth-child(1)');
+    const nextArrow = document.querySelector('.nav-arrows:nth-child(2)');
+    if (currentBotMessageIndex === 0) previousArrow.classList.add('disabled');
+    else previousArrow.classList.remove('disabled');
+    
+    if (currentBotMessageIndex === botMessages.length - 1) nextArrow.classList.add('disabled');
+    else nextArrow.classList.remove('disabled');
 }
+
 
 
 
