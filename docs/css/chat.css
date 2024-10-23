@@ -546,7 +546,7 @@ input[type="checkbox"]:not(:checked) + label {
 }
 
 .delete-button {
-    position: absolute;
+    position: relative;
     right: 0;
     background: red;
     color: white;
