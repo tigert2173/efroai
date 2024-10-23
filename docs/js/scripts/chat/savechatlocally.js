@@ -25,19 +25,38 @@ function updateSavedChatsList() {
     savedChats.forEach((chat, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
+        listItem.onclick = () => loadChat(index); // Load chat on click
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.className = 'delete-button';
-        deleteButton.onclick = (e) => {
-            e.stopPropagation();
-            deleteChat(index);
+        // Right-click context menu
+        listItem.oncontextmenu = (e) => {
+            e.preventDefault();
+            showPopupMenu(e.pageX, e.pageY, index);
         };
 
-        listItem.appendChild(deleteButton);
-        listItem.onclick = () => loadChat(index);
         savedChatsList.appendChild(listItem);
     });
+}
+
+function showPopupMenu(x, y, index) {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.innerHTML = ''; // Clear previous items
+
+    const deleteItem = document.createElement('div');
+    deleteItem.textContent = 'Delete Chat';
+    deleteItem.onclick = () => {
+        deleteChat(index);
+        popupMenu.style.display = 'none'; // Hide menu after action
+    };
+    
+    popupMenu.appendChild(deleteItem);
+    popupMenu.style.left = `${x}px`;
+    popupMenu.style.top = `${y}px`;
+    popupMenu.style.display = 'block';
+}
+
+function hidePopupMenu() {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'none';
 }
 
 function deleteChat(index) {
@@ -118,9 +137,13 @@ function uploadChat(event) {
 }
 
 // Event listeners for buttons
+document.getElementById('save-button').onclick = saveChat;
 document.getElementById('download-button').onclick = downloadChatAsJSON;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
 document.getElementById('upload-input').onchange = uploadChat;
+
+// Hide the popup menu when clicking outside of it
+document.addEventListener('click', hidePopupMenu);
 
 // Call this function initially to display saved chats on page load
 updateSavedChatsList();
