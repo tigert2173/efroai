@@ -1,3 +1,5 @@
+const { saveChat, updateSavedChatsList, loadChat } = require('./path/to/your/file');
+
 document.addEventListener('DOMContentLoaded', () => {
     const ESettingslastNUMsentencesSlider = document.getElementById('ESettingslastNUMsentencesSlider');
     const ESettingslastNUMsentencesValue = document.getElementById('ESettingslastNUMsentencesValue');

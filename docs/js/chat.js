@@ -1,3 +1,5 @@
+const { saveChat, updateSavedChatsList, loadChat } = require('/scripts/chat/savechatlocally.js');
+
 // Function to get a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
