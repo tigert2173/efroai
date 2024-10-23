@@ -311,8 +311,8 @@ function getAllMessagesExceptLast() {
             settings.top_p = 0.64;
             settings.top_k = 33;
             settings.min_p = 0.0;
-            settings.prescence_penalty = 0.05;
-            settings.frequency_penalty = 0.00;
+            settings.prescence_penalty = 0.15;
+            settings.frequency_penalty = 0.05;
             settings.repeat_penalty = 1.07;
             // Add any additional settings updates here
             break;
