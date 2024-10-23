@@ -1,5 +1,6 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
 
+// Function to save the current chat
 function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
     if (chatName) {
@@ -23,6 +24,7 @@ function saveChat() {
     }
 }
 
+// Function to update the displayed saved chats list
 function updateSavedChatsList() {
     const savedChatsList = document.getElementById('saved-chats-list');
     savedChatsList.innerHTML = ''; // Clear the current list
@@ -51,13 +53,14 @@ function updateSavedChatsList() {
 // Call this function initially to display saved chats on page load
 updateSavedChatsList();
 
+// Function to load a saved chat
 function loadChat(index) {
     const selectedChat = savedChats[index];
-
+    
     if (selectedChat) {
         messages = []; // Clear current messages array
         clearAllMessages();
-
+        
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
             // Check the structure of the message before displaying
@@ -76,6 +79,7 @@ function loadChat(index) {
     }
 }
 
+// Function to delete a saved chat
 function deleteChat(index) {
     if (confirm('Are you sure you want to delete this chat?')) {
         savedChats.splice(index, 1); // Remove the chat from the savedChats array
@@ -85,4 +89,5 @@ function deleteChat(index) {
     }
 }
 
-// Export the necessary functions
+// Add event listener to the save chat button
+document.getElementById('save-chat-button').addEventListener('click', saveChat);
