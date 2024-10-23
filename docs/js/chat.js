@@ -944,7 +944,7 @@ function displayMessage(content, sender, isFinal = false) {
 }
  // Prepare message object in the desired format
     const messageObject = {
-        role: sender === 'assistant' ? 'assistant' : sender === 'system' ? 'system' : 'user',
+        role: sender,
         content: [{ type: 'text', text: content }]
     };
 
