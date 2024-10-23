@@ -669,24 +669,3 @@ input[type="checkbox"]:not(:checked) + label {
     background-color: #0056b3; /* Darker blue on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
 }
-
-/* Message header styles for navigation */
-.message-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Navigation arrow styles */
-.nav-arrows {
-    cursor: pointer;
-    color: #007bff; /* Blue color for arrows */
-    font-size: 18px;
-}
-
-.nav-arrows.disabled {
-    color: #ccc; /* Grey out arrows when disabled */
-    cursor: not-allowed; /* Change cursor to indicate unclickable */
-}
