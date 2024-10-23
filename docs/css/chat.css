@@ -553,25 +553,24 @@ input[type="checkbox"]:not(:checked) + label {
     border: none;
     cursor: pointer;
     margin-left: 10px;
-    padding: 5px 10px; /* Added padding for a better button size */
-    border-radius: 50%; /* Makes it a circle */
+    padding: 5px 8px; /* Added horizontal padding for better spacing */
+    border-radius: 3px; /* Adds rounded corners */
     transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition */
-    font-size: 20px; /* Font size for the X */
-    display: flex; /* Use flexbox for centering */
+    display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
+    height: 30px; /* Set a specific height for consistency */
 }
 
 .delete-button:before {
     content: '✖'; /* Use the multiplication sign as an X */
-    line-height: 20px; /* Center vertically */
+    font-size: 16px; /* Adjusted size for better fit */
+    display: inline-block; /* Display as inline block */
 }
 
 .delete-button:hover {
     transform: scale(1.2) rotate(10deg); /* Slightly increases size and rotates */
     background: darkred; /* Darkens the background on hover */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adds a shadow effect on hover */
-    border: 1px solid white; /* Optional: adds a border on hover */
 }
 
 
