@@ -518,6 +518,7 @@ function getPasswordStrength(password) {
     if (password.length > 32) {
         strength.message = 'Invalid Password: Exceeds 32 characters';
         strength.color = 'red';
+        strength = 0;
         return strength;
     }
 
@@ -525,6 +526,7 @@ function getPasswordStrength(password) {
     if (password.length < 10) {
         strength.message = 'Invalid Password: Under 10 characters';
         strength.color = 'red';
+        strength = 0;
         return strength;
     }
 
