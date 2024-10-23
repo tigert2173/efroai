@@ -216,7 +216,9 @@ app.use(express.static(path.join(__dirname, 'docs'), {
   // Handle WebSocket connections
   wss.on('connection', (ws, req) => {
      // const userIp = req.socket.remoteAddress; // Get the user's IP address
-
+     const forwarded = req.headers['cf-connecting-ip'];
+     const userIp = forwarded || req.connection.remoteAddress;
+     
       console.log(`WebSocket connection established for IP: ${userIp}`);
       
       // Send a ping every 30 seconds to check if the client is still connected
