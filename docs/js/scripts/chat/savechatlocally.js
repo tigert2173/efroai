@@ -50,7 +50,7 @@ function loadChat(index) {
         selectedChat.messages.forEach(msg => {
             // Check the structure of the message before displaying
             if (msg.content && msg.content.length > 0) {
-                displayMessage(msg.content[0].text, msg.role, true);
+                displayMessage(msg.content[0].text, msg.role, false);
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }

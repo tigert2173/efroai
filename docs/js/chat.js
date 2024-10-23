@@ -957,9 +957,8 @@ function displayMessage(content, sender, isFinal = false) {
         }
 
         // Update the content of the existing bot message element
-        if (currentBotMessageElement) {
-            currentBotMessageElement.innerHTML = sanitizedContent;
-        }
+        currentBotMessageElement.innerHTML = sanitizedContent;
+
         // If the message is final, update the navigation header
         if (isFinal) {
             // Store bot message in the botMessages array
@@ -981,7 +980,7 @@ function displayMessage(content, sender, isFinal = false) {
             `;
 
             // Append message header to the chat container
-           // chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
         updateArrowStates();
