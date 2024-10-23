@@ -981,7 +981,7 @@ function displayMessage(content, sender, isFinal = false) {
             `;
 
             // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+           // chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
         updateArrowStates();
