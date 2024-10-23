@@ -37,11 +37,11 @@ function updateSavedChatsList() {
 
 // Call this function initially to display saved chats on page load
 updateSavedChatsList();
+clearAllMessages();
 
 function loadChat(index) {
     const selectedChat = savedChats[index];
-    clearAllMessages();
-
+    
     if (selectedChat) {
         messages = []; // Clear current messages array
         
