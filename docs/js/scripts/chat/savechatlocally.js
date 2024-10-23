@@ -43,7 +43,7 @@ function loadChat(index) {
     
     if (selectedChat) {
         messages = []; // Clear current messages array
-        clearCurrentBotMessage();
+        clearAllMessages();
         
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
