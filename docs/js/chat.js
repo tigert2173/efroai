@@ -137,6 +137,7 @@ function loadCharacter(charName, listItem) {
 
 //Shortwave Config
 let settings = {
+    charname: '',
     persona: '',
     context: '',
     scenario: '',
@@ -177,6 +178,7 @@ function populateCharacterSettings() {
         .then(character => {
             // Define the character object
             const characterData = {
+                charname: character.name || '',
                 uploader: character.uploader || '',
                 persona: character.persona || '',
                 context: character.context || '',
@@ -194,6 +196,7 @@ function populateCharacterSettings() {
             // document.getElementById('exampledialogue').value = characterData.exampledialogue;
 
             // Update settings
+            settings.charname = characterData.charname;
             settings.persona = characterData.persona;
             settings.context = characterData.context;
             settings.greeting = characterData.greeting;
@@ -929,6 +932,7 @@ function playSantaVoice() {
 
 
 let userName = '{{user}}';
+let charName = '{{char}}';
 let lastBotMsg = null;
 
 let messages = []; // Array to store messages
@@ -938,6 +942,7 @@ let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
+    let charName = settings.charname || "{{char}}";
     if (!userName) { userName = "{{user}}"; }
 
     const sanitizedContent = content
@@ -951,6 +956,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         .replace(/```([\s\S]*?)```/g, '<code>$1</code>') // Block code with triple backticks
         .replace(/`([^`]+)`/g, '<codelight>$1</codelight>') // monospace with single backticks
         .replace(/{{user}}|{user}/g, userName) // Replace both {{user}} and {user} with the actual user name
+        .replace(/{{char}}|{char}/g, charName) // Replace both {{user}} and {user} with the actual user name
  // Add custom Christmas formatting:
  .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
