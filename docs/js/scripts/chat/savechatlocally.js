@@ -1,4 +1,4 @@
-const { displayMessage } = require('/js/chat.js');
+const { displayMessage } = require('./js/chat.js');
 
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
 
