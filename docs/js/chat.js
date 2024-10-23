@@ -331,7 +331,7 @@ function getAllMessagesExceptLast() {
 
         case 'Chaos Catalyst':
             // Disruptive config to force variation
-            settings.temperature = 1.50; // High randomness
+            settings.temperature = 1.30; // High randomness
             settings.top_p = 0.85; // Broadens the range of token choices
             settings.top_k = 50; // Allows more token options for variety
             settings.min_p = 0.0; // Keep zero to avoid limiting
