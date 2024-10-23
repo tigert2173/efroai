@@ -1,4 +1,5 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
+let selectedChatIndex = null; // To store the index of the chat to be deleted
 
 // Function to save the current chat
 function saveChat() {
@@ -33,21 +34,31 @@ function updateSavedChatsList() {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
 
-        // Create the load chat button
-        listItem.onclick = () => loadChat(index); // Set up an event listener to load the selected chat
-        
-        // Create the delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = (e) => {
-            e.stopPropagation(); // Prevent the click from triggering the load chat action
-            deleteChat(index);
+        // Set up an event listener for loading the selected chat
+        listItem.onclick = () => loadChat(index);
+
+        // Enable right-click context menu
+        listItem.oncontextmenu = (e) => {
+            e.preventDefault(); // Prevent default context menu
+            selectedChatIndex = index; // Set the selected chat index
+            showContextMenu(e.pageX, e.pageY); // Show custom context menu
         };
 
-        // Append both the load chat action and delete button to the list item
-        listItem.appendChild(deleteButton);
         savedChatsList.appendChild(listItem);
     });
+}
+
+// Function to show context menu
+function showContextMenu(x, y) {
+    const contextMenu = document.getElementById('context-menu');
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = `${x}px`;
+    contextMenu.style.top = `${y}px`;
+}
+
+// Function to hide context menu
+function hideContextMenu() {
+    document.getElementById('context-menu').style.display = 'none';
 }
 
 // Call this function initially to display saved chats on page load
@@ -56,11 +67,11 @@ updateSavedChatsList();
 // Function to load a saved chat
 function loadChat(index) {
     const selectedChat = savedChats[index];
-    
+
     if (selectedChat) {
         messages = []; // Clear current messages array
         clearAllMessages();
-        
+
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
             // Check the structure of the message before displaying
@@ -80,14 +91,21 @@ function loadChat(index) {
 }
 
 // Function to delete a saved chat
-function deleteChat(index) {
+function deleteChat() {
     if (confirm('Are you sure you want to delete this chat?')) {
-        savedChats.splice(index, 1); // Remove the chat from the savedChats array
+        savedChats.splice(selectedChatIndex, 1); // Remove the chat from the savedChats array
         localStorage.setItem('savedChats', JSON.stringify(savedChats)); // Update local storage
         updateSavedChatsList(); // Refresh the saved chats list
         alert('Chat deleted successfully!');
     }
+    hideContextMenu(); // Hide the context menu after action
 }
+
+// Attach delete action to the context menu button
+document.getElementById('delete-chat-button').addEventListener('click', deleteChat);
+
+// Hide context menu when clicking outside of it
+window.addEventListener('click', hideContextMenu);
 
 // Add event listener to the save chat button
 document.getElementById('save-chat-button').addEventListener('click', saveChat);
