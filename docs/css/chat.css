@@ -650,6 +650,8 @@ input[type="checkbox"]:not(:checked) + label {
     height: auto; /* Allow dynamic height */
     padding: 5px;
     border: 1px solid #ccc;
+    color: white;
+    background-color: darkslategray;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     overflow: hidden; /* Hide scrollbars */
@@ -660,7 +662,7 @@ input[type="checkbox"]:not(:checked) + label {
 /* Button styles */
 .edit-btn {
     background-color: #007bff; /* Blue background */
-    color: rgb(130, 130, 130);
+    color: white;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
