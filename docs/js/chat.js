@@ -335,8 +335,8 @@ function getAllMessagesExceptLast() {
             settings.top_p = 0.85; // Broadens the range of token choices
             settings.top_k = 50; // Allows more token options for variety
             settings.min_p = 0.0; // Keep zero to avoid limiting
-            settings.prescence_penalty = 0.60; // Forces the model to consider new topics
-            settings.frequency_penalty = 0.60; // Encourages less frequent tokens
+            settings.prescence_penalty = 1.50; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.30; // Encourages less frequent tokens
             settings.repeat_penalty = 1.30; // Strong penalty to prevent repetition
             // Add any additional settings updates here
             break;
