@@ -557,7 +557,7 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer; /* Pointer cursor on hover */
     padding: 5px; /* Padding for the button */
     border-radius: 3px; /* Adds rounded corners */
-    transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition */
+    transition: background 0.3s ease; /* Smooth background transition */
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
@@ -573,9 +573,10 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Hover effect for the delete button */
 .delete-button:hover {
-    transform: scale(1.1) rotate(10deg); /* Slightly increases size and rotates less */
     background: darkred; /* Darkens the background on hover */
+    transform: none; /* No transformation on hover */
 }
+
 
 
 .popup-menu {
