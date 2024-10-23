@@ -544,17 +544,15 @@ li {
     cursor: pointer;
     position: relative;
 }
-/* Styles for the delete buttons in the saved chats list */
 .delete-button {
-    background-color: red; /* Red background for delete button */
-    color: white; /* White text color */
-    border: none; /* Remove default border */
-    padding: 5px 10px; /* Padding for the button */
-    cursor: pointer; /* Change cursor to pointer */
-    margin-left: 10px; /* Space between chat name and button */
-    border-radius: 5px; /* Rounded corners */
+    position: absolute;
+    right: 0;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
 }
-
 .popup-menu {
     display: none;
     position: absolute;
@@ -563,7 +561,6 @@ li {
     z-index: 10;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 /* Styles for the delete button in the popup menu */
 .popup-delete-button {
     background-color: red; /* Same red background */
@@ -573,4 +570,3 @@ li {
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 5px; /* Rounded corners */
 }
-
