@@ -328,7 +328,19 @@ function getAllMessagesExceptLast() {
             settings.repeat_penalty = 1.12;       // Slightly higher repeat penalty to avoid excessive looping
             // Add any additional settings updates here
             break;
-        
+
+        case 'Chaos Catalyst':
+            // Disruptive config to force variation
+            settings.temperature = 1.50; // High randomness
+            settings.top_p = 0.85; // Broadens the range of token choices
+            settings.top_k = 50; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 0.60; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.60; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.30; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+            
             case 'Llama 3 Default':
                 // Llama 3 Default config
                 settings.temperature = 1.22;
