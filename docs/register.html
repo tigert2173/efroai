@@ -503,8 +503,9 @@ function updatePasswordStrength(password) {
 
 // Function to get the password strength message and color
 function getPasswordStrength(password) {
-    let strength = {};
-    
+    let strength = { message: 'Very Weak', color: 'red' };
+
+    // Criteria for password strength
     const requirements = [
         password.length >= 10, // Minimum length check
         password.length <= 32, // Maximum length check
@@ -513,56 +514,51 @@ function getPasswordStrength(password) {
         /\d/.test(password),    // Number
         /[@$!%*?&._-]/.test(password), // Special character
         /(.)\1{2,}/.test(password), // Check for three consecutive identical characters
-        /(123|abc|qwerty|password)/i.test(password), // Check for common sequences
+        /(123|abc|qwerty|password)/i.test(password) // Check for common sequences
     ];
 
+    // Count the number of requirements met
     let passed = requirements.filter(req => req).length;
 
-    // Adjusted switch statement for more nuanced ratings
-    switch (passed) {
-        case 0:
-            strength.message = 'Very Weak';
-            strength.color = 'red';
-            break;
-        case 1:
-            strength.message = 'Very Weak';
-            strength.color = 'red';
-            break;
-        case 2:
-            strength.message = 'Weak';
-            strength.color = 'orange';
-            break;
-        case 3:
-            strength.message = 'Fair'; // Changed from 'Good' to 'Fair'
-            strength.color = 'yellow';
-            break;
-        case 4:
-            strength.message = 'Strong';
-            strength.color = 'blue'; // Changed color for stronger passwords
-            break;
-        case 5:
-            strength.message = 'Very Strong';
-            strength.color = 'green'; // Can remain green or be darkgreen
-            break;
-        case 6:
-            strength.message = 'Secure';
-            strength.color = 'darkgreen'; // Indicate a highly secure password
-            break;
-        case 7: // If all checks are passed
-            strength.message = 'Excellent';
-            strength.color = 'darkgreen'; // Indicate an exceptional password
-            break;
-        default:
-            strength.message = 'Very Weak';
-            strength.color = 'red';
-    }
-
-    // Additional feedback for specific cases
-    if (password.length < 10) {
-        strength.message += ' (Increase length)';
-    } else if (password.length > 32) {
+    // Determine password strength based on the number of passed requirements
+    if (password.length > 32) {
         strength.message = 'Invalid Password: Exceeds 32 characters';
-        strength.color = 'red'; // Ensure color reflects the invalid status
+        strength.color = 'red';
+    } else if (password.length < 10) {
+        strength.message = 'Very Weak: Increase length';
+        strength.color = 'red';
+    } else {
+        switch (passed) {
+            case 0:
+            case 1:
+                strength.message = 'Very Weak';
+                strength.color = 'red';
+                break;
+            case 2:
+                strength.message = 'Weak';
+                strength.color = 'orange';
+                break;
+            case 3:
+                strength.message = 'Fair';
+                strength.color = 'yellow';
+                break;
+            case 4:
+                strength.message = 'Good';
+                strength.color = 'lightgreen';
+                break;
+            case 5:
+                strength.message = 'Strong';
+                strength.color = 'green';
+                break;
+            case 6:
+                strength.message = 'Very Strong';
+                strength.color = 'darkgreen';
+                break;
+            case 7:
+                strength.message = 'Secure';
+                strength.color = 'blue'; // Exceptional strength
+                break;
+        }
     }
 
     return strength;
