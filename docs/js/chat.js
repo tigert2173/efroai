@@ -960,7 +960,7 @@ function displayMessage(content, sender, isFinal = false) {
         currentBotMessageElement.innerHTML = sanitizedContent;
 
         // If the message is final, update the navigation header
-        if (isFinal) {
+        if (isFinal && currentBotMessageElement) {
             // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
