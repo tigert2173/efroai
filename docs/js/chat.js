@@ -1057,3 +1057,4 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
+module.exports = { displayMessage };
