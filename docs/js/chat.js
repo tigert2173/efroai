@@ -317,6 +317,18 @@ function getAllMessagesExceptLast() {
             // Add any additional settings updates here
             break;
 
+        case 'Nebula Drift':
+            // Shortwave config
+            settings.temperature = 1.15;          // Slightly higher temperature for more creativity
+            settings.top_p = 0.7;                 // A bit more randomness in token selection
+            settings.top_k = 40;                  // Wider selection for token choices
+            settings.min_p = 0.01;                // Allow some rare tokens for variety
+            settings.prescence_penalty = 0.10;    // Mild penalty to encourage novelty
+            settings.frequency_penalty = 0.05;    // Minimal frequency penalty to avoid too much repetition
+            settings.repeat_penalty = 1.08;       // Slightly higher repeat penalty to avoid excessive looping
+            // Add any additional settings updates here
+            break;
+        
             case 'Llama 3 Default':
                 // Llama 3 Default config
                 settings.temperature = 1.22;
@@ -525,7 +537,7 @@ async function sendMessage() {
        // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
-        
+        lastUserMessage = message;
         messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
@@ -533,7 +545,6 @@ async function sendMessage() {
         botMessages = [];
         currentBotMessageElement = null;
     }
-    lastUserMessage = message;
     lastBotMsg = lastBotMsg || settings.greeting;
 
     //Define the system message
