@@ -1,4 +1,5 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
+let messages = []; // Replace with your actual messages array
 
 function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
@@ -25,38 +26,33 @@ function updateSavedChatsList() {
     savedChats.forEach((chat, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
-        listItem.onclick = () => loadChat(index); // Load chat on click
 
-        // Right-click context menu
         listItem.oncontextmenu = (e) => {
-            e.preventDefault();
-            showPopupMenu(e.pageX, e.pageY, index);
+            e.preventDefault(); // Prevent the default context menu
+            showPopupMenu(e, index);
         };
 
+        listItem.onclick = () => loadChat(index);
         savedChatsList.appendChild(listItem);
     });
 }
 
-function showPopupMenu(x, y, index) {
+function showPopupMenu(event, index) {
     const popupMenu = document.getElementById('popup-menu');
-    popupMenu.innerHTML = ''; // Clear previous items
+    popupMenu.innerHTML = ''; // Clear previous menu items
 
-    const deleteItem = document.createElement('div');
-    deleteItem.textContent = 'Delete Chat';
-    deleteItem.onclick = () => {
+    const deleteOption = document.createElement('div');
+    deleteOption.textContent = 'Delete Chat';
+    deleteOption.onclick = (e) => {
+        e.stopPropagation();
         deleteChat(index);
-        popupMenu.style.display = 'none'; // Hide menu after action
+        popupMenu.style.display = 'none'; // Hide the menu after action
     };
-    
-    popupMenu.appendChild(deleteItem);
-    popupMenu.style.left = `${x}px`;
-    popupMenu.style.top = `${y}px`;
-    popupMenu.style.display = 'block';
-}
 
-function hidePopupMenu() {
-    const popupMenu = document.getElementById('popup-menu');
-    popupMenu.style.display = 'none';
+    popupMenu.appendChild(deleteOption);
+    popupMenu.style.display = 'block';
+    popupMenu.style.left = `${event.pageX}px`;
+    popupMenu.style.top = `${event.pageY}px`;
 }
 
 function deleteChat(index) {
@@ -71,7 +67,7 @@ function deleteChat(index) {
 function loadChat(index) {
     const selectedChat = savedChats[index];
     if (selectedChat) {
-        messages = [];
+        messages = []; // Clear current messages array
         clearAllMessages();
 
         selectedChat.messages.forEach(msg => {
@@ -142,8 +138,11 @@ document.getElementById('download-button').onclick = downloadChatAsJSON;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
 document.getElementById('upload-input').onchange = uploadChat;
 
-// Hide the popup menu when clicking outside of it
-document.addEventListener('click', hidePopupMenu);
-
 // Call this function initially to display saved chats on page load
 updateSavedChatsList();
+
+// Hide the popup menu when clicking anywhere else
+document.addEventListener('click', () => {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'none';
+});
