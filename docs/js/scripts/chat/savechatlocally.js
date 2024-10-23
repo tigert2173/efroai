@@ -35,21 +35,22 @@ updateSavedChatsList();
 function loadChat(index) {
     const selectedChat = savedChats[index];
     if (selectedChat) {
-        messages = selectedChat.messages; // Replace current messages array with the saved one
-
-        // Clear the chat container and display the saved messages
+        // Reset messages array for the new chat
+        messages = []; // Clear the current messages array
         const chatContainer = document.getElementById('chat-container');
         chatContainer.innerHTML = ''; // Clear current chat
 
-        // Display each message from the saved chat
-        messages.forEach(msg => {
-           // displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : msg.role, true);
-            displayMessage('No previous user message found to regenerate.', 'user');
-
+        // Load the selected chat's messages
+        selectedChat.messages.forEach(msg => {
+            // Display the message in the chat container
+            displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : msg.role, true);
         });
 
         alert(`Loaded chat: ${selectedChat.name}`);
+    } else {
+        alert('No chat found at this index.');
     }
 }
+
 
 // Export the necessary functions
