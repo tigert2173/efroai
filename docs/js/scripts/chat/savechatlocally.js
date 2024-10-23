@@ -3,6 +3,12 @@ let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load s
 function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
     if (chatName) {
+        // Check if the chat name already exists
+        if (savedChats.some(chat => chat.name === chatName)) {
+            alert('A chat with this name already exists. Please choose a different name.');
+            return;
+        }
+
         const chatData = { name: chatName, messages: [...messages] };
         savedChats.push(chatData);
 
@@ -42,7 +48,12 @@ function loadChat(index) {
 
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
-            displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : 'user', true);
+            // Check the structure of the message before displaying
+            if (msg.content && msg.content.length > 0) {
+                displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : 'user', true);
+            } else {
+                console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
+            }
         });
 
         alert(`Loaded chat: ${selectedChat.name}`);
@@ -50,6 +61,5 @@ function loadChat(index) {
         alert('No chat found at this index.');
     }
 }
-
 
 // Export the necessary functions
