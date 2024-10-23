@@ -235,6 +235,11 @@ function clearCurrentBotMessage() {
     }
 }
 
+// Function to clear the content of the current bot message element
+function clearAllMessages() {
+    chatContainer.innerHTML = '';
+}
+
 let messagedataimportance = {
     lusermsg: '',
     messagehistory: '',
