@@ -451,6 +451,7 @@
     passwordInput.addEventListener('input', function() {
         const value = passwordInput.value;
         const strength = getPasswordStrength(value);
+        updatePasswordStrength(this.value);
         passwordStrength.textContent = strength.message;
         passwordStrength.style.color = strength.color;
     });
@@ -487,11 +488,6 @@
             strengthBar.className = 'password-strength weak';
     }
 }
-
-// Example: attach the update function to an input event
-document.getElementById('password-input').addEventListener('input', function () {
-    updatePasswordStrength(this.value);
-});
 
     function getPasswordStrength(password) {
         let strength = { message: 'Weak', color: 'red' };
