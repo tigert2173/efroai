@@ -46,9 +46,11 @@ function showPopupMenu(event, index) {
     popupMenu.style.display = 'block';
     popupMenu.style.left = `${event.pageX}px`;
     popupMenu.style.top = `${event.pageY}px`;
-    
-    popupMenu.innerHTML = ''; // Clear previous items
 
+    // Clear previous items
+    popupMenu.innerHTML = '';
+
+    // Create delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.onclick = (e) => {
