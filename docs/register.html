@@ -462,68 +462,66 @@ passwordInput.addEventListener('input', function() {
 // Function to update the visual strength bar
 function updatePasswordStrength(password) {
     const strengthBar = document.getElementById('strength-bar');
-
+    
     let strength = 0;
-
-    // Check length
-    if (password.length >= 10) strength++; // Minimum length check
-    if (password.length <= 32) strength++; // Maximum length check
-
-    // Check character variety
-    if (/[a-z]/.test(password)) strength++; // Lowercase letter
-    if (/[A-Z]/.test(password)) strength++; // Uppercase letter
-    if (/\d/.test(password)) strength++;    // Number
-    if (/[@$!%*?&._-]/.test(password)) strength++; // Special character
-
-    // Check for consecutive identical characters
-    if (/(.)\1{2,}/.test(password)) strength--; // Deduct for three consecutive identical characters
-
+    let minLengthValid = password.length >= 10;
+    let maxLengthValid = password.length <= 32;
+    let hasLowercase = /[a-z]/.test(password);
+    let hasUppercase = /[A-Z]/.test(password);
+    let hasNumber = /\d/.test(password);
+    let hasSpecialChar = /[@$!%*?&._-]/.test(password);
+    
+    // Check for three consecutive identical characters
+    let hasConsecutiveChars = /(.)\1{2,}/.test(password);
     // Check for common sequences
-    if (/(123|abc|qwerty|password)/i.test(password)) strength--; // Deduct for common sequences
+    let hasCommonSequence = /(123|abc|qwerty|password)/i.test(password);
 
-    // Check for special character location
-    const specialChars = password.match(/[@$!%*?&._-]/g) || [];
-    if (specialChars.length > 0) {
-        const lastChar = password.charAt(password.length - 1);
-        if (/[@$!%*?&._-]/.test(lastChar)) {
-            strength--; // Penalize if last character is a special character
-        }
-        if (new Set(specialChars).size > 1) {
-            strength++; // Bonus for multiple unique special characters
-        }
+    // Evaluate password criteria
+    if (minLengthValid) strength++;
+    if (maxLengthValid) strength++;
+    if (hasLowercase) strength++;
+    if (hasUppercase) strength++;
+    if (hasNumber) strength++;
+    if (hasSpecialChar) strength++;
+
+    // Penalize if the last character is a special character
+    if (hasSpecialChar && /[@$!%*?&._-]$/.test(password)) {
+        strength--; // Reduce strength for ending with a special character
     }
 
-    // Calculate the strength percentage based on max potential strength
-    const maxStrength = 7; // Total strength can go from 0 to 7
-    const strengthPercentage = (strength / maxStrength) * 100;
+    // Bonus for using multiple unique special characters
+    const uniqueSpecialChars = new Set(password.match(/[@$!%*?&._-]/g) || []);
+    if (uniqueSpecialChars.size > 1) {
+        strength++; // Add strength for multiple unique special characters
+    }
+
+    // Apply penalties for bad patterns
+    if (hasConsecutiveChars) strength--;
+    if (hasCommonSequence) strength--;
+
+    // Calculate the strength percentage based on criteria
+    const maxStrength = 6; // Maximum score considering all criteria
+    const strengthPercentage = Math.max(0, (strength / maxStrength) * 100); // Ensure no negative percentages
 
     // Update the width and class based on strength percentage
-    let strengthClass = '';
-    let width = '0%';
+    let width;
+    let strengthClass;
 
-    if (password.length > 32) {
-        width = '0%'; // Invalid length, no strength
+    if (strengthPercentage <= 0) {
+        width = '0%';
         strengthClass = 'password-strength weak';
-    } else if (password.length < 10) {
-        width = '0%'; // Very weak
+    } else if (strengthPercentage <= 40) {
+        width = '40%'; // Weak
         strengthClass = 'password-strength weak';
+    } else if (strengthPercentage <= 70) {
+        width = '70%'; // Fair
+        strengthClass = 'password-strength medium';
+    } else if (strengthPercentage < 100) {
+        width = '90%'; // Strong
+        strengthClass = 'password-strength strong';
     } else {
-        if (strengthPercentage <= 25) {
-            width = '0%'; // Very Weak
-            strengthClass = 'password-strength weak';
-        } else if (strengthPercentage <= 50) {
-            width = '40%'; // Weak
-            strengthClass = 'password-strength weak';
-        } else if (strengthPercentage <= 75) {
-            width = '70%'; // Fair
-            strengthClass = 'password-strength medium';
-        } else if (strengthPercentage < 100) {
-            width = '90%'; // Strong
-            strengthClass = 'password-strength strong';
-        } else {
-            width = '100%'; // Very Strong
-            strengthClass = 'password-strength strong';
-        }
+        width = '100%'; // Very Strong
+        strengthClass = 'password-strength strong';
     }
 
     // Update the visual strength bar
@@ -535,27 +533,44 @@ function updatePasswordStrength(password) {
 function getPasswordStrength(password) {
     let strength = { message: 'Very Weak', color: 'red' };
 
+    let minLengthValid = password.length >= 10;
+    let maxLengthValid = password.length <= 32;
+    let hasLowercase = /[a-z]/.test(password);
+    let hasUppercase = /[A-Z]/.test(password);
+    let hasNumber = /\d/.test(password);
+    let hasSpecialChar = /[@$!%*?&._-]/.test(password);
+    let hasConsecutiveChars = /(.)\1{2,}/.test(password);
+    let hasCommonSequence = /(123|abc|qwerty|password)/i.test(password);
+
     let strengthScore = 0;
 
-    // Criteria for password strength
-    if (password.length >= 10) strengthScore++; // Minimum length check
-    if (password.length <= 32) strengthScore++; // Maximum length check
-    if (/[a-z]/.test(password)) strengthScore++; // Lowercase letter
-    if (/[A-Z]/.test(password)) strengthScore++; // Uppercase letter
-    if (/\d/.test(password)) strengthScore++;    // Number
-    if (/[@$!%*?&._-]/.test(password)) strengthScore++; // At least one special character
+    // Evaluate password criteria
+    if (minLengthValid) strengthScore++;
+    if (maxLengthValid) strengthScore++;
+    if (hasLowercase) strengthScore++;
+    if (hasUppercase) strengthScore++;
+    if (hasNumber) strengthScore++;
+    if (hasSpecialChar) strengthScore++;
 
-    // Check for consecutive identical characters
-    if (/(.)\1{2,}/.test(password)) strengthScore--; // Deduct for three consecutive identical characters
+    // Penalize if the last character is a special character
+    if (hasSpecialChar && /[@$!%*?&._-]$/.test(password)) {
+        strengthScore--; // Reduce strength for ending with a special character
+    }
 
-    // Check for common sequences
-    if (/(123|abc|qwerty|password)/i.test(password)) strengthScore--; // Deduct for common sequences
+    // Bonus for using multiple unique special characters
+    const uniqueSpecialChars = new Set(password.match(/[@$!%*?&._-]/g) || []);
+    if (uniqueSpecialChars.size > 1) {
+        strengthScore++; // Add strength for multiple unique special characters
+    }
 
-    // Calculate the strength percentage based on max potential strength
-    const maxStrength = 7; // Total strength can go from 0 to 7
-    const strengthPercentage = (strengthScore / maxStrength) * 100;
+    // Apply penalties for bad patterns
+    if (hasConsecutiveChars) strengthScore--;
+    if (hasCommonSequence) strengthScore--;
 
-    // Determine strength message and color based on the strength percentage
+    // Determine strength based on the final score
+    const maxScore = 6; // Maximum possible score
+    const finalScore = Math.max(0, strengthScore); // Ensure no negative scores
+
     if (password.length > 32) {
         strength.message = 'Invalid Password: Exceeds 32 characters';
         strength.color = 'red';
@@ -563,6 +578,8 @@ function getPasswordStrength(password) {
         strength.message = 'Very Weak: Increase length';
         strength.color = 'red';
     } else {
+        const strengthPercentage = (finalScore / maxScore) * 100;
+
         if (strengthPercentage <= 25) {
             strength.message = 'Very Weak';
             strength.color = 'red';
@@ -583,6 +600,7 @@ function getPasswordStrength(password) {
 
     return strength;
 }
+
 
 
 </script>
