@@ -51,4 +51,4 @@ function loadChat(index) {
 }
 
 // Export the necessary functions
-module.exports = { saveChat, updateSavedChatsList, loadChat };
+//module.exports = { saveChat, updateSavedChatsList, loadChat };
