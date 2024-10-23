@@ -51,8 +51,8 @@ function loadChat(index) {
             // Check if the content array has at least one message
             if (msg.content && msg.content.length > 0) {
                 const messageText = msg.content[0].text; // Get the message text
-                const sender = msg.role === 'bot' ? 'assistant' : 'user'; // Determine sender
-                displayMessage(messageText, sender, true); // Call displayMessage with the text and sender
+                const sender = msg.role === 'bot' ? 'bot' : 'user'; // Determine sender
+                displayMessage(messageText, sender); // Call displayMessage with the text and sender
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }
