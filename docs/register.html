@@ -472,7 +472,7 @@ function updatePasswordStrength(password) {
     let hasSpecialChar = /[@$!%*?&._-]/.test(password);
     
     // Check for four consecutive identical characters
-    let hasConsecutiveChars = /(.)\1{5,}/.test(password);
+    let hasConsecutiveChars = /(.)\1{4,}/.test(password);
     // Check for common sequences
     let hasCommonSequence = /(123|abc|qwerty|password)/i.test(password);
 
@@ -539,7 +539,7 @@ function getPasswordStrength(password) {
     let hasUppercase = /[A-Z]/.test(password);
     let hasNumber = /\d/.test(password);
     let hasSpecialChar = /[@$!%*?&._-]/.test(password);
-    let hasConsecutiveChars = /(.)\1{5,}/.test(password);
+    let hasConsecutiveChars = /(.)\1{4,}/.test(password);
     let hasCommonSequence = /(123|abc|qwerty|password)/i.test(password);
 
     let strengthScore = 0;
