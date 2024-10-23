@@ -133,9 +133,38 @@
             }
         }
         .password-strength {
-    font-size: 0.9em;
-    margin-top: 5px;
-}
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .password-strength-bar {
+            width: 100%;
+            height: 10px; /* Adjust height as needed */
+            background-color: #e0e0e0; /* Light gray background */
+            border-radius: 5px; /* Optional: Rounded corners */
+            overflow: hidden; /* Ensures inner div doesn't overflow */
+            margin-top: 5px;
+        }
+
+        .password-strength {
+            height: 100%;
+            width: 0%; /* Set this dynamically with JavaScript */
+            transition: width 0.3s ease; /* Smooth transition */
+            border-radius: 5px; /* Optional: Rounded corners */
+        }
+
+        .weak {
+            background-color: red; /* Weak strength color */
+        }
+
+        .medium {
+            background-color: orange; /* Medium strength color */
+        }
+
+        .strong {
+            background-color: green; /* Strong strength color */
+        }
+
 
     </style>
 </head>
@@ -158,7 +187,10 @@
                     <button type="button" class="reveal-btn" id="revealPassword">👁️</button>
                 </div>
                 <div class="password-strength" id="passwordStrength" style="color: #fbbc04; margin-top: 5px;"></div>
-
+                <div class="password-strength-bar">
+                    <div class="password-strength" id="strength-bar"></div>
+                </div>
+                
                 <label for="confirmPassword">Confirm Password:</label>
                 <div class="password-container">
                     <input type="password" id="confirmPassword" required>
@@ -422,6 +454,44 @@
         passwordStrength.textContent = strength.message;
         passwordStrength.style.color = strength.color;
     });
+
+    function updatePasswordStrength(password) {
+    const strengthBar = document.getElementById('strength-bar');
+
+    // Simple password strength check
+    let strength = 0;
+    if (password.length >= 8) strength++; // Length check
+    if (/[A-Z]/.test(password)) strength++; // Uppercase check
+    if (/[a-z]/.test(password)) strength++; // Lowercase check
+    if (/[0-9]/.test(password)) strength++; // Number check
+    if (/[^A-Za-z0-9]/.test(password)) strength++; // Special character check
+
+    // Update the width and class based on strength
+    switch (strength) {
+        case 0:
+        case 1:
+            strengthBar.style.width = '0%';
+            strengthBar.className = 'password-strength weak';
+            break;
+        case 2:
+            strengthBar.style.width = '50%';
+            strengthBar.className = 'password-strength medium';
+            break;
+        case 3:
+        case 4:
+            strengthBar.style.width = '100%';
+            strengthBar.className = 'password-strength strong';
+            break;
+        default:
+            strengthBar.style.width = '0%';
+            strengthBar.className = 'password-strength weak';
+    }
+}
+
+// Example: attach the update function to an input event
+document.getElementById('password-input').addEventListener('input', function () {
+    updatePasswordStrength(this.value);
+});
 
     function getPasswordStrength(password) {
         let strength = { message: 'Weak', color: 'red' };
