@@ -337,7 +337,7 @@ function getAllMessagesExceptLast() {
             settings.min_p = 0.0; // Keep zero to avoid limiting
             settings.prescence_penalty = 1.40; // Forces the model to consider new topics
             settings.frequency_penalty = 0.20; // Encourages less frequent tokens
-            settings.repeat_penalty = 2.0; // Strong penalty to prevent repetition
+            settings.repeat_penalty = 1.5; // Strong penalty to prevent repetition
             // Add any additional settings updates here
             break;
             
