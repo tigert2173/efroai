@@ -1,5 +1,6 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
 
+// Function to save the current chat
 function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
     if (chatName) {
@@ -18,6 +19,7 @@ function saveChat() {
     }
 }
 
+// Function to update the list of saved chats
 function updateSavedChatsList() {
     const savedChatsList = document.getElementById('saved-chats-list');
     savedChatsList.innerHTML = '';
@@ -26,40 +28,71 @@ function updateSavedChatsList() {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.className = 'delete-button';
-        deleteButton.onclick = (e) => {
-            e.stopPropagation();
-            deleteChat(index);
+        listItem.onclick = () => loadChat(index); // Load chat on left click
+
+        // Right-click context menu
+        listItem.oncontextmenu = (e) => {
+            e.preventDefault();
+            showPopupMenu(e, index);
         };
 
-        listItem.appendChild(deleteButton);
-        listItem.onclick = () => loadChat(index);
         savedChatsList.appendChild(listItem);
     });
 }
 
+// Function to show the popup menu for deletion
+function showPopupMenu(event, index) {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'block';
+    popupMenu.style.left = `${event.pageX}px`;
+    popupMenu.style.top = `${event.pageY}px`;
+
+    // Clear previous items
+    popupMenu.innerHTML = '';
+
+    // Create delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = (e) => {
+        e.stopPropagation();
+        deleteChat(index);
+    };
+    popupMenu.appendChild(deleteButton);
+
+    // Close the popup when clicking elsewhere
+    document.addEventListener('click', closePopup);
+}
+
+// Function to close the popup menu
+function closePopup() {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'none';
+    document.removeEventListener('click', closePopup);
+}
+
+// Function to delete a chat
 function deleteChat(index) {
     if (confirm('Are you sure you want to delete this chat?')) {
         savedChats.splice(index, 1);
         localStorage.setItem('savedChats', JSON.stringify(savedChats));
         updateSavedChatsList();
         alert('Chat deleted successfully!');
+        closePopup(); // Close the popup after deletion
     }
 }
 
+// Function to load a selected chat
 function loadChat(index) {
     const selectedChat = savedChats[index];
     if (selectedChat) {
-        messages = [];
+        messages = []; // Clear current messages array
         clearAllMessages();
 
         selectedChat.messages.forEach(msg => {
             if (msg.content && msg.content.length > 0 && msg.role) {
-                const messageText = msg.content[0].text;
-                const senderRole = msg.role;
-                displayMessage(messageText, senderRole, true, true);
+                const messageText = msg.content[0].text; // Get the message text
+                const senderRole = msg.role; // Determine sender role
+                displayMessage(messageText, senderRole, true, true); // Call displayMessage with correct parameters
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }
@@ -71,6 +104,7 @@ function loadChat(index) {
     }
 }
 
+// Function to download a chat as JSON
 function downloadChatAsJSON() {
     const chatName = prompt("Enter the name of the chat you want to download:");
     const chatData = savedChats.find(chat => chat.name === chatName);
@@ -92,6 +126,7 @@ function downloadChatAsJSON() {
     }
 }
 
+// Function to upload a chat from a JSON file
 function uploadChat(event) {
     const file = event.target.files[0];
     if (file) {
@@ -118,6 +153,7 @@ function uploadChat(event) {
 }
 
 // Event listeners for buttons
+document.getElementById('save-button').onclick = saveChat;
 document.getElementById('download-button').onclick = downloadChatAsJSON;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
 document.getElementById('upload-input').onchange = uploadChat;
