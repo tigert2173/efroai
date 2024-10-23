@@ -536,7 +536,7 @@ input[type="checkbox"]:not(:checked) + label {
     margin: 5px 0; /* Margin for spacing between items */
     cursor: pointer; /* Pointer cursor on hover */
     position: relative; /* For positioning the delete button */
-    background-color: #f9f9f9; /* Light background for better visibility */
+    background-color: #f9f9f924; /* Light background for better visibility */
     transition: background-color 0.3s; /* Smooth background color change */
 }
 
