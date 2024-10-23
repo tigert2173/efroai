@@ -1018,7 +1018,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            <button class="edit-btn" onclick="editMessage(${messages.length})">Edit</button>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
             `;
 
             // Append message header to the chat container
@@ -1031,7 +1031,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
         ${sanitizedContent}
-        <button class="edit-btn" onclick="editMessage(${messages.length})">Edit</button>
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         `;
         chatContainer.appendChild(messageElement);
     }
@@ -1072,6 +1072,35 @@ function updateArrowStates() {
     if (rightArrow) {
         rightArrow.classList.toggle('disabled', currentBotMessageIndex === botMessages.length - 1);
     }
+}
+
+function enableEditMode(button, index) {
+    const messageElement = button.parentElement;
+    const messageContentElement = messageElement.querySelector('.message-content');
+    const currentContent = messageContentElement.innerHTML;
+
+    // Replace the message content with an input field for inline editing
+    messageContentElement.innerHTML = `<textarea class="edit-area">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
+    
+    // Replace the Edit button with a Save button
+    button.textContent = 'Save';
+    button.onclick = function() { saveEditedMessage(this, index); };
+}
+
+function saveEditedMessage(button, index) {
+    const messageElement = button.parentElement;
+    const editArea = messageElement.querySelector('.edit-area');
+    const newContent = editArea.value.replace(/\n/g, '<br>');
+
+    // Update the message content in the array
+    messages[index].content[0].text = newContent;
+    
+    // Replace the textarea with the new content and restore the Edit button
+    messageElement.querySelector('.message-content').innerHTML = newContent;
+    button.textContent = 'Edit';
+    button.onclick = function() { enableEditMode(this, index); };
+
+    console.log('Updated message:', messages);
 }
 
 function editMessage(index) {
