@@ -223,7 +223,7 @@ function updateSettings() {
 
 let lastBotMessage = ''; // Variable to store the last bot message
 let lastUserMessage = ''; // Variable to store the last user message
-let currentBotMessageElement; // To store the current bot message element
+let currentBotMessageElement = null;
 let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 // Function to clear the content of the current bot message element
