@@ -43,7 +43,9 @@ function loadChat(index) {
         // Load the selected chat's messages
         selectedChat.messages.forEach(msg => {
             // Display the message in the chat container
-            displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : msg.role, true);
+           // displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : msg.role, true);
+            displayMessage(msg.content[0].text, msg.role === 'assistant' ? 'bot' : 'user', true);
+
         });
 
         alert(`Loaded chat: ${selectedChat.name}`);
