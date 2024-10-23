@@ -573,7 +573,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Hover effect for the delete button */
 .delete-button:hover {
-    transform: scale(1.1) rotate(10deg); /* Slightly increases size and rotates */
+    transform: scale(1.2) rotate(5deg); /* Slightly increases size and rotates */
     background: darkred; /* Darkens the background on hover */
 }
 
