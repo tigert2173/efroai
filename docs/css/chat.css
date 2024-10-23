@@ -571,3 +571,12 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 5px; /* Rounded corners */
 }
+.popup-download-button {
+    background-color: blue; /* Blue background for download button */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 5px; /* Rounded corners */
+    margin-left: 10px; /* Space between buttons */
+}
