@@ -1,5 +1,3 @@
-const { displayMessage } = require('../../js/chat.js');
-
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
 
 function saveChat() {
@@ -55,4 +53,3 @@ function loadChat(index) {
 }
 
 // Export the necessary functions
-//module.exports = { saveChat, updateSavedChatsList, loadChat };
