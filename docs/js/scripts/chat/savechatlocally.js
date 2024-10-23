@@ -109,3 +109,62 @@ window.addEventListener('click', hideContextMenu);
 
 // Add event listener to the save chat button
 document.getElementById('save-chat-button').addEventListener('click', saveChat);
+
+// Function to download the selected chat as a JSON file
+function downloadChatAsJSON() {
+    const chatName = prompt("Enter a name for the JSON file:");
+    if (chatName) {
+        const chatData = savedChats.find(chat => chat.name === chatName);
+        if (chatData) {
+            const jsonString = JSON.stringify(chatData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${chatName}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('Chat downloaded successfully!');
+        } else {
+            alert('Chat not found.');
+        }
+    }
+}
+
+// Attach event listener to the download chat button
+document.getElementById('download-chat-button').addEventListener('click', downloadChatAsJSON);
+
+// Function to upload a chat from a JSON file
+function uploadChat(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const uploadedChat = JSON.parse(e.target.result);
+                if (uploadedChat.name && uploadedChat.messages) {
+                    savedChats.push(uploadedChat);
+                    localStorage.setItem('savedChats', JSON.stringify(savedChats)); // Update local storage
+                    updateSavedChatsList(); // Refresh the saved chats list
+                    alert('Chat uploaded successfully!');
+                } else {
+                    alert('Invalid chat structure. Ensure it has a name and messages.');
+                }
+            } catch (error) {
+                alert('Error parsing JSON file. Please ensure it is a valid JSON.');
+            }
+        };
+        reader.readAsText(file);
+    }
+}
+
+// Attach event listener to the upload chat input
+document.getElementById('upload-chat-input').addEventListener('change', uploadChat);
+
+// Add event listener to the upload chat button to trigger file input
+document.getElementById('upload-chat-button').addEventListener('click', () => {
+    document.getElementById('upload-chat-input').click();
+});
