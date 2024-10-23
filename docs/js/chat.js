@@ -1077,8 +1077,8 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // The parent element of the button
-    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
+    const messageElement = button.parentElement; // Get the parent element of the button
+    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the message content
     const currentContent = messageContentElement.innerHTML;
 
     // Replace the message content with a textarea for inline editing
