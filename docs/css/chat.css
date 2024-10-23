@@ -553,22 +553,26 @@ input[type="checkbox"]:not(:checked) + label {
     border: none;
     cursor: pointer;
     margin-left: 10px;
-    padding: 5px;
+    padding: 5px 10px; /* More padding for a better click area */
     border-radius: 3px; /* Adds rounded corners */
-    transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition */
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    font-size: 16px; /* Adjusted for better visibility */
 }
 
 .delete-button:before {
     content: '✖'; /* Use the multiplication sign as an X */
-    font-size: 20px; /* Size of the X */
+    font-size: 16px; /* Size of the X, adjusted for consistency */
     display: inline-block; /* Display as inline block */
     line-height: 20px; /* Center vertically */
+    margin-right: 5px; /* Space between the X and button text */
 }
 
 .delete-button:hover {
-    transform: scale(1.2) rotate(10deg); /* Slightly increases size and rotates */
+    transform: scale(1.1) rotate(10deg); /* Slightly increases size and rotates */
     background: darkred; /* Darkens the background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow on hover for depth */
 }
+
 
 .popup-menu {
     display: none;
