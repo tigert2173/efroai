@@ -998,7 +998,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
 
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
-            currentBotMessageElement.innerHTML = sanitizedContent;
+            currentBotMessageElement.innerHTML = <span class="message-content">${sanitizedContent}</span>;
         }
         // If the message is final, update the navigation header
         if (isFinal) {
