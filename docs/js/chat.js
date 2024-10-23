@@ -999,9 +999,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
-            <span class="message-content">${sanitizedContent}</span>
-            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-            `;
+        <span class="message-content">${sanitizedContent}</span>
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        `;
         }
         // If the message is final, update the navigation header
         if (isFinal) {
@@ -1077,25 +1077,17 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // Get the parent element of the button
-    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the message content
+    const messageElement = button.parentElement;
+    const messageContentElement = messageElement.querySelector('.message-content');
     const currentContent = messageContentElement.innerHTML;
 
-    // Replace the message content with a textarea for inline editing
-    messageContentElement.innerHTML = `<textarea class="edit-area" oninput="autoResize.call(this)" style="width: 100%;">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
+    // Replace the message content with an input field for inline editing
+    messageContentElement.innerHTML = `<textarea class="edit-area">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
     
-    // Set the initial height to match the content
-    const editArea = messageContentElement.querySelector('.edit-area');
-    editArea.style.height = `${editArea.scrollHeight}px`;
-
     // Replace the Edit button with a Save button
     button.textContent = 'Save';
     button.onclick = function() { saveEditedMessage(this, index); };
-
-    // Focus the edit area for immediate typing
-    editArea.focus();
 }
-
 
 function saveEditedMessage(button, index) {
     const messageElement = button.parentElement;
@@ -1112,18 +1104,6 @@ function saveEditedMessage(button, index) {
 
     console.log('Updated message:', messages);
 }
-
-const editArea = document.querySelector('.edit-area');
-
-// Function to auto-resize the edit area based on content
-function autoResize() {
-    this.style.height = 'auto'; // Reset height to shrink
-    this.style.height = `${this.scrollHeight}px`; // Set height to scrollHeight
-}
-
-
-// Attach the auto-resize function to the input event
-editArea.addEventListener('input', autoResize);
 
 function editMessage(index) {
     const messageToEdit = messages[index];
