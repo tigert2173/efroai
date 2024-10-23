@@ -470,10 +470,24 @@ function updatePasswordStrength(password) {
         { test: /[a-z]/.test(password), weight: 1 }, // Lowercase letter
         { test: /[A-Z]/.test(password), weight: 1 }, // Uppercase letter
         { test: /\d/.test(password), weight: 1 },    // Number
-        { test: /[@$!%*?&._-]/.test(password), weight: 1 }, // Special character
+        { test: /[@$!%*?&._-]/.test(password), weight: 1 }, // At least one special character
         { test: /(.)\1{2,}/.test(password), weight: -1 }, // Check for three consecutive identical characters
         { test: /(123|abc|qwerty|password)/i.test(password), weight: -1 } // Check for common sequences
     ];
+
+    // Check for special character location
+    const specialChars = password.match(/[@$!%*?&._-]/g) || [];
+    if (specialChars.length > 0) {
+        const lastChar = password.charAt(password.length - 1);
+        if (/[@$!%*?&._-]/.test(lastChar)) {
+            // Penalize if the last character is a special character
+            requirements.push({ test: true, weight: -1 }); // Add a negative weight
+        }
+        // Add bonus for multiple unique special characters
+        if (new Set(specialChars).size > 1) {
+            requirements.push({ test: true, weight: 1 }); // Add a positive weight
+        }
+    }
 
     let totalWeight = requirements.reduce((sum, req) => sum + req.weight, 0);
     let passedWeight = requirements
