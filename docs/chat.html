@@ -105,22 +105,19 @@
             </div>
             <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
            
-        <div>
-            <button id="save-chat-btn" onclick="saveChat()">Save Chat</button>
-        </div>
-        <button id="download-chat-button">Download Chat as JSON</button>
-        <input type="file" id="upload-chat-input" style="display:none;" accept=".json"/>
-        <button id="upload-chat-button">Upload Chat from JSON</button>
+            <button id="save-button">Save Chat</button>
 
-        <div>
-            <h3>Saved Chats</h3>
+        <button id="download-button">Download Chat as JSON</button>
+        <input type="file" id="upload-input" style="display:none;" />
+        <button id="upload-button">Upload Chat</button>
+        
+        <div id="saved-chats">
+            <h2>Saved Chats</h2>
             <ul id="saved-chats-list"></ul>
         </div>
+        
+        <div id="popup-menu" class="popup-menu"></div>
 
-        <!-- Context Menu for Deleting -->
-        <div id="context-menu" style="display:none; position:absolute; background:white; border:1px solid #ccc; z-index:1000;">
-            <button id="delete-chat-button">Delete Chat</button>
-        </div>
     
         <div id="settings-container">
             <div class="setting">
