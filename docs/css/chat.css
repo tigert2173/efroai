@@ -651,7 +651,7 @@ input[type="checkbox"]:not(:checked) + label {
     padding: 5px;
     border: 1px solid #ccc;
     color: white;
-    background-color: rgb(47, 79, 49);
+    background-color: rgb(30, 48, 31);
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     overflow: hidden; /* Hide scrollbars */
