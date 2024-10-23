@@ -230,9 +230,14 @@ code {
     background-color: #1b663e; /* Softer neon green background for user */
 }
 
-.bot {
+.assistant {
     text-align: left;
     background-color: #124429; /* Orange background for bot */
+}
+
+.system {
+    text-align: left;
+    background-color: brown; /* Orange background for bot */
 }
 
 #input-container {
