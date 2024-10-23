@@ -40,7 +40,7 @@ function updateSavedChatsList() {
 
         // Create a delete button for each chat
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.textContent = '✖';
         deleteButton.className = 'delete-button'; // Apply class for styling
         deleteButton.onclick = (e) => {
             e.stopPropagation(); // Prevent loading chat on button click
