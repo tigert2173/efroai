@@ -501,10 +501,14 @@ function updatePasswordStrength(password) {
     }
 }
 
+const value = passwordInput.value;
+    const strength = getPasswordStrength(value);
+    updatePasswordStrength(value);
+    passwordStrength.textContent = strength.message;
+    passwordStrength.style.color = strength.color;
+    
 // Function to get the password strength message and color
 function getPasswordStrength(password) {
-    const value = passwordInput.value;    
-
     let strength;
     
     // Check if password is too long
