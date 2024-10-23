@@ -59,7 +59,10 @@ app.use(compression({
   app.use((req, res, next) => {
     // Get user's IP address
     
-    const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
+    //const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress; // Check headers or socket
+    const forwarded = req.headers['x-forwarded-for'];
+    const userIp = forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
+
     console.log(`Incoming request from IP: ${userIp}`);
 
     // Check if the IP is in the blocked list
