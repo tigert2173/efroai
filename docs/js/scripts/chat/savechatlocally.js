@@ -52,7 +52,7 @@ function loadChat(index) {
             if (msg.content && msg.content.length > 0 && msg.role) {
                 const messageText = msg.content[0].text; // Get the message text
                 const senderRole = msg.role; // Determine sender role
-                displayMessage(messageText, senderRole, false); // Call displayMessage with correct parameters
+                displayMessage(messageText, senderRole, true); // Call displayMessage with correct parameters
             } else {
                 console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
             }
