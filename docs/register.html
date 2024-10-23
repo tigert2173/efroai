@@ -521,6 +521,13 @@ function getPasswordStrength(password) {
         return strength;
     }
 
+    // Check if password is too short
+    if (password.length > 10) {
+        strength.message = 'Invalid Password: Under 10 characters';
+        strength.color = 'red';
+        return strength;
+    }
+
     const requirements = [
         password.length >= 10, // Minimum length check
         password.length <= 32, // Maximum length check
