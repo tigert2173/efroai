@@ -998,7 +998,10 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
 
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
-            currentBotMessageElement.innerHTML = `<span class="message-content">${sanitizedContent}</span>`;
+            currentBotMessageElement.innerHTML =  `
+            <span class="message-content">${sanitizedContent}</span>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+            `;
         }
         // If the message is final, update the navigation header
         if (isFinal) {
@@ -1018,7 +1021,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
             `;
 
             // Append message header to the chat container
