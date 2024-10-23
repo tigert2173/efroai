@@ -545,6 +545,8 @@ li {
     position: relative;
 }
 .delete-button {
+    position: absolute;
+    right: 0;
     background: red;
     color: white;
     border: none;

@@ -1,5 +1,4 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
-let messages = []; // Replace with your actual messages array
 
 function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
@@ -27,32 +26,18 @@ function updateSavedChatsList() {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
 
-        listItem.oncontextmenu = (e) => {
-            e.preventDefault(); // Prevent the default context menu
-            showPopupMenu(e, index);
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete-button';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation();
+            deleteChat(index);
         };
 
+        listItem.appendChild(deleteButton);
         listItem.onclick = () => loadChat(index);
         savedChatsList.appendChild(listItem);
     });
-}
-
-function showPopupMenu(event, index) {
-    const popupMenu = document.getElementById('popup-menu');
-    popupMenu.innerHTML = ''; // Clear previous menu items
-
-    const deleteOption = document.createElement('div');
-    deleteOption.textContent = 'Delete Chat';
-    deleteOption.onclick = (e) => {
-        e.stopPropagation();
-        deleteChat(index);
-        popupMenu.style.display = 'none'; // Hide the menu after action
-    };
-
-    popupMenu.appendChild(deleteOption);
-    popupMenu.style.display = 'block';
-    popupMenu.style.left = `${event.pageX}px`;
-    popupMenu.style.top = `${event.pageY}px`;
 }
 
 function deleteChat(index) {
@@ -67,7 +52,7 @@ function deleteChat(index) {
 function loadChat(index) {
     const selectedChat = savedChats[index];
     if (selectedChat) {
-        messages = []; // Clear current messages array
+        messages = [];
         clearAllMessages();
 
         selectedChat.messages.forEach(msg => {
@@ -133,16 +118,9 @@ function uploadChat(event) {
 }
 
 // Event listeners for buttons
-document.getElementById('save-button').onclick = saveChat;
 document.getElementById('download-button').onclick = downloadChatAsJSON;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
 document.getElementById('upload-input').onchange = uploadChat;
 
 // Call this function initially to display saved chats on page load
 updateSavedChatsList();
-
-// Hide the popup menu when clicking anywhere else
-document.addEventListener('click', () => {
-    const popupMenu = document.getElementById('popup-menu');
-    popupMenu.style.display = 'none';
-});
