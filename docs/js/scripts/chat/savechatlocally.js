@@ -37,6 +37,15 @@ function updateSavedChatsList() {
         };
 
         savedChatsList.appendChild(listItem);
+
+        // Create a delete button for each chat
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation(); // Prevent loading chat on button click
+            deleteChat(index);
+        };
+        listItem.appendChild(deleteButton);
     });
 }
 
