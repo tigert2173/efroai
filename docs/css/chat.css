@@ -646,12 +646,13 @@ input[type="checkbox"]:not(:checked) + label {
 /* Inline editing area styles */
 .edit-area {
     width: 100%;
-    height: 60px; /* Fixed height for consistency */
+    min-height: 40px; /* Minimum height for the input area */
     resize: none; /* Disable resizing */
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: height 0.2s ease; /* Smooth height transition */
 }
 
 /* Button styles */

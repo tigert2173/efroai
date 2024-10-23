@@ -1105,6 +1105,19 @@ function saveEditedMessage(button, index) {
     console.log('Updated message:', messages);
 }
 
+const editArea = document.querySelector('.edit-area');
+
+// Function to auto-resize the text area
+function autoResizeTextArea() {
+    this.style.height = 'auto'; // Reset height to auto to calculate scrollHeight
+    this.style.height = `${this.scrollHeight}px`; // Set height based on scrollHeight
+}
+
+// Attach the event listener to the edit area
+if (editArea) {
+    editArea.addEventListener('input', autoResizeTextArea);
+}
+
 function editMessage(index) {
     const messageToEdit = messages[index];
     const currentContent = messageToEdit.content[0].text;
