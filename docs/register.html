@@ -462,44 +462,61 @@ passwordInput.addEventListener('input', function() {
 // Function to update the visual strength bar
 function updatePasswordStrength(password) {
     const strengthBar = document.getElementById('strength-bar');
+    
+    // Criteria for password strength with weights
+    const requirements = [
+        { test: password.length >= 10, weight: 1 }, // Minimum length check
+        { test: password.length <= 32, weight: 0 }, // Maximum length check (0 weight)
+        { test: /[a-z]/.test(password), weight: 1 }, // Lowercase letter
+        { test: /[A-Z]/.test(password), weight: 1 }, // Uppercase letter
+        { test: /\d/.test(password), weight: 1 },    // Number
+        { test: /[@$!%*?&._-]/.test(password), weight: 1 }, // Special character
+        { test: /(.)\1{2,}/.test(password), weight: -1 }, // Check for three consecutive identical characters
+        { test: /(123|abc|qwerty|password)/i.test(password), weight: -1 } // Check for common sequences
+    ];
 
-    // Calculate the password strength based on criteria
-    let strength = 0;
-    if (password.length >= 10) strength++; // Minimum length check
-    if (password.length <= 32) strength++; // Maximum length check
-    if (/[A-Z]/.test(password)) strength++; // Uppercase check
-    if (/[a-z]/.test(password)) strength++; // Lowercase check
-    if (/\d/.test(password)) strength++; // Number check
-    if (/[@$!%*?&._-]/.test(password)) strength++; // Special character check
+    let totalWeight = requirements.reduce((sum, req) => sum + req.weight, 0);
+    let passedWeight = requirements
+        .filter(req => req.test)
+        .reduce((sum, req) => sum + req.weight, 0);
 
-    // Update the width and class based on strength
-    switch (strength) {
-        case 0:
-        case 1:
-            strengthBar.style.width = '0%';
-            strengthBar.className = 'password-strength weak';
-            break;
-        case 2:
-            strengthBar.style.width = '40%'; // Weak strength
-            strengthBar.className = 'password-strength weak';
-            break;
-        case 3:
-            strengthBar.style.width = '70%'; // Medium strength
-            strengthBar.className = 'password-strength medium';
-            break;
-        case 4:
-            strengthBar.style.width = '90%'; // Good strength
-            strengthBar.className = 'password-strength strong';
-            break;
-        case 5:
-            strengthBar.style.width = '100%'; // Strong strength
-            strengthBar.className = 'password-strength strong';
-            break;
-        default:
-            strengthBar.style.width = '0%';
-            strengthBar.className = 'password-strength weak';
+    // Calculate the strength percentage
+    const strengthPercentage = (passedWeight / totalWeight) * 100;
+
+    // Update the width and class based on strength percentage
+    let strengthClass = '';
+    let width = '0%';
+    
+    if (password.length > 32) {
+        width = '0%'; // Invalid length, no strength
+        strengthClass = 'password-strength weak';
+    } else if (password.length < 10) {
+        width = '0%'; // Very weak
+        strengthClass = 'password-strength weak';
+    } else {
+        if (strengthPercentage <= 25) {
+            width = '0%'; // Very Weak
+            strengthClass = 'password-strength weak';
+        } else if (strengthPercentage <= 50) {
+            width = '40%'; // Weak
+            strengthClass = 'password-strength weak';
+        } else if (strengthPercentage <= 75) {
+            width = '70%'; // Fair
+            strengthClass = 'password-strength medium';
+        } else if (strengthPercentage < 100) {
+            width = '90%'; // Strong
+            strengthClass = 'password-strength strong';
+        } else {
+            width = '100%'; // Very Strong
+            strengthClass = 'password-strength strong';
+        }
     }
+
+    // Update the visual strength bar
+    strengthBar.style.width = width;
+    strengthBar.className = strengthClass;
 }
+
 
 // Function to get the password strength message and color
 function getPasswordStrength(password) {
