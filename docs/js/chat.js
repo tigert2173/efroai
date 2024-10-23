@@ -913,7 +913,7 @@ let botMessages = []; // Array to store bot messages
 let currentBotMessageElement = null;
 let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
-function displayMessage(content, sender, isFinal = false) {
+function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
     if (!userName) { userName = "{{user}}"; }
 
@@ -954,6 +954,10 @@ function displayMessage(content, sender, isFinal = false) {
         role: sender,
         content: [{ type: 'text', text: content }]
     };
+
+    if (isLoading) {
+        currentBotMessageElement = '';
+    }
 
     if (sender === 'assistant') {
         // Create or reuse the current bot message element
