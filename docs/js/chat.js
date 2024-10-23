@@ -1030,7 +1030,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
-        ${sanitizedContent}
+        <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         `;
         chatContainer.appendChild(messageElement);
