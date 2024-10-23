@@ -1077,17 +1077,25 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement;
-    const messageContentElement = messageElement.querySelector('.message-content');
+    const messageElement = button.parentElement; // The parent element of the button
+    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
 
-    // Replace the message content with an input field for inline editing
-    messageContentElement.innerHTML = `<textarea class="edit-area">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
+    // Replace the message content with a textarea for inline editing
+    messageContentElement.innerHTML = `<textarea class="edit-area" oninput="autoResize.call(this)" style="width: 100%;">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
     
+    // Set the initial height to match the content
+    const editArea = messageContentElement.querySelector('.edit-area');
+    editArea.style.height = `${editArea.scrollHeight}px`;
+
     // Replace the Edit button with a Save button
     button.textContent = 'Save';
     button.onclick = function() { saveEditedMessage(this, index); };
+
+    // Focus the edit area for immediate typing
+    editArea.focus();
 }
+
 
 function saveEditedMessage(button, index) {
     const messageElement = button.parentElement;
