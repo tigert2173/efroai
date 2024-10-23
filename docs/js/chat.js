@@ -525,7 +525,7 @@ async function sendMessage() {
        // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
         console.log('Updated lastBotMsg:', lastBotMsg);
-        lastUserMessage = message;
+        
         messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
@@ -533,7 +533,7 @@ async function sendMessage() {
         botMessages = [];
         currentBotMessageElement = null;
     }
-
+    lastUserMessage = message;
     lastBotMsg = lastBotMsg || settings.greeting;
 
     //Define the system message
