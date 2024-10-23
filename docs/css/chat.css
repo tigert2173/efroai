@@ -521,3 +521,11 @@ input[type="checkbox"]:not(:checked) + label {
         width: 100%; /* Full width for speed indicator */
     }
 }
+
+#context-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+}
