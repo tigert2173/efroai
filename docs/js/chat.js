@@ -1,6 +1,5 @@
 const chatContainer = document.getElementById('chat-container');
 
-
 // Function to get a cookie by name
 function getCookie(name) {
     const value = `; ${document.cookie}`;
