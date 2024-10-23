@@ -154,7 +154,6 @@ function uploadChat(event) {
                 }
             } catch (error) {
                 alert('Error parsing JSON file. Please ensure it is a valid JSON.');
-                console.error('Error parsing JSON:', error); // Log the error for debugging
             }
         };
         reader.readAsText(file);
