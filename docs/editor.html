@@ -842,7 +842,6 @@ function sendForAutomoderation(characterId) {
         // Call the nudity detection endpoint
         return axios.post('https://characters.efroai.net:5663/api/detect-nudity', formData, {
             headers: {
-                Authorization: `${token}`,
                 'Content-Type': 'multipart/form-data'
             }
         });
