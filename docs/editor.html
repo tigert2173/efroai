@@ -819,6 +819,10 @@ function sendForAutomoderation(characterId) {
         return Promise.reject('No token found');
     }
 
+    // Decode the token to get the username
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the payload part of the JWT
+    const username = payload.username; // Adjust this if your token structure is different
+
     // Fetch character data first
     return axios.get(`https://characters.efroai.net/api/characters/${username}/${characterId}`, {
         headers: {
