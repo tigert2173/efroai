@@ -304,7 +304,7 @@ function getAllMessagesExceptLast() {
             settings.min_p = 0.0;
             settings.prescence_penalty = 0.00;
             settings.frequency_penalty = 0.00;
-            settings.repeat_penalty = 1.07;
+            settings.repeat_penalty = 1.09;
             // Add any additional settings updates here
             break;
     
