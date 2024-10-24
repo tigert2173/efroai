@@ -802,70 +802,12 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         }
         // Reset the form and sessionStorage if needed
         // document.getElementById('characterForm').reset();
-        // Send the character for automoderation after uploading the image
-        const characterId = isEditing ? editingCharacterId : imageResponse.data.id;
-        return sendForAutomoderation(characterId);
     })
     .catch(error => {
         console.error(error);
         document.getElementById('errorMessage').textContent = 'Failed to update character.';
     });
 });
-
-function sendForAutomoderation(characterId) {
-    const token = sessionStorage.getItem('token'); // Get token from session storage
-    if (!token) {
-        console.error('No token found. User may not be logged in.');
-        return Promise.reject('No token found');
-    }
-
-    // Decode the token to get the username
-    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the payload part of the JWT
-    const username = payload.username; // Adjust this if your token structure is different
-
-    // Fetch character data first
-    return axios.get(`https://characters.efroai.net/api/characters/${username}/${characterId}`, {
-        headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        console.log("Sending Image to Automod");
-        const characterData = response.data;
-
-        // Prepare the data for nudity detection
-        const formData = new FormData();
-        formData.append('image', characterData.image); // Assuming you have an image URL in characterData
-        formData.append('characterId', characterId); // Append character ID
-
-        // Call the nudity detection endpoint
-        return axios.post('https://characters.efroai.net:5663/api/detect-nudity', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-    })
-    .then(nudityResponse => {
-        const { hasNudity } = nudityResponse.data;
-
-        // Update character status based on nudity detection
-        return axios.patch(`https://characters.efroai.net/api/characters/${characterId}`, {
-            status: hasNudity ? 'rejected' : 'approved' // Update status based on nudity detection
-        }, {
-            headers: {
-                Authorization: `${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-    })
-    .then(() => {
-        console.log(`Character ${characterId} sent for automoderation and status updated.`);
-    })
-    .catch(error => {
-        console.error('Error sending character for automoderation:', error);
-    });
-}
 
 // For photo upload
 const imageInput = document.getElementById('imageUpload');
