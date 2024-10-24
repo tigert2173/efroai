@@ -643,6 +643,10 @@ function loadCharacterData() {
 document.getElementById('characterForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
+    // Disable the submit button to prevent double submission
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
@@ -660,6 +664,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         character.context = cleanInput(document.getElementById('context').value);
     } else {
         document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
+        submitButton.disabled = false; // Re-enable button
         return;
     }
 
@@ -692,7 +697,6 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
     })
     .then(response => {
         const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get the character ID from response or use editing ID
-        console.log(response.data.character.id);
         alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
 
         // After character creation or update, now upload the image if it exists
@@ -707,23 +711,24 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
             });
         }
     })
-    .then(response => {
+    .then(() => {
+        // Reset form and button state
         document.getElementById('characterForm').reset();
-        // After character creation or update
         sessionStorage.removeItem('editCharacter');
-
         isEditing = false; // Reset editing flag
         editingCharacterId = undefined; // Clear editing character ID
-        document.querySelector('button[type="submit"]').textContent = 'Create Character'; // Reset button text
-        // Reset view to initial state
-        document.getElementById('scenarioContainer').style.display = 'block';
-        document.getElementById('contextContainer').style.display = 'none';
+        submitButton.textContent = 'Create Character'; // Reset button text
+        document.querySelector('#scenarioContainer').style.display = 'block';
+        document.querySelector('#contextContainer').style.display = 'none';
+        submitButton.disabled = false; // Re-enable button after submission
     })
     .catch(error => {
         console.error(error);
         document.getElementById('errorMessage').textContent = 'Failed to update character.';
+        submitButton.disabled = false; // Re-enable button on error
     });
 });
+
 
 document.getElementById('saveForm').addEventListener('submit', function (e) {
     e.preventDefault();
