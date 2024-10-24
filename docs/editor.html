@@ -831,6 +831,7 @@ function sendForAutomoderation(characterId) {
         }
     })
     .then(response => {
+        console.log("Sending Image to Automod");
         const characterData = response.data;
 
         // Prepare the data for nudity detection
