@@ -63,9 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginWindow = window.open('/login.html', '_blank');
     });
 
+    // Listen for messages from the login window
     window.addEventListener('message', (event) => {
-        if (event.origin === window.location.origin && event.data === 'loggedIn') {
-            window.location.reload(); // Refresh the current page
+        if (event.origin === window.location.origin) {
+            if (event.data.type === 'login' && event.data.token) {
+                sessionStorage.setItem('token', event.data.token); // Store the token
+                location.reload(); // Refresh the page to apply the new token
+            }
         }
     });
 
