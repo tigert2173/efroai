@@ -119,7 +119,7 @@
             // Create the Revoke button
             const revokeButton = document.createElement('button');
             revokeButton.innerText = 'Revoke';
-            revokeButton.onclick = () => revokeCharacter(username, characterId);
+            revokeButton.onclick = () => revokeCharacter(characterId, username);
             if (status !== 'approved') {
                 revokeButton.style.display = 'none'; // Hide if not approved
             }
