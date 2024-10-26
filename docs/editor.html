@@ -139,6 +139,24 @@
             color: #555; /* Gray color for less emphasis */
         }
 
+        #customModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
 
     </style>
     <!-- Import DOMPurify -->
@@ -333,7 +351,14 @@
         <br>
         <br>
         <button id="attemptRecoveryButton">Attempt To Recover</button>
-
+        <div id="customModal" style="display: none;">
+            <div id="modalContent">
+                <p id="modalMessage"></p>
+                <button id="modalYes">Yes</button>
+                <button id="modalNo">No</button>
+            </div>
+        </div>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -370,28 +395,47 @@ document.getElementById('attemptRecoveryButton').addEventListener('click', funct
 
         // Use setTimeout to delay the confirmation prompt, allowing the user to see the loaded data
         setTimeout(() => {
-            // Ask if the data recovered is correct
-            const dataCorrect = confirm('Is the recovered data correct?');
-            if (dataCorrect) {
-                alert('Great! You can continue editing your character.'); // Notify the user
-            } else {
-                    // If no data is found, ask the user if they want to try a deeper search
-                    const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
-
-                if (deeperSearch) {
-                    // Implement your deeper search logic here
-                    alert('Initiating deeper search...'); // Placeholder for deeper search logic
-                    loadFormData(); // Call the function to populate the form
-
-                } else {
-                    // User said "no"
-                    alert("Okay, no deeper search will be attempted."); // Notify the user
-                }
-            }
-            
+            showModal('Is the recovered data correct?');
         }, 1000); // Delay of 1 second before asking for confirmation
     }
 });
+
+// Function to show the custom modal
+function showModal(message) {
+    document.getElementById('modalMessage').innerText = message;
+    document.getElementById('customModal').style.display = 'flex';
+
+    document.getElementById('modalYes').onclick = function() {
+        alert('Great! You can continue editing your character.'); // Notify the user
+        closeModal(); // Close the modal
+    };
+
+    document.getElementById('modalNo').onclick = function() {
+        // Ask if they want to try a deeper search
+        showDeeperSearchPrompt();
+        closeModal(); // Close the modal
+    };
+}
+
+// Function to close the modal
+function closeModal() {
+    document.getElementById('customModal').style.display = 'none';
+}
+
+// Function to show deeper search prompt
+function showDeeperSearchPrompt() {
+    const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
+
+    if (deeperSearch) {
+        // Implement your deeper search logic here
+        alert('Initiating deeper search...'); // Placeholder for deeper search logic
+        loadFormData(); // Call the function to populate the form
+    } else {
+        // User said "no"
+        alert("Okay, no deeper search will be attempted."); // Notify the user
+    }
+}
+
 
 
 // Function to save form data to localStorage
