@@ -56,16 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
     }
 
-    // Fetch and insert the login form
-    try {
-        const response = await fetch('login-form.html');
-        const loginFormHTML = await response.text();
-        loginPopup.innerHTML = loginFormHTML;
-        addLoginFormEventListeners();  // Add form handling as needed
-    } catch (error) {
-        console.error('Failed to load login form:', error);
-    }
-
     // Event listener for login button in the popup
     document.getElementById('login-btn').addEventListener('click', () => {
         window.location.href = '/login.html'; // Redirect to login page
