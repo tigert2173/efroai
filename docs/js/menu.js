@@ -58,7 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for login button in the popup
     document.getElementById('login-btn').addEventListener('click', () => {
-        window.location.href = '/login.html'; // Redirect to login page
+        window.location.href = '/login.html', '_blank'; // Redirect to login page
     });
+
+    window.addEventListener('message', (event) => {
+        if (event.origin === window.location.origin && event.data === 'loggedIn') {
+            window.location.reload(); // Refresh the current page
+        }
+    });
+
 });
 
