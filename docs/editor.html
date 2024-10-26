@@ -334,10 +334,18 @@
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        document.getElementById('resetEditingButton').addEventListener('click', function () {
+      document.getElementById('resetEditingButton').addEventListener('click', function () {
+        // Show confirmation prompt
+        const userConfirmed = confirm('Are you sure you want to reset the editing mode? All unsaved changes will be lost.');
+
+        if (userConfirmed) {
             isEditing = false; // Force isEditing to false
-            alert('Editing mode has been reset. You can now create a new character.'); // Optional: Notify the user
-        });
+            alert('Editing mode has been reset. You can now create a new character.'); // Notify the user
+            // Optionally, you can reset the form fields here if necessary
+            document.getElementById('characterForm').reset(); // Reset the form if needed
+        }
+    });
+
 
         document.getElementById('toggleMode').addEventListener('click', function() {
             const scenarioContainer = document.getElementById('scenarioContainer');
