@@ -30,6 +30,9 @@ function loginUser() {
           // Store user ID in a cookie
           document.cookie = `userID=${username}; path=/;`;
 
+        // Send a message back to the original page
+        window.opener.postMessage('loggedIn', window.location.origin);
+
         alert('Login successful! Redirecting to homepage...');
         window.location.href = 'index.html'; // Redirect to home page or desired page
     })
