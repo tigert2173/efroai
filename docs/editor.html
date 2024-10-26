@@ -853,14 +853,28 @@ function convertImageToJpeg(file) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');    
 
-                // canvas.width = img.width;
-                // canvas.height = img.height;
-                // Set canvas dimensions to 300x300
-                canvas.width = 300;
-                canvas.height = 300;
+                // Calculate aspect ratio
+                const aspectRatio = img.width / img.height;
+                let newWidth, newHeight;
+
+                // Determine new dimensions while keeping the aspect ratio
+                if (aspectRatio > 1) {
+                    // Wider than tall
+                    newWidth = 300;
+                    newHeight = 300 / aspectRatio;
+                } else {
+                    // Taller than wide
+                    newWidth = 300 * aspectRatio;
+                    newHeight = 300;
+                }
+
+                // Set canvas dimensions to the new size
+                canvas.width = newWidth;
+                canvas.height = newHeight;
 
                 // Draw the image on the canvas, resizing it
-                ctx.drawImage(img, 0, 0, 300, 300);
+                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
 
                 // Convert to JPEG format
                 canvas.toBlob((blob) => {
