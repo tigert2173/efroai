@@ -352,15 +352,13 @@
         document.getElementById('characterForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const name = document.getElementById('name').value;
+    const name = cleanInput(document.getElementById('name').value);
     const status = document.getElementById('status').value;
-    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
-    const chardescription = document.getElementById('chardescription').value;
-    const persona = document.getElementById('persona').value;
-    const scenario = document.getElementById('scenario').value;
-    const context = document.getElementById('context').value;
-    const greeting = document.getElementById('greeting').value;
-    const exampledialogue = document.getElementById('exampledialogue').value;
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase());
+    const chardescription = cleanInput(document.getElementById('chardescription').value);
+    const persona = cleanInput(document.getElementById('persona').value);
+    const greeting = cleanInput(document.getElementById('greeting').value);
+    const exampledialogue = cleanInput(document.getElementById('exampledialogue').value);
     const token = sessionStorage.getItem('token');
     const errorMessage = document.getElementById('errorMessage');
 
@@ -371,12 +369,16 @@
         return;
     }
 
-    // Check if both fields are filled
+    // Include either scenario or context
+    const scenario = cleanInput(document.getElementById('scenario').value);
+    const context = cleanInput(document.getElementById('context').value);
+
     if (scenario && context) {
         errorMessage.textContent = 'Please choose either scenario or context, not both.';
         alert('Please select either Scenario Mode or Context Mode, but not both. \nUse the switch to toggle and remove one of the options!');
         return;
     }
+
     // Check if total characters exceed 12,888
     const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
 
@@ -406,132 +408,103 @@
         return;
     }
 
-    // axios.post('https://characters.efroai.net:3000/api/characters', character, {
-    //     headers: {
-    //         Authorization: `${token}`
-    //     }
-    // })
-    // .then(response => {
-    //     alert('Character created successfully!');
-    //     document.getElementById('characterForm').reset();
-    //     // Reset view to initial state
-    //     document.getElementById('scenarioContainer').style.display = 'block';
-    //     document.getElementById('contextContainer').style.display = 'none';
-    //     console.log(character);
+    let apiUrl;
+    let method;
 
-    // })
-    // .catch(error => {
-    //     console.error(error); // Log the full error object for debugging
-
-    //     if (error.response) {
-    //         if (error.response.status === 401) {
-    //             errorMessage.textContent = 'Unauthorized: Please log in.';
-    //         } else {
-    //             errorMessage.textContent = 'Error: ' + (error.response.data.message || 'Failed to create character.');
-    //         }
-    //     } else if (error.request) {
-    //         errorMessage.textContent = 'Error: No response from server.';
-    //     } else {
-    //         errorMessage.textContent = 'Error: ' + error.message;
-    //     }
-    // });
-});
-
- document.getElementById('characterForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('name').value;
-    const status = document.getElementById('status').value;
-    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
-    const chardescription = document.getElementById('chardescription').value;
-    const persona = document.getElementById('persona').value;
-    const scenario = document.getElementById('scenario').value;
-    const context = document.getElementById('context').value;
-    const greeting = document.getElementById('greeting').value;
-    const exampledialogue = document.getElementById('exampledialogue').value;
-    const token = sessionStorage.getItem('token');
-    const errorMessage = document.getElementById('errorMessage');
-
-    errorMessage.textContent = ''; // Clear previous error messages
-
-    if (!token) {
-        errorMessage.textContent = 'You are not logged in.';
-        return;
-    }
-
-    // Check if both fields are filled
-    if (scenario && context) {
-        errorMessage.textContent = 'Please choose either scenario or context, not both.';
-        alert('Please select either Scenario Mode or Context Mode, but not both. \nUse the switch to toggle and remove one of the options!');
-        return;
-    }
-    // Check if total characters exceed 12,888
-    const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
-
-    if (totalChars > 12888) {
-        errorMessage.textContent = 'Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.';
-        alert("Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.");
-        return;
-    }
-
-    const character = {
-        name,
-        status,
-        tags,
-        chardescription,
-        persona,
-        greeting,
-        exampledialogue,
-    };
-
-    // Include only one of scenario or context based on whether they are not empty
-    if (scenario.trim() !== '') {
-        character.scenario = scenario;
-    } else if (context.trim() !== '') {
-        character.context = context;
+    if (isEditing) {
+        apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
+        method = 'put'; // Update character
     } else {
-        errorMessage.textContent = 'Please fill in either the scenario or context.';
-        return;
+        apiUrl = 'https://characters.efroai.net:3000/api/characters';
+        method = 'post'; // Create new character
     }
 
-    // axios.post('https://characters.efroai.net:3000/api/characters', character, {
-    //     headers: {
-    //         Authorization: `${token}`
-    //     }
-    // })
-    // .then(response => {
-    //     alert('Character created successfully!');
-    //     document.getElementById('characterForm').reset();
-    //     // Reset view to initial state
-    //     document.getElementById('scenarioContainer').style.display = 'block';
-    //     document.getElementById('contextContainer').style.display = 'none';
-    //     console.log(character);
+    const imageInput = document.getElementById('imageUpload');
+    const imageFile = imageInput.files[0];
 
-    // })
-    // .catch(error => {
-    //     console.error(error); // Log the full error object for debugging
+    const formData = new FormData();
 
-    //     if (error.response) {
-    //         if (error.response.status === 401) {
-    //             errorMessage.textContent = 'Unauthorized: Please log in.';
-    //         } else {
-    //             errorMessage.textContent = 'Error: ' + (error.response.data.message || 'Failed to create character.');
-    //         }
-    //     } else if (error.request) {
-    //         errorMessage.textContent = 'Error: No response from server.';
-    //     } else {
-    //         errorMessage.textContent = 'Error: ' + error.message;
-    //     }
-    // });
+    // Convert image to JPEG if a file is selected
+    if (imageFile) {
+        convertImageToJpeg(imageFile).then(jpegFile => {
+            formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
+
+            // First, submit the character data
+            return axios({
+                method: method,
+                url: apiUrl,
+                data: character,
+                headers: {
+                    Authorization: `${token}`
+                }
+            });
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // Now upload the image if it exists
+            const characterId = isEditing ? editingCharacterId : response.data.id; // Get character ID
+            const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
+            return axios.post(imageApiUrl, formData, {
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        }).then(imageResponse => {
+            console.log('Image uploaded successfully!');
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net:3000/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${token}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            // Reset the form if needed
+            document.getElementById('characterForm').reset();
+        }).catch(error => {
+            console.error(error);
+            errorMessage.textContent = 'Failed to update character.';
+        });
+    } else {
+        // If no image is selected, just send character data
+        axios({
+            method: method,
+            url: apiUrl,
+            data: character,
+            headers: {
+                Authorization: `${token}`
+            }
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net:3000/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${token}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            // Reset the form if needed
+            document.getElementById('characterForm').reset();
+        }).catch(error => {
+            console.error(error);
+            errorMessage.textContent = 'Failed to update character.';
+        });
+    }
 });
 
+ 
 
-        // Initialize the view to show only scenario mode initially
-        document.getElementById('scenarioContainer').style.display = 'block';
-        document.getElementById('contextContainer').style.display = 'none';
+// Initialize the view to show only scenario mode initially
+document.getElementById('scenarioContainer').style.display = 'block';
+document.getElementById('contextContainer').style.display = 'none';
 
-        const initialLimit = 6144;
-        const maxTotalChars = 12888;
+const initialLimit = 6144;
+const maxTotalChars = 12888;
 
 function updateCharacterCount() {
     const persona = document.getElementById('persona').value.length;
@@ -646,204 +619,115 @@ function loadCharacterData() {
     }
 }
 
-document.getElementById('characterForm').addEventListener('submit', function (e) {
-    e.preventDefault();
 
-    // Disable the submit button to prevent double submission
-    const submitButton = document.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
+// document.getElementById('saveForm').addEventListener('submit', function (e) {
+//     e.preventDefault();
 
-    const character = {
-        name: cleanInput(document.getElementById('name').value),
-        status: document.getElementById('status').value,
-        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase()),
-        chardescription: cleanInput(document.getElementById('chardescription').value),
-        persona: cleanInput(document.getElementById('persona').value),
-        greeting: cleanInput(document.getElementById('greeting').value),
-        exampledialogue: cleanInput(document.getElementById('exampledialogue').value),
-    };
+//     const character = {
+//         name: cleanInput(document.getElementById('name').value),
+//         status: document.getElementById('status').value,
+//         tags: document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase()),
+//         chardescription: cleanInput(document.getElementById('chardescription').value),
+//         persona: cleanInput(document.getElementById('persona').value),
+//         greeting: cleanInput(document.getElementById('greeting').value),
+//         exampledialogue: cleanInput(document.getElementById('exampledialogue').value),
+//     };
 
-    // Include either scenario or context
-    if (document.getElementById('scenario').value.trim() !== '') {
-        character.scenario = cleanInput(document.getElementById('scenario').value);
-    } else if (document.getElementById('context').value.trim() !== '') {
-        character.context = cleanInput(document.getElementById('context').value);
-    } else {
-        document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
-        submitButton.disabled = false; // Re-enable button
-        return;
-    }
+//     // Include either scenario or context
+//     if (document.getElementById('scenario').value.trim() !== '') {
+//         character.scenario = cleanInput(document.getElementById('scenario').value);
+//     } else if (document.getElementById('context').value.trim() !== '') {
+//         character.context = cleanInput(document.getElementById('context').value);
+//     } else {
+//         document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
+//         return;
+//     }
 
-    let apiUrl;
-    let method;
+//     let apiUrl;
+//     let method;
 
-    if (isEditing) {
-        apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
-        method = 'put'; // Update character
-    } else {
-        apiUrl = 'https://characters.efroai.net:3000/api/characters';
-        method = 'post'; // Create new character
-    }
+//     if (isEditing) {
+//         apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
+//         method = 'put'; // Update character
+//     } else {
+//         apiUrl = 'https://characters.efroai.net:3000/api/characters';
+//         method = 'post'; // Create new character
+//     }
 
-    // Prepare image upload if an image is selected
-    const imageInput = document.getElementById('imageUpload');
-    const imageFile = imageInput.files[0];
+//     const imageInput = document.getElementById('imageUpload');
+//     const imageFile = imageInput.files[0];
 
-    const formData = new FormData();
-    formData.append('image', imageFile); // Append the image file
+//     const formData = new FormData();
 
-    // First, submit the character data
-    axios({
-        method: method,
-        url: apiUrl,
-        data: character,
-        headers: {
-            Authorization: `${sessionStorage.getItem('token')}`
-        }
-    })
-    .then(response => {
-        const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get the character ID from response or use editing ID
-        alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+//     // Convert image to JPEG if a file is selected
+//     if (imageFile) {
+//         convertImageToJpeg(imageFile).then(jpegFile => {
+//             formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
 
-        // After character creation or update, now upload the image if it exists
-        if (imageFile) {
-            const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
-
-            return axios.post(imageApiUrl, formData, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-        }
-    })
-    .then(() => {
-        // Reset form and button state
-        document.getElementById('characterForm').reset();
-        sessionStorage.removeItem('editCharacter');
-        isEditing = false; // Reset editing flag
-        editingCharacterId = undefined; // Clear editing character ID
-        submitButton.textContent = 'Create Character'; // Reset button text
-        document.querySelector('#scenarioContainer').style.display = 'block';
-        document.querySelector('#contextContainer').style.display = 'none';
-        submitButton.disabled = false; // Re-enable button after submission
-    })
-    .catch(error => {
-        console.error(error);
-        document.getElementById('errorMessage').textContent = 'Failed to update character.';
-        submitButton.disabled = false; // Re-enable button on error
-    });
-});
-
-
-document.getElementById('saveForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const character = {
-        name: cleanInput(document.getElementById('name').value),
-        status: document.getElementById('status').value,
-        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase()),
-        chardescription: cleanInput(document.getElementById('chardescription').value),
-        persona: cleanInput(document.getElementById('persona').value),
-        greeting: cleanInput(document.getElementById('greeting').value),
-        exampledialogue: cleanInput(document.getElementById('exampledialogue').value),
-    };
-
-    // Include either scenario or context
-    if (document.getElementById('scenario').value.trim() !== '') {
-        character.scenario = cleanInput(document.getElementById('scenario').value);
-    } else if (document.getElementById('context').value.trim() !== '') {
-        character.context = cleanInput(document.getElementById('context').value);
-    } else {
-        document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
-        return;
-    }
-
-    let apiUrl;
-    let method;
-
-    if (isEditing) {
-        apiUrl = `https://characters.efroai.net:3000/api/characters/${editingCharacterId}`;
-        method = 'put'; // Update character
-    } else {
-        apiUrl = 'https://characters.efroai.net:3000/api/characters';
-        method = 'post'; // Create new character
-    }
-
-    const imageInput = document.getElementById('imageUpload');
-    const imageFile = imageInput.files[0];
-
-    const formData = new FormData();
-
-    // Convert image to JPEG if a file is selected
-    if (imageFile) {
-        convertImageToJpeg(imageFile).then(jpegFile => {
-            formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
-
-            // First, submit the character data
-            return axios({
-                method: method,
-                url: apiUrl,
-                data: character,
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(response => {
-            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
-            // Now upload the image if it exists
-            const characterId = isEditing ? editingCharacterId : response.data.id; // Get character ID
-            const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
-            return axios.post(imageApiUrl, formData, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-        }).then(imageResponse => {
-            console.log('Image uploaded successfully!');
-            // Now request auto moderation
-            return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
-            }, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(modResponse => {
-            console.log('Automod request sent successfully!', modResponse.data);
-            // Reset the form if needed
-        }).catch(error => {
-            console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
-        });
-    } else {
-        // If no image is selected, just send character data
-        axios({
-            method: method,
-            url: apiUrl,
-            data: character,
-            headers: {
-                Authorization: `${sessionStorage.getItem('token')}`
-            }
-        }).then(response => {
-            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
-            // Now request auto moderation
-            return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
-            }, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(modResponse => {
-            console.log('Automod request sent successfully!', modResponse.data);
-        }).catch(error => {
-            console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
-        });
-    }
-});
+//             // First, submit the character data
+//             return axios({
+//                 method: method,
+//                 url: apiUrl,
+//                 data: character,
+//                 headers: {
+//                     Authorization: `${sessionStorage.getItem('token')}`
+//                 }
+//             });
+//         }).then(response => {
+//             alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+//             // Now upload the image if it exists
+//             const characterId = isEditing ? editingCharacterId : response.data.id; // Get character ID
+//             const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
+//             return axios.post(imageApiUrl, formData, {
+//                 headers: {
+//                     Authorization: `${sessionStorage.getItem('token')}`,
+//                     'Content-Type': 'multipart/form-data'
+//                 }
+//             });
+//         }).then(imageResponse => {
+//             console.log('Image uploaded successfully!');
+//             // Now request auto moderation
+//             return axios.post('https://characters.efroai.net:3000/api/automod', {
+//                 characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+//             }, {
+//                 headers: {
+//                     Authorization: `${sessionStorage.getItem('token')}`
+//                 }
+//             });
+//         }).then(modResponse => {
+//             console.log('Automod request sent successfully!', modResponse.data);
+//             // Reset the form if needed
+//         }).catch(error => {
+//             console.error(error);
+//             document.getElementById('errorMessage').textContent = 'Failed to update character.';
+//         });
+//     } else {
+//         // If no image is selected, just send character data
+//         axios({
+//             method: method,
+//             url: apiUrl,
+//             data: character,
+//             headers: {
+//                 Authorization: `${sessionStorage.getItem('token')}`
+//             }
+//         }).then(response => {
+//             alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+//             // Now request auto moderation
+//             return axios.post('https://characters.efroai.net:3000/api/automod', {
+//                 characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+//             }, {
+//                 headers: {
+//                     Authorization: `${sessionStorage.getItem('token')}`
+//                 }
+//             });
+//         }).then(modResponse => {
+//             console.log('Automod request sent successfully!', modResponse.data);
+//         }).catch(error => {
+//             console.error(error);
+//             document.getElementById('errorMessage').textContent = 'Failed to update character.';
+//         });
+//     }
+// });
 
 // Convert image to JPEG using Canvas
 function convertImageToJpeg(file) {
