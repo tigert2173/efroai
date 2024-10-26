@@ -324,12 +324,12 @@
 
     <script>
         const socketlogger = io(); // Initialize Socket.IO connection
-
+    
         // Listen for connection
         socketlogger.on('connect', () => {
             console.log('Connected to the server:', socketlogger.id); // Log socket ID
         });
-
+    
         // Listen for 'automod-log' events
         socketlogger.on('automod-log', (message) => {
             const logsDiv = document.getElementById('logs');
@@ -338,12 +338,13 @@
             logsDiv.appendChild(logMessage);
             console.log('Log message received:', message); // Log the message for debugging
         });
-
+    
         // Handle errors
         socketlogger.on('connect_error', (error) => {
             console.error('Connection Error:', error);
         });
     </script>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
