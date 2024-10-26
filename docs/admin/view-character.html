@@ -103,7 +103,18 @@
                 document.getElementById('character-data').innerText = 'Error loading character data.';
             }
         }
+  // Function to set up action buttons based on character status
+  function setupActionButtons(status, username, characterId, token) {
+            const actionButtonsDiv = document.getElementById('action-buttons');
+            actionButtonsDiv.innerHTML = ''; // Clear previous buttons
 
+            if (status === 'approved') {
+                actionButtonsDiv.innerHTML += `<button class="revoke-btn" onclick="revokeCharacter('${username}', '${characterId}', '${token}')">Revoke</button>`;
+            } else {
+                actionButtonsDiv.innerHTML += `<button class="approve-btn" onclick="approveCharacter('${username}', '${characterId}', '${token}')">Approve</button>`;
+            }
+            actionButtonsDiv.innerHTML += `<button class="delete-btn" onclick="deleteCharacter('${username}', '${characterId}', '${token}')">Delete</button>`;
+        }
         async function loadCharacterImage(username, characterId, token) {
             try {
                 const imageUrl = `${BACKEND_URL}/characters/${username}/images/${characterId}`;
