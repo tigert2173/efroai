@@ -769,23 +769,25 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
     const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
 
+    // Convert image to JPEG if a file is selected
     const formData = new FormData();
-    formData.append('image', imageFile); // Append the image file
+    if (imageFile) {
+        convertImageToJpeg(imageFile).then(jpegFile => {
+            formData.append('image', jpegFile); // Append the converted image file
 
-    // First, submit the character data
-    axios({
-        method: method,
-        url: apiUrl,
-        data: character,
-        headers: {
-            Authorization: `${sessionStorage.getItem('token')}`
-        }
-    })
-    .then(response => {
-        alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // First, submit the character data
+            return axios({
+                method: method,
+                url: apiUrl,
+                data: character,
+                headers: {
+                    Authorization: `${sessionStorage.getItem('token')}`
+                }
+            });
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
 
-        // After character creation or update, now upload the image if it exists
-        if (imageFile) {
+            // Now upload the image if it exists
             const characterId = isEditing ? editingCharacterId : response.data.id; // Get the character ID from response or use editing ID
             const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
 
@@ -795,52 +797,84 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-        }
-    })
-    .then(imageResponse => {
-        if (imageResponse) {
-            console.log('Image uploaded successfully!');
-        }
-        // Reset the form and sessionStorage if needed
-        // document.getElementById('characterForm').reset();
-         // Now request auto moderation
-    const persona = character.persona; // Get persona for moderation
-    const scenario_context = character.scenario || character.context; // Get scenario or context
-    const greeting = character.greeting;
-    const exampledialogue = character.exampledialogue;
-    const tags = character.tags;
-    const name = character.name;
-    const chardescription = character.chardescription;
-
-    console.log('Sending automod request with data:', {
-        persona,
-        scenario_context,
-        greeting,
-        exampledialogue,
-        tags,
-        name,
-        chardescription,
-        characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
-    });
-
-    return axios.post('https://characters.efroai.net:3000/api/automod', {
-        characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
-    }, {
-        headers: {
-            Authorization: `${sessionStorage.getItem('token')}`
-        }
-    });
-    })
-    .then(modResponse => {
-        console.log('Automod request sent successfully!', modResponse.data);
-        // Reset the form and sessionStorage if needed
-        // document.getElementById('characterForm').reset();
-    })
-    .catch(error => {
-        console.error(error);
-        document.getElementById('errorMessage').textContent = 'Failed to update character.';
-    });
+        }).then(imageResponse => {
+            if (imageResponse) {
+                console.log('Image uploaded successfully!');
+            }
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net:3000/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem('token')}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            // Reset the form and sessionStorage if needed
+            // document.getElementById('characterForm').reset();
+        }).catch(error => {
+            console.error(error);
+            document.getElementById('errorMessage').textContent = 'Failed to update character.';
+        });
+    } else {
+        // If no image is selected, just send character data
+        axios({
+            method: method,
+            url: apiUrl,
+            data: character,
+            headers: {
+                Authorization: `${sessionStorage.getItem('token')}`
+            }
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net:3000/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${sessionStorage.getItem('token')}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+        }).catch(error => {
+            console.error(error);
+            document.getElementById('errorMessage').textContent = 'Failed to update character.';
+        });
+    }
 });
+
+// Convert image to JPEG using Canvas
+function convertImageToJpeg(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                // Convert to JPEG format
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg', 0.9); // Adjust quality if needed
+            };
+
+            img.onerror = reject; // Handle image load errors
+        };
+
+        reader.onerror = reject; // Handle file reading errors
+        reader.readAsDataURL(file);
+    });
+}
 
 // For photo upload
 const imageInput = document.getElementById('imageUpload');
