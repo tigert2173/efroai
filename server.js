@@ -23,6 +23,7 @@
     '::ffff:92.255.57.58', //accessing directly
     '45.148.10.206', //requested /.env
     '85.31.47.61', //port scanning
+    '::ffff:78.153.140.224',
     '204.110.223.51' // SchoScure
 ]; 
 
