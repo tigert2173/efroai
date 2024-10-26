@@ -805,6 +805,11 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
          // Now request auto moderation
     const persona = character.persona; // Get persona for moderation
     const scenario = character.scenario || character.context; // Get scenario or context
+    const greeting = character.greeting;
+    const exampledialogue = character.exampledialogue;
+    const tags = character.tags;
+    const name = character.name;
+    const chardescription = character.chardescription;
 
     console.log('Sending automod request with data:', {
         persona,
