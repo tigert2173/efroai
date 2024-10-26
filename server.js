@@ -21,6 +21,7 @@
     '149.88.23.77', // //wp1/wp-includes/wlwmanifest.xml
     '159.203.92.168', //requested /.env
     '::ffff:92.255.57.58', //accessing directly
+    '45.148.10.206', //requested /.env
     '204.110.223.51' // SchoScure
 ]; 
 
