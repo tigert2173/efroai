@@ -370,15 +370,20 @@ function hideTooltip() {
 </head>
 <body>
 
-<div id="notification">
-    For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally! 
-    <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
-    <button id="closeButton">&times;</button> <!-- Close button -->
-</div>
+    <div id="notification" class="notification hidden">
+        <p>For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally!</p>
+        <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
+        <button id="closeButton">Close</button>
+        <button id="hideNotificationButton">Don't show again</button>
+    </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Get user device specifications
+
+    const hideNotification = getCookie('hideNotification');
+
+    // Get user device specifications and show notification if not hidden
+    if (!hideNotification) {
         const userAgent = navigator.userAgent;
         const screenWidth = screen.width;
         const screenHeight = screen.height;
@@ -400,6 +405,7 @@ function hideTooltip() {
 
         // Check for dedicated GPU
         checkGPU(cpuCores, deviceMemory);
+        }
     });
 
     // Function to check for dedicated GPU and suggest local hosting
@@ -453,6 +459,27 @@ function hideTooltip() {
             notification.style.display = 'none'; // Hide it after fading out
         }, 500); // Match this with the fade-out duration
     });
+
+    // Function to set a cookie
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Days in milliseconds
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
 </script>
 <script>
     const socket = new WebSocket('wss://efroai.net'); // Update with your domain
