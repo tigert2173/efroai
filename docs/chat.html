@@ -454,7 +454,7 @@ function hideTooltip() {
         }, 500); // Match this with the fade-out duration
     });
 </script>
-<script src="js/menu.js"></script>
+<script src="js/menu.js" defer></script>
 <script>
     const socket = new WebSocket('wss://efroai.net'); // Update with your domain
 
@@ -477,47 +477,7 @@ function hideTooltip() {
     socket.addEventListener('close', (event) => {
         console.log('Disconnected from WebSocket server');
     });
-    document.addEventListener('DOMContentLoaded', () => {
-        const token = sessionStorage.getItem('token'); // Retrieve the JWT from session storage
-        const loginStatusElement = document.getElementById('login-status');
-        const loginPopup = document.getElementById('login-popup');
-
-        const getUsernameFromToken = (token) => {
-            if (!token) return null;
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                return payload.username || 'Guest';
-            } catch (e) {
-                return null;
-            }
-        };
-
-        const isTokenExpired = (token) => {
-            if (!token) return true;
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                return payload.exp * 1000 < Date.now();
-            } catch (e) {
-                return true;
-            }
-        };
-
-        const username = getUsernameFromToken(token);
-
-        if (isTokenExpired(token)) {
-            loginStatusElement.textContent = 'You are not logged in.';
-            loginStatusElement.className = 'login-status logged-out';
-            loginPopup.classList.remove('hidden'); // Show the login popup
-        } else {
-            loginStatusElement.textContent = `${username}`;
-            loginStatusElement.className = 'login-status logged-in';
-            loginPopup.classList.add('hidden'); // Hide the login popup
-        }
-
-        document.getElementById('login-btn').addEventListener('click', () => {
-            window.open('/login.html', '_blank');
-        });
-    });
+    
 </script>
 
 <script src="js/scripts/chat/savechatlocally.js?v=1"></script>

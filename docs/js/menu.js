@@ -47,11 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const username = getUsernameFromToken(token);
 
-    // Check the token status
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
-        loginPopup.classList.remove('login-popup.hidden'); // Show the login popup
+        loginPopup.classList.remove('hidden'); // Show the login popup
     } else {
         loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
@@ -59,17 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for login button in the popup
     document.getElementById('login-btn').addEventListener('click', () => {
-        // Redirect to the login page in a new tab
-        window.open('/login.html', '_blank');
+        //window.location.href = '/login.html', '_blank'; // Redirect to login page
+         // Redirect to the login page in a new tab
+        const loginWindow = window.open('/login.html', '_blank');
     });
-
 
     // Listen for messages from the login window
     window.addEventListener('message', (event) => {
         if (event.origin === window.location.origin) {
             if (event.data.type === 'login' && event.data.token) {
                 sessionStorage.setItem('token', event.data.token); // Store the token
-              //  location.reload(); // Refresh the page to apply the new token
+                location.reload(); // Refresh the page to apply the new token
             }
         }
     });
