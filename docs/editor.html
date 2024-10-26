@@ -832,6 +832,8 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
     })
     .then(modResponse => {
         console.log('Automod request sent successfully!', modResponse.data);
+        console.log(data.logs); // Handle logs
+        console.log(data.message); // Other response data
         // Reset the form and sessionStorage if needed
         // document.getElementById('characterForm').reset();
     })
