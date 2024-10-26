@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for login button in the popup
     document.getElementById('login-btn').addEventListener('click', () => {
         //window.location.href = '/login.html', '_blank'; // Redirect to login page
-        window.open('/login.html', '_blank');
+         // Redirect to the login page in a new tab
+        const loginWindow = window.open('/login.html', '_blank');
     });
 
     window.addEventListener('message', (event) => {

@@ -32,9 +32,12 @@ function loginUser() {
 
         // Send a message back to the original page
         window.opener.postMessage('loggedIn', window.location.origin);
+        
+        // Redirect to the referrer or homepage
+        const redirectUrl = document.referrer || 'index.html';
+        window.opener.location.href = redirectUrl; // Change the opener's location
+        window.close(); // Optionally close the login window
 
-        alert('Login successful! Redirecting to homepage...');
-        window.location.href = 'index.html'; // Redirect to home page or desired page
     })
     .catch(error => {
         console.error('Error during login:', error);
