@@ -865,7 +865,7 @@ function convertImageToJpeg(file) {
                 // Convert to JPEG format
                 canvas.toBlob((blob) => {
                     resolve(blob);
-                }, 'image/jpeg', 0.9); // Adjust quality if needed
+                }, 'image/jpg', 0.9); // Adjust quality if needed
             };
 
             img.onerror = reject; // Handle image load errors
