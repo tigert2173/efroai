@@ -5,10 +5,13 @@
   const path = require('path');
   const WebSocket = require('ws'); // Import WebSocket library
   const compression = require('compression'); // Import compression middleware
+  const { Server } = require('socket.io');
 
   const app = express();
   // Use CORS middleware
   app.use(cors());
+  const server = https.createServer(app);
+  const io = new Server(server);
 
   const blockedIps = [
     '128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
@@ -218,7 +221,7 @@ app.use(express.static(path.join(__dirname, 'docs'), {
      // const userIp = req.socket.remoteAddress; // Get the user's IP address
      const forwarded = req.headers['cf-connecting-ip'];
      const userIp = forwarded || req.connection.remoteAddress;
-     
+
       console.log(`WebSocket connection established for IP: ${userIp}`);
       
       // Send a ping every 30 seconds to check if the client is still connected
