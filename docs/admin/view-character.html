@@ -155,7 +155,7 @@
         async function approveCharacter(username, characterId, token) {
             if (confirm('Are you sure you want to approve this character?')) {
                 try {
-                    const response = await fetch(`${BACKEND_URL}/admin/characters/${username}/${characterId}/approve`, {
+                    const response = await fetch(`${BACKEND_URL}/admin/characters/${username}/${characterId}/`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `${token}`

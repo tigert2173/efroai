@@ -101,7 +101,7 @@ async function revokeCharacter(characterId, uploader) {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {
+        const response = await fetch(`${BACKEND_URL}/admin/characters/${uploader}/${characterId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `${token}`, // Use the token here
@@ -130,7 +130,7 @@ async function approveCharacter(characterId, uploader) {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {
+        const response = await fetch(`${BACKEND_URL}/admin/characters/${uploader}/${characterId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `${token}`, // Use the token here
@@ -163,7 +163,7 @@ async function deleteCharacter(characterId, uploader) {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {
+        const response = await fetch(`${BACKEND_URL}/admin/characters/${uploader}/${characterId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}` // Use the token here
