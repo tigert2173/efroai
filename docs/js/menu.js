@@ -50,11 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
-        loginPopup.classList.remove('loginPopup hidden'); // Show the login popup
+        loginPopup.classList.remove('hidden'); // Show the login popup
     } else {
         loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
-        loginPopup.classList.add('loginPopup hidden'); // Show the login popup
     }
 
     // Event listener for login button in the popup
