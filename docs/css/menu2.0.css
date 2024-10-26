@@ -323,12 +323,26 @@ html { /*body*/
 }
 
 
-.login-status.logged-in {
-    color: green;
+.login-status {
+    padding: 15px;
+    margin-top: 0px;
+    border-radius: 5px;
+    text-align: center;
+    min-width: 100px;
 }
 
-.login-status.logged-out {
-    color: red;
+.login-status:not(:empty) {
+    display: block; /* Ensure the element is block when not empty */
+}
+
+.login-status.hidden {
+    display: none; /* Hide element when it has the 'hidden' class */
+}
+
+.login-status.logged-in {
+    background: #e0f7fa; /* Light blue background */
+    color: #00695c; /* Dark green text */
+    border: 1px solid #4db6ac; /* Teal border */
 }
 
 .hidden {
@@ -348,7 +362,7 @@ html { /*body*/
 }
 
 .popup-content {
-    background: white;
+    background: rgba(53, 53, 53, 0.488);
     padding: 20px;
     border-radius: 5px;
     text-align: center;
@@ -363,4 +377,5 @@ html { /*body*/
     cursor: pointer;
     border-radius: 3px;
 }
+
 
