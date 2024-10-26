@@ -305,7 +305,12 @@
             <label for="exampledialogue">Example Dialogue:</label>
             <textarea id="exampledialogue" rows="4" placeholder="Enter example dialogue"></textarea>
 
-            <button type="submit">Create Character</button>                 
+            <button type="submit">Create Character</button>           
+            
+            <br>
+            <br>
+            <button id="resetEditingButton">Reset Editing</button>
+
         </div>
  
         <p id="totalCount" style="text-align: center; color: #ddd;">
@@ -327,6 +332,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        document.getElementById('resetEditingButton').addEventListener('click', function () {
+            isEditing = false; // Force isEditing to false
+            alert('Editing mode has been reset. You can now create a new character.'); // Optional: Notify the user
+        });
+
         document.getElementById('toggleMode').addEventListener('click', function() {
             const scenarioContainer = document.getElementById('scenarioContainer');
             const contextContainer = document.getElementById('contextContainer');
