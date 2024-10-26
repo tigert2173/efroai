@@ -68,15 +68,13 @@
         <td>${character.uploader}</td>
         <td><span class="status ${character.status.toLowerCase()}">${character.status}</span></td>
         <td>
-            <a class="view-btn" href="admin/view-character.html?username=${character.uploader}&id=${character.id}">View JSON</a>
             <button class="revoke-btn" onclick="revokeCharacter('${character.uploader}', '${character.id}', '${token}')"
                 ${character.status.toLowerCase() === 'approved' ? '' : 'style="display:none;"'}>Revoke</button>
             <button class="approve-btn" onclick="approveCharacter('${character.uploader}', '${character.id}', '${token}')"
                 ${character.status.toLowerCase() === 'approved' ? 'style="display:none;"' : ''}>Approve</button>
             <button class="delete-btn" onclick="deleteCharacter('${character.uploader}', '${character.id}', '${token}')">Delete</button>
         </td>
-        <td>${new Date(character.dateUploaded).toLocaleDateString()}</td>
-        
+        <td>${new Date(character.dateUploaded).toLocaleDateString()}</td>        
     </div>
 
     <script>
