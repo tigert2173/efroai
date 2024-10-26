@@ -373,7 +373,7 @@ function hideTooltip() {
     <div id="notification" class="notification hidden">
         <p>For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally!</p>
         <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
-        <button id="closeButton">Close</button>
+        <button id="closeButton"></button>
         <button id="hideNotificationButton">Don't show again</button>
     </div>
 
@@ -460,25 +460,35 @@ function hideTooltip() {
         }, 500); // Match this with the fade-out duration
     });
 
-    // Function to set a cookie
+    // Don't show again button functionality
+    document.getElementById('hideNotificationButton').addEventListener('click', () => {
+        setCookie('hideNotification', 'true', 30); // Set cookie for 30 days
+        const notification = document.getElementById('notification');
+        notification.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            notification.style.display = 'none'; // Hide it after fading out
+        }, 500); // Match this with the fade-out duration
+    });
+
+    // Function to set a cookie with a specified expiration in days
     function setCookie(name, value, days) {
         const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Days in milliseconds
-        const expires = "expires=" + date.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+        const expires = "expires=" + date.toUTCString(); // Format the expiration date
+        document.cookie = `${name}=${value}; ${expires}; path=/`; // Set the cookie
     }
 
-    // Function to get a cookie by name
+    // Function to get a cookie value by its name
     function getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
+        const nameEQ = name + "="; // Define the cookie name to search for
+        const ca = document.cookie.split(';'); // Split the document cookie string into an array
         for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            let c = ca[i].trim(); // Remove leading spaces
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length); // Return the cookie value
         }
-        return null;
+        return null; // Return null if the cookie doesn't exist
     }
+
 
 </script>
 <script>
