@@ -10,8 +10,6 @@
   const app = express();
   // Use CORS middleware
   app.use(cors());
-  const server = https.createServer(app);
-  const io = new Server(server);
 
   const blockedIps = [
     '128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
@@ -212,6 +210,8 @@ app.use(express.static(path.join(__dirname, 'docs'), {
   const server = https.createServer(options, app).listen(443, () => {
       console.log('HTTPS Server running on port 443');
   });
+  
+  const io = new Server(server);
 
   // Create a WebSocket server
   const wss = new WebSocket.Server({ server });
