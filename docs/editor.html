@@ -549,7 +549,6 @@ function loadFormData() {
                 }
             }).then(imageResponse => {
                 console.log('Image uploaded successfully!');
-                localStorage.addItem(sessionStorage.getItem('editCharacter'));
 
                 // Now request auto moderation
                 return axios.post('https://characters.efroai.net:3000/api/automod', {
@@ -563,7 +562,16 @@ function loadFormData() {
         }).then(modResponse => {
             console.log('Automod request sent successfully!', modResponse.data);
             document.getElementById('characterForm').reset(); // Reset the form if needed
-            sessionStorage.removeItem('editCharacter');
+            // Retrieve data from sessionStorage and store it in localStorage
+            const editCharacterData = sessionStorage.getItem('editCharacter');
+
+            if (editCharacterData) {
+                // Store the retrieved data in localStorage
+                localStorage.setItem('editCharacter', editCharacterData);
+                // Optionally, remove it from sessionStorage if you don't need it anymore
+                sessionStorage.removeItem('editCharacter');
+            }
+
             
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
@@ -581,7 +589,7 @@ function loadFormData() {
             }
         }).then(response => {
             alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
-            localStorage.addItem(sessionStorage.getItem('editCharacter'));
+
             // Now request auto moderation
             return axios.post('https://characters.efroai.net:3000/api/automod', {
                 characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
@@ -594,8 +602,16 @@ function loadFormData() {
             console.log('Automod request sent successfully!', modResponse.data);
             document.getElementById('characterForm').reset(); // Reset the form if needed
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
-           
-            sessionStorage.removeItem('editCharacter');
+                // Retrieve data from sessionStorage and store it in localStorage
+                const editCharacterData = sessionStorage.getItem('editCharacter');
+
+                if (editCharacterData) {
+                    // Store the retrieved data in localStorage
+                    localStorage.setItem('editCharacter', editCharacterData);
+                    // Optionally, remove it from sessionStorage if you don't need it anymore
+                    sessionStorage.removeItem('editCharacter');
+            }
+
 
         }).catch(error => {
             console.error(error);
