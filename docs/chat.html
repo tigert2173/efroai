@@ -305,12 +305,13 @@ function hideTooltip() {
             right: 20px;
             background-color: #4CAF50; /* Green */
             color: white;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 8px; /* Rounded corners */
             z-index: 1000; /* High z-index to appear above other content */
             opacity: 0; /* Initially invisible */
-            transform: translateY(-10px); /* Slide from top */
+            transform: translateY(-20px); /* Slide from top */
             transition: opacity 0.5s ease, transform 0.5s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
         }
 
         #notification.show {
@@ -318,6 +319,55 @@ function hideTooltip() {
             opacity: 1; /* Fully visible */
             transform: translateY(0); /* Slide in */
             animation: bounceIn 0.5s forwards; /* Animation when shown */
+        }
+
+        .notification-buttons {
+            margin-top: 10px; /* Space between message and buttons */
+        }
+
+        .notification-buttons button {
+            background-color: #f44336; /* Red background for buttons */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition */
+            margin-right: 5px; /* Space between buttons */
+        }
+
+        .notification-buttons button:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+        #notification a {
+            color: #FFD700; /* Gold color for the link */
+            text-decoration: underline; /* Underline to indicate it's a link */
+        }
+
+        #closeButton {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 16px; /* Adjust size as needed */
+        }
+
+        /* Optional: Add a fade-out effect */
+        #notification.fade-out {
+            animation: fadeOut 0.5s forwards; /* Animation for fade out */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none; /* Hide it after fading out */
+            }
         }
 
         @keyframes bounceIn {
@@ -337,35 +387,6 @@ function hideTooltip() {
             }
         }
 
-        #notification a {
-            color: #FFD700; /* Gold color for the link */
-            text-decoration: underline; /* Underline to indicate it's a link */
-        }
-
-        #closeButton {
-            background: none;
-            border: none;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 10px;
-            font-size: 16px; /* Adjust size as needed */
-        }
-        
-        /* Optional: Add a fade-out effect */
-        #notification.fade-out {
-            animation: fadeOut 0.5s forwards; /* Animation for fade out */
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                display: none; /* Hide it after fading out */
-            }
-        }
     </style>
 </head>
 <body>
@@ -373,8 +394,10 @@ function hideTooltip() {
     <div id="notification" class="notification">
         <p>For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally!</p>
         <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
-        <button id="closeButton"></button>
-        <button id="hideNotificationButton">Don't show again</button>
+        <div class="notification-buttons">
+            <button id="hideNotificationButton">Don't show again</button>
+            <button id="closeButton">Close</button>
+        </div>
     </div>
 
 <script>
