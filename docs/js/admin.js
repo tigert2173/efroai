@@ -61,7 +61,7 @@ function displayCharacters(characters) {
             <td>${character.uploader}</td>
             <td><span class="status ${character.status.toLowerCase()}">${character.status}</span></td>
             <td>
-                <a class="view-btn" href="admin/view-character.html?username=${character.uploader}&id=${character.id}">View JSON</a>
+                <a class="view-btn" href="admin/view-character.html?uploader=${character.uploader}&id=${character.id}">View JSON</a>
                 ${character.status.toLowerCase() === 'approved'
                     ? `<button class="revoke-btn">Revoke</button>`
                     : `<button class="approve-btn">Approve</button>`
