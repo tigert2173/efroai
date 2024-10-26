@@ -17,30 +17,48 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Utility functions to handle JWT
-const isTokenExpired = (token) => {
-    if (!token) return true;
-    const exp = JSON.parse(atob(token.split('.')[1])).exp;
-    return exp < Math.floor(Date.now() / 1000);
-};
-
-const getUsernameFromToken = (token) => {
-    return token ? JSON.parse(atob(token.split('.')[1])).username : null;
-};
-
-// Check login status and display username
-document.addEventListener('DOMContentLoaded', () => {
-    const token = sessionStorage.getItem('token'); // Retrieve the JWT from local storage
+  // Check login status and display username
+  document.addEventListener('DOMContentLoaded', () => {
+    const token = sessionStorage.getItem('token'); // Retrieve the JWT from session storage
     const loginStatusElement = document.getElementById('login-status');
+    const loginPopup = document.getElementById('login-popup');
+
+    // Function to decode token and retrieve username
+    const getUsernameFromToken = (token) => {
+        if (!token) return null;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.username || 'Guest';
+        } catch (e) {
+            return null;
+        }
+    };
+
+    // Function to check if the token is expired
+    const isTokenExpired = (token) => {
+        if (!token) return true;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.exp * 1000 < Date.now();
+        } catch (e) {
+            return true;
+        }
+    };
+
     const username = getUsernameFromToken(token);
 
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
+        loginPopup.classList.remove('hidden'); // Show the login popup
     } else {
         loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
     }
-});
 
+    // Event listener for login button in the popup
+    document.getElementById('login-btn').addEventListener('click', () => {
+        window.location.href = '/login.html'; // Redirect to login page
+    });
+});
 
