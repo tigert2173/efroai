@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const username = getUsernameFromToken(token);
 
+    // Check the token status
     if (isTokenExpired(token)) {
         loginStatusElement.textContent = 'You are not logged in.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
@@ -54,15 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
-        loginPopup.classList.add('login-popup, hidden'); // Show the login popup
+        loginPopup.classList.add('hidden'); // Hide the login popup
     }
 
     // Event listener for login button in the popup
     document.getElementById('login-btn').addEventListener('click', () => {
-        //window.location.href = '/login.html', '_blank'; // Redirect to login page
-         // Redirect to the login page in a new tab
-        const loginWindow = window.open('/login.html', '_blank');
+        // Redirect to the login page in a new tab
+        window.open('/login.html', '_blank');
     });
+
 
     // Listen for messages from the login window
     window.addEventListener('message', (event) => {
