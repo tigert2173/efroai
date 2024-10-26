@@ -351,10 +351,6 @@ html { /*body*/
     border: 1px solid #ef5350; /* Red border */
 }
 
-.hidden {
-    display: none;
-}
-
 .login-popup {
     position: fixed;
     top: 0;
@@ -362,7 +358,7 @@ html { /*body*/
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    display: flex;
+    display: hidden;
     align-items: center;
     justify-content: center;
 }
