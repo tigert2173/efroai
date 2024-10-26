@@ -351,7 +351,7 @@ html { /*body*/
     border: 1px solid #ef5350; /* Red border */
 }
 
-.hidden {
+.login-popup.hidden {
     display: none;
 }
 
