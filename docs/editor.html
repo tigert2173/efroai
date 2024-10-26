@@ -864,7 +864,7 @@ function convertImageToJpeg(file) {
                     } else {
                         reject(new Error('Image conversion failed.'));
                     }
-                }, 'image/jpeg', 0.9); // Adjust quality if needed
+                }, 'image/jpeg', 0.6); // Adjust quality if needed
             };
 
             img.onerror = () => reject(new Error('Image loading error.'));
