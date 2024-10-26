@@ -119,7 +119,7 @@
             // Create the Revoke button
             const revokeButton = document.createElement('button');
             revokeButton.innerText = 'Revoke';
-            revokeButton.onclick = () => revokeCharacter(username, characterId, token);
+            revokeButton.onclick = () => revokeCharacter(username, characterId);
             if (status !== 'approved') {
                 revokeButton.style.display = 'none'; // Hide if not approved
             }
@@ -128,7 +128,7 @@
             // Create the Delete button
             const deleteButton = document.createElement('button');
             deleteButton.innerText = 'Delete';
-            deleteButton.onclick = () => deleteCharacter(username, characterId, token);
+            deleteButton.onclick = () => deleteCharacter(username, characterId);
             actionButtonsDiv.appendChild(deleteButton);
         }
 
