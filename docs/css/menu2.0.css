@@ -368,7 +368,7 @@ html { /*body*/
 }
 
 .popup-content {
-    background: white;
+    background: rgba(0, 0, 0, 0.405);
     padding: 20px;
     border-radius: 5px;
     text-align: center;
