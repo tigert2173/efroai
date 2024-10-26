@@ -345,6 +345,12 @@ html { /*body*/
     border: 1px solid #4db6ac; /* Teal border */
 }
 
+.login-status.logged-out {
+    background: #ffebee; /* Light red background */
+    color: #c62828; /* Dark red text */
+    border: 1px solid #ef5350; /* Red border */
+}
+
 .hidden {
     display: none;
 }
@@ -362,7 +368,7 @@ html { /*body*/
 }
 
 .popup-content {
-    background: rgba(53, 53, 53, 0.488);
+    background: white;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
@@ -377,5 +383,3 @@ html { /*body*/
     cursor: pointer;
     border-radius: 3px;
 }
-
-
