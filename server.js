@@ -16,7 +16,6 @@
     '128.14.174.186', //Path: /showLogin.cc & /api/session/properties & /solr/ && /login.do <<-- suspicious request 
     '128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
     '128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
-    // '69.174.135.234',
     '::ffff:159.203.92.168', //requested /.env
     '149.88.23.77', // //wp1/wp-includes/wlwmanifest.xml
     '159.203.92.168', //requested /.env
@@ -27,6 +26,8 @@
     '::ffff:78.153.140.223', // /.env
     '204.110.223.51' // SchoScure
 ]; 
+
+    // '69.174.135.234',
 
 // // Middleware to make URLs case-insensitive
 // app.use((req, res, next) => {
