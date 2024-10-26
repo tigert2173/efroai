@@ -63,18 +63,7 @@
     <div id="character-data"></div>
     <button id="back-button">Back to Characters</button>
     <div id="action-buttons">
-        <!-- Action buttons will be populated here -->
-        <td>${character.name}</td>
-        <td>${character.uploader}</td>
-        <td><span class="status ${character.status.toLowerCase()}">${character.status}</span></td>
-        <td>
-            <button class="revoke-btn" onclick="revokeCharacter('${character.uploader}', '${character.id}', '${token}')"
-                ${character.status.toLowerCase() === 'approved' ? '' : 'style="display:none;"'}>Revoke</button>
-            <button class="approve-btn" onclick="approveCharacter('${character.uploader}', '${character.id}', '${token}')"
-                ${character.status.toLowerCase() === 'approved' ? 'style="display:none;"' : ''}>Approve</button>
-            <button class="delete-btn" onclick="deleteCharacter('${character.uploader}', '${character.id}', '${token}')">Delete</button>
-        </td>
-        <td>${new Date(character.dateUploaded).toLocaleDateString()}</td>        
+        
     </div>
 
     <script>
