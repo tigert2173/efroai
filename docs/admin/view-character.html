@@ -77,8 +77,9 @@
             }
 
             loadCharacterData(uploader, characterId, token);
-            setupActionButtons(characterData.status.toLowerCase(), username, characterId, token);
             loadCharacterImage(uploader, characterId, token); // Load the character image
+            setupActionButtons(characterData.status.toLowerCase(), username, characterId, token);
+
         });
 
         async function loadCharacterData(uploader, characterId, token) {
