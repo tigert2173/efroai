@@ -391,7 +391,6 @@
         return;
     }
 
-    // Include either scenario or context
     const scenario = cleanInput(document.getElementById('scenario').value);
     const context = cleanInput(document.getElementById('context').value);
 
@@ -401,7 +400,6 @@
         return;
     }
 
-    // Check if total characters exceed 12,888
     const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
 
     if (totalChars > 12888) {
@@ -420,7 +418,6 @@
         exampledialogue,
     };
 
-    // Include only one of scenario or context based on whether they are not empty
     if (scenario.trim() !== '') {
         character.scenario = scenario;
     } else if (context.trim() !== '') {
@@ -446,12 +443,11 @@
 
     const formData = new FormData();
 
-    // Convert image to JPEG if a file is selected
     if (imageFile) {
         convertImageToJpeg(imageFile).then(jpegFile => {
             formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
 
-            // First, submit the character data
+            // Submit the character data first
             return axios({
                 method: method,
                 url: apiUrl,
@@ -460,8 +456,9 @@
                     Authorization: `${token}`
                 }
             });
-        }).then(response => {
+        }).then(response => { // response now is in scope here
             alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+
             // Now upload the image if it exists
             const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get character ID
             const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
@@ -473,6 +470,7 @@
             });
         }).then(imageResponse => {
             console.log('Image uploaded successfully!');
+
             // Now request auto moderation
             return axios.post('https://characters.efroai.net:3000/api/automod', {
                 characterId: isEditing ? editingCharacterId : response.data.character.id // Use character ID for moderation
@@ -483,8 +481,7 @@
             });
         }).then(modResponse => {
             console.log('Automod request sent successfully!', modResponse.data);
-            // Reset the form if needed
-            document.getElementById('characterForm').reset();
+            document.getElementById('characterForm').reset(); // Reset the form if needed
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
             console.error(error);
@@ -501,6 +498,7 @@
             }
         }).then(response => {
             alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+
             // Now request auto moderation
             return axios.post('https://characters.efroai.net:3000/api/automod', {
                 characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
@@ -511,8 +509,7 @@
             });
         }).then(modResponse => {
             console.log('Automod request sent successfully!', modResponse.data);
-            // Reset the form if needed
-            document.getElementById('characterForm').reset();
+            document.getElementById('characterForm').reset(); // Reset the form if needed
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
             console.error(error);
@@ -521,7 +518,6 @@
     }
 });
 
- 
 
 // Initialize the view to show only scenario mode initially
 document.getElementById('scenarioContainer').style.display = 'block';
