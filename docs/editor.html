@@ -365,10 +365,8 @@ document.getElementById('attemptRecoveryButton').addEventListener('click', funct
     if (editCharacterData) {
         // Store the retrieved data in session storage
         sessionStorage.setItem('editCharacter', editCharacterData);
+        loadCharacterData();
         alert('Attempted Recovery, your character creation may be recovered.'); // Notify the user
-
-        // Load the recovered data into the form
-        loadFormData(); // Call the function to populate the form
 
         // Use setTimeout to delay the confirmation prompt, allowing the user to see the loaded data
         setTimeout(() => {
@@ -377,20 +375,21 @@ document.getElementById('attemptRecoveryButton').addEventListener('click', funct
             if (dataCorrect) {
                 alert('Great! You can continue editing your character.'); // Notify the user
             } else {
-                alert('Please make the necessary changes.'); // Notify the user to edit if data is incorrect
-            }
-        }, 1000); // Delay of 1 second before asking for confirmation
-    } else {
-        // If no data is found, ask the user if they want to try a deeper search
-        const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
+                    // If no data is found, ask the user if they want to try a deeper search
+                    const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
 
-        if (deeperSearch) {
-            // Implement your deeper search logic here
-            alert('Initiating deeper search...'); // Placeholder for deeper search logic
-        } else {
-            // User said "no"
-            alert("Okay, no deeper search will be attempted."); // Notify the user
-        }
+                if (deeperSearch) {
+                    // Implement your deeper search logic here
+                    alert('Initiating deeper search...'); // Placeholder for deeper search logic
+                    loadFormData(); // Call the function to populate the form
+
+                } else {
+                    // User said "no"
+                    alert("Okay, no deeper search will be attempted."); // Notify the user
+                }
+            }
+            
+        }, 1000); // Delay of 1 second before asking for confirmation
     }
 });
 
