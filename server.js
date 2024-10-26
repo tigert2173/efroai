@@ -17,6 +17,8 @@
     '128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
     '128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
     // '69.174.135.234',
+    '::ffff:159.203.92.168', //requested /.env
+    '159.203.92.168', //requested /.env
     '204.110.223.51' // SchoScure
 ]; 
 
