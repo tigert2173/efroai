@@ -370,13 +370,16 @@ document.getElementById('attemptRecoveryButton').addEventListener('click', funct
         // Load the recovered data into the form
         loadFormData(); // Call the function to populate the form
 
-        // Ask if the data recovered is correct
-        const dataCorrect = confirm('Is the recovered data correct?');
-        if (dataCorrect) {
-            alert('Great! You can continue editing your character.'); // Notify the user
-        } else {
-            alert('Please make the necessary changes.'); // Notify the user to edit if data is incorrect
-        }
+        // Use setTimeout to delay the confirmation prompt, allowing the user to see the loaded data
+        setTimeout(() => {
+            // Ask if the data recovered is correct
+            const dataCorrect = confirm('Is the recovered data correct?');
+            if (dataCorrect) {
+                alert('Great! You can continue editing your character.'); // Notify the user
+            } else {
+                alert('Please make the necessary changes.'); // Notify the user to edit if data is incorrect
+            }
+        }, 1000); // Delay of 1 second before asking for confirmation
     } else {
         // If no data is found, ask the user if they want to try a deeper search
         const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
@@ -390,6 +393,7 @@ document.getElementById('attemptRecoveryButton').addEventListener('click', funct
         }
     }
 });
+
 
 // Function to save form data to localStorage
 function saveFormData() {
