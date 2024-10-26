@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderator Panel</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Optional CSS for modal */
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 60px; }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <!-- Moderator Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">Moderator Panel</div>
+            <ul class="nav-links">
+                <li><a href="admin/manage-users.html">Manage Users</a></li>
+                <li><a href="#manage-characters">Manage Characters</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section id="manage-characters">
+            <h2>Character Management</h2>
+            <div class="moderator-controls">
+                <input type="text" id="search-bar" placeholder="Search by character name or uploader...">
+                <select id="filter-status">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="revoked">Revoked</option>
+                    <option value="automod_approved">AutoMod Approved</option>
+                    <option value="automod_rejected">AutoMod Rejected</option>
+                    <option value="automod_revoked">AutoMod Revoked</option>
+                </select>
+                <button id="refresh-btn">Refresh List</button>
+                <button id="sort-date-btn">Sort by Date</button>
+            </div>
+            <table class="moderator-table">
+                <thead>
+                    <tr>
+                        <th>Character</th>
+                        <th>Uploader</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                        <th>Approved By</th>
+                        <th>Date Uploaded</th>
+                    </tr>
+                </thead>
+                <tbody id="character-list">
+                    <!-- Characters fetched dynamically -->
+                    <tr data-id="1">
+                        <td>Aimee</td>
+                        <td>User123</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td>
+                            <a class="view-btn" href="/api/admin/characters/User123/1" target="_blank">View JSON</a>
+                            <button class="approve-btn">Approve</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                        <td>—</td>
+                        <td>2024-10-13</td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Belle</td>
+                        <td>User456</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td>
+                            <a class="view-btn" href="/api/admin/characters/User456/2" target="_blank">View JSON</a>
+                            <button class="approve-btn">Approve</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                        <td>—</td>
+                        <td>2024-10-12</td>
+                    </tr>
+                    <!-- Additional rows as needed -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+    </footer>
+
+    <!-- Modals -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-text">Are you sure you want to approve this character?</p>
+            <button id="confirm-action-btn">Yes</button>
+            <button class="close">No</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/admin.js"></script>
+    <script src="js/scripts/checkbot.js"></script>
+    
+    <script>
+        const searchBar = document.getElementById('search-bar');
+        const filterStatus = document.getElementById('filter-status');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const sortDateBtn = document.getElementById('sort-date-btn');
+        const characterList = document.getElementById('character-list');
+        const modal = document.getElementById('confirmation-modal');
+        const modalText = document.getElementById('modal-text');
+        const confirmActionBtn = document.getElementById('confirm-action-btn');
+        
+        let currentAction = null;
+        let currentCharacterId = null;
+        let sortAscending = true;
+
+        // Filter functionality
+        searchBar.addEventListener('input', filterCharacters);
+        filterStatus.addEventListener('change', filterCharacters);
+
+        function filterCharacters() {
+            const query = searchBar.value.toLowerCase();
+            const status = filterStatus.value;
+
+            document.querySelectorAll('#character-list tr').forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const uploader = row.cells[1].textContent.toLowerCase();
+                const rowStatus = row.querySelector('.status').textContent.toLowerCase();
+
+                row.style.display = (
+                    (name.includes(query) || uploader.includes(query)) &&
+                    (status === 'all' || rowStatus === status)
+                ) ? '' : 'none';
+            });
+        }
+
+        // Sort by date functionality
+        sortDateBtn.addEventListener('click', () => {
+            const rows = Array.from(characterList.querySelectorAll('tr'));
+            rows.sort((a, b) => {
+                const dateA = new Date(a.cells[5].textContent);
+                const dateB = new Date(b.cells[5].textContent);
+                return sortAscending ? dateA - dateB : dateB - dateA;
+            });
+            sortAscending = !sortAscending;
+            rows.forEach(row => characterList.appendChild(row));
+        });
+
+        // Approve/Delete Confirmation
+        document.querySelectorAll('.approve-btn, .delete-btn').forEach(button => {
+            button.addEventListener('click', event => {
+                currentAction = event.target.classList.contains('approve-btn') ? 'approve' : 'delete';
+                currentCharacterId = event.target.closest('tr').dataset.id;
+                modalText.textContent = `Are you sure you want to ${currentAction} this character?`;
+                modal.style.display = 'block';
+            });
+        });
+
+        // Modal close functionality
+        document.querySelectorAll('.close').forEach(btn => {
+            btn.onclick = () => {
+                modal.style.display = 'none';
+            };
+        });
+
+        confirmActionBtn.onclick = () => {
+            if (currentAction && currentCharacterId) {
+                console.log(`${currentAction} action confirmed for character ID ${currentCharacterId}`);
+                modal.style.display = 'none';
+
+                if (currentAction === 'approve') {
+                    document.querySelector(`[data-id="${currentCharacterId}"] .status`).textContent = 'Approved';
+                    document.querySelector(`[data-id="${currentCharacterId}"] td:nth-child(5)`).textContent = 'ModeratorName';
+                }
+            }
+        };
+    </script>
+</body>
+</html>
