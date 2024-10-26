@@ -649,10 +649,6 @@ function loadCharacterData() {
 document.getElementById('characterForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Disable the submit button to prevent double submission
-    const submitButton = document.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
@@ -670,7 +666,6 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         character.context = cleanInput(document.getElementById('context').value);
     } else {
         document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
-        submitButton.disabled = false; // Re-enable button
         return;
     }
 
@@ -685,7 +680,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         method = 'post'; // Create new character
     }
 
- const imageInput = document.getElementById('imageUpload');
+    const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
 
     const formData = new FormData();
@@ -727,7 +722,15 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
             });
         }).then(modResponse => {
             console.log('Automod request sent successfully!', modResponse.data);
-            // Reset the form if needed
+             // Reset form and button state
+                document.getElementById('characterForm').reset();
+                sessionStorage.removeItem('editCharacter');
+                isEditing = false; // Reset editing flag
+                editingCharacterId = undefined; // Clear editing character ID
+                submitButton.textContent = 'Create Character'; // Reset button text
+                document.querySelector('#scenarioContainer').style.display = 'block';
+                document.querySelector('#contextContainer').style.display = 'none';
+                submitButton.disabled = false; // Re-enable button after submission
         }).catch(error => {
             console.error(error);
             document.getElementById('errorMessage').textContent = 'Failed to update character.';
@@ -759,8 +762,6 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
         });
     }
 });
-
-
 
 document.getElementById('saveForm').addEventListener('submit', function (e) {
     e.preventDefault();
