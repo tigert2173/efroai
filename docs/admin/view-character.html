@@ -128,7 +128,7 @@
             // Create the Delete button
             const deleteButton = document.createElement('button');
             deleteButton.innerText = 'Delete';
-            deleteButton.onclick = () => deleteCharacter(username, characterId);
+            deleteButton.onclick = () => deleteCharacter(characterId, username);
             actionButtonsDiv.appendChild(deleteButton);
         }
 
