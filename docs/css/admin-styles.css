@@ -81,11 +81,33 @@ h2 {
 }
 
 .status.pending {
-    background-color: #fbbc04;
+    background-color: #FFCC00; /* Bright Amber */
+    color: #000;
 }
 
 .status.approved {
-    background-color: #34a853;
+    background-color: #28A745; /* Dark Green */
+    color: #FFF;
+}
+
+.status.revoked {
+    background-color: #FF5733; /* Orange-Red */
+    color: #FFF;
+}
+
+.status.automod_approved {
+    background-color: #218838; /* Slightly darker green */
+    color: #FFF;
+}
+
+.status.automod_rejected {
+    background-color: #C82333; /* Crimson */
+    color: #FFF;
+}
+
+.status.automod_revoked {
+    background-color: #FFC107; /* Golden Yellow */
+    color: #000;
 }
 
 .approve-btn, .delete-btn {
