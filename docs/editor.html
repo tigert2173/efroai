@@ -887,12 +887,13 @@ imageInput.addEventListener('change', function() {
     const file = this.files[0];
 
     if (file) {
-        const fileSizeKB = Math.round(file.size / 1024); // File size in KB
+       // const fileSizeKB = Math.round(file.size / 1024); // File size in KB
+        const fileSizeMB = Math.round(file.size / 1024 / 1024); // File size in MB
 
         if (file.size > maxFileSize) {
             errorMessage.style.display = 'block';
             errorMessage.innerHTML = 
-                'Image larger than 4MB (' + fileSize + ' MB). Please try shrinking your image using a tool like ' +
+                'Image larger than 4MB (' + fileSizeMB + ' MB). Please try shrinking your image using a tool like ' +
                 '<a href="https://tinypng.com/" target="_blank">TinyPNG</a>. <br><br><em>If you are still having issues, contact <a href="mailto:support@efroai.net">support@efroai.net</a>. </em>';
             imagePreview.style.display = 'none';
         } else {
