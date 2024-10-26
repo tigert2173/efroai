@@ -68,6 +68,7 @@ function displayCharacters(characters) {
                 }
                 <button class="delete-btn">Delete</button>
             </td>
+            <td>Not Implemented</td>
             <td>${new Date(character.dateUploaded).toLocaleDateString()}</td>
         `;
         characterList.appendChild(row);
