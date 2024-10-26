@@ -851,15 +851,21 @@ function convertImageToJpeg(file) {
 
             img.onload = function () {
                 const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');    
 
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
+                // canvas.width = img.width;
+                // canvas.height = img.height;
+                // Set canvas dimensions to 300x300
+                canvas.width = 300;
+                canvas.height = 300;
+
+                // Draw the image on the canvas, resizing it
+                ctx.drawImage(img, 0, 0, 300, 300);
 
                 // Convert to JPEG format
                 canvas.toBlob((blob) => {
                     if (blob) {
+                        console.log('New image size in bytes:', blob.size); // Log the size of the blob
                         resolve(blob);
                     } else {
                         reject(new Error('Image conversion failed.'));
