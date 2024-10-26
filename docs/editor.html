@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Character</title>
+    <script src="/socket.io/socket.io.js"></script>
+
     <link rel="stylesheet" href="css/menu2.0.css">
     <style>
         /* Container and form styling */
@@ -316,8 +318,9 @@
         <form id="saveForm">
             <button type="submit">Save Character</button>
         </form>
-        
     </div>
+    <br>
+    <div id="logs"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
@@ -832,8 +835,6 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
     })
     .then(modResponse => {
         console.log('Automod request sent successfully!', modResponse.data);
-        console.log(data.logs); // Handle logs
-        console.log(data.message); // Other response data
         // Reset the form and sessionStorage if needed
         // document.getElementById('characterForm').reset();
     })
