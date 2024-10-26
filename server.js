@@ -24,6 +24,7 @@
     '45.148.10.206', //requested /.env
     '85.31.47.61', //port scanning
     '::ffff:78.153.140.224', //crm/.env /cron/.env /cronlab/.env /css/.env /custom/.env /docker.env
+    '::ffff:78.153.140.223', // /.env
     '204.110.223.51' // SchoScure
 ]; 
 
