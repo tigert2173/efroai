@@ -456,7 +456,7 @@
                     Authorization: `${token}`
                 }
             });
-        }).then(response => { // response now is in scope here
+        }).then(response => { // response now is defined here
             alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
 
             // Now upload the image if it exists
@@ -467,17 +467,17 @@
                     Authorization: `${token}`,
                     'Content-Type': 'multipart/form-data'
                 }
-            });
-        }).then(imageResponse => {
-            console.log('Image uploaded successfully!');
+            }).then(imageResponse => {
+                console.log('Image uploaded successfully!');
 
-            // Now request auto moderation
-            return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.character.id // Use character ID for moderation
-            }, {
-                headers: {
-                    Authorization: `${token}`
-                }
+                // Now request auto moderation
+                return axios.post('https://characters.efroai.net:3000/api/automod', {
+                    characterId: isEditing ? editingCharacterId : response.data.character.id // Use character ID for moderation
+                }, {
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
             });
         }).then(modResponse => {
             console.log('Automod request sent successfully!', modResponse.data);
