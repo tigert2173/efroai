@@ -321,7 +321,18 @@
         <div id="logs"></div>
 
     </div>
-    
+    <script>
+        (function() {
+    const socket = io();
+
+    socket.on('automod-log', (message) => {
+        const logsDiv = document.getElementById('logs');
+        const logMessage = document.createElement('div');
+        logMessage.textContent = message;
+        logsDiv.appendChild(logMessage);
+    });
+})();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.getElementById('toggleMode').addEventListener('click', function() {
