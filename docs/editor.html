@@ -343,6 +343,8 @@
             alert('Editing mode has been reset. You can now create a new character.'); // Notify the user
             // Optionally, you can reset the form fields here if necessary
             document.getElementById('characterForm').reset(); // Reset the form if needed
+            document.querySelector('button[type="submit"]').textContent = 'Create Character';
+
         }
     });
 
