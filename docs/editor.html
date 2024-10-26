@@ -765,84 +765,60 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         method = 'post'; // Create new character
     }
 
-    // Prepare image upload if an image is selected
-    const imageInput = document.getElementById('imageUpload');
+ // Prepare image upload if an image is selected
+ const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
 
-    // Convert image to JPEG if a file is selected
-    const formData = new FormData();
-    if (imageFile) {
-        convertImageToJpeg(imageFile).then(jpegFile => {
-            formData.append('image', jpegFile); // Append the converted image file
+    // First, submit the character data
+    axios({
+        method: method,
+        url: apiUrl,
+        data: character,
+        headers: {
+            Authorization: `${sessionStorage.getItem('token')}`
+        }
+    })
+    .then(response => {
+        alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
 
-            // First, submit the character data
-            return axios({
-                method: method,
-                url: apiUrl,
-                data: character,
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(response => {
-            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+        if (imageFile) {
+            // Convert image to JPEG if a file is selected
+            return convertImageToJpeg(imageFile).then(jpegFile => {
+                const formData = new FormData();
+                formData.append('image', jpegFile); // Append the converted image file
+                
+                const characterId = isEditing ? editingCharacterId : response.data.id; // Get the character ID
+                const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
 
-            // Now upload the image if it exists
-            const characterId = isEditing ? editingCharacterId : response.data.id; // Get the character ID from response or use editing ID
-            const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
-
-            return axios.post(imageApiUrl, formData, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`,
-                    'Content-Type': 'multipart/form-data'
-                }
+                return axios.post(imageApiUrl, formData, {
+                    headers: {
+                        Authorization: `${sessionStorage.getItem('token')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             });
-        }).then(imageResponse => {
-            if (imageResponse) {
-                console.log('Image uploaded successfully!');
-            }
-            // Now request auto moderation
-            return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
-            }, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(modResponse => {
-            console.log('Automod request sent successfully!', modResponse.data);
-            // Reset the form and sessionStorage if needed
-            // document.getElementById('characterForm').reset();
-        }).catch(error => {
-            console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
-        });
-    } else {
-        // If no image is selected, just send character data
-        axios({
-            method: method,
-            url: apiUrl,
-            data: character,
+        }
+    })
+    .then(imageResponse => {
+        if (imageResponse) {
+            console.log('Image uploaded successfully!');
+        }
+        // Now request auto moderation
+        return axios.post('https://characters.efroai.net:3000/api/automod', {
+            characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
+        }, {
             headers: {
                 Authorization: `${sessionStorage.getItem('token')}`
             }
-        }).then(response => {
-            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
-            // Now request auto moderation
-            return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
-            }, {
-                headers: {
-                    Authorization: `${sessionStorage.getItem('token')}`
-                }
-            });
-        }).then(modResponse => {
-            console.log('Automod request sent successfully!', modResponse.data);
-        }).catch(error => {
-            console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
         });
-    }
+    })
+    .then(modResponse => {
+        console.log('Automod request sent successfully!', modResponse.data);
+    })
+    .catch(error => {
+        console.error(error);
+        document.getElementById('errorMessage').textContent = 'Failed to update character.';
+    });
 });
 
 // Convert image to JPEG using Canvas
@@ -864,50 +840,22 @@ function convertImageToJpeg(file) {
 
                 // Convert to JPEG format
                 canvas.toBlob((blob) => {
-                    resolve(blob);
-                }, 'image/jpg', 0.9); // Adjust quality if needed
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Image conversion to JPEG failed.'));
+                    }
+                }, 'image/jpeg', 0.9); // Adjust quality if needed
             };
 
-            img.onerror = reject; // Handle image load errors
+            img.onerror = () => reject(new Error('Image loading failed.'));
         };
 
-        reader.onerror = reject; // Handle file reading errors
+        reader.onerror = () => reject(new Error('File reading failed.'));
         reader.readAsDataURL(file);
     });
 }
 
-// For photo upload
-const imageInput = document.getElementById('imageUpload');
-const imagePreview = document.getElementById('imagePreview');
-const errorMessage = document.getElementById('errorMessageimage');
-const maxFileSize = 1 * 1024 * 256; // 256KB in bytes
-let selectedImageFile = null; // To store the selected image file
-
-imageInput.addEventListener('change', function() {
-    const file = this.files[0];
-
-    if (file) {
-        const fileSizeKB = Math.round(file.size / 1024); // File size in KB
-
-        if (file.size > maxFileSize) {
-            errorMessage.style.display = 'block';
-            errorMessage.innerHTML = 
-                'Image larger than 256KB (' + fileSizeKB + ' KB). Please try shrinking your image using a tool like ' +
-                '<a href="https://tinypng.com/" target="_blank">TinyPNG</a>. <br><br><em>If you are still having issues, contact <a href="mailto:support@efroai.net">support@efroai.net</a>. </em>';
-            imagePreview.style.display = 'none';
-        } else {
-            errorMessage.textContent = ''; // Clear error message
-            errorMessage.style.display = 'none';
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-            selectedImageFile = file; // Store the selected file
-        }
-    }
-});
 
 function cleanInput(input) {
     // Sanitize the input with DOMPurify
