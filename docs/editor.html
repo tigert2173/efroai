@@ -463,7 +463,7 @@
         }).then(response => {
             alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
             // Now upload the image if it exists
-            const characterId = isEditing ? editingCharacterId : response.data.id; // Get character ID
+            const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get character ID
             const imageApiUrl = `https://characters.efroai.net:3000/api/characters/${characterId}/image`;
             return axios.post(imageApiUrl, formData, {
                 headers: {
@@ -475,7 +475,7 @@
             console.log('Image uploaded successfully!');
             // Now request auto moderation
             return axios.post('https://characters.efroai.net:3000/api/automod', {
-                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+                characterId: isEditing ? editingCharacterId : response.data.character.id // Use character ID for moderation
             }, {
                 headers: {
                     Authorization: `${token}`
