@@ -823,14 +823,6 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
     });
 
     return axios.post('https://characters.efroai.net:3000/api/automod', {
-        persona,
-        scenario,
-        context,
-        greeting,
-        exampledialogue,
-        tags,
-        name,
-        chardescription,
         characterId: isEditing ? editingCharacterId : response.data.id // Use the character ID for moderation
     }, {
         headers: {
