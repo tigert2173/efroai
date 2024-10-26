@@ -5,7 +5,6 @@
   const path = require('path');
   const WebSocket = require('ws'); // Import WebSocket library
   const compression = require('compression'); // Import compression middleware
-  const { Server } = require('socket.io');
 
   const app = express();
   // Use CORS middleware
@@ -210,8 +209,6 @@ app.use(express.static(path.join(__dirname, 'docs'), {
   const server = https.createServer(options, app).listen(443, () => {
       console.log('HTTPS Server running on port 443');
   });
-  
-  const io = new Server(server);
 
   // Create a WebSocket server
   const wss = new WebSocket.Server({ server });
@@ -221,7 +218,7 @@ app.use(express.static(path.join(__dirname, 'docs'), {
      // const userIp = req.socket.remoteAddress; // Get the user's IP address
      const forwarded = req.headers['cf-connecting-ip'];
      const userIp = forwarded || req.connection.remoteAddress;
-
+     
       console.log(`WebSocket connection established for IP: ${userIp}`);
       
       // Send a ping every 30 seconds to check if the client is still connected
