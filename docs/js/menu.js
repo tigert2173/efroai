@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (event.data.type === 'login' && event.data.token) {
                 sessionStorage.setItem('token', event.data.token); // Store the token
                 location.reload(); // Refresh the page to apply the new token
+                loginPopup.classList.add('hidden'); // Show the login popup
             }
         }
     });
