@@ -37,6 +37,7 @@ function loginUser() {
         // Redirect to the referrer or homepage
         const redirectUrl = document.referrer || '../index.html';
         window.opener.location.href = redirectUrl; // Change the opener's location
+        
         window.close(); // Optionally close the login window
 
     })
