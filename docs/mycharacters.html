@@ -112,19 +112,22 @@
     }
 
     function displayCharacters(characters) {
-        const characterList = document.getElementById('characterList');
-        characterList.innerHTML = '';
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = '';
 
-        characters.forEach(character => {
-            
+    characters.forEach(character => {
         const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
-            console.log(imageUrl);
+        console.log(imageUrl);
+
         // Create image element
         const imgElement = document.createElement('img');
         imgElement.alt = `${character.name} image`;
         imgElement.onerror = () => {
             imgElement.src = 'noimage.jpg'; // Set default image on error
         };
+        imgElement.style.width = '50px'; // Adjust size as needed
+        imgElement.style.height = '50px';
+        imgElement.style.marginRight = '10px';
 
         // Fetch the image
         fetch(imageUrl, {
@@ -148,24 +151,28 @@
             console.error('Error fetching image:', error);
             imgElement.src = 'noimage.jpg'; // Fallback to default image
         });
-            const characterItem = document.createElement('div');
-            characterItem.classList.add('character-item');
-            characterItem.innerHTML = `
-                <div style="display: flex; align-items: center;">
-                    <span>${character.name} (Uploaded by: ${character.uploader})</span>
-                </div>
-                <div>
-                    <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-                    <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                    <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
-                </div>
-            `;
-            characterItem.querySelector('.card-body').insertBefore(imgElement, characterItem.querySelector('.card-body p'));
 
-            characterList.appendChild(characterItem);
-        });
+        // Create character item element
+        const characterItem = document.createElement('div');
+        characterItem.classList.add('character-item');
+        
+        characterItem.innerHTML = `
+            <div style="display: flex; align-items: center;">
+                <span>${character.name} (Uploaded by: ${character.uploader})</span>
+            </div>
+            <div>
+                <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
+                <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
+                <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
+            </div>
+        `;
 
-    }
+        // Insert image element at the beginning of character item
+        characterItem.insertBefore(imgElement, characterItem.firstChild);
+
+        characterList.appendChild(characterItem);
+    });
+}
 
     function editCharacter(characterId, uploader) {
         const token = sessionStorage.getItem('token');
