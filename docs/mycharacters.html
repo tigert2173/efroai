@@ -117,7 +117,7 @@
 
         characters.forEach(character => {
             
-        const imageUrl = `${BACKEND_URL}/api/characters/${character.uploader}/images/${character.id}`;
+        const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
 
         // Create image element
         const imgElement = document.createElement('img');
@@ -152,7 +152,7 @@
             characterItem.classList.add('character-item');
             characterItem.innerHTML = `
                 <div style="display: flex; align-items: center;">
-                    <img src="${imageBlob || 'noimage.jpg'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
+                    <img src="${imgElement.src || 'noimage.jpg'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
                     <span>${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
                 <div>
