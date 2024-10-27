@@ -34,18 +34,17 @@ function loginUser() {
       //  window.opener.postMessage('loggedIn', window.location.origin);
 
          // Check the referrer
-        const redirectUrl = document.referrer ? document.referrer : 'index.html';
-        console.log(document.referrer);
+        const redirectUrl = document.referrer;
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
         
-        if (redirectUrl !== "index.html") {
+        if (redirectUrl !== "https://efroai.net/") {
             window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
             window.opener.location.href = redirectUrl; // Change the opener's location
             
             // Redirect to the referrer or homepage
             window.close(); // Optionally close the login window
         } else {
-            window.location.href = '/index.html';
+            window.location.href = 'https://efroai.net/index.html';
         }
         //const redirectUrl = document.referrer || '../index.html';
 
