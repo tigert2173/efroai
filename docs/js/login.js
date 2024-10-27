@@ -36,12 +36,14 @@ function loginUser() {
          // Check the referrer
         const redirectUrl = document.referrer ? document.referrer : '../index.html';
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
-
+        
+        if (redirectUrl == "../index.html") {
+            window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
+        }
         // Redirect to the referrer or homepage
         //const redirectUrl = document.referrer || '../index.html';
         window.opener.location.href = redirectUrl; // Change the opener's location
-        window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
-
+        
         window.close(); // Optionally close the login window
 
     })
