@@ -39,12 +39,14 @@ function loginUser() {
         
         if (redirectUrl !== "index.html") {
             window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
+            window.opener.location.href = redirectUrl; // Change the opener's location
+            
+            // Redirect to the referrer or homepage
             window.close(); // Optionally close the login window
+        } else {
+            window.location.href = '../index.html';
         }
-        // Redirect to the referrer or homepage
         //const redirectUrl = document.referrer || '../index.html';
-        window.opener.location.href = redirectUrl; // Change the opener's location
-
 
     })
     .catch(error => {
