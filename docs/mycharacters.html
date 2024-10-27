@@ -118,7 +118,7 @@
         characters.forEach(character => {
             
         const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
-
+            console.log(imageUrl);
         // Create image element
         const imgElement = document.createElement('img');
         imgElement.alt = `${character.name} image`;
