@@ -160,9 +160,10 @@
                     <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
                 </div>
             `;
+            characterItem.querySelector('.card-body').insertBefore(imgElement, characterItem.querySelector('.card-body p'));
+
             characterList.appendChild(characterItem);
         });
-        characterItem.querySelector('.card-body').insertBefore(imgElement, characterItem.querySelector('.card-body p'));
 
     }
 
