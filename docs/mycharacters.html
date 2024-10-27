@@ -163,7 +163,7 @@
             <div>
                 <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
                 <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
+                <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
             </div>
         `;
 
@@ -172,6 +172,15 @@
 
         characterList.appendChild(characterItem);
     });
+}
+
+function openCharacterPage(characterId, uploader) {
+    // Use sessionStorage to save the character ID and uploader information
+    sessionStorage.setItem('selectedCharacterId', characterId);
+    sessionStorage.setItem('characterUploader', uploader);
+
+    // Redirect to the chat page
+    window.location.href = '/chat.html';
 }
 
     function editCharacter(characterId, uploader) {
