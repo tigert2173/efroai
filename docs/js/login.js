@@ -44,7 +44,7 @@ function loginUser() {
             // Redirect to the referrer or homepage
             window.close(); // Optionally close the login window
         } else {
-            window.location.href = '../index.html';
+            window.location.href = '/index.html';
         }
         //const redirectUrl = document.referrer || '../index.html';
 
