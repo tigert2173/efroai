@@ -152,7 +152,6 @@
             characterItem.classList.add('character-item');
             characterItem.innerHTML = `
                 <div style="display: flex; align-items: center;">
-                    <img src="${imgElement || 'noimage.jpg'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
                     <span>${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
                 <div>
@@ -164,6 +163,7 @@
             characterList.appendChild(characterItem);
         });
     }
+    card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
     function editCharacter(characterId, uploader) {
         const token = sessionStorage.getItem('token');
