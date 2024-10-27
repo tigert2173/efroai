@@ -120,18 +120,19 @@
             characterItem.classList.add('character-item');
             characterItem.innerHTML = `
                 <div style="display: flex; align-items: center;">
-                    <img src="path/to/images/${character.name}.png" alt="${character.name} Image" style="width: 50px; height: auto; margin-right: 10px;">
+                    <img src="${character.image || 'default-image.png'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
                     <span>${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
                 <div>
                     <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-                    <button onclick="archiveCharacter('${character.uploader}', '${character.name}')">Archive</button>
-                    <button onclick="chatWithCharacter(${character.id})">Chat</button>
+                    <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
+                    <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
                 </div>
             `;
             characterList.appendChild(characterItem);
         });
     }
+
     function editCharacter(characterId, uploader) {
         const token = sessionStorage.getItem('token');
         if (!token) {
@@ -165,40 +166,42 @@
         });
     }
 
-    function archiveCharacter(uploader, characterName) {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        alert('You must be logged in to archive a character.');
-        return;
+    function archiveCharacter(characterId, uploader) {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No token found. User may not be logged in.');
+            alert('You must be logged in to archive a character.');
+            return;
+        }
+
+        console.log('Archiving Character ID:', characterId);
+
+        fetch(`${BACKEND_URL}/archive-character/${uploader}/${characterId}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `${token}`  // Add "Bearer" to token format if required
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to archive character: ${response.statusText}`);
+            }
+            alert('Character archived successfully.');
+            fetchCharacters(); // Refresh the character list
+        })
+        .catch(error => {
+            console.error('Error archiving character:', error);
+            alert('Error archiving character. Please try again.');
+        });
     }
 
-    fetch(`${BACKEND_URL}/archive-character/${uploader}/${characterName}`, {
-        method: 'POST',
-        headers: {
-            Authorization: token,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to archive character');
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert(data.message);
-        fetchCharacters(); // Refresh the character list
-    })
-    .catch(error => {
-        console.error('Error archiving character:', error);
-        alert('Error archiving character. Please try again.');
-    });
-}
-
-function chatWithCharacter(characterId) {
-    // Implement chat functionality here
-    console.log('Chatting with Character ID:', characterId);
-}
+    function startChat(characterId) {
+        console.log('Starting chat for Character ID:', characterId);
+        // Here you can implement chat logic, such as redirecting to a chat page
+        alert(`Starting chat for Character ID: ${characterId}`);
+        // Example of redirecting to a chat page (modify as needed):
+        // window.location.href = `chat.html?characterId=${characterId}`;
+    }
 
 </script>
 <script src="js/scripts/checkbot.js"></script>
