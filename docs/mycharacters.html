@@ -162,8 +162,9 @@
             `;
             characterList.appendChild(characterItem);
         });
+        characterItem.querySelector('.card-body').insertBefore(imgElement, characterItem.querySelector('.card-body p'));
+
     }
-    characterItem.querySelector('.card-body').insertBefore(imgElement, characterItem.querySelector('.card-body p'));
 
     function editCharacter(characterId, uploader) {
         const token = sessionStorage.getItem('token');
