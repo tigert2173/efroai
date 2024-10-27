@@ -36,8 +36,13 @@
             border-radius: 5px;
             margin: 5px 0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+        }
+        .character-image {
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+            margin-right: 10px;
         }
         button {
             background-color: #00ff66;
@@ -55,133 +60,175 @@
 </head>
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Characters</a></li>
-                <li><a href="editor.html">Upload Character</a></li>
-                <li><a href="#account">Account</a></li>
-                <li><a href="admin.html">Admin</a></li>
-                <li><a href="documentation.html">Documentation</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav class="navbar">
+        <div class="logo"><img src="logo.png" alt="EFRO.AI Logo" /> EFRO.AI Character Hub</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Characters</a></li>
+            <li><a href="editor.html">Upload Character</a></li>
+            <li><a href="#account">Account</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div class="container">
-        <h1>Your Characters</h1>
-        <div class="character-list" id="characterList"></div>
-    </div>
+<div class="container">
+    <h1>Your Characters</h1>
+    <div class="character-list" id="characterList"></div>
+</div>
 
-    <script>
-        const BACKEND_URL = 'https://characters.efroai.net:3000/api'; // Define your backend URL here
+<script>
+    const BACKEND_URL = 'https://characters.efroai.net:3000/api'; // Define your backend URL here
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchCharacters(); // Fetch characters on page load
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchCharacters(); // Fetch characters on page load
+    });
 
-        async function fetchCharacters() {
-            const token = sessionStorage.getItem('token');
-            if (!token) {
-                console.error('No token found. User may not be logged in.');
-                return;
-            }
+    async function fetchCharacters() {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No token found. User may not be logged in.');
+            return;
+        }
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/characters`, {
-                    headers: {
-                        Authorization: token
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch characters');
+        try {
+            const response = await fetch(`${BACKEND_URL}/characters`, {
+                headers: {
+                    Authorization: token
                 }
+            });
 
-                const characters = await response.json();
-                displayCharacters(characters);
-            } catch (error) {
-                console.error('Error fetching character data:', error);
-                alert('Error fetching character data. Please try again.');
+            if (!response.ok) {
+                throw new Error('Failed to fetch characters');
             }
+
+            const characters = await response.json();
+            displayCharacters(characters);
+        } catch (error) {
+            console.error('Error fetching character data:', error);
+            alert('Error fetching character data. Please try again.');
         }
-
-        function displayCharacters(characters) {
-            const characterList = document.getElementById('characterList');
-            characterList.innerHTML = '';
-
-            characters.forEach(character => {
-    const characterItem = document.createElement('div');
-    characterItem.classList.add('character-item');
-    characterItem.innerHTML = `
-        <span>${character.name} (Uploaded by: ${character.uploader})</span>
-        <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-    `;
-    characterList.appendChild(characterItem);
-});
-
-        }
-    function editCharacter(characterId, uploader) {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        console.error('No token found. User may not be logged in.');
-        alert('You must be logged in to edit a character.');
-        return;
     }
 
-    console.log('Editing Character ID:', characterId);
+    function displayCharacters(characters) {
+        const characterList = document.getElementById('characterList');
+        characterList.innerHTML = '';
 
-    fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {  // Include username in the URL
-        headers: {
-            Authorization: `${token}`  // Add "Bearer" to token format if required
-        }
-    })
-    .then(response => {
-        console.log('Response Status:', response.status);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch character data: ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(character => {
-        sessionStorage.setItem('editCharacter', JSON.stringify(character));
-        // Redirect to the editor page
-        window.location.href = 'editor.html';
-    })
-    .catch(error => {
-        console.error('Error fetching character data:', error);
-        alert('Error fetching character data for editing. Please try again.');
-    });
-}
-
-
-
-    </script>
-    <script src="js/scripts/checkbot.js"></script>
-
-    <script>
-        const socket = new WebSocket('wss://efroai.net'); // Update with your domain
-    
-        // Connection opened
-        socket.addEventListener('open', (event) => {
-            console.log('Connected to WebSocket server');
+        characters.forEach(character => {
+            const characterItem = document.createElement('div');
+            characterItem.classList.add('character-item');
+            characterItem.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <img src="${character.image || 'default-image.png'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
+                    <span>${character.name} (Uploaded by: ${character.uploader})</span>
+                </div>
+                <div>
+                    <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
+                    <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
+                    <button onclick="startChat('${character.id}')">Chat</button> <!-- Chat button -->
+                </div>
+            `;
+            characterList.appendChild(characterItem);
         });
-    
-        // Listen for messages
-        socket.addEventListener('message', (event) => {
-            console.log('Message from server:', event.data);
-            // Handle ping or any other messages from the server
-            if (event.data === 'ping') {
-                // You can respond to pings if needed
-                socket.send('pong'); // Example response
+    }
+
+    function editCharacter(characterId, uploader) {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No token found. User may not be logged in.');
+            alert('You must be logged in to edit a character.');
+            return;
+        }
+
+        console.log('Editing Character ID:', characterId);
+
+        fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {  // Include username in the URL
+            headers: {
+                Authorization: `${token}`  // Add "Bearer" to token format if required
             }
+        })
+        .then(response => {
+            console.log('Response Status:', response.status);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch character data: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(character => {
+            sessionStorage.setItem('editCharacter', JSON.stringify(character));
+            // Redirect to the editor page
+            window.location.href = 'editor.html';
+        })
+        .catch(error => {
+            console.error('Error fetching character data:', error);
+            alert('Error fetching character data for editing. Please try again.');
         });
-    
-        // Connection closed
-        socket.addEventListener('close', (event) => {
-            console.log('Disconnected from WebSocket server');
+    }
+
+    function archiveCharacter(characterId, uploader) {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No token found. User may not be logged in.');
+            alert('You must be logged in to archive a character.');
+            return;
+        }
+
+        console.log('Archiving Character ID:', characterId);
+
+        fetch(`${BACKEND_URL}/archive-character/${uploader}/${characterId}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `${token}`  // Add "Bearer" to token format if required
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to archive character: ${response.statusText}`);
+            }
+            alert('Character archived successfully.');
+            fetchCharacters(); // Refresh the character list
+        })
+        .catch(error => {
+            console.error('Error archiving character:', error);
+            alert('Error archiving character. Please try again.');
         });
-    </script>
-    
+    }
+
+    function startChat(characterId) {
+        console.log('Starting chat for Character ID:', characterId);
+        // Here you can implement chat logic, such as redirecting to a chat page
+        alert(`Starting chat for Character ID: ${characterId}`);
+        // Example of redirecting to a chat page (modify as needed):
+        // window.location.href = `chat.html?characterId=${characterId}`;
+    }
+
+</script>
+<script src="js/scripts/checkbot.js"></script>
+
+<script>
+    const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+
+    // Connection opened
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to WebSocket server');
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', (event) => {
+        console.log('Message from server:', event.data);
+        // Handle ping or any other messages from the server
+        if (event.data === 'ping') {
+            // You can respond to pings if needed
+            socket.send('pong'); // Example response
+        }
+    });
+
+    // Connection closed
+    socket.addEventListener('close', (event) => {
+        console.log('Disconnected from WebSocket server');
+    });
+</script>
+
 </body>
 </html>
