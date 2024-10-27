@@ -152,7 +152,7 @@
             characterItem.classList.add('character-item');
             characterItem.innerHTML = `
                 <div style="display: flex; align-items: center;">
-                    <img src="${imgElement.src || 'noimage.jpg'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
+                    <img src="${imgElement || 'noimage.jpg'}" alt="${character.name}" class="character-image"> <!-- Add image here -->
                     <span>${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
                 <div>
