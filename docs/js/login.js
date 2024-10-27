@@ -35,6 +35,7 @@ function loginUser() {
 
          // Check the referrer
         const redirectUrl = document.referrer ? document.referrer : 'index.html';
+        console.log(document.referrer);
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
         
         if (redirectUrl !== "index.html") {
