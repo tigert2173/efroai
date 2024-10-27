@@ -34,7 +34,7 @@ function loginUser() {
       //  window.opener.postMessage('loggedIn', window.location.origin);
 
          // Check the referrer
-        const redirectUrl = document.referrer;
+        const redirectUrl = document.referrer || "https://efroai.net/";
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
         
         if (redirectUrl !== "https://efroai.net/") {
