@@ -211,6 +211,8 @@
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
 
+                // Update Open Graph image dynamically
+    document.getElementById('og-image').setAttribute('content', imageUrl);
             // Display the "Chat" button
             const chatButton = document.getElementById('chat-button');
             chatButton.style.display = 'inline-block';
