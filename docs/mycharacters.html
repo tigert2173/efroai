@@ -6,124 +6,129 @@
     <title>My Characters – EFRO.AI</title>
     <link rel="stylesheet" href="css/menu2.0.css">
     <style>
-  body {
+      body {
     font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #121212; /* Darker background for a more tavern-like feel */
+    color: #e0e0e0; /* Softer text color */
     margin: 0;
     padding: 0;
-    line-height: 1.6;
-  }
+    line-height: 1.6; /* Improved readability */
+}
 
-  .container {
-    background-color: #1e1e1e;
+.container {
+    background-color: #1e1e1e; /* Slightly lighter than body for contrast */
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    border-radius: 12px; /* Rounder corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8); /* Deeper shadow for depth */
     max-width: 900px;
-    width: 90%; /* Allow more room on smaller screens */
+    width: 100%;
     margin: 50px auto;
-  }
+}
 
-  h1 {
+h1 {
     text-align: center;
-    color: #00ff66;
+    color: #00ff66; /* Bright accent color for headings */
     margin-bottom: 30px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  }
+    font-size: 2.5em; /* Larger font size for prominence */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
 
-  .character-list {
+.character-list {
     margin-top: 20px;
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-  }
+}
 
-  .character-item {
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 10px 0;
+.character-item {
+    background-color: #2a2a2a; /* Darker background for character items */
+    padding: 15px; /* More padding for a spacious look */
+    border-radius: 8px; /* Slightly larger rounded corners */
+    margin: 10px 0; /* More margin for separation */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: background-color 0.3s;
-    flex-wrap: wrap; /* Allow wrapping for responsiveness */
-  }
+    flex-wrap: wrap; /* Allow items to wrap */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
 
-  .character-image {
-    width: 70px;
-    height: 70px;
+.character-item:hover {
+    background-color: #3a3a3a; /* Highlight on hover */
+}
+
+.character-image {
+    width: 70px; /* Increased image size for visibility */
+    height: 70px; /* Increased image size for visibility */
     margin-right: 15px;
-    border-radius: 5px;
-    border: 2px solid #00ff66;
-  }
+    border-radius: 5px; /* Slight rounding for images */
+    border: 2px solid #00ff66; /* Border to make images pop */
+}
 
-  .character-info {
-    flex-grow: 1; /* Allow info section to take available space */
-    min-width: 0; /* Prevent overflow */
-  }
+.character-info {
+    flex: 1; /* Allow this div to grow */
+    min-width: 200px; /* Ensure it doesn't get too small */
+}
 
-  .character-actions {
+.character-actions {
     display: flex;
-    flex-wrap: wrap; /* Wrap buttons to next line if needed */
-    gap: 10px; /* Add gap between buttons */
-  }
+    flex-wrap: wrap; /* Wrap buttons if there's not enough space */
+    gap: 10px; /* Space between buttons */
+}
 
-  button {
-    background-color: #00ff66;
+button {
+    background-color: #00ff66; /* Primary button color */
     color: #1b1b1b;
-    padding: 10px 16px;
+    padding: 10px 16px; /* Increased padding for a more substantial look */
     border: none;
-    border-radius: 6px;
+    border-radius: 6px; /* Slightly larger radius */
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    flex: 1 1 auto; /* Allow buttons to grow and shrink */
-    min-width: 120px; /* Minimum width for buttons */
-    max-width: 200px; /* Max width for buttons */
-  }
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Added shadow transition */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    flex: 1 1 auto; /* Allow buttons to grow */
+    min-width: 80px; /* Ensure buttons have a minimum size */
+}
 
-  button:hover {
-    background-color: #ff6600;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  }
+button:hover {
+    background-color: #ff6600; /* Hover color */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* More prominent shadow on hover */
+}
 
-  .error-message {
-    color: #ff4444;
+.error-message {
+    color: #ff4444; /* Error message color */
     text-align: center;
     margin-top: 15px;
-    font-weight: bold;
-  }
+    font-weight: bold; /* Bold error messages */
+}
 
-  /* Media Queries for Responsiveness */
-  @media (max-width: 768px) {
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em; /* Reduce heading size on smaller screens */
+    }
+
     .character-item {
-      flex-direction: column; /* Stack items in a column */
-      align-items: flex-start; /* Align items to the start */
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the left */
     }
 
     .character-actions {
-      justify-content: space-between; /* Space buttons evenly */
-      width: 100%; /* Make actions full width */
+        justify-content: center; /* Center buttons */
     }
 
     button {
-      flex: 1 1 100%; /* Full width buttons on small screens */
-      margin-bottom: 10px; /* Space between buttons */
+        width: 100%; /* Full width for buttons on smaller screens */
     }
-  }
+}
 
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 2em; /* Smaller heading on very small screens */
+@media (max-width: 480px) {
+    .character-item {
+        padding: 10px; /* Reduce padding */
     }
 
-    button {
-      padding: 8px; /* Slightly smaller padding */
+    .character-image {
+        width: 50px; /* Smaller image size */
+        height: 50px; /* Smaller image size */
     }
-  }
+}
+
     </style>
 </head>
 <body>
