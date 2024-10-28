@@ -36,16 +36,19 @@ h1 {
 .character-list {
     margin-top: 20px;
     display: grid; /* Use grid for layout */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Responsive columns */
     gap: 20px; /* Space between items */
 }
 
 .character-item {
     background-color: #2a2a2a; /* Darker background for character items */
-    padding: 15px; /* More padding for a spacious look */
-    border-radius: 8px; /* Slightly larger rounded corners */
+    padding: 20px; /* Increased padding for a spacious look */
+    border-radius: 12px; /* Larger rounded corners */
     margin: 10px 0; /* More margin for separation */
     transition: background-color 0.3s; /* Smooth background transition */
+    display: flex; /* Flex for inner content alignment */
+    align-items: center; /* Center content vertically */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
 }
 
 .character-item:hover {
@@ -53,8 +56,8 @@ h1 {
 }
 
 .character-image {
-    width: 70px; /* Increased image size for visibility */
-    height: 70px; /* Increased image size for visibility */
+    width: 80px; /* Increased image size for visibility */
+    height: 80px; /* Increased image size for visibility */
     margin-right: 15px;
     border-radius: 5px; /* Slight rounding for images */
     border: 2px solid #00ff66; /* Border to make images pop */
@@ -62,7 +65,16 @@ h1 {
 
 .character-info {
     flex: 1; /* Allow this div to grow */
-    min-width: 200px; /* Ensure it doesn't get too small */
+}
+
+.character-info h2 {
+    margin: 0; /* Reset margin */
+    font-size: 1.5em; /* Larger font size for character name */
+    color: #00ff66; /* Bright accent color */
+}
+
+.character-info p {
+    margin: 5px 0; /* Space between text lines */
 }
 
 .character-actions {
@@ -74,14 +86,14 @@ h1 {
 button {
     background-color: #00ff66; /* Primary button color */
     color: #1b1b1b;
-    padding: 10px 16px; /* Increased padding for a more substantial look */
+    padding: 12px 16px; /* Increased padding for a more substantial look */
     border: none;
     border-radius: 6px; /* Slightly larger radius */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Added shadow transition */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
     flex: 1 1 auto; /* Allow buttons to grow */
-    min-width: 80px; /* Ensure buttons have a minimum size */
+    min-width: 100px; /* Ensure buttons have a minimum size */
 }
 
 button:hover {
@@ -104,12 +116,12 @@ button:hover {
     }
 
     .character-item {
-        padding: 10px; /* Reduce padding */
+        padding: 15px; /* Reduce padding */
     }
 
     .character-image {
-        width: 60px; /* Slightly smaller image size */
-        height: 60px; /* Slightly smaller image size */
+        width: 70px; /* Slightly smaller image size */
+        height: 70px; /* Slightly smaller image size */
     }
 }
 
