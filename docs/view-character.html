@@ -153,6 +153,10 @@
         // Function to load character details
         function loadCharacterDetails() {
             const { characterId, uploader } = getUrlParams();
+                // Update Open Graph meta tags with URL parameters
+    document.getElementById('og-title').setAttribute('content', `Character Details - ${characterId}`);
+    document.getElementById('og-description').setAttribute('content', `Details about the character with ID ${characterId} uploaded by ${uploader || 'Unknown'}.`);
+
             fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
                 .then(response => {
                     if (response.ok) {
@@ -212,7 +216,7 @@
             });
 
                 // Update Open Graph image dynamically
-    document.getElementById('og-image').setAttribute('content', imageUrl);
+            //document.getElementById('og-image').setAttribute('content', imageUrl);
             // Display the "Chat" button
             const chatButton = document.getElementById('chat-button');
             chatButton.style.display = 'inline-block';
