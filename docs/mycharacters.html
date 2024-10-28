@@ -362,11 +362,47 @@ button:hover {
     }
 }
 
-
-    function archiveCharacter(characterId, uploader) {
-        // Implement archive functionality here
-        alert('Archiving character with ID: ' + characterId);
+function archiveCharacter(characterId, uploader) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+        console.error('No token found. User may not be logged in.');
+        alert('You must be logged in to archive a character.');
+        return;
     }
+
+    // Ask the user for confirmation with additional warning message
+    const confirmArchive = confirm(
+        "Are you sure you want to archive this character? " +
+        "If you archive a character you don't want to delete, there is a small chance we can recover it for you, " +
+        "but please don't rely on it."
+    );
+
+    // If user clicks "Cancel," exit the function
+    if (!confirmArchive) {
+        return;
+    }
+
+    console.log('Archiving Character ID:', characterId);
+
+    fetch(`${BACKEND_URL}/archive-character/${uploader}/${characterId}`, {
+        method: 'POST',
+        headers: {
+            Authorization: `${token}` // Add "Bearer" to token format if required
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to archive character: ${response.statusText}`);
+        }
+        alert('Character archived successfully.');
+        fetchCharacters(); // Refresh the character list
+    })
+    .catch(error => {
+        console.error('Error archiving character:', error);
+        alert('Error archiving character. Please try again.');
+    });
+}
+
 </script>
 </body>
 </html>
