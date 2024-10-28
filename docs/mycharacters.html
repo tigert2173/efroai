@@ -46,6 +46,9 @@ h1 {
     padding: 20px; /* Increased padding for spaciousness */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Deeper shadow for depth */
     transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center align children */
     position: relative; /* Position for pseudo-elements */
 }
 
@@ -59,13 +62,11 @@ h1 {
     height: 120px; /* Increased image size */
     border-radius: 10px; /* Slight rounding for images */
     border: 3px solid #00ff66; /* Bright border for images */
-    position: absolute; /* Positioning for image */
-    top: 20px; /* Align image to top */
-    left: 20px; /* Align image to left */
+    margin-bottom: 15px; /* Space between image and text */
 }
 
 .character-info {
-    margin-left: 150px; /* Adjust for image size */
+    text-align: center; /* Center text for character info */
 }
 
 .character-info h2 {
@@ -84,6 +85,7 @@ h1 {
     display: flex;
     flex-wrap: wrap; /* Wrap buttons if not enough space */
     gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center align buttons */
 }
 
 button {
