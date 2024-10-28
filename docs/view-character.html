@@ -4,18 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
-    
-    <!-- Open Graph meta tags -->
-<meta property="og:title" content="" id="og-title">
-<meta property="og:description" content="" id="og-description">
-<meta property="og:image" content="" id="og-image">
-<meta property="og:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=4">
-
-
+    <!-- <link rel="stylesheet" href="/css/styles.css"> -->
     <style>
         body {
-            background-color: #1c1c1c;
-            color: #eaeaea;
+            background-color: #1c1c1c; /* Dark background for contrast */
+            color: #eaeaea; /* Light text for readability */
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -33,11 +26,11 @@
         }
 
         #character-details-container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px); /* Subtle lift on hover */
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 28px; /* Increased font size */
             margin-bottom: 15px;
             color: #00ff66;
         }
@@ -47,24 +40,25 @@
             max-height: 500px;
             border-radius: 10px;
             margin-bottom: 20px;
-            border: 3px solid #00ff66;
+            border: 3px solid #00ff66; /* Bright border for images */
+
         }
 
         #character-description {
-            font-size: 18px;
+            font-size: 18px; /* Increased font size */
             margin: 15px 0;
             color: #dedede;
         }
        
         #character-creator {
-            font-size: 20px;
-            color: #ffcc00;
-            margin-bottom: 25px;
-            font-weight: bold;
+            font-size: 20px; /* Increased font size for the creator's name */
+            color: #ffcc00; /* Yellow color for emphasis */
+            margin-bottom: 25px; /* Increased margin for spacing */
+            font-weight: bold; /* Bold text for emphasis */
         }
 
         #character-tags {
-            font-size: 16px;
+            font-size: 16px; /* Increased font size for tags */
             margin-bottom: 20px;
         }
 
@@ -80,37 +74,38 @@
         #chat-button {
             background-color: #00ff66;
             color: #1b1b1b;
-            padding: 15px 25px;
+            padding: 15px 25px; /* Increased padding */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 18px;
+            font-size: 18px; /* Increased font size */
         }
 
         #chat-button:hover {
-            background-color: #00e55d;
+            background-color: #00e55d; /* Darker shade on hover */
             transform: translateY(-2px);
         }
 
         #chat-button:focus {
-            outline: none;
+            outline: none; /* Remove focus outline */
         }
 
+        /* Mobile Styles */
         @media (max-width: 600px) {
             #character-details-container {
-                padding: 20px;
+                padding: 20px; /* Less padding on mobile */
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 24px; /* Adjust heading size on mobile */
             }
 
             #character-description,
             #character-creator,
             #chat-button {
-                font-size: 16px;
+                font-size: 16px; /* Consistent font size on mobile */
             }
         }
     </style>
@@ -127,6 +122,7 @@
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
 
+        // Function to parse URL parameters
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -135,6 +131,7 @@
             };
         }
 
+        // Function to load character details
         function loadCharacterDetails() {
             const { characterId, uploader } = getUrlParams();
             fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
@@ -156,14 +153,11 @@
                 });
         }
 
+        // Function to display character details on the page
         function displayCharacterDetails(character) {
             document.getElementById('character-name').textContent = character.name;
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
-
-        // Update Open Graph title and description (remove the last two lines)
-        document.getElementById('og-title').setAttribute('content', `Chttaracter Details - ${character.name}`);
-        document.getElementById('og-description').setAttribute('content', `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`);
 
             // Display tags
             const tagsElement = document.getElementById('character-tags');
@@ -182,7 +176,7 @@
             .then(response => {
                 if (!response.ok) {
                     console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg';
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
                     return;
                 }
                 return response.blob();
@@ -191,19 +185,12 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-
-                    // Update Open Graph image dynamically
-                    document.getElementById('og-image').setAttribute('content', imageObjectURL);
-                       }
+                }
             })
             .catch(error => {
                 console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg';
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
-
-            // Update Open Graph title and description
-            document.getElementById('og-title').content = `Character Details - ${character.name}`;
-            document.getElementById('og-description').content = `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`;
 
             // Display the "Chat" button
             const chatButton = document.getElementById('chat-button');
@@ -211,10 +198,12 @@
             chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
         }
 
+        // Function to navigate to the chat page
         function openCharacterPage(characterId, uploader) {
             window.location.href = `/chat.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
         }
 
+        // Load character details on page load
         document.addEventListener('DOMContentLoaded', loadCharacterDetails);
     </script>
 </body>
