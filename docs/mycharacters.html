@@ -81,43 +81,13 @@ h1 {
     font-size: 1em; /* Consistent font size */
 }
 
-.character-actions button {
-    background-color: #00ff66; /* Primary button color */
-    color: #1b1b1b; /* Text color */
-    padding: 15px 25px; /* Increased padding for a more substantial look */
-    border: none;
-    border-radius: 12px; /* Larger radius for a more modern look */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* More prominent shadow */
-    font-size: 1.2em; /* Larger font size for better visibility */
-    width: 100%; /* Make button full width within its container */
-    max-width: 250px; /* Set a maximum width for large screens */
-    text-align: center; /* Center text */
+.character-actions {
+    margin-top: 10px; /* Space above actions */
+    display: flex;
+    flex-wrap: wrap; /* Wrap buttons if not enough space */
+    gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center align buttons */
 }
-
-/* Button hover effect */
-.character-actions button:hover {
-    background-color: #ff6600; /* Change background color on hover */
-    transform: translateY(-2px); /* Lift effect on hover */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover */
-}
-
-/* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-    .character-actions button {
-        font-size: 1em; /* Slightly reduce font size on smaller screens */
-        padding: 12px 20px; /* Adjust padding for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .character-actions button {
-        padding: 10px 15px; /* Further reduce padding for mobile */
-        font-size: 0.9em; /* Smaller font size for mobile */
-    }
-}
-
 
 button {
     background-color: #00ff66; /* Primary button color */
@@ -134,6 +104,36 @@ button:hover {
     background-color: #ff6600; /* Hover color */
     transform: scale(1.05); /* Slight zoom effect */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* More prominent shadow on hover */
+}
+
+.chat-button {
+    background-color: #00ff66; /* Primary button color */
+    color: #1b1b1b; /* Text color */
+    padding: 16px 24px; /* Increased padding for more substantial appearance */
+    border: none;
+    border-radius: 10px; /* Larger radius for softer edges */
+    cursor: pointer;
+    font-size: 1.2em; /* Slightly larger font size for better readability */
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+    width: 100%; /* Full width for the button */
+    max-width: 300px; /* Maximum width for larger screens */
+    text-align: center; /* Center the text */
+    margin: 10px auto; /* Center margin */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center the icon vertically if added */
+    justify-content: center; /* Center the text horizontally */
+}
+
+.chat-button:hover {
+    background-color: #ff6600; /* Hover color */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* More prominent shadow on hover */
+}
+
+/* Optional: Adding an icon to the button (if needed) */
+.chat-button i {
+    margin-right: 8px; /* Space between icon and text */
 }
 
 .error-message {
@@ -287,7 +287,9 @@ button:hover {
                     <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
-                    <button class="action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+<button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">
+    Chat
+</button>
                 </div>
             `;
 
