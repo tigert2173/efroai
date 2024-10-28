@@ -193,6 +193,7 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
+                    console.log('Image URL:', imageUrl);
 
                     // Update Open Graph image metadata
                     document.querySelector('meta[property="og:image"]').setAttribute('content', imageObjectURL);
