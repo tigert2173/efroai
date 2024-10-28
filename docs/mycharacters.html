@@ -225,7 +225,9 @@
                 <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
                 <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
                 <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-            </div>
+                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
+                </div>
         `;
 
         // Insert image element at the beginning of character item
@@ -233,6 +235,24 @@
 
         characterList.appendChild(characterItem);
     });
+}
+
+// Function to share character link
+function shareCharacter(characterId, uploader) {
+        const characterLink = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+        navigator.clipboard.writeText(window.location.origin + characterLink)
+            .then(() => {
+                alert("Character link copied to clipboard!"); // Confirmation message
+            })
+            .catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+    }
+    
+// Function to view character details (can be implemented further)
+function viewCharacter(characterId, uploader) {
+    // Logic to display character details (e.g., navigate to a new page or show a modal)
+    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
 
 function openCharacterPage(characterId, uploader) {
