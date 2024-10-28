@@ -35,6 +35,9 @@ h1 {
 
 .character-list {
     margin-top: 20px;
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 20px; /* Space between items */
 }
 
 .character-item {
@@ -42,10 +45,6 @@ h1 {
     padding: 15px; /* More padding for a spacious look */
     border-radius: 8px; /* Slightly larger rounded corners */
     margin: 10px 0; /* More margin for separation */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap; /* Allow items to wrap */
     transition: background-color 0.3s; /* Smooth background transition */
 }
 
@@ -105,27 +104,22 @@ button:hover {
     }
 
     .character-item {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align items to the left */
+        padding: 10px; /* Reduce padding */
     }
 
-    .character-actions {
-        justify-content: center; /* Center buttons */
-    }
-
-    button {
-        width: 100%; /* Full width for buttons on smaller screens */
+    .character-image {
+        width: 60px; /* Slightly smaller image size */
+        height: 60px; /* Slightly smaller image size */
     }
 }
 
 @media (max-width: 480px) {
     .character-item {
-        padding: 10px; /* Reduce padding */
+        padding: 10px; /* Further reduce padding */
     }
 
-    .character-image {
-        width: 50px; /* Smaller image size */
-        height: 50px; /* Smaller image size */
+    button {
+        width: 100%; /* Full width for buttons on smaller screens */
     }
 }
 
