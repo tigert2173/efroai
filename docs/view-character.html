@@ -18,14 +18,15 @@
     <meta name="twitter:title" content="Character Details">
     <meta name="twitter:description" content="Check out this character on EFROAI! Created by: {uploader}">
     <meta name="twitter:image" content="https://characters.efroai.net:3000/api/characters/{uploader}/images/{characterId}">
-
+    
     <!-- Dynamic Open Graph metadata script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+             document.addEventListener('DOMContentLoaded', function() {
             const { characterId, uploader } = getUrlParams();
             const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${uploader}&characterId=${characterId}`;
             const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${uploader}/images/${characterId}`;
 
+            // Set dynamic URLs for Open Graph
             document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
             document.querySelector('meta[property="og:image"]').setAttribute('content', ogImageUrl);
             document.querySelector('meta[name="twitter:image"]').setAttribute('content', ogImageUrl);
