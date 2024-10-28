@@ -112,8 +112,8 @@
 
         // Function to update Open Graph tags dynamically
         function updateOpenGraphTags(character) {
-            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${encodeURIComponent(character.uploader)}&characterId=${encodeURIComponent(character.id)}`;
-            const ogImageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+            const ogImageUrl = `${backendurl}/api/characters/${uploader}/images/${characterId}`;
 
             // Set dynamic URLs for Open Graph
             document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
