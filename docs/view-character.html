@@ -162,6 +162,10 @@
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
 
+            // Update Open Graph title and description
+            document.getElementById('og-title').setAttribute('content', `Character Details - ${character.name}`);
+            document.getElementById('og-description').setAttribute('content', `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`);
+
             // Display tags
             const tagsElement = document.getElementById('character-tags');
             tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
@@ -188,8 +192,10 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-                    document.getElementById('og-image').content = imageObjectURL; // Update Open Graph image
-                }
+                    
+                    // Update Open Graph image dynamically
+                    document.getElementById('og-image').setAttribute('content', imageObjectURL);
+                       }
             })
             .catch(error => {
                 console.error('Error fetching image:', error);
