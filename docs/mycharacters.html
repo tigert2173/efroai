@@ -117,7 +117,7 @@ button:hover {
     transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
     width: 100%; /* Full width for the button */
-    max-width: 300px; /* Maximum width for larger screens */
+    max-width: 200px; /* Maximum width for larger screens */
     text-align: center; /* Center the text */
     margin: 10px auto; /* Center margin */
     display: flex; /* Flexbox for alignment */
@@ -287,9 +287,7 @@ button:hover {
                     <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
-<button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">
-    Chat
-</button>
+                    <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 </div>
             `;
 
