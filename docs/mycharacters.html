@@ -58,11 +58,12 @@ h1 {
 }
 
 .character-image {
-    width: 120px; /* Increased image size */
-    height: 120px; /* Increased image size */
+    max-width: 100%; /* Allow full width of container */
+    max-height: 200px; /* Set a maximum height for larger images */
     border-radius: 10px; /* Slight rounding for images */
     border: 3px solid #00ff66; /* Bright border for images */
     margin-bottom: 15px; /* Space between image and text */
+    object-fit: cover; /* Ensure images maintain aspect ratio */
 }
 
 .character-info {
@@ -123,8 +124,7 @@ button:hover {
     }
 
     .character-image {
-        width: 100px; /* Slightly smaller image size */
-        height: 100px; /* Slightly smaller image size */
+        max-height: 150px; /* Smaller max height on smaller screens */
     }
 }
 
