@@ -37,7 +37,7 @@ function loginUser() {
         const redirectUrl = document.referrer || "https://efroai.net/";
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
         
-        if (redirectUrl !== "https://efroai.net/") {
+        if (redirectUrl == "https://efroai.net/chat.html") {
             window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
             window.opener.location.href = redirectUrl; // Change the opener's location
             
