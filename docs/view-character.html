@@ -11,17 +11,17 @@
         <!-- Facebook Meta Tags -->
         <meta property="og:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=1">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="" id="og-title">
-        <meta property="og:description" content="" id="og-description">
-        <meta property="og:image" content="" id="og-image">
+        <meta property="og:title" content="Chara1cter Details">
+        <meta property="og:description" content="Testing">
+        <meta property="og:image" content="https://efroai.net/santa.png">
 
         <!-- Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
         <meta property="twitter:domain" content="efroai.net">
         <meta property="twitter:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=1">
-        <meta name="twitter:title" content="" id="og-title">
-        <meta name="twitter:description" content="" id="og-description">
-        <meta name="twitter:image" content="" id="og-image">
+        <meta name="twitter:title" content="Chara1cter Details">
+        <meta name="twitter:description" content="Testing">
+        <meta name="twitter:image" content="https://efroai.net/santa.png">
 
         <!-- Meta Tags Generated via https://www.opengraph.xyz -->        
     <style>
@@ -153,10 +153,6 @@
         // Function to load character details
         function loadCharacterDetails() {
             const { characterId, uploader } = getUrlParams();
-                // Update Open Graph meta tags with URL parameters
-    document.getElementById('og-title').setAttribute('content', `Character Details - ${characterId}`);
-    document.getElementById('og-description').setAttribute('content', `Details about the character with ID ${characterId} uploaded by ${uploader || 'Unknown'}.`);
-
             fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
                 .then(response => {
                     if (response.ok) {
@@ -215,8 +211,6 @@
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
 
-                // Update Open Graph image dynamically
-            //document.getElementById('og-image').setAttribute('content', imageUrl);
             // Display the "Chat" button
             const chatButton = document.getElementById('chat-button');
             chatButton.style.display = 'inline-block';
