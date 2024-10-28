@@ -21,8 +21,8 @@
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                characterId: params.get('characterId'),
-                uploader: params.get('uploader')
+                uploader: params.get('uploader'),
+                characterId: params.get('characterId')
             };
         }
 
