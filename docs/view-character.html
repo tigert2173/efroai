@@ -70,9 +70,23 @@
 
         // Function to display character details on the page
         function displayCharacterDetails(character) {
-            document.getElementById('character-name').textContent = character.name;
-            document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
-            document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
+            const characterName = character.name;
+            const characterDescription = character.chardescription || 'No description available.';
+            const characterUploader = character.uploader || 'Unknown';
+
+            // Update character details
+            document.getElementById('character-name').textContent = characterName;
+            document.getElementById('character-description').textContent = characterDescription;
+            document.getElementById('character-creator').textContent = `Created by: ${characterUploader}`;
+
+            // Update meta tags for sharing
+            const currentPageUrl = `${window.location.origin}/view-character.html?uploader=${encodeURIComponent(characterUploader)}&characterId=${encodeURIComponent(character.id)}`;
+            document.querySelector('meta[property="og:url"]').setAttribute('content', currentPageUrl);
+            document.querySelector('meta[property="twitter:url"]').setAttribute('content', currentPageUrl);
+            document.querySelector('meta[property="og:title"]').setAttribute('content', `Character Details - ${characterName}`);
+            document.querySelector('meta[name="twitter:title"]').setAttribute('content', `Character Details - ${characterName}`);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', `Details about ${characterName}: ${characterDescription}`);
+            document.querySelector('meta[name="twitter:description"]').setAttribute('content', `Details about ${characterName}: ${characterDescription}`);
 
             // Display tags
             const tagsElement = document.getElementById('character-tags');
