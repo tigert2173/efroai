@@ -349,9 +349,19 @@ button:hover {
         window.open(`/character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`, '_blank');
     }
 
+    // function editCharacter(characterId, uploader) {
+    //     window.location.href = `/editor.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+    // }
+    
     function editCharacter(characterId, uploader) {
-        window.location.href = `/editor.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+        console.error('No token found. User may not be logged in.');
+        alert('You must be logged in to edit a character.');
+        return;
     }
+}
+
 
     function archiveCharacter(characterId, uploader) {
         // Implement archive functionality here
