@@ -277,7 +277,7 @@ const getImg = async (page, uri) => {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
                     console.log('Image URL:', imageUrl);
-                    const imgUrl = getImg(page, uri); // Assuming page and uri are defined
+                    const imgUrl = getImg(backendurl, uri); // Assuming page and uri are defined
                 if (imgUrl) {
                     document.getElementById('imgElement').src = imgUrl;
                 } else {
