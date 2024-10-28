@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <meta property="name="title"" content="Character Details" />
+    <!-- <link rel="stylesheet" href="/css/styles.css"> -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #0C240A; /* Dark background for better contrast */
-            color: #dedede; /* Light text color for readability */
+            background-color: #1c1c1c; /* Dark background for contrast */
+            color: #eaeaea; /* Light text for readability */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         #character-details-container {
@@ -18,36 +19,37 @@
             margin: auto;
             background: rgb(12, 36, 10);
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px; /* Increased padding for a spacious feel */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #character-details-container:hover {
+            transform: translateY(-5px); /* Subtle lift on hover */
         }
 
         h1 {
-            font-size: 28px; /* Increased font size for the character name */
+            font-size: 28px; /* Increased font size */
             margin-bottom: 15px;
             color: #00ff66;
         }
 
         #character-image {
-            width: 100%;
+            width: 50%;
             height: auto;
             border-radius: 10px;
-            margin-bottom: 20px; /* Increased margin for better spacing */
+            margin-bottom: 20px;
+            border: 3px solid #00ff66; /* Bright border for images */
+
         }
 
         #character-description {
-            font-size: 18px; /* Increased font size for description */
-            margin: 15px 0; /* Increased margin for better spacing */
+            font-size: 18px; /* Increased font size */
+            margin: 15px 0;
             color: #dedede;
         }
-
-        #character-tags {
-            font-size: 16px; /* Slightly larger font for tags */
-            color: #999; /* Slightly muted color for tags */
-            margin-bottom: 15px; /* Spacing below tags */
-        }
-
+       
         #character-creator {
             font-size: 20px; /* Increased font size for the creator's name */
             color: #ffcc00; /* Yellow color for emphasis */
@@ -55,16 +57,30 @@
             font-weight: bold; /* Bold text for emphasis */
         }
 
+        #character-tags {
+            font-size: 16px; /* Increased font size for tags */
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #333;
+            color: #00ff66;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 2px 3px;
+        }
+
         #chat-button {
             background-color: #00ff66;
             color: #1b1b1b;
-            padding: 15px 25px; /* Increased padding for button */
+            padding: 15px 25px; /* Increased padding */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            font-size: 18px; /* Larger font for the button */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px; /* Increased font size */
         }
 
         #chat-button:hover {
@@ -76,24 +92,20 @@
             outline: none; /* Remove focus outline */
         }
 
-        /* Responsive adjustments */
+        /* Mobile Styles */
         @media (max-width: 600px) {
             #character-details-container {
-                padding: 20px; /* Reduced padding on mobile */
+                padding: 20px; /* Less padding on mobile */
             }
 
             h1 {
-                font-size: 24px; /* Adjusted font size on mobile */
+                font-size: 24px; /* Adjust heading size on mobile */
             }
 
             #character-description,
             #character-creator,
             #chat-button {
-                font-size: 16px; /* Adjusted font size for mobile */
-            }
-
-            #chat-button {
-                padding: 12px 20px; /* Reduced padding for mobile */
+                font-size: 16px; /* Consistent font size on mobile */
             }
         }
     </style>
