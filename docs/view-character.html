@@ -161,7 +161,10 @@
                 });
         }
 
-const urlImageIsAccessible = async (url) => {
+        const urlImageIsAccessible = async (url) => {
+  // Dynamically import the get-urls module
+  const { default: getUrls } = await import("get-urls");
+  
   const correctedUrls = getUrls(url);
   if (correctedUrls.size !== 0) {
     const response = await request(correctedUrls.values().next().value);

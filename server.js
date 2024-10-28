@@ -7,10 +7,9 @@
   const compression = require('compression'); // Import compression middleware
 
 
-  //preview 
+  //preview
   const util = require("util");
   const request = util.promisify(require("request"));
-  const getUrls = require("get-urls");
 
 
   const app = express();
