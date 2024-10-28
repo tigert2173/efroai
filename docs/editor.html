@@ -569,7 +569,7 @@ function loadFormData() {
     const imageFile = imageInput.files[0];
   
     const formData = new FormData();
-    if (!imageFile) {
+    if (!imageFile && !isEditing) {
         errorMessage.textContent = 'An image is required to create a character!';
         return;
     }
