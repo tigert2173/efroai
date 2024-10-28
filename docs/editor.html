@@ -569,7 +569,10 @@ function loadFormData() {
     const imageFile = imageInput.files[0];
   
     const formData = new FormData();
-
+    if (!imageFile) {
+        errorMessage.textContent = 'An image is required to create a character!';
+        return;
+    }
     if (imageFile) {
         convertImageToJpeg(imageFile).then(jpegFile => {
             formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
@@ -622,12 +625,8 @@ function loadFormData() {
             
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
-            if (!imageFile) {
-                errorMessage.textContent = 'An image is required to create a character!';
-            } else {
-                console.error(error);
-                errorMessage.textContent = 'Failed to update character.';
-            }
+            console.error(error);
+            errorMessage.textContent = 'Failed to update character.';
         });
     } else {
         // If no image is selected, just send character data
