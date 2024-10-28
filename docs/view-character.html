@@ -128,21 +128,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <div id="character-details-container">
-        <h1 id="character-name"></h1>
-        <img id="character-image" alt="Character Image">
-        <p id="character-description"></p>
-        <p id="character-tags"></p>
-        <p id="character-creator"></p>
-        <button id="chat-button" style="display: none;">Chat</button>
-    </div>
     <script>
-        const backendurl = 'https://characters.efroai.net:3000';
-
-        // Function to parse URL parameters
-        function getUrlParams() {
+                // Function to parse URL parameters
+                function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
                 uploader: params.get('uploader'),
@@ -160,6 +148,19 @@
 
         // Run the function on page load
         window.onload = setOpenGraphImage;
+    </script>
+</head>
+<body>
+    <div id="character-details-container">
+        <h1 id="character-name"></h1>
+        <img id="character-image" alt="Character Image">
+        <p id="character-description"></p>
+        <p id="character-tags"></p>
+        <p id="character-creator"></p>
+        <button id="chat-button" style="display: none;">Chat</button>
+    </div>
+    <script>
+        const backendurl = 'https://characters.efroai.net:3000';
 
         // Function to load character details
         function loadCharacterDetails() {
