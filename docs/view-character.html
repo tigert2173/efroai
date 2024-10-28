@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <meta property="name="title"" content="Character Details" />
-    <meta property="name="description"" content="null" />
-    <meta property="property="og:type" content="website" />
-    <meta property="property="og:url"" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=6" />
-    <meta property="property="og:title"" content="Character Details" />
-    <meta property="property="og:description"" content="null" />
-    <meta property="property="og:image"" content="https://replug.io/images/example.png" />
-    <meta property="property="twitter:card"" content="summary_large_image" />
-    <meta property="property="twitter:url"" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=6" />
-    <meta property="property="twitter:title"" content="Character Details" />
-    <meta property="property="twitter:description"" content="null" />
-    <meta property="property="twitter:image"" content="https://replug.io/images/example.png" />
+
+    <!-- Open Graph Metadata for Link Preview -->
+    <meta property="og:title" content="Character Details - <span id='character-name'></span>" />
+    <meta property="og:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>" />
+    <meta property="og:image" content="" id="og-image" />
+    <meta property="og:url" content="" id="og-url" />
+
 </head>
 <body>
     <div id="character-details-container">
@@ -71,10 +66,13 @@
             const tagsElement = document.getElementById('character-tags');
             tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
 
+            // Update Open Graph image metadata
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            document.getElementById('og-image').setAttribute('content', imageUrl);
+
             // Display character image with fetch and error handling
             const imgElement = document.getElementById('character-image');
-            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-
+            
             fetch(imageUrl, {
                 method: 'GET',
                 headers: {
@@ -93,6 +91,9 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
+
+                    // Update Open Graph URL for sharing
+                    document.getElementById('og-url').setAttribute('content', window.location.href);
                 }
             })
             .catch(error => {
