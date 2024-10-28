@@ -8,19 +8,19 @@
     <style>
       body {
     font-family: 'Arial', sans-serif;
-    background-color: #121212; /* Darker background for a more tavern-like feel */
-    color: #e0e0e0; /* Softer text color */
+    background-color: #121212; /* Dark background for a tavern-like feel */
+    color: #e0e0e0; /* Softer text color for readability */
     margin: 0;
     padding: 0;
-    line-height: 1.6; /* Improved readability */
+    line-height: 1.6;
 }
 
 .container {
-    background-color: #1e1e1e; /* Slightly lighter than body for contrast */
+    background-color: rgba(30, 30, 30, 0.9); /* Semi-transparent dark background */
     padding: 40px;
-    border-radius: 12px; /* Rounder corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8); /* Deeper shadow for depth */
-    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    max-width: 1200px; /* Wider max width for larger screens */
     width: 100%;
     margin: 50px auto;
 }
@@ -29,57 +29,60 @@ h1 {
     text-align: center;
     color: #00ff66; /* Bright accent color for headings */
     margin-bottom: 30px;
-    font-size: 2.5em; /* Larger font size for prominence */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    font-size: 3em; /* Larger font size for prominence */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .character-list {
     margin-top: 20px;
-    display: grid; /* Use grid for layout */
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Responsive columns */
-    gap: 20px; /* Space between items */
+    gap: 20px;
 }
 
 .character-item {
-    background-color: #2a2a2a; /* Darker background for character items */
-    padding: 20px; /* Increased padding for a spacious look */
-    border-radius: 12px; /* Larger rounded corners */
-    margin: 10px 0; /* More margin for separation */
-    transition: background-color 0.3s; /* Smooth background transition */
-    display: flex; /* Flex for inner content alignment */
-    align-items: center; /* Center content vertically */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    background-color: rgba(50, 50, 50, 0.8); /* Semi-transparent darker background for items */
+    border-radius: 15px; /* Larger rounded corners */
+    padding: 20px; /* Increased padding for spaciousness */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Deeper shadow for depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover */
+    position: relative; /* Position for pseudo-elements */
 }
 
 .character-item:hover {
-    background-color: #3a3a3a; /* Highlight on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8); /* Enhanced shadow on hover */
 }
 
 .character-image {
-    width: 80px; /* Increased image size for visibility */
-    height: 80px; /* Increased image size for visibility */
-    margin-right: 15px;
-    border-radius: 5px; /* Slight rounding for images */
-    border: 2px solid #00ff66; /* Border to make images pop */
+    width: 120px; /* Increased image size */
+    height: 120px; /* Increased image size */
+    border-radius: 10px; /* Slight rounding for images */
+    border: 3px solid #00ff66; /* Bright border for images */
+    position: absolute; /* Positioning for image */
+    top: 20px; /* Align image to top */
+    left: 20px; /* Align image to left */
 }
 
 .character-info {
-    flex: 1; /* Allow this div to grow */
+    margin-left: 150px; /* Adjust for image size */
 }
 
 .character-info h2 {
     margin: 0; /* Reset margin */
-    font-size: 1.5em; /* Larger font size for character name */
+    font-size: 1.8em; /* Larger font size for character name */
     color: #00ff66; /* Bright accent color */
 }
 
 .character-info p {
     margin: 5px 0; /* Space between text lines */
+    font-size: 1em; /* Consistent font size */
 }
 
 .character-actions {
+    margin-top: 10px; /* Space above actions */
     display: flex;
-    flex-wrap: wrap; /* Wrap buttons if there's not enough space */
+    flex-wrap: wrap; /* Wrap buttons if not enough space */
     gap: 10px; /* Space between buttons */
 }
 
@@ -88,12 +91,10 @@ button {
     color: #1b1b1b;
     padding: 12px 16px; /* Increased padding for a more substantial look */
     border: none;
-    border-radius: 6px; /* Slightly larger radius */
+    border-radius: 8px; /* Slightly larger radius */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Added shadow transition */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    flex: 1 1 auto; /* Allow buttons to grow */
-    min-width: 100px; /* Ensure buttons have a minimum size */
 }
 
 button:hover {
@@ -112,7 +113,7 @@ button:hover {
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
     h1 {
-        font-size: 2em; /* Reduce heading size on smaller screens */
+        font-size: 2.5em; /* Reduce heading size on smaller screens */
     }
 
     .character-item {
@@ -120,8 +121,8 @@ button:hover {
     }
 
     .character-image {
-        width: 70px; /* Slightly smaller image size */
-        height: 70px; /* Slightly smaller image size */
+        width: 100px; /* Slightly smaller image size */
+        height: 100px; /* Slightly smaller image size */
     }
 }
 
