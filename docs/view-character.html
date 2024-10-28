@@ -199,6 +199,33 @@
             chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
         }
 
+        // // Function to navigate to the chat page using URL parameters
+        // function openCharacterPage(characterId, uploader) {
+        //     // Construct the URL with characterId and uploader as parameters
+        //     const chatUrl = `/chat.html?characterId=${encodeURIComponent(characterId)}&uploader=${encodeURIComponent(uploader)}`;
+
+        //     // Redirect to the chat page with URL parameters
+        //     window.location.href = chatUrl;
+        // }
+
+        // Function to retrieve URL parameters and set them in sessionStorage
+        function setSessionStorageFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const characterId = params.get('characterId');
+            const uploader = params.get('uploader');
+
+            if (characterId) {
+                sessionStorage.setItem('selectedCharacterId', characterId);
+            }
+            if (uploader) {
+                sessionStorage.setItem('characterUploader', uploader);
+            }
+        }
+
+        // Run the function on page load
+        window.addEventListener('DOMContentLoaded', setSessionStorageFromUrl);
+
+
         // Function to navigate to the chat page
         function openCharacterPage(characterId, uploader) {
             // Use sessionStorage to save the character ID and uploader information
