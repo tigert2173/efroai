@@ -6,11 +6,11 @@
     <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="" id="og-title">
-    <meta property="og:description" content="" id="og-description">
-    <meta property="og:image" content="" id="og-image">
-    <meta property="og:url" content="" id="og-url">
+    <!-- Open Graph Meta Tags (example values to be replaced with server-side values) -->
+    <meta property="og:title" content="Character Name Here"> <!-- Replace with server-side value -->
+    <meta property="og:description" content="Character Description Here"> <!-- Replace with server-side value -->
+    <meta property="og:image" content="Image URL Here"> <!-- Replace with server-side value -->
+    <meta property="og:url" content="Current Page URL"> <!-- Use a server-side method to get this -->
 </head>
 <body>
     <div id="character-details-container">
@@ -60,12 +60,6 @@
             document.getElementById('character-name').textContent = character.name;
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
-
-            // Update Open Graph Meta Tags
-            document.getElementById('og-title').content = character.name;
-            document.getElementById('og-description').content = character.chardescription || 'No description available.';
-            document.getElementById('og-image').content = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-            document.getElementById('og-url').content = window.location.href;
 
             // Display tags
             const tagsElement = document.getElementById('character-tags');
