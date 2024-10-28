@@ -29,10 +29,23 @@
         // Function to load character details
         function loadCharacterDetails() {
             const { characterId, uploader } = getUrlParams();
-            fetch(`${backendurl}/api/characters/${uploader}/${characterId}`)
-                .then(response => response.json())
+            fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 403) {
+                        throw new Error('Character is not approved.');
+                    } else if (response.status === 404) {
+                        throw new Error('Character or user not found.');
+                    } else {
+                        throw new Error('An error occurred while fetching character details.');
+                    }
+                })
                 .then(character => displayCharacterDetails(character))
-                .catch(error => console.error('Error fetching character details:', error));
+                .catch(error => {
+                    console.error('Error fetching character details:', error);
+                    document.getElementById('character-details-container').innerHTML = `<p>${error.message}</p>`;
+                });
         }
 
         // Function to display character details on the page
@@ -43,7 +56,7 @@
             
             // Display tags
             const tagsElement = document.getElementById('character-tags');
-            tagsElement.innerHTML = character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ');
+            tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
 
             // Display character image
             const imgElement = document.getElementById('character-image');
