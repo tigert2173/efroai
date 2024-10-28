@@ -273,7 +273,7 @@
             </div>
             
             <div class="upload-box" id="uploadBox">
-                <label for="imageUpload">Click to upload an image</label>
+                <label for="imageUpload">Click to upload an image (required for creation)</label>
                 <input type="file" id="imageUpload" accept="image/*" required>
                 <img id="imagePreview" alt="Image Preview">
                 <p class="error-message" id="errorMessageimage"></p>
@@ -510,7 +510,7 @@ function loadFormData() {
     const exampledialogue = cleanInput(document.getElementById('exampledialogue').value);
     const token = sessionStorage.getItem('token');
     const errorMessage = document.getElementById('errorMessage');
-
+    
     errorMessage.textContent = ''; // Clear previous error messages
 
     if (!token) {
@@ -791,7 +791,6 @@ function loadCharacterData() {
 
 document.getElementById('saveForm').addEventListener('submit', function (e) {
     e.preventDefault();
-
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
@@ -825,6 +824,9 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
 
     const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
+    if (!imageInput) {
+        errorMessage.textContent = 'An image is required to create a character!';
+    } 
 
     const formData = new FormData();
 
