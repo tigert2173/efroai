@@ -95,7 +95,7 @@ function displayCharacters(characters) {
             <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
             <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
             <div class="button-container">
-                <button class="view-btn" onclick="viewCharacter('${character.uploader}', '${character.id}')">View Character</button>
+                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                 <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                     <span role="img" aria-hidden="true">❤️</span>
                 </button>
