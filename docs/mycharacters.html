@@ -89,6 +89,11 @@ h1 {
     justify-content: center; /* Center align buttons */
 }
 
+.action-btn, .view-btn, .share-btn {
+    flex: 1 0 45%; /* Allow buttons to take up to 45% of the width, accommodating two buttons per row */
+    max-width: 200px; /* Optional: Limit the maximum width of the buttons */
+    box-sizing: border-box; /* Ensures padding and border are included in the total width */
+}
 button {
     background-color: #00ff66; /* Primary button color */
     color: #1b1b1b;
@@ -288,7 +293,6 @@ button:hover {
                 <div class="character-actions">
                     <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
                     <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                    <br>
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
                     <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
