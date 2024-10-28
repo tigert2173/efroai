@@ -354,13 +354,37 @@ button:hover {
     // }
     
     function editCharacter(characterId, uploader) {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        console.error('No token found. User may not be logged in.');
-        alert('You must be logged in to edit a character.');
-        return;
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            console.error('No token found. User may not be logged in.');
+            alert('You must be logged in to edit a character.');
+            return;
+        }
+
+        console.log('Editing Character ID:', characterId);
+
+        fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {  // Include username in the URL
+            headers: {
+                Authorization: `${token}`  // Add "Bearer" to token format if required
+            }
+        })
+        .then(response => {
+            console.log('Response Status:', response.status);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch character data: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(character => {
+            sessionStorage.setItem('editCharacter', JSON.stringify(character));
+            // Redirect to the editor page
+            window.location.href = 'editor.html';
+        })
+        .catch(error => {
+            console.error('Error fetching character data:', error);
+            alert('Error fetching character data for editing. Please try again.');
+        });
     }
-}
 
 function archiveCharacter(characterId, uploader) {
     const token = sessionStorage.getItem('token');
