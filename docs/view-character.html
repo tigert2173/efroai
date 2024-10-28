@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
+        <!-- Dynamic Open Graph metadata for better link previews -->
+        <meta property="og:title" content="Character Details">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://characters.efroai.net:3000/character.html?uploader={uploader}&characterId={characterId}">
+        <meta property="og:image" content="https://characters.efroai.net:3000/api/characters/{uploader}/images/{characterId}">
+        <meta property="og:description" content="Check out this character on EFROAI! Created by: {uploader}">
+        
+        <!-- Twitter Card metadata -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Character Details">
+        <meta name="twitter:description" content="Check out this character on EFROAI! Created by: {uploader}">
+        <meta name="twitter:image" content="https://characters.efroai.net:3000/api/characters/{uploader}/images/{characterId}">
+    
+        <!-- Dynamic Open Graph metadata script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const { characterId, uploader } = getUrlParams();
+                const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${uploader}&characterId=${characterId}`;
+                const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${uploader}/images/${characterId}`;
+    
+                document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
+                document.querySelector('meta[property="og:image"]').setAttribute('content', ogImageUrl);
+                document.querySelector('meta[name="twitter:image"]').setAttribute('content', ogImageUrl);
+            });
+            </script>
 </head>
 <body>
     <div id="character-details-container">
