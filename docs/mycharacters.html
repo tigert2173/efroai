@@ -43,6 +43,20 @@
             width: 50px; /* Adjust size as needed */
             height: 50px; /* Adjust size as needed */
             margin-right: 10px;
+            display: none; /* Hide the image initially */
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #00ff66;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         button {
             background-color: #00ff66;
@@ -56,6 +70,11 @@
         button:hover {
             background-color: #ff6600;
             transform: scale(1.05); /* Add a slight zoom effect */
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -121,6 +140,7 @@
 
 <div class="container">
     <h1>Your Characters</h1>
+    <div class="error-message" id="errorMessage"></div> <!-- Error message display -->
     <div class="character-list" id="characterList"></div>
 </div>
 
@@ -134,7 +154,7 @@
     async function fetchCharacters() {
         const token = sessionStorage.getItem('token');
         if (!token) {
-            console.error('No token found. User may not be logged in.');
+            displayError('No token found. User may not be logged in.');
             return;
         }
 
@@ -152,9 +172,14 @@
             const characters = await response.json();
             displayCharacters(characters);
         } catch (error) {
+            displayError('Error fetching character data. Please try again.');
             console.error('Error fetching character data:', error);
-            alert('Error fetching character data. Please try again.');
         }
+    }
+
+    function displayError(message) {
+        const errorMessageDiv = document.getElementById('errorMessage');
+        errorMessageDiv.textContent = message;
     }
 
     function displayCharacters(characters) {
@@ -162,72 +187,92 @@
         characterList.innerHTML = '';
 
         characters.forEach(character => {
-            const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
-            const imgElement = createImageElement(imageUrl, character.name);
-
             const characterItem = document.createElement('div');
             characterItem.classList.add('character-item');
-            characterItem.innerHTML = `
-                <div class="character-info">
-                    <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
-                </div>
-                <div class="character-actions">
-                    <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-                    <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                    <button class="action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
-                </div>
-            `;
 
-            characterItem.insertBefore(imgElement, characterItem.firstChild);
+            const imgElement = createImageElement(character);
+            characterItem.appendChild(imgElement);
+
+            const characterInfo = document.createElement('div');
+            characterInfo.className = 'character-info';
+            characterInfo.innerHTML = `<span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>`;
+            characterItem.appendChild(characterInfo);
+
+            const actionButtons = createActionButtons(character);
+            characterItem.appendChild(actionButtons);
+
             characterList.appendChild(characterItem);
         });
     }
 
-    function createImageElement(imageUrl, characterName) {
+    function createImageElement(character) {
         const imgElement = document.createElement('img');
-        imgElement.alt = `${characterName} image`;
+        imgElement.alt = `${character.name} image`; // Add alt text for accessibility
         imgElement.className = 'character-image'; // Add class for CSS styling
-        imgElement.onerror = () => imgElement.src = 'noimage.jpg'; // Default image on error
+        imgElement.onerror = () => {
+            imgElement.src = 'noimage.jpg'; // Fallback image
+            imgElement.style.display = 'block'; // Ensure fallback is shown
+        };
 
-        fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch image: ${response.statusText}`);
-            }
-            return response.blob();
-        })
-        .then(imageBlob => {
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            imgElement.src = imageObjectURL;
-        })
-        .catch(error => {
-            console.error('Error fetching image:', error);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
-        });
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
+        imgElement.parentElement.appendChild(spinner); // Append spinner next to image
 
+        const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
+        imgElement.style.display = 'none'; // Hide image initially
+
+        fetchImage(imageUrl, imgElement, spinner); // Fetch the image
         return imgElement;
     }
 
-    function shareCharacter(characterId, uploader) {
-        const characterLink = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-        navigator.clipboard.writeText(window.location.origin + characterLink)
-            .then(() => alert("Character link copied to clipboard!"))
-            .catch(err => console.error('Failed to copy: ', err));
+    async function fetchImage(url, imgElement, spinner) {
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image: ${response.statusText}`);
+            }
+            const imageBlob = await response.blob();
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            imgElement.src = imageObjectURL;
+            imgElement.style.display = 'block'; // Show image when loaded
+        } catch (error) {
+            console.error('Error fetching image:', error);
+            imgElement.src = 'noimage.jpg'; // Fallback to default image
+        } finally {
+            spinner.remove(); // Remove spinner when done
+        }
+    }
+
+    function createActionButtons(character) {
+        const actionContainer = document.createElement('div');
+        actionContainer.className = 'action-buttons';
+
+        const viewButton = document.createElement('button');
+        viewButton.textContent = 'View Character';
+        viewButton.onclick = () => viewCharacter(character.id, character.uploader);
+        actionContainer.appendChild(viewButton);
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit Character';
+        editButton.onclick = () => editCharacter(character.id, character.uploader);
+        actionContainer.appendChild(editButton);
+
+        const archiveButton = document.createElement('button');
+        archiveButton.textContent = 'Archive Character';
+        archiveButton.onclick = () => archiveCharacter(character.id, character.uploader);
+        actionContainer.appendChild(archiveButton);
+
+        return actionContainer;
     }
 
     function viewCharacter(characterId, uploader) {
         window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-    }
-
-    function openCharacterPage(characterId, uploader) {
-        window.open(`/character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`, '_blank');
     }
 
     function editCharacter(characterId, uploader) {
@@ -237,6 +282,10 @@
     function archiveCharacter(characterId, uploader) {
         // Implement archive functionality here
         alert('Archiving character with ID: ' + characterId);
+    }
+
+    function toggleMenu() {
+        // Implement toggle menu functionality here if needed
     }
 </script>
 </body>
