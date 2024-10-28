@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="character-details-container">
+        <h1 id="character-name"></h1>
+        <img id="character-image" alt="Character Image">
+        <p id="character-description"></p>
+        <p id="character-tags"></p>
+        <p id="character-creator"></p>
+    </div>
+    <script>
+        const backendurl = 'https://characters.efroai.net:3000';
+
+        // Function to parse URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                characterId: params.get('characterId'),
+                uploader: params.get('uploader')
+            };
+        }
+
+        // Function to load character details
+        function loadCharacterDetails() {
+            const { characterId, uploader } = getUrlParams();
+            fetch(`${backendurl}/api/characters/${uploader}/${characterId}`)
+                .then(response => response.json())
+                .then(character => displayCharacterDetails(character))
+                .catch(error => console.error('Error fetching character details:', error));
+        }
+
+        // Function to display character details on the page
+        function displayCharacterDetails(character) {
+            document.getElementById('character-name').textContent = character.name;
+            document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
+            document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
+            
+            // Display tags
+            const tagsElement = document.getElementById('character-tags');
+            tagsElement.innerHTML = character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ');
+
+            // Display character image
+            const imgElement = document.getElementById('character-image');
+            imgElement.src = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            imgElement.onerror = () => { imgElement.src = 'noimage.jpg'; }; // Set default image on error
+        }
+
+        // Load character details on page load
+        document.addEventListener('DOMContentLoaded', loadCharacterDetails);
+    </script>
+</body>
+</html>

@@ -242,4 +242,6 @@ function hideUploadForm() {
 // Function to view character details (can be implemented further)
 function viewCharacter(characterId) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
+    const uploader = sessionStorage.getItem('characterUploader'); // Retrieve the uploader
+    window.location.href = `/character-view.html?/uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
