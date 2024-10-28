@@ -18,6 +18,20 @@
     <meta name="twitter:title" content="Character Details">
     <meta name="twitter:description" content="Check out this character on EFROAI! Created by: {uploader}">
     <meta name="twitter:image" content="https://characters.efroai.net:3000/api/characters/{uploader}/images/{characterId}">
+    
+    <!-- Dynamic Open Graph metadata script -->
+    <script>
+             document.addEventListener('DOMContentLoaded', function() {
+            const { characterId, uploader } = getUrlParams();
+            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${uploader}&characterId=${characterId}`;
+            const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${uploader}/images/${characterId}`;
+
+            // Set dynamic URLs for Open Graph
+            document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
+            document.querySelector('meta[property="og:image"]').setAttribute('content', ogImageUrl);
+            document.querySelector('meta[name="twitter:image"]').setAttribute('content', ogImageUrl);
+        });
+    </script>
 </head>
 <body>
     <div id="character-details-container">
@@ -55,12 +69,27 @@
                         throw new Error('An error occurred while fetching character details.');
                     }
                 })
-                .then(character => displayCharacterDetails(character))
+                .then(character => {
+                    displayCharacterDetails(character);
+                    updateOpenGraphTags(character); // Update OG tags here
+                })
                 .catch(error => {
                     console.error('Error fetching character details:', error);
                     document.getElementById('character-details-container').innerHTML = `<p>${error.message}</p>`;
                 });
         }
+
+        // Function to update Open Graph tags dynamically
+        function updateOpenGraphTags(character) {
+            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${encodeURIComponent(character.uploader)}&characterId=${encodeURIComponent(character.id)}`;
+            const ogImageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+            // Set dynamic URLs for Open Graph
+            document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
+            document.querySelector('meta[property="og:image"]').setAttribute('content', ogImageUrl);
+            document.querySelector('meta[name="twitter:image"]').setAttribute('content', ogImageUrl);
+        }
+
 
         // Function to display character details on the page
         function displayCharacterDetails(character) {
@@ -114,19 +143,6 @@
 
         // Load character details on page load
         document.addEventListener('DOMContentLoaded', loadCharacterDetails);
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const { characterId, uploader } = getUrlParams();
-            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${character.uploader}&characterId=${character.id}`;
-            const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${character.uploader}/images/${character.id}`;
-
-            // Set dynamic URLs for Open Graph
-            document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
-            document.querySelector('meta[property="og:image"]').setAttribute('content', ogImageUrl);
-            document.querySelector('meta[name="twitter:image"]').setAttribute('content', ogImageUrl);
-        });
-  
     </script>
-    
 </body>
 </html>
