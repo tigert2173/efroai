@@ -51,50 +51,12 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s;
         }
         button:hover {
             background-color: #ff6600;
+            transform: scale(1.05); /* Add a slight zoom effect */
         }
-        .character-item {
-    border: 1px solid #ccc; /* Add a border around each character item */
-    border-radius: 8px; /* Rounded corners */
-    padding: 16px; /* Padding inside the box */
-    margin: 10px 0; /* Space between character items */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Column direction for layout */
-    background-color: #f9f9f9; /* Light background color */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-}
-
-.character-info {
-    margin-bottom: 10px; /* Space between the info and buttons */
-}
-
-.character-name {
-    font-weight: bold; /* Bold character name */
-    font-size: 1.2em; /* Larger font size */
-}
-
-.character-actions {
-    display: flex; /* Flexbox for button layout */
-    gap: 8px; /* Space between buttons */
-}
-
-.action-btn, .view-btn, .share-btn {
-    background-color: #007bff; /* Primary button color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 15px; /* Padding inside buttons */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition */
-}
-
-.action-btn:hover, .view-btn:hover, .share-btn:hover {
-    background-color: #0056b3; /* Darker color on hover */
-}
-
     </style>
 </head>
 <body>
@@ -102,12 +64,9 @@
 <header>
     <nav class="navbar">
         <div class="left-content">
-            <a href="/" class="logo"> <!-- Make the logo clickable -->
-            <div class="logo">
-                <img src="logo.png" alt=" ">
-            </div>
-        </a>
-        <a href="/" class="text">
+            <a href="/" class="logo">
+                <img src="logo.png" alt="EFRO.AI Logo">
+            </a>
             <div class="text">
                 <span class="letter letter-1">E</span>
                 <span class="letter letter-2">F</span>
@@ -117,60 +76,47 @@
                 <span class="letter letter-6">A</span>
                 <span class="letter letter-7">I</span>
             </div>
-        </a>
         </div>
         <div class="right-content">
-        <ul class="nav-links">
-            <!-- Characters with dropdown -->
-            <li class="dropdown">
-                <a href="index.html" class="dropbtn">Characters</a>
-                <div class="dropdown-content">
-                    <a href="editor.html">Upload Character</a>
-                    <a href="mycharacters.html">My Characters</a>
-                </div>
-            </li>
-
-            <!-- Community with dropdown -->
-            <li class="dropdown">
-                <a href="#" class="dropbtn">Community</a>
-                <div class="dropdown-content">
-                    <a href="rules.html">Rules</a>
-                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                    <a href="/EFROTales/">Old Stories Page</a>
-                </div>
-            </li>
-
-            <!-- Account with dropdown -->
-            <li class="dropdown">
-                <a href="myaccount.html" class="dropbtn">Account</a>
-                <div class="dropdown-content">
-                    <a href="mylikes.html">My Likes</a>
-                    <a href="login.html">Login</a>
-                </div>
-            </li>
-
-            <!-- Help with dropdown -->
-            <li class="dropdown">
-                <a href="#" class="dropbtn">Help</a>
-                <div class="dropdown-content">
-                    <a href="documentation.html">Documentation</a>
-                    <a href="updates.html">Updates & Features</a>
-                </div>
-            </li>
-
-        </ul>     
-        <!-- Search bar -->
-        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
-        <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
-
-        <!-- Hamburger menu for mobile view -->
-        <div class="hamburger" onclick="toggleMenu()">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>  
-    </div>
-</nav>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="index.html" class="dropbtn">Characters</a>
+                    <div class="dropdown-content">
+                        <a href="editor.html">Upload Character</a>
+                        <a href="mycharacters.html">My Characters</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Community</a>
+                    <div class="dropdown-content">
+                        <a href="rules.html">Rules</a>
+                        <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                        <a href="/EFROTales/">Old Stories Page</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="myaccount.html" class="dropbtn">Account</a>
+                    <div class="dropdown-content">
+                        <a href="mylikes.html">My Likes</a>
+                        <a href="login.html">Login</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Help</a>
+                    <div class="dropdown-content">
+                        <a href="documentation.html">Documentation</a>
+                        <a href="updates.html">Updates & Features</a>
+                    </div>
+                </li>
+            </ul>     
+            <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
+            <div class="hamburger" onclick="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>  
+        </div>
+    </nav>
 </header>
 
 <div class="container">
@@ -212,52 +158,16 @@
     }
 
     function displayCharacters(characters) {
-    const characterList = document.getElementById('characterList');
-    characterList.innerHTML = '';
+        const characterList = document.getElementById('characterList');
+        characterList.innerHTML = '';
 
-    characters.forEach(character => {
-        const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
-        console.log(imageUrl);
+        characters.forEach(character => {
+            const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
+            const imgElement = createImageElement(imageUrl, character.name);
 
-        // Create image element
-        const imgElement = document.createElement('img');
-        imgElement.alt = `${character.name} image`;
-        imgElement.onerror = () => {
-            imgElement.src = 'noimage.jpg'; // Set default image on error
-        };
-        imgElement.style.width = '50px'; // Adjust size as needed
-        imgElement.style.height = '50px';
-        imgElement.style.marginRight = '10px';
-
-        // Fetch the image
-        fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-            }
-        }).then(response => {
-            if (!response.ok) {
-                console.error(`Failed to fetch image: ${response.statusText}`);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
-                return;
-            }
-            return response.blob();
-        }).then(imageBlob => {
-            if (imageBlob) {
-                const imageObjectURL = URL.createObjectURL(imageBlob);
-                imgElement.src = imageObjectURL;
-            }
-        }).catch(error => {
-            console.error('Error fetching image:', error);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
-        });
-
-        // Create character item element
-        const characterItem = document.createElement('div');
-        characterItem.classList.add('character-item');
-        
-        characterItem.innerHTML = `
-            <div class="character-item">
+            const characterItem = document.createElement('div');
+            characterItem.classList.add('character-item');
+            characterItem.innerHTML = `
                 <div class="character-info">
                     <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
@@ -268,154 +178,66 @@
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
                 </div>
-            </div>
-        `;
+            `;
 
-
-        // Insert image element at the beginning of character item
-        characterItem.insertBefore(imgElement, characterItem.firstChild);
-
-        characterList.appendChild(characterItem);
-    });
-}
-
-// Function to share character link
-function shareCharacter(characterId, uploader) {
-        const characterLink = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-        navigator.clipboard.writeText(window.location.origin + characterLink)
-            .then(() => {
-                alert("Character link copied to clipboard!"); // Confirmation message
-            })
-            .catch(err => {
-                console.error("Failed to copy: ", err);
-            });
-    }
-
-// Function to view character details (can be implemented further)
-function viewCharacter(characterId, uploader) {
-    // Logic to display character details (e.g., navigate to a new page or show a modal)
-    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-}
-
-function openCharacterPage(characterId, uploader) {
-    // Use sessionStorage to save the character ID and uploader information
-    sessionStorage.setItem('selectedCharacterId', characterId);
-    sessionStorage.setItem('characterUploader', uploader);
-
-    // Redirect to the chat page
-    window.location.href = '/chat.html';
-}
-
-    function editCharacter(characterId, uploader) {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            console.error('No token found. User may not be logged in.');
-            alert('You must be logged in to edit a character.');
-            return;
-        }
-
-        console.log('Editing Character ID:', characterId);
-
-        fetch(`${BACKEND_URL}/characters/${uploader}/${characterId}`, {  // Include username in the URL
-            headers: {
-                Authorization: `${token}`  // Add "Bearer" to token format if required
-            }
-        })
-        .then(response => {
-            console.log('Response Status:', response.status);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch character data: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(character => {
-            sessionStorage.setItem('editCharacter', JSON.stringify(character));
-            // Redirect to the editor page
-            window.location.href = 'editor.html';
-        })
-        .catch(error => {
-            console.error('Error fetching character data:', error);
-            alert('Error fetching character data for editing. Please try again.');
+            characterItem.insertBefore(imgElement, characterItem.firstChild);
+            characterList.appendChild(characterItem);
         });
     }
 
+    function createImageElement(imageUrl, characterName) {
+        const imgElement = document.createElement('img');
+        imgElement.alt = `${characterName} image`;
+        imgElement.className = 'character-image'; // Add class for CSS styling
+        imgElement.onerror = () => imgElement.src = 'noimage.jpg'; // Default image on error
+
+        fetch(imageUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image: ${response.statusText}`);
+            }
+            return response.blob();
+        })
+        .then(imageBlob => {
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            imgElement.src = imageObjectURL;
+        })
+        .catch(error => {
+            console.error('Error fetching image:', error);
+            imgElement.src = 'noimage.jpg'; // Fallback to default image
+        });
+
+        return imgElement;
+    }
+
+    function shareCharacter(characterId, uploader) {
+        const characterLink = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+        navigator.clipboard.writeText(window.location.origin + characterLink)
+            .then(() => alert("Character link copied to clipboard!"))
+            .catch(err => console.error('Failed to copy: ', err));
+    }
+
+    function viewCharacter(characterId, uploader) {
+        window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+    }
+
+    function openCharacterPage(characterId, uploader) {
+        window.open(`/character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`, '_blank');
+    }
+
+    function editCharacter(characterId, uploader) {
+        window.location.href = `/editor.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+    }
+
     function archiveCharacter(characterId, uploader) {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        console.error('No token found. User may not be logged in.');
-        alert('You must be logged in to archive a character.');
-        return;
+        // Implement archive functionality here
+        alert('Archiving character with ID: ' + characterId);
     }
-
-    // Ask the user for confirmation with additional warning message
-    const confirmArchive = confirm(
-        "Are you sure you want to archive this character? " +
-        "If you archive a character you don't want to delete, there is a small chance we can recover it for you, " +
-        "but please don't rely on it."
-    );
-
-    // If user clicks "Cancel," exit the function
-    if (!confirmArchive) {
-        return;
-    }
-
-    console.log('Archiving Character ID:', characterId);
-
-    fetch(`${BACKEND_URL}/archive-character/${uploader}/${characterId}`, {
-        method: 'POST',
-        headers: {
-            Authorization: `${token}` // Add "Bearer" to token format if required
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Failed to archive character: ${response.statusText}`);
-        }
-        alert('Character archived successfully.');
-        fetchCharacters(); // Refresh the character list
-    })
-    .catch(error => {
-        console.error('Error archiving character:', error);
-        alert('Error archiving character. Please try again.');
-    });
-}
-
-
-    function startChat(characterId) {
-        console.log('Starting chat for Character ID:', characterId);
-        // Here you can implement chat logic, such as redirecting to a chat page
-        alert(`Starting chat for Character ID: ${characterId}`);
-        // Example of redirecting to a chat page (modify as needed):
-        // window.location.href = `chat.html?characterId=${characterId}`;
-    }
-
 </script>
-<script src="js/scripts/checkbot.js"></script>
-<script src="js/menu.js"></script>
-
-<script>
-    const socket = new WebSocket('wss://efroai.net'); // Update with your domain
-
-    // Connection opened
-    socket.addEventListener('open', (event) => {
-        console.log('Connected to WebSocket server');
-    });
-
-    // Listen for messages
-    socket.addEventListener('message', (event) => {
-        console.log('Message from server:', event.data);
-        // Handle ping or any other messages from the server
-        if (event.data === 'ping') {
-            // You can respond to pings if needed
-            socket.send('pong'); // Example response
-        }
-    });
-
-    // Connection closed
-    socket.addEventListener('close', (event) => {
-        console.log('Disconnected from WebSocket server');
-    });
-</script>
-
 </body>
 </html>
