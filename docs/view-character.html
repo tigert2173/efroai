@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Details</title>
+    <title>Character Details - <span id='character-name'></span></title>
+
+    <!-- HTML Meta Tags -->
+    <meta name="description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=6">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Character Details - <span id='character-name'></span>">
+    <meta property="og:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
+    <meta property="og:image" content="https://ogcdn.net/c078a98b-9a33-4eaf-a5cf-e5ebf3ea450c/v1/efroai.net/Character%20Details%20-%20%3Cspan%20id%3D'character-name'%3E%3C%2Fspan%3E/Details%20about%20%3Cspan%20id%3D'character-name'%3E%3C%2Fspan%3E%3A%20%3Cspan%20id%3D'character-description'%3E%3C%2Fspan%3E/https%3A%2F%2Fefroai.netundefined/og.png">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="efroai.net">
+    <meta property="twitter:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=6">
+    <meta name="twitter:title" content="Character Details - <span id='character-name'></span>">
+    <meta name="twitter:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
+    <meta name="twitter:image" content="https://ogcdn.net/c078a98b-9a33-4eaf-a5cf-e5ebf3ea450c/v1/efroai.net/Character%20Details%20-%20%3Cspan%20id%3D'character-name'%3E%3C%2Fspan%3E/Details%20about%20%3Cspan%20id%3D'character-name'%3E%3C%2Fspan%3E%3A%20%3Cspan%20id%3D'character-description'%3E%3C%2Fspan%3E/https%3A%2F%2Fefroai.netundefined/og.png">
+
     <link rel="stylesheet" href="/css/styles.css">
-
-    <!-- Open Graph Metadata for Link Preview -->
-    <meta property="og:title" content="Character Details - <span id='character-name'></span>" />
-    <meta property="og:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>" />
-    <meta property="og:image" content="" id="og-image" />
-    <meta property="og:url" content="" id="og-url" />
-
 </head>
 <body>
     <div id="character-details-container">
@@ -66,13 +78,10 @@
             const tagsElement = document.getElementById('character-tags');
             tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
 
-            // Update Open Graph image metadata
-            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-            document.getElementById('og-image').setAttribute('content', imageUrl);
-
             // Display character image with fetch and error handling
             const imgElement = document.getElementById('character-image');
-            
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
             fetch(imageUrl, {
                 method: 'GET',
                 headers: {
@@ -91,9 +100,6 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-
-                    // Update Open Graph URL for sharing
-                    document.getElementById('og-url').setAttribute('content', window.location.href);
                 }
             })
             .catch(error => {
