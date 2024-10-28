@@ -1143,7 +1143,7 @@ function autoResize() {
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
     const queueCount = document.querySelector('#queue-count');
-    const queueResponse = await fetch('https://api.botbridge.net:443/api/queue-status');
+    const queueResponse = await fetch('https://api.botbridge.net:443/queue-status');
     const queueData = await queueResponse.json();
     const queueLength = queueData.queueLength;
     queueCount.textContent = queueLength;
