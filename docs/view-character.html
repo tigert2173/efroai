@@ -151,7 +151,7 @@
         }
 
         function setOpenGraphImage() {
-            const { uploader, characterId } = getURLParameters();
+            const { uploader, characterId } = getUrlParams();
             if (uploader && characterId) {
                 const ogImageMetaTag = document.getElementById('ogImage');
                 ogImageMetaTag.setAttribute('content', `https://characters.efroai.net:3000/api/characters/${uploader}/images/${characterId}`);
