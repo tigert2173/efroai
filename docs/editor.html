@@ -567,7 +567,9 @@ function loadFormData() {
 
     const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
-
+    if (!imageInput) {
+        errorMessage.textContent = 'An image is required to create a character!';
+    } 
     const formData = new FormData();
 
     if (imageFile) {
@@ -824,9 +826,6 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
 
     const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
-    if (!imageInput) {
-        errorMessage.textContent = 'An image is required to create a character!';
-    } 
 
     const formData = new FormData();
 
