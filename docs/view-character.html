@@ -175,37 +175,74 @@
 };
 
 const getImg = async (page, uri) => {
-  const img = await page.evaluate(async () => {
+  const img = await page.evaluate(async (uri) => {
+    const urlImageIsAccessible = async (url) => {
+      const { default: getUrls } = await import("get-urls");
+      const correctedUrls = getUrls(url);
+      if (correctedUrls.size !== 0) {
+        const response = await fetch(correctedUrls.values().next().value);
+        const contentType = response.headers.get("content-type");
+        return new RegExp("image/*").test(contentType);
+      }
+      return false;
+    };
+
     const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg && ogImg.content.length > 0 && await urlImageIsAccessible(ogImg.content)) {
+    if (
+      ogImg != null &&
+      ogImg.content.length > 0 &&
+      await urlImageIsAccessible(ogImg.content)
+    ) {
       return ogImg.content;
     }
-
     const imgRelLink = document.querySelector('link[rel="image_src"]');
-    if (imgRelLink && imgRelLink.href.length > 0 && await urlImageIsAccessible(imgRelLink.href)) {
+    if (
+      imgRelLink != null &&
+      imgRelLink.href.length > 0 &&
+      await urlImageIsAccessible(imgRelLink.href)
+    ) {
       return imgRelLink.href;
     }
-
     const twitterImg = document.querySelector('meta[name="twitter:image"]');
-    if (twitterImg && twitterImg.content.length > 0 && await urlImageIsAccessible(twitterImg.content)) {
+    if (
+      twitterImg != null &&
+      twitterImg.content.length > 0 &&
+      await urlImageIsAccessible(twitterImg.content)
+    ) {
       return twitterImg.content;
     }
 
-    let imgs = Array.from(document.getElementsByTagName("img")).filter(img => {
-      return img.naturalWidth > 50 && img.naturalHeight > 50 && 
-             (img.naturalWidth / img.naturalHeight < 3) && 
-             (img.naturalHeight / img.naturalWidth < 3);
-    });
-
-    imgs.forEach(img => {
-      if (img.src.indexOf("//") === -1) {
-        img.src = `${new URL(uri).origin}/${img.src}`;
-      }
-    });
-    return imgs.length > 0 ? imgs[0].src : null;
-  });
+    let imgs = Array.from(document.getElementsByTagName("img"));
+    if (imgs.length > 0) {
+      imgs = imgs.filter(img => {
+        let addImg = true;
+        if (img.naturalWidth > img.naturalHeight) {
+          if (img.naturalWidth / img.naturalHeight > 3) {
+            addImg = false;
+          }
+        } else {
+          if (img.naturalHeight / img.naturalWidth > 3) {
+            addImg = false;
+          }
+        }
+        if (img.naturalHeight <= 50 || img.naturalWidth <= 50) {
+          addImg = false;
+        }
+        return addImg;
+      });
+      imgs.forEach(img => {
+        if (img.src.indexOf("//") === -1) {
+          img.src = `${new URL(uri).origin}/${img.src}`;
+        }
+      });
+      return imgs[0].src;
+    }
+    return null;
+  }, uri);
+  
   return img;
 };
+
 
         // Function to display character details on the page
         function displayCharacterDetails(character) {
@@ -240,10 +277,15 @@ const getImg = async (page, uri) => {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
                     console.log('Image URL:', imageUrl);
-
-                    // Update Open Graph image metadata
-                    document.querySelector('meta[property="og:image"]').setAttribute('content', imageObjectURL);
-                    document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageObjectURL);
+                    const imgUrl = getImg(page, uri); // Assuming page and uri are defined
+                if (imgUrl) {
+                    document.getElementById('imgElement').src = imgUrl;
+                } else {
+                    document.getElementById('imgElement').src = 'path/to/default/image.jpg'; // Fallback image
+                }
+                    // // Update Open Graph image metadata
+                    // document.querySelector('meta[property="og:image"]').setAttribute('content', imageObjectURL);
+                    // document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageObjectURL);
                 }
             })
             .catch(error => {
@@ -255,6 +297,7 @@ const getImg = async (page, uri) => {
             const chatButton = document.getElementById('chat-button');
             chatButton.style.display = 'inline-block';
             chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
+           
         }
 
         // Function to navigate to the chat page
