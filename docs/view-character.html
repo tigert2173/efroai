@@ -117,8 +117,8 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             const { characterId, uploader } = getUrlParams();
-            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${uploader}&characterId=${characterId}`;
-            const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${uploader}/images/${characterId}`;
+            const ogUrl = `https://characters.efroai.net:3000/character.html?uploader=${character.uploader}&characterId=${character.id}`;
+            const ogImageUrl = `https://characters.efroai.net:3000/api/characters/${character.uploader}/images/${character.id}`;
 
             // Set dynamic URLs for Open Graph
             document.querySelector('meta[property="og:url"]').setAttribute('content', ogUrl);
