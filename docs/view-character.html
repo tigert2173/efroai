@@ -53,15 +53,39 @@
             document.getElementById('character-name').textContent = character.name;
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
-            
+
             // Display tags
             const tagsElement = document.getElementById('character-tags');
             tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
 
-            // Display character image
+            // Display character image with fetch and error handling
             const imgElement = document.getElementById('character-image');
-            imgElement.src = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-            imgElement.onerror = () => { imgElement.src = 'noimage.jpg'; }; // Set default image on error
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            })
+            .then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
         }
 
         // Load character details on page load
