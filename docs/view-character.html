@@ -5,21 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <meta property="name="title"" content="Character Details" />
     <style>
+        body {
+            background-color: #1c1c1c; /* Dark background for contrast */
+            color: #eaeaea; /* Light text for readability */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         #character-details-container {
             max-width: 600px;
             margin: auto;
             background: rgb(12, 36, 10);
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #character-details-container:hover {
+            transform: translateY(-5px); /* Subtle lift on hover */
         }
 
         h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 28px; /* Increased font size */
+            margin-bottom: 15px;
             color: #00ff66;
         }
 
@@ -27,32 +39,45 @@
             width: 100%;
             height: auto;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         #character-description {
-            font-size: 16px;
-            margin: 10px 0;
+            font-size: 18px; /* Increased font size */
+            margin: 15px 0;
             color: #dedede;
         }
 
-
         #character-creator {
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
             color: #999;
+            margin-bottom: 25px;
+        }
+
+        #character-tags {
+            font-size: 16px; /* Increased font size for tags */
             margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #333;
+            color: #00ff66;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 2px 3px;
         }
 
         #chat-button {
             background-color: #00ff66;
             color: #1b1b1b;
-            padding: 12px 20px;
+            padding: 15px 25px; /* Increased padding */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px; /* Increased font size */
         }
 
         #chat-button:hover {
@@ -62,6 +87,23 @@
 
         #chat-button:focus {
             outline: none; /* Remove focus outline */
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            #character-details-container {
+                padding: 20px; /* Less padding on mobile */
+            }
+
+            h1 {
+                font-size: 24px; /* Adjust heading size on mobile */
+            }
+
+            #character-description,
+            #character-creator,
+            #chat-button {
+                font-size: 16px; /* Consistent font size on mobile */
+            }
         }
     </style>
 </head>
