@@ -567,9 +567,7 @@ function loadFormData() {
 
     const imageInput = document.getElementById('imageUpload');
     const imageFile = imageInput.files[0];
-    if (!imageInput) {
-        errorMessage.textContent = 'An image is required to create a character!';
-    } 
+  
     const formData = new FormData();
 
     if (imageFile) {
@@ -624,8 +622,12 @@ function loadFormData() {
             
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
-            console.error(error);
-            errorMessage.textContent = 'Failed to update character.';
+            if (!imageInput) {
+                errorMessage.textContent = 'An image is required to create a character!';
+            } else {
+                console.error(error);
+                errorMessage.textContent = 'Failed to update character.';
+            }
         });
     } else {
         // If no image is selected, just send character data
