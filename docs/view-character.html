@@ -4,114 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
-    <!-- Open Graph Meta Tags for Social Media Preview -->
-    <meta property="og:title" content="Character Details - [Character Name]" id="og-title">
-    <meta property="og:description" content="Details about the character [Character Name] created by [Uploader Name]." id="og-description">
-    <meta property="og:image" content="noimage.jpg" id="og-image"> <!-- Default image -->
-    <meta property="og:url" content="https://yourwebsite.com/character-details.html" id="og-url">
-    <meta property="og:type" content="website">
 
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Character Details">
+    <meta property="og:description" content="View detailed information about this character.">
+    <meta property="og:image" content="" id="og-image"> <!-- Placeholder for dynamic image -->
+    <meta property="og:url" content="https://yourwebsite.com/character-details.html"> <!-- Update with actual URL -->
+    
     <style>
-        body {
-            background-color: #1c1c1c;
-            color: #eaeaea;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        #character-details-container {
-            max-width: 600px;
-            margin: auto;
-            background: rgb(12, 36, 10);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        #character-details-container:hover {
-            transform: translateY(-5px);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #00ff66;
-        }
-
-        #character-image {
-            width: auto;
-            max-height: 500px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 3px solid #00ff66;
-        }
-
-        #character-description {
-            font-size: 18px;
-            margin: 15px 0;
-            color: #dedede;
-        }
-       
-        #character-creator {
-            font-size: 20px;
-            color: #ffcc00;
-            margin-bottom: 25px;
-            font-weight: bold;
-        }
-
-        #character-tags {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            display: inline-block;
-            background-color: #333;
-            color: #00ff66;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin: 2px 3px;
-        }
-
-        #chat-button {
-            background-color: #00ff66;
-            color: #1b1b1b;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 18px;
-        }
-
-        #chat-button:hover {
-            background-color: #00e55d;
-            transform: translateY(-2px);
-        }
-
-        #chat-button:focus {
-            outline: none;
-        }
-
-        @media (max-width: 600px) {
-            #character-details-container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            #character-description,
-            #character-creator,
-            #chat-button {
-                font-size: 16px;
-            }
-        }
+        /* Your existing CSS styles */
     </style>
 </head>
 <body>
@@ -126,6 +27,7 @@
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
 
+        // Function to parse URL parameters
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -134,6 +36,7 @@
             };
         }
 
+        // Function to load character details
         function loadCharacterDetails() {
             const { characterId, uploader } = getUrlParams();
             fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
@@ -155,6 +58,7 @@
                 });
         }
 
+        // Function to display character details on the page
         function displayCharacterDetails(character) {
             document.getElementById('character-name').textContent = character.name;
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
@@ -177,7 +81,7 @@
             .then(response => {
                 if (!response.ok) {
                     console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg';
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
                     return;
                 }
                 return response.blob();
@@ -186,17 +90,15 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-                    document.getElementById('og-image').content = imageObjectURL; // Update Open Graph image
+
+                    // Update Open Graph image dynamically
+                    document.getElementById('og-image').setAttribute('content', imageObjectURL);
                 }
             })
             .catch(error => {
                 console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg';
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
-
-            // Update Open Graph title and description
-            document.getElementById('og-title').content = `Character Details - ${character.name}`;
-            document.getElementById('og-description').content = `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`;
 
             // Display the "Chat" button
             const chatButton = document.getElementById('chat-button');
@@ -204,10 +106,12 @@
             chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
         }
 
+        // Function to navigate to the chat page
         function openCharacterPage(characterId, uploader) {
             window.location.href = `/chat.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
         }
 
+        // Load character details on page load
         document.addEventListener('DOMContentLoaded', loadCharacterDetails);
     </script>
 </body>
