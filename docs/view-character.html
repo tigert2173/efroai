@@ -116,8 +116,8 @@
                     imgElement.src = imageObjectURL;
 
                     // Update meta tags with the new image URL for social sharing
-                    document.querySelector('meta[property="og:image"]').setAttribute('content', imageUrl + ".jpg" );
-                    document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageUrl + ".jpg" );
+                    document.querySelector('meta[property="og:image"]').setAttribute('content', imageUrl );
+                    document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageUrl );
                     console.log(imageUrl);
                 }
             })
