@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
-    <!-- Open Graph Meta Tags for Social Media Preview -->
     
     <!-- Open Graph meta tags -->
-    <meta property="og:title" content="" id="og-title">
-    <meta property="og:description" content="" id="og-description">
-    <meta property="og:image" content="" id="og-image">
-    <meta property="og:url" content="https://https://efroai.net/view-character.html?uploader=tigert2173&characterId=4">
-    
+<meta property="og:title" content="" id="og-title">
+<meta property="og:description" content="" id="og-description">
+<meta property="og:image" content="" id="og-image">
+<meta property="og:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=4">
+
 
     <style>
         body {
@@ -162,9 +161,9 @@
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
 
-            // Update Open Graph title and description
-            document.getElementById('og-title').setAttribute('content', `Character Details - ${character.name}`);
-            document.getElementById('og-description').setAttribute('content', `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`);
+        // Update Open Graph title and description (remove the last two lines)
+        document.getElementById('og-title').setAttribute('content', `Chttaracter Details - ${character.name}`);
+        document.getElementById('og-description').setAttribute('content', `Details about the character ${character.name} created by ${character.uploader || 'Unknown'}.`);
 
             // Display tags
             const tagsElement = document.getElementById('character-tags');
