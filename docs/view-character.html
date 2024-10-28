@@ -13,6 +13,7 @@
         <p id="character-description"></p>
         <p id="character-tags"></p>
         <p id="character-creator"></p>
+        <button id="chat-button" style="display: none;">Chat</button>
     </div>
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
@@ -86,6 +87,16 @@
                 console.error('Error fetching image:', error);
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
+
+            // Display the "Chat" button
+            const chatButton = document.getElementById('chat-button');
+            chatButton.style.display = 'inline-block';
+            chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
+        }
+
+        // Function to navigate to the chat page
+        function openCharacterPage(characterId, uploader) {
+            window.location.href = `/chat.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
         }
 
         // Load character details on page load
