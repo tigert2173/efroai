@@ -56,6 +56,45 @@
         button:hover {
             background-color: #ff6600;
         }
+        .character-item {
+    border: 1px solid #ccc; /* Add a border around each character item */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding inside the box */
+    margin: 10px 0; /* Space between character items */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Column direction for layout */
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.character-info {
+    margin-bottom: 10px; /* Space between the info and buttons */
+}
+
+.character-name {
+    font-weight: bold; /* Bold character name */
+    font-size: 1.2em; /* Larger font size */
+}
+
+.character-actions {
+    display: flex; /* Flexbox for button layout */
+    gap: 8px; /* Space between buttons */
+}
+
+.action-btn, .view-btn, .share-btn {
+    background-color: #007bff; /* Primary button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding inside buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.action-btn:hover, .view-btn:hover, .share-btn:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
     </style>
 </head>
 <body>
@@ -218,17 +257,20 @@
         characterItem.classList.add('character-item');
         
         characterItem.innerHTML = `
-            <div style="display: flex; align-items: center;">
-                <span>${character.name} (Uploaded by: ${character.uploader})</span>
-            </div>
-            <div>
-                <button onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-                <button onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
+            <div class="character-item">
+                <div class="character-info">
+                    <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
                 </div>
+                <div class="character-actions">
+                    <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
+                    <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
+                    <button class="action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                    <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
+                </div>
+            </div>
         `;
+
 
         // Insert image element at the beginning of character item
         characterItem.insertBefore(imgElement, characterItem.firstChild);
@@ -248,7 +290,7 @@ function shareCharacter(characterId, uploader) {
                 console.error("Failed to copy: ", err);
             });
     }
-    
+
 // Function to view character details (can be implemented further)
 function viewCharacter(characterId, uploader) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
