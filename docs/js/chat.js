@@ -64,27 +64,18 @@ async function checkAPIStatus() {
     statusTextElement.className = 'status-checking';
 
     try {
-        // Fetch the data from the two APIs
-        const [notDownResponse, listedResponse] = await Promise.all([
-            fetch('https://api.botbridge.net/api/servers-not-down'),
-            fetch('https://api.botbridge.net/api/servers-listed')
-        ]);
+        const response = await fetch('https://api.botbridge.net/api/server-status');
+        const data = await response.json();
 
-        // Parse the JSON data from responses
-        const serversNotDown = await notDownResponse.json();
-        const serversListed = await listedResponse.json();
-
-        const totalServers = serversListed.listedCount; // Total number of servers listed
-        const operationalServers = serversNotDown.notDownCount; // Number of servers operational
+        const totalServers = data.listedCount;
+        const operationalServers = data.notDownCount;
 
         console.log(`Total Servers: ${totalServers}, Operational Servers: ${operationalServers}`);
 
-        // Calculate the percentage of operational servers
         const operationalPercentage = (operationalServers / totalServers) * 100;
         const speedIndicator = document.getElementById('speed-indicator');
         speedIndicator.style.width = `${operationalPercentage}%`;
 
-        // Update the status based on the percentage of operational servers
         if (totalServers === 0) {
             statusTextElement.textContent = 'No Servers Listed';
             statusTextElement.className = 'status-code';
@@ -114,8 +105,8 @@ async function checkAPIStatus() {
         statusTextElement.textContent = 'Error: Unable to Reach Server';
         statusTextElement.className = 'status-error';
     }
-   
 }
+
 
 function loadCharacter(charName, listItem) {
     clearCurrentBotMessage();
