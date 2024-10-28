@@ -81,13 +81,43 @@ h1 {
     font-size: 1em; /* Consistent font size */
 }
 
-.character-actions {
-    margin-top: 10px; /* Space above actions */
-    display: flex;
-    flex-wrap: wrap; /* Wrap buttons if not enough space */
-    gap: 10px; /* Space between buttons */
-    justify-content: center; /* Center align buttons */
+.character-actions button {
+    background-color: #00ff66; /* Primary button color */
+    color: #1b1b1b; /* Text color */
+    padding: 15px 25px; /* Increased padding for a more substantial look */
+    border: none;
+    border-radius: 12px; /* Larger radius for a more modern look */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+    font-size: 1.2em; /* Larger font size for better visibility */
+    width: 100%; /* Make button full width within its container */
+    max-width: 250px; /* Set a maximum width for large screens */
+    text-align: center; /* Center text */
 }
+
+/* Button hover effect */
+.character-actions button:hover {
+    background-color: #ff6600; /* Change background color on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover */
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .character-actions button {
+        font-size: 1em; /* Slightly reduce font size on smaller screens */
+        padding: 12px 20px; /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .character-actions button {
+        padding: 10px 15px; /* Further reduce padding for mobile */
+        font-size: 0.9em; /* Smaller font size for mobile */
+    }
+}
+
 
 button {
     background-color: #00ff66; /* Primary button color */
