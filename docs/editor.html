@@ -622,7 +622,7 @@ function loadFormData() {
             
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
-            if (!imageInput) {
+            if (!imageFile) {
                 errorMessage.textContent = 'An image is required to create a character!';
             } else {
                 console.error(error);
