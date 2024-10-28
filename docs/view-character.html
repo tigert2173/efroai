@@ -160,9 +160,6 @@
                     document.getElementById('character-details-container').innerHTML = `<p>${error.message}</p>`;
                 });
         }
-        const util = require("util");
-const request = util.promisify(require("request"));
-const getUrls = require("get-urls");
 
 const urlImageIsAccessible = async (url) => {
   const correctedUrls = getUrls(url);
