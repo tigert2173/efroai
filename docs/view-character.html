@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-    <div id="character-details-container">
-        <h1 id="character-name"></h1>
-        <img id="character-image" alt="Character Image">
-        <p id="character-description"></p>
-        <p id="character-tags"></p>
-        <p id="character-creator"></p>
-        <button id="chat-button" style="display: none;">Chat</button>
-    </div>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Character Details - <span id='og-character-name'></span>">
+    <meta property="og:description" content="Character description: <span id='og-character-description'></span>">
+    <meta property="og:image" content="<span id='og-character-image-url'></span>">
+    <meta property="og:url" content="https://yourwebsite.com/character-details.html?uploader=<span id='og-uploader'></span>&characterId=<span id='og-character-id'></span>">
+    <meta property="og:type" content="website">
+    
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
 
@@ -55,14 +53,20 @@
             document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
             document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
 
+            // Set Open Graph meta tags
+            document.getElementById('og-character-name').textContent = character.name;
+            document.getElementById('og-character-description').textContent = character.chardescription || 'No description available.';
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            document.getElementById('og-character-image-url').setAttribute('content', imageUrl);
+            document.getElementById('og-uploader').textContent = character.uploader;
+            document.getElementById('og-character-id').textContent = character.id;
+
             // Display tags
             const tagsElement = document.getElementById('character-tags');
             tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
 
             // Display character image with fetch and error handling
             const imgElement = document.getElementById('character-image');
-            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
-
             fetch(imageUrl, {
                 method: 'GET',
                 headers: {
@@ -102,5 +106,15 @@
         // Load character details on page load
         document.addEventListener('DOMContentLoaded', loadCharacterDetails);
     </script>
+</head>
+<body>
+    <div id="character-details-container">
+        <h1 id="character-name"></h1>
+        <img id="character-image" alt="Character Image">
+        <p id="character-description"></p>
+        <p id="character-tags"></p>
+        <p id="character-creator"></p>
+        <button id="chat-button" style="display: none;">Chat</button>
+    </div>
 </body>
 </html>
