@@ -201,7 +201,12 @@
 
         // Function to navigate to the chat page
         function openCharacterPage(characterId, uploader) {
-            window.location.href = `/chat.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+            // Use sessionStorage to save the character ID and uploader information
+            sessionStorage.setItem('selectedCharacterId', characterId);
+            sessionStorage.setItem('characterUploader', uploader);
+
+            // Redirect to the chat page
+            window.location.href = '/chat.html';
         }
 
         // Load character details on page load
