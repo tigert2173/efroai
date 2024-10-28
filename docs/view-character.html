@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Character Details - <span id='character-name'></span>">
     <meta property="og:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
-    <meta property="og:image" content="https://characters.efroai.net:3000/api/characters/tigert2173/images/13">
+    <meta property="og:image" content="">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -21,7 +21,7 @@
     <meta property="twitter:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=6">
     <meta name="twitter:title" content="Character Details - <span id='character-name'></span>">
     <meta name="twitter:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
-    <meta name="twitter:image" content="https://characters.efroai.net:3000/api/characters/tigert2173/images/13">
+    <meta name="twitter:image" content="">
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -100,6 +100,10 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
+
+                    // Update meta tags with the new image URL for social sharing
+                    document.querySelector('meta[property="og:image"]').setAttribute('content', imageObjectURL);
+                    document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageObjectURL);
                 }
             })
             .catch(error => {
