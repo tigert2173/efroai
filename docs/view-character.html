@@ -12,7 +12,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Chara1cter Details">
     <meta property="og:description" content="Testing">
-    <meta property="og:image" content="https://efroai.net/santa.png" id="ogImage">
+    <meta property="og:image" content="https://efroai.net/images/logotransparent.png">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
     <meta property="twitter:url" content="https://efroai.net/view-character.html?uploader=tigert2173&characterId=1">
     <meta name="twitter:title" content="Chara1cter Details">
     <meta name="twitter:description" content="Testing">
-    <meta name="twitter:image" content="https://characters.efroai.net:3000/api/characters/tigert2173/images/2">
+    <meta name="twitter:image" content="https://efroai.net/images/logotransparent.png">
 
     <!-- Meta Tags Generated via https://www.opengraph.xyz -->  
 
@@ -224,26 +224,6 @@
 
         // Load character details on page load
         document.addEventListener('DOMContentLoaded', loadCharacterDetails);
-        
-                // Function to get URL parameters
-                function getURLParameters() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                uploader: params.get('uploader'),
-                characterId: params.get('characterId')
-            };
-        }
-
-        // Set Open Graph image using URL parameters
-        function setOpenGraphImage() {
-            const { uploader, characterId } = getURLParameters();
-            if (uploader && characterId) {
-                const ogImageMetaTag = document.getElementById('ogImage');
-                ogImageMetaTag.setAttribute('content', `https://characters.efroai.net:3000/api/characters/tigert2173/images/1`);
-        }
-    }
-        setOpenGraphImage();
-        // Run the function on page load
     </script>      
 </body>
 </html>
