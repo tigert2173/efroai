@@ -4,16 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Details</title>
-    <meta property="og:title" content="Character Details - Character Name Here" />
-    <meta property="og:description" content="Description of the character goes here." />
-    <meta property="og:image" content="URL_of_character_image_here" />
-    <meta property="og:url" content="https://yourwebsite.com/character?uploader=UploaderName&characterId=CharacterID" />
-    <meta property="og:type" content="website" />
-    <!-- Optional: Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Character Details - Character Name Here">
-    <meta name="twitter:description" content="Description of the character goes here.">
-    <meta name="twitter:image" content="URL_of_character_image_here">
+    <!-- <link rel="stylesheet" href="/css/styles.css"> -->
     <style>
         body {
             background-color: #1c1c1c; /* Dark background for contrast */
@@ -50,6 +41,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 3px solid #00ff66; /* Bright border for images */
+
         }
 
         #character-description {
@@ -161,89 +153,6 @@
                 });
         }
 
-        const urlImageIsAccessible = async (url) => {
-  // Dynamically import the get-urls module
-  const { default: getUrls } = await import("get-urls");
-  
-  const correctedUrls = getUrls(url);
-  if (correctedUrls.size !== 0) {
-    const response = await request(correctedUrls.values().next().value);
-    const contentType = response.headers["content-type"];
-    return new RegExp("image/*").test(contentType);
-  }
-  return false;
-};
-
-const getImg = async (page, uri) => {
-  const img = await page.evaluate(async (uri) => {
-    const urlImageIsAccessible = async (url) => {
-      const { default: getUrls } = await import("get-urls");
-      const correctedUrls = getUrls(url);
-      if (correctedUrls.size !== 0) {
-        const response = await fetch(correctedUrls.values().next().value);
-        const contentType = response.headers.get("content-type");
-        return new RegExp("image/*").test(contentType);
-      }
-      return false;
-    };
-
-    const ogImg = document.querySelector('meta[property="og:image"]');
-    if (
-      ogImg != null &&
-      ogImg.content.length > 0 &&
-      await urlImageIsAccessible(ogImg.content)
-    ) {
-      return ogImg.content;
-    }
-    const imgRelLink = document.querySelector('link[rel="image_src"]');
-    if (
-      imgRelLink != null &&
-      imgRelLink.href.length > 0 &&
-      await urlImageIsAccessible(imgRelLink.href)
-    ) {
-      return imgRelLink.href;
-    }
-    const twitterImg = document.querySelector('meta[name="twitter:image"]');
-    if (
-      twitterImg != null &&
-      twitterImg.content.length > 0 &&
-      await urlImageIsAccessible(twitterImg.content)
-    ) {
-      return twitterImg.content;
-    }
-
-    let imgs = Array.from(document.getElementsByTagName("img"));
-    if (imgs.length > 0) {
-      imgs = imgs.filter(img => {
-        let addImg = true;
-        if (img.naturalWidth > img.naturalHeight) {
-          if (img.naturalWidth / img.naturalHeight > 3) {
-            addImg = false;
-          }
-        } else {
-          if (img.naturalHeight / img.naturalWidth > 3) {
-            addImg = false;
-          }
-        }
-        if (img.naturalHeight <= 50 || img.naturalWidth <= 50) {
-          addImg = false;
-        }
-        return addImg;
-      });
-      imgs.forEach(img => {
-        if (img.src.indexOf("//") === -1) {
-          img.src = `${new URL(uri).origin}/${img.src}`;
-        }
-      });
-      return imgs[0].src;
-    }
-    return null;
-  }, uri);
-  
-  return img;
-};
-
-
         // Function to display character details on the page
         function displayCharacterDetails(character) {
             document.getElementById('character-name').textContent = character.name;
@@ -276,16 +185,6 @@ const getImg = async (page, uri) => {
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-                    console.log('Image URL:', imgElement.src);
-                    const imgUrl = getImg(page, imageUrl); // Assuming page and uri are defined
-                if (imgUrl) {
-                    document.getElementById('imgElement').src = imgUrl;
-                } else {
-                    document.getElementById('imgElement').src = 'path/to/default/image.jpg'; // Fallback image
-                }
-                    // // Update Open Graph image metadata
-                    // document.querySelector('meta[property="og:image"]').setAttribute('content', imageObjectURL);
-                    // document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageObjectURL);
                 }
             })
             .catch(error => {
@@ -297,7 +196,6 @@ const getImg = async (page, uri) => {
             const chatButton = document.getElementById('chat-button');
             chatButton.style.display = 'inline-block';
             chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
-           
         }
 
         // Function to navigate to the chat page
