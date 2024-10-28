@@ -3,27 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Details - <span id='character-name'></span></title>
-
-    <!-- HTML Meta Tags -->
-    <meta name="description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
-
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Character Details - <span id='character-name'></span>">
-    <meta property="og:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
-    <meta property="og:image" content="">
-
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="efroai.net">
-    <meta property="twitter:url" content="">
-    <meta name="twitter:title" content="Character Details - <span id='character-name'></span>">
-    <meta name="twitter:description" content="Details about <span id='character-name'></span>: <span id='character-description'></span>">
-    <meta name="twitter:image" content="">
-
+    <title>Character Details</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <meta property="name="title"" content="Character Details" />
 </head>
 <body>
     <div id="character-details-container">
@@ -70,23 +52,9 @@
 
         // Function to display character details on the page
         function displayCharacterDetails(character) {
-            const characterName = character.name;
-            const characterDescription = character.chardescription || 'No description available.';
-            const characterUploader = character.uploader || 'Unknown';
-
-            // Update character details
-            document.getElementById('character-name').textContent = characterName;
-            document.getElementById('character-description').textContent = characterDescription;
-            document.getElementById('character-creator').textContent = `Created by: ${characterUploader}`;
-
-            // Update meta tags for sharing
-            const currentPageUrl = `${window.location.origin}/view-character.html?uploader=${encodeURIComponent(characterUploader)}&characterId=${encodeURIComponent(character.id)}`;
-            document.querySelector('meta[property="og:url"]').setAttribute('content', currentPageUrl);
-            document.querySelector('meta[property="twitter:url"]').setAttribute('content', currentPageUrl);
-            document.querySelector('meta[property="og:title"]').setAttribute('content', `Character Details - ${characterName}`);
-            document.querySelector('meta[name="twitter:title"]').setAttribute('content', `Character Details - ${characterName}`);
-            document.querySelector('meta[property="og:description"]').setAttribute('content', `Details about ${characterName}: ${characterDescription}`);
-            document.querySelector('meta[name="twitter:description"]').setAttribute('content', `Details about ${characterName}: ${characterDescription}`);
+            document.getElementById('character-name').textContent = character.name;
+            document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
+            document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
 
             // Display tags
             const tagsElement = document.getElementById('character-tags');
@@ -114,11 +82,6 @@
                 if (imageBlob) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
-
-                    // Update meta tags with the new image URL for social sharing
-                    document.querySelector('meta[property="og:image"]').setAttribute('content', imageUrl );
-                    document.querySelector('meta[name="twitter:image"]').setAttribute('content', imageUrl );
-                    console.log(imageUrl);
                 }
             })
             .catch(error => {
