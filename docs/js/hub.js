@@ -93,7 +93,7 @@ function displayCharacters(characters) {
                 </span>
             </p>
             <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-            <button onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+            <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
             <div class="button-container">
                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                 <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
