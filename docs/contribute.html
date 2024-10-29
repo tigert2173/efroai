@@ -3,108 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support EFRO.AI</title>
+    <title>EFRO.AI - Support Us</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/menu2.0.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .container {
-            display: flex;
-            margin: 20px;
-            flex-direction: column;
-            align-items: center;
-        }
-        .support-section {
-            max-width: 800px;
+        body {
+            font-family: 'Roboto', sans-serif;
             background-color: #1e1e1e;
+            color: #ddd;
+            margin: 0;
+            padding: 0;
+        }
+        header, .hero, .container {
+            padding: 20px;
+        }
+        .hero {
+            text-align: center;
+            background-color: #3498db;
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: #e67e22;
+        }
+        .donation-options, .host-section {
+            background-color: #2b2b2b;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
-            color: #e67e22;
-            margin: 0 0 15px;
-        }
-        h3 {
+        .benefit {
             color: #3498db;
-            margin: 10px 0;
+            font-weight: bold;
         }
-        p {
-            color: #ddd;
-            line-height: 1.6;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .btn:hover {
-            background-color: #e67e22;
-        }
-        .donor-benefits {
-            background-color: #2b2b2b;
+        .tier {
+            background-color: #1e1e1e;
             padding: 15px;
-            border-radius: 5px;
+            margin: 10px 0;
             border-left: 5px solid #e67e22;
-            margin-top: 15px;
+            border-radius: 8px;
         }
-        ul {
-            color: #ddd;
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #e67e22;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="left-content">
-                <div class="logo">
-                    <img src="logo.png" alt="EFRO.AI Logo">
-                </div>
-                <div class="text">
-                    <span class="letter letter-1">E</span>
-                    <span class="letter letter-2">F</span>
-                    <span class="letter letter-3">R</span>
-                    <span class="letter letter-4">O</span>
-                    <span class="letter letter-5">.</span>
-                    <span class="letter letter-6">A</span>
-                    <span class="letter letter-7">I</span>
-                </div>
+
+<!-- Header -->
+<header>
+    <nav class="navbar">
+        <!-- Navigation Links -->
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Support EFRO.AI</h1>
+    <p>Help keep our services free and accessible by contributing through donations or hosting an API server.</p>
+</section>
+
+<!-- Main Content -->
+<main>
+    <div class="container">
+
+        <!-- Hosting Section -->
+        <section class="host-section">
+            <h2>1. Host an API Server</h2>
+            <p>Partner with us through <a href="https://botbridge.ai">BotBridge</a> by hosting an API server, allowing us to offer better performance and availability to all users. This contribution is invaluable in maintaining a free, high-quality service for everyone.</p>
+        </section>
+
+        <!-- Donation Section -->
+        <section class="donation-options">
+            <h2>2. Donate to Support Us</h2>
+            <p>Your donations directly support the development of new features and improvements. Each tier comes with exclusive benefits:</p>
+
+            <!-- Donor Tiers -->
+            <div class="tier">
+                <h3>$5+ Donor</h3>
+                <ul>
+                    <li><span class="benefit">Customization options:</span> Access to character cards, profile colors, and additional profile customization.</li>
+                    <li><span class="benefit">Early Access:</span> Be among the first to try beta and alpha features before public release.</li>
+                </ul>
             </div>
-        </nav>
-    </header>
+            <div class="tier">
+                <h3>$10+ Donor</h3>
+                <ul>
+                    <li>All benefits from the $5+ tier</li>
+                    <li><span class="benefit">Increased API usage limit:</span> Enjoy higher API rate limits for enhanced usage.</li>
+                    <li><span class="benefit">Exclusive Support:</span> Priority access to support for faster responses and assistance.</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <h3>$25+ Donor</h3>
+                <ul>
+                    <li>All benefits from the $10+ tier</li>
+                    <li><span class="benefit">Access to Premium Content:</span> Gain access to exclusive characters and features that are not available to the general public.</li>
+                    <li><span class="benefit">Custom Character Cards:</span> Unlock premium character card styles for a unique look.</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <h3>$50+ Donor</h3>
+                <ul>
+                    <li>All benefits from the $25+ tier</li>
+                    <li><span class="benefit">Extended Early Access:</span> Be the first to experience new features and major updates.</li>
+                    <li><span class="benefit">Direct Feedback Influence:</span> Participate in special feedback sessions to shape future updates.</li>
+                    <li><span class="benefit">Custom Badge:</span> Display a unique badge on your profile to recognize your support.</li>
+                </ul>
+            </div>
+        </section>
 
-    <main>
-        <div class="container">
-            <section class="support-section">
-                <h1>Help Keep EFRO.AI Free!</h1>
-                <p>Our mission is to provide powerful AI services accessible to everyone. By contributing, you help ensure that our services remain available for free to users across the globe.</p>
-            </section>
-
-            <section class="support-section">
-                <h2>1. Host an API Server through BotBridge</h2>
-                <p>If you have the resources, hosting an API server is a fantastic way to support us. By partnering with BotBridge, you can directly contribute to the service infrastructure that powers EFRO.AI.</p>
-                <a href="https://botbridge.net/hosting" target="_blank" class="btn">Learn More about Hosting</a>
-            </section>
-
-            <section class="support-section">
-                <h2>2. Become a Donor</h2>
-                <p>Support our development through donations and unlock exclusive benefits.</p>
-                <div class="donor-benefits">
-                    <h3>Benefits for Donors</h3>
-                    <ul>
-                        <li><strong>$5 or more:</strong> Access to customization options, including character cards, colors, and profiles.</li>
-                        <li><strong>Early Access:</strong> Get early access to new features in beta/alpha versions.</li>
-                    </ul>
-                </div>
-                <a href="https://efro.ai/donate" target="_blank" class="btn">Donate Now</a>
-            </section>
-        </div>
-    </main>
+    </div>
+</main>
 
 </body>
 </html>
