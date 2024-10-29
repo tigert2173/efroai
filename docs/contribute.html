@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #1e1e1e;
-            color: #ddd;
+            background-color: #121212; /* Dark background for contrast */
+            color: #f0f0f0; /* Light text color */
             margin: 0;
             padding: 0;
         }
@@ -18,34 +18,36 @@
         }
         .hero {
             text-align: center;
-            background-color: #3498db;
+            background-color: #2980b9; /* Bright hero section */
             color: white;
             padding: 40px;
             border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
+            padding: 20px; /* Increased padding for spacing */
         }
         h1, h2, h3 {
-            color: #e67e22;
+            color: #e67e22; /* Bright orange for headings */
         }
         .donation-options, .host-section {
-            background-color: #2b2b2b;
+            background-color: #2c3e50; /* Darker container background */
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .benefit {
-            color: #3498db;
+            color: #3498db; /* Bright blue for benefits */
             font-weight: bold;
         }
         .tier {
-            background-color: #1e1e1e;
+            background-color: #34495e; /* Slightly lighter dark background */
             padding: 15px;
             margin: 10px 0;
-            border-left: 5px solid #e67e22;
+            border-left: 5px solid #e67e22; /* Bright border for emphasis */
             border-radius: 8px;
         }
         a {
@@ -54,7 +56,15 @@
             transition: color 0.3s;
         }
         a:hover {
-            color: #e67e22;
+            color: #e67e22; /* Change on hover for interactivity */
+        }
+        /* Additional styling for lists */
+        ul {
+            list-style-type: none; /* Remove default list styling */
+            padding: 0; /* Remove padding */
+        }
+        li {
+            margin: 5px 0; /* Space between list items */
         }
     </style>
 </head>
@@ -90,35 +100,42 @@
 
             <!-- Donor Tiers -->
             <div class="tier">
-                <h3>$5+ Donor</h3>
+                <h3>$5 or More Donor</h3>
                 <ul>
-                    <li><span class="benefit">Customization options:</span> Access to character cards, profile colors, and additional profile customization.</li>
-                    <li><span class="benefit">Early Access:</span> Be among the first to try beta and alpha features before public release.</li>
+                    <li><span class="benefit">Customization Options:</span> Access to cool customization options (character cards, colors, profile).</li>
+                    <li><span class="benefit">Early Access:</span> Access to beta/alpha versions of the site/features.</li>
+                    <li><span class="benefit">Ad Removal:</span> Enjoy an ad-free experience.</li>
+                    <li><span class="benefit">Community Recognition:</span> Reddit flair & Discord role.</li>
                 </ul>
             </div>
             <div class="tier">
-                <h3>$10+ Donor</h3>
+                <h3>$15 or More Donor</h3>
                 <ul>
-                    <li>All benefits from the $5+ tier</li>
-                    <li><span class="benefit">Increased API usage limit:</span> Enjoy higher API rate limits for enhanced usage.</li>
-                    <li><span class="benefit">Exclusive Support:</span> Priority access to support for faster responses and assistance.</li>
+                    <li>All Level 1 perks</li>
+                    <li><span class="benefit">Queue Reduction:</span> 20% or up to 8 seconds off queuing wait.</li>
                 </ul>
             </div>
             <div class="tier">
-                <h3>$25+ Donor</h3>
+                <h3>$30 or More Donor</h3>
                 <ul>
-                    <li>All benefits from the $10+ tier</li>
-                    <li><span class="benefit">Access to Premium Content:</span> Gain access to exclusive characters and features that are not available to the general public.</li>
-                    <li><span class="benefit">Custom Character Cards:</span> Unlock premium character card styles for a unique look.</li>
+                    <li>All Level 1 and 2 perks</li>
+                    <li><span class="benefit">Queue Reduction:</span> 40% or ~16 seconds off queuing wait.</li>
                 </ul>
             </div>
             <div class="tier">
-                <h3>$50+ Donor</h3>
+                <h3>$50 or More Donor</h3>
                 <ul>
-                    <li>All benefits from the $25+ tier</li>
-                    <li><span class="benefit">Extended Early Access:</span> Be the first to experience new features and major updates.</li>
-                    <li><span class="benefit">Direct Feedback Influence:</span> Participate in special feedback sessions to shape future updates.</li>
-                    <li><span class="benefit">Custom Badge:</span> Display a unique badge on your profile to recognize your support.</li>
+                    <li>All Level 1, 2, and 3 perks</li>
+                    <li><span class="benefit">Queue Reduction:</span> 60% or ~28 seconds off queuing wait.</li>
+                    <li><span class="benefit">Higher Visibility:</span> Increased placement/visibility of your bots.</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <h3>$80 or More Donor</h3>
+                <ul>
+                    <li>All Level 1, 2, 3, and 4 perks</li>
+                    <li><span class="benefit">Queue Reduction:</span> 80% or ~60 seconds off queuing wait.</li>
+                    <li><span class="benefit">Profile Customization:</span> Custom HTML edit of your user profile page.</li>
                 </ul>
             </div>
         </section>
