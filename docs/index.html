@@ -364,21 +364,19 @@
     </script>
     
 <script>
-   document.addEventListener("DOMContentLoaded", function() {
-            const config = document.getElementById('config').innerHTML;
-            const settings = JSON.parse(config);
 
-            if (settings.maintenanceUpcoming) {
-                const maintenanceMessage = settings.maintenanceMessage;
-                document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
-                document.getElementById("maintenance-warning").style.display = "block";
+    // Function to show the maintenance mode
+function showMaintenanceUpcoming() {
+    const maintenanceMessage = settings.maintenanceMessage;
+    document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
+    document.getElementById("maintenance-warning").style.display = "block";
 
-                const closeButton = document.querySelector(".close-btn");
-                closeButton.addEventListener("click", function() {
-                    document.getElementById("maintenance-warning").style.display = "none";
-                });
-            }
-        });
+    const closeButton = document.querySelector(".close-btn");
+    closeButton.addEventListener("click", function() {
+        document.getElementById("maintenance-warning").style.display = "none";
+    }); 
+}
+
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {
@@ -398,6 +396,9 @@ fetch('config.json')
     .then(response => response.json())
     .then(data => {
         if (data.maintenanceMode) {
+            showMaintenanceMode();
+        }
+        if (data.maintenanceUpcoming) {
             showMaintenanceMode();
         }
     })
