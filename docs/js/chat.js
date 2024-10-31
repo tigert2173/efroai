@@ -56,7 +56,7 @@ function toggleExpertSettings() {
 
 var messagessent = 0;
 
-setInterval(checkAPIStatus, 600); // Check API status every 60 seconds
+setInterval(checkAPIStatus, 60000); // Check API status every 60 seconds
 
 async function checkAPIStatus() {
     const statusTextElement = document.getElementById('api-status-text');
@@ -1150,7 +1150,7 @@ async function updateQueueCounter() {
 }
 
 // Fetch queue status every 5 seconds
-setInterval(updateQueueCounter, 500);
+setInterval(updateQueueCounter, 5000);
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
