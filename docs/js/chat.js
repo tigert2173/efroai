@@ -634,7 +634,7 @@ async function sendMessage() {
         console.log(sessionStorage.getItem('token'));
 
       // Check if the response is ok
-    if (!response.ok) {
+    if (response.ok) {
         const errorData = await response.json(); // Move this outside for better reusability
         let errorMessage;
 
@@ -663,7 +663,7 @@ async function sendMessage() {
         displayBotMessage(errorMessage, 'temporary-notice');
         return; // Exit early if the request failed
     }
-    
+
     if (response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
