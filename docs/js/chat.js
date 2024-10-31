@@ -728,17 +728,14 @@ function sendGreeting() {
     }
 }
 
-function displayBotMessage(message, type) {
+function displayBotMessage(content, sender) {
     const messageElement = document.createElement('div');
-    messageElement.className = 'bot-message ' + type; // Add type for specific styling
-    messageElement.textContent = message;
-    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
-
-    // Automatically remove the notice after a few seconds
-    setTimeout(() => {
-        messageElement.remove();
-    }, 10000); // Adjust the duration as needed
+    messageElement.className = `message ${sender}`;
+    messageElement.innerHTML = `<span class="message-content">${content}</span>`;
+    chatContainer.appendChild(messageElement);
+    chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
 }
+
 
 function regenerateMessage() {
     isResend = true;
