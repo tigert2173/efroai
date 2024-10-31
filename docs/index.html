@@ -80,31 +80,30 @@
 }
 
 .maintenance-warning {
-    background-color: #ffcc00;
-    color: #333;
-    padding: 15px;
-    border: 1px solid #cc9900;
-    border-radius: 5px;
-    position: fixed; /* Keeps it at the top */
+    background-color: #ffcc00; /* Warning banner background color */
+    color: #333; /* Text color */
+    padding: 15px; /* Padding inside the banner */
+    border: 1px solid #cc9900; /* Border style */
+    border-radius: 5px; /* Rounded corners */
+    position: fixed; /* Keeps it fixed at the top */
     top: 60px; /* Position it below the header */
-    left: 0;
-    right: 0;
-    max-height: 100px;
-    z-index: 1001; /* Ensure it's above other elements */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    z-index: 1001; /* Higher z-index than the header */
     display: none; /* Initially hidden */
-    font-family: Arial, sans-serif; /* Better font */
-    text-align: center; /* Center the text */
+    font-family: Arial, sans-serif; /* Font style */
+    text-align: center; /* Center text alignment */
 }
 
 .close-btn {
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    color: #333;
-    position: absolute;
-    top: 10px;
-    right: 15px;
+    cursor: pointer; /* Pointer cursor for button */
+    background: none; /* No background */
+    border: none; /* No border */
+    font-size: 1.5em; /* Font size for close button */
+    color: #333; /* Close button text color */
+    position: absolute; /* Position relative to banner */
+    top: 10px; /* Position from the top */
+    right: 15px; /* Position from the right */
 }
 
 
@@ -171,7 +170,9 @@
     // Run the detection function
     detectAdBlocker();
 </script>
-
+<div id="maintenance-warning" class="maintenance-warning">
+    <p id="maintenance-message"></p>
+    <button class="close-btn">×</button>
 </body>
 </html>
 
@@ -262,9 +263,6 @@
     </nav>
    
     </header>
-    <div id="maintenance-warning" class="maintenance-warning">
-        <p id="maintenance-message"></p>
-        <button class="close-btn">×</button>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
