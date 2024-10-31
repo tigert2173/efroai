@@ -1150,7 +1150,7 @@ async function updateQueueCounter() {
 }
 
 // Fetch queue status every 5 seconds
-setInterval(updateQueueCounter, 250);
+setInterval(updateQueueCounter, 500);
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
