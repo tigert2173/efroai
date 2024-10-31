@@ -114,9 +114,11 @@
     <h1>Ad Blocker Detected!</h1>
     <p>Please consider disabling your ad blocker to support us. We don't place very many ads.</p>
 </div>
-<div id="maintenance-warning" class="maintenance-warning">
-    <p>⚠️ Attention: Scheduled maintenance will occur on <strong>November 5th at 2:00 AM</strong>. Please plan accordingly.</p>
+<div id="maintenance-warning" class="maintenance-warning" style="display: none;">
+    <p id="maintenance-message"></p>
+    <button class="close-btn">×</button>
 </div>
+
 
 <script>
     // Function to check for ad blocker
