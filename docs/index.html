@@ -80,30 +80,31 @@
 }
 
 .maintenance-warning {
-            background-color: #ffcc00;
-            color: #333;
-            padding: 15px;
-            border: 1px solid #cc9900;
-            border-radius: 5px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: none; /* Initially hidden */
-            font-family: Arial, sans-serif; /* Better font */
-            text-align: center; /* Center the text */
-        }
-        .close-btn {
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            color: #333;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-        }
+    background-color: #ffcc00;
+    color: #333;
+    padding: 15px;
+    border: 1px solid #cc9900;
+    border-radius: 5px;
+    position: fixed; /* Keeps it at the top */
+    top: 0; /* Aligns it to the top of the viewport */
+    left: 0;
+    right: 0;
+    z-index: 1001; /* Ensure it's above other elements */
+    display: none; /* Initially hidden */
+    font-family: Arial, sans-serif; /* Better font */
+    text-align: center; /* Center the text */
+}
+ 
+.close-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
 
     </style>
 </head>
