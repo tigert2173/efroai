@@ -124,7 +124,7 @@
         const config = document.getElementById('config').innerHTML;
         const settings = JSON.parse(config);
 
-        if (settings.maintenanceMode) {
+        if (settings.maintenanceUpcoming) {
             displayUpcomingMaintenanceNotice(settings);
         }
     });
