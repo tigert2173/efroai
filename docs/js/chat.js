@@ -782,11 +782,6 @@ function displayBotMessage(message, type) {
     }, 10000); // Adjust timeout duration as needed
 }
 
-// Example usage
-document.addEventListener('DOMContentLoaded', () => {
-    displayBotMessage("Hello! This is a test message.", "temporary-notice");
-});
-
 function regenerateMessage() {
     isResend = true;
     const lastAssistantMessage = getLastAssistantMessage();
