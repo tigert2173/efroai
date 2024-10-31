@@ -731,36 +731,11 @@ async function sendMessage() {
     }
 } catch (error) {
     console.error('Error:', error);
-    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
-    
-    if (!response.ok) {
-        if (response.status === 451) {
-        const errorData = await response.json();
-        displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
-        return; // Exit early if the request failed
-    } else if (response.status === 401) {
-            const errorData = await response.json();
-            displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
-            return; // Exit early if the request failed
-    } else if (response.status === 406) {
-                const errorData = await response.json();
-                displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
-                return; // Exit early if the request failed
-    } else if (response.status === 400) {
-            const errorData = await response.json();
-            displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
-            return; // Exit early if the request failed
-    } else if (response.status === 429) {
-        const errorData = await response.json();
-        displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
-        return; // Exit early if the request failed
+    if (error.message.includes('Too Many Requests')) {
+        displayBotMessage('You are sending requests too quickly. Please wait a moment before trying again.', 'temporary-notice');
     } else {
-        const errorData = await response.json();
-        displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
-        return; // Exit early if the request failed
+        displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
     }
-}
-
 } finally {
     isResend = false;
 }
