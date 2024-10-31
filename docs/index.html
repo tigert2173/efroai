@@ -129,7 +129,7 @@
             })
             .then(settings => {
                 // Check if maintenance mode and upcoming maintenance are enabled
-                if (settings.maintenanceMode && settings.maintenanceUpcoming) {
+                if (!settings.maintenanceMode && settings.maintenanceUpcoming) {
                     displayUpcomingMaintenanceNotice(settings);
                 }
             })
