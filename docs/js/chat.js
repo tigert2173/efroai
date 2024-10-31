@@ -732,9 +732,9 @@ async function sendMessage() {
 } catch (error) {
     console.error('Error:', error);
     if (error.message.includes('Too Many Requests')) {
-        displayBotMessage('You are sending requests too quickly. Please wait a moment before trying again.', 'temporary-notice');
+        displayMessage('You are sending requests too quickly. Please wait a moment before trying again.', 'temporary-notice');
     } else {
-        //displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+        displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
     }
 } finally {
     isResend = false;
