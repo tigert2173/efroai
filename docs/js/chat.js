@@ -652,19 +652,13 @@ async function sendMessage() {
                 return; // Exit early if the request failed
         } else if (response.status === 429) {
             const errorData = await response.json();
-            displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
+            displayBotMessage(errorData.message || `Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our fetish AI might just short-circuit from excitement! 😅`, 'temporary-notice');
             return; // Exit early if the request failed
         } else {
             const errorData = await response.json();
             displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
             return; // Exit early if the request failed
         }
-    }
-
-    if (response.message === "Too many requests from this IP, please try again later.") {
-        const errorData = await response.json();
-        displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
-        return; // Exit early if the request failed
     }
 
     if (response.body) {
