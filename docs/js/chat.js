@@ -646,7 +646,11 @@ async function sendMessage() {
                     const errorData = await response.json();
                     displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
                     return; // Exit early if the request failed
-            } else if (response.status === 400) {
+        } else if (response.status === 429) {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Error: ${response.status}, "Whoa, slow down there, eager fingers! 😏 My circuits are overheating with all this attention! Give me a moment to recharge... we don’t want to burn out too soon, do we? 😉"`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 400) {
                     const errorData = await response.json();
                     displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
                     return; // Exit early if the request failed
