@@ -93,7 +93,6 @@
             display: none; /* Initially hidden */
             font-family: Arial, sans-serif; /* Better font */
             text-align: center; /* Center the text */
-            overflow-wrap: normal;
         }
         .close-btn {
             cursor: pointer;
@@ -185,11 +184,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="maintenance-warning" class="maintenance-warning">
-        <p id="maintenance-message"></p>
-        <button class="close-btn">×</button>
     <!-- Header -->
     <header>
+        <div id="maintenance-warning" class="maintenance-warning">
+            <p id="maintenance-message"></p>
+            <button class="close-btn">×</button>
         <nav class="navbar">
             <div class="left-content">
                 <a href="/" class="logo"> <!-- Make the logo clickable -->
