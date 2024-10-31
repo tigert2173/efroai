@@ -632,6 +632,30 @@ async function sendMessage() {
         // });
         
         console.log(sessionStorage.getItem('token'));
+
+        if (!response.ok) {
+            if (response.status === 451) {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Error: ${response.status}, Oops! It looks like your message contains some illegal content and can't be sent.`, 'temporary-notice');
+            return; // Exit early if the request failed
+        } else if (response.status === 401) {
+                const errorData = await response.json();
+                displayBotMessage(errorData.message || `Error: ${response.status}, Your login session has likely expired. Please try logging in again.`, 'temporary-notice');
+                return; // Exit early if the request failed
+        } else if (response.status === 406) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, The request cannot be processed because it contains names of identifiable individuals, such as public figures. Using such names is not permitted to prevent impersonation or deception.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+            } else if (response.status === 400) {
+                    const errorData = await response.json();
+                    displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
+                    return; // Exit early if the request failed
+        } else {
+            const errorData = await response.json();
+            displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
+            return; // Exit early if the request failed
+        }
+    }
     
     if (response.body) {
         const reader = response.body.getReader();
@@ -703,8 +727,7 @@ async function sendMessage() {
     }
 } catch (error) {
     console.error('Error:', error);
-
-    displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
 }
@@ -729,35 +752,16 @@ function sendGreeting() {
 }
 
 function displayBotMessage(message, type) {
-    const chatContainer = document.getElementById('chat-container');
-    if (!chatContainer) {
-        console.error("Chat container with ID 'chat-container' not found.");
-        return;
-    }
-
-    // Create and style the message element
     const messageElement = document.createElement('div');
-    messageElement.className = `bot-message ${type}`; // Apply the message type for custom styling
-    messageElement.innerHTML = message; // Use innerHTML to allow HTML formatting
+    messageElement.className = 'bot-message ' + type; // Add type for specific styling
+    messageElement.textContent = message;
+    document.getElementById('chat-container').appendChild(messageElement); // Adjust the container ID as needed
 
-    // Append the message to the chat container
-    chatContainer.appendChild(messageElement);
-    console.log("Message added:", message);
-
-    // Remove the message automatically after 10 seconds
+    // Automatically remove the notice after a few seconds
     setTimeout(() => {
-        if (messageElement && messageElement.parentNode) {
-            messageElement.remove();
-            console.log("Message removed:", message);
-        }
-    }, 10000); // Adjust timeout duration as needed
+        messageElement.remove();
+    }, 10000); // Adjust the duration as needed
 }
-
-// Example usage
-document.addEventListener('DOMContentLoaded', () => {
-    displayBotMessage("Hello! This is a test message.", "temporary-notice");
-});
-
 
 function regenerateMessage() {
     isResend = true;
