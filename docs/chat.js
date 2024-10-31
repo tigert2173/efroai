@@ -628,6 +628,34 @@ async function sendMessage() {
 
     } catch (error) {
         console.error('Error:', error);
+        
+        let errorMessage;
+        
+        if (error.response) {
+            // Check the status code of the response
+            switch (error.response.status) {
+                case 429: // Too Many Requests
+                    errorMessage = "Whoa, slow down there, eager fingers! 😏 My circuits are overheating with all this attention! Give me a moment to recharge... we don’t want to burn out too soon, do we? 😉";
+                    break;
+                case 500: // Server Error
+                    errorMessage = "Uh-oh! Looks like we hit a little glitch on my end. 🤖 Let me sort this out real quick!";
+                    break;
+                case 404: // Not Found
+                    errorMessage = "Hmm, can't seem to find that! 🕵️ Maybe it's hiding? Try again!";
+                    break;
+                default:
+                    errorMessage = `Unexpected error: ${error.response.status}. Let's give it another try!`;
+                    break;
+            }
+        } else if (error.request) {
+            // Error occurred with the request, but no response received
+            errorMessage = "Looks like we're having trouble connecting. 🌐 Let's check the connection and try again!";
+        } else {
+            // Some other error
+            errorMessage = `Oops! Something went wrong: ${error.message}`;
+        }
+
+        displayBotMessage(errorMessage, 'temporary-notice');
         displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
     } finally {
         isResend = false;
