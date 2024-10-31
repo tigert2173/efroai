@@ -79,6 +79,33 @@
     background-color: #3367d6; /* Darker blue on hover */
 }
 
+.maintenance-warning {
+    background-color: #fff3cd; /* Light yellow background */
+    color: #856404; /* Dark yellow text */
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    position: relative; /* Allows for absolute positioning of the close button */
+    z-index: 1000; /* Ensure it appears above other elements */
+    border: 1px solid #ffeeba; /* Light border */
+}
+
+.maintenance-warning p {
+    margin: 0; /* Remove default margin */
+}
+
+/* Optional: Close button styling */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #856404;
+    cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -86,6 +113,9 @@
 <div id="adBlockMessage">
     <h1>Ad Blocker Detected!</h1>
     <p>Please consider disabling your ad blocker to support us. We don't place very many ads.</p>
+</div>
+<div id="maintenance-warning" class="maintenance-warning">
+    <p>⚠️ Attention: Scheduled maintenance will occur on <strong>November 5th at 2:00 AM</strong>. Please plan accordingly.</p>
 </div>
 
 <script>
@@ -333,6 +363,21 @@
     </script>
     
 <script>
+   document.addEventListener("DOMContentLoaded", function() {
+            const config = document.getElementById('config').innerHTML;
+            const settings = JSON.parse(config);
+
+            if (settings.maintenanceUpcoming) {
+                const maintenanceMessage = settings.maintenanceMessage;
+                document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
+                document.getElementById("maintenance-warning").style.display = "block";
+
+                const closeButton = document.querySelector(".close-btn");
+                closeButton.addEventListener("click", function() {
+                    document.getElementById("maintenance-warning").style.display = "none";
+                });
+            }
+        });
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {
