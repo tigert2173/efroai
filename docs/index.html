@@ -118,18 +118,27 @@
     <p id="maintenance-message"></p>
     <button class="close-btn">×</button>
 </div>
-<script src="config.json" type="application/json" id="config"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const config = document.getElementById('config').innerHTML;
-        const settings = JSON.parse(config);
-
-        if (settings.maintenanceUpcoming) {
-            displayUpcomingMaintenanceNotice(settings);
-        }
+        fetch('config.json') // Adjust the path to your config.json
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(settings => {
+                // Check if maintenance mode and upcoming maintenance are enabled
+                if (settings.maintenanceMode && settings.maintenanceUpcoming) {
+                    displayUpcomingMaintenanceNotice(settings);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching config:', error);
+            });
     });
 
-    // Renamed function to show the maintenance notice
+    // Function to show the maintenance notice
     function displayUpcomingMaintenanceNotice(settings) {
         const maintenanceMessage = settings.maintenanceMessage;
         document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
