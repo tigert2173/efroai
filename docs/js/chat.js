@@ -64,7 +64,7 @@ async function checkAPIStatus() {
     statusTextElement.className = 'status-checking';
 
     try {
-        const response = await fetch('https://api.botbridge.net/api/server-status');
+        const response = await fetch('https://botbridge.net/api/server-status');
         const data = await response.json();
 
         const totalServers = data.listedCount;
