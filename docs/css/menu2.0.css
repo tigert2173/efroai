@@ -1,17 +1,19 @@
 @font-face {
-    font-family: "Liberty";
+    font-family: "SpookyLiberty";
     src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/907368/liberty.otf');
 }
 
 html {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Creepster', sans-serif; /* Halloween-themed font */
+    background-color: #0d0d0d; /* Dark background for the spooky effect */
+    color: #e74c3c; /* Blood red text */
 }
 
 .header {
-    background-color: #2d2b3a; /* Dark spooky background */
-    color: #ff6666; /* Blood red for text */
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffcc00; /* Yellow text for contrast */
 }
 
 /* Left content (logo and text) */
@@ -26,17 +28,18 @@ html {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding-left: 35px;
 }
 
+/* Navbar styling */
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #1a1a2e; /* Darker background for navbar */
+    background-color: #1a1a1a;
     padding: 15px 20px;
     position: relative;
     z-index: 1000;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.8); /* Ominous glowing shadow */
 }
 
 .logo {
@@ -46,101 +49,117 @@ html {
 }
 
 .logo a {
-    color: #faebd7; /* Ghostly pale color */
+    color: #ffcc00; /* Bright Halloween yellow */
     text-decoration: none;
     font-size: 1.8em;
     font-weight: bold;
     letter-spacing: 2px;
 }
 
-.text {
-    display: flex;
-    font-family: 'Liberty', sans-serif;
-    font-size: 2rem;
-    letter-spacing: -0.05em;
-    color: #ff6666;
-    position: relative;
-    animation: eerieGlow 1.5s infinite alternate;
+.logo img {
+    width: 50px;
+    height: auto;
+    vertical-align: middle;
 }
 
+/* Spooky puff effect for logo */
+.text {
+    display: flex;
+    font-family: 'SpookyLiberty', sans-serif;
+    font-size: 2rem;
+    letter-spacing: -0.05em;
+    color: #ffcc00;
+    position: relative;
+    animation: spookyGlow 1.5s infinite alternate; /* Glowing text */
+}
+
+/* Smoke-like puff animation */
 .text::after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    background: radial-gradient(circle, rgba(255, 69, 0, 0.3), rgba(255, 255, 255, 0) 70%);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.5), rgba(0, 0, 0, 0) 70%);
     filter: blur(2px);
-    top: -75%;
-    left: 0%;
+    top: -80%;
+    left: 0;
+    animation: puff 4s ease-in-out infinite;
 }
 
+/* Nav Links */
 .nav-links {
     list-style-type: none;
     padding: 0;
-    gap: 10px;
     display: flex;
+    gap: 15px;
 }
 
 .nav-links li {
-    position: relative;
-    margin-left: 20px;
-    display: inline;
+    margin-left: 0 20px;
 }
 
 .nav-links a {
-    color: #ff6666; /* Matching red color */
+    color: #e74c3c; /* Blood red links */
     text-decoration: none;
-    margin-left: 15px;
+    margin-left: 0px;
     transition: color 0.3s ease, transform 0.2s ease;
 }
 
+/* Hover effect with eerie glow */
 .nav-links a:hover {
-    color: #ffcc00; /* Eerie yellow */
-    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 0, 0, 1);
+    color: #ffcc00; /* Halloween yellow */
+    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 69, 0, 1); /* Creepy glow */
     transform: scale(1.1);
 }
 
-/* Dropdown styles */
+
+/* Dropdown menu styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #2d2b3a;
+    background-color: #222;
     min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
     z-index: 1;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
 .dropdown-content a {
-    color: #ff6666;
+    color: white;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
 .dropdown-content a:hover {
-    background-color: #3a2b5f;
+    background-color: #444;
 }
 
-/* Search bar */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Search bar styling */
 .search-bar {
     margin-left: 20px;
     padding: 10px;
-    border: 2px solid #ff6666;
+    border: 2px solid #ffcc00;
     border-radius: 5px;
-    background-color: #2d2b3a;
+    background-color: #1a1a1a;
     color: #fff;
 }
 
 .search-bar:focus {
-    box-shadow: 0 0 10px #ff4500;
+    box-shadow: 0 0 10px #ff0000;
     outline: none;
 }
 
 .search-bar::placeholder {
-    color: #ff6666;
+    color: #ffcc00;
 }
 
 /* Hamburger Menu */
@@ -148,19 +167,19 @@ html {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    transition: transform 0.3s ease;
     z-index: 1001;
 }
 
 .hamburger .bar {
     width: 20px;
     height: 3px;
-    background-color: #faebd7;
+    background-color: #ffcc00;
     margin: 2px 0;
     border-radius: 2px;
     transition: all 0.1s ease;
 }
 
+/* Hamburger Menu Animation */
 .hamburger.active .bar:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -171,15 +190,6 @@ html {
 
 .hamburger.active .bar:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
-}
-
-@keyframes eerieGlow {
-    0% {
-        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff4500;
-    }
-    100% {
-        text-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500, 0 0 30px #ff4500, 0 0 40px #ff4500;
-    }
 }
 
 @keyframes puff {
@@ -197,25 +207,23 @@ html {
     }
 }
 
-@media (max-width: 950px) {
-    .search-bar {
-        display: none;
+@keyframes spookyGlow {
+    0% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+    100% {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000;
     }
 }
 
+/* Responsive Styles */
 @media (max-width: 843px) {
-    .search-bar {
-        display: none;
-    }
-    .right-content {
-        padding-right: 0px;
-    }
     .nav-links {
         display: none;
         flex-direction: column;
-        background-color: #2d2b3a;
+        background-color: #444; /* Match background */
         position: absolute;
-        top: 60px;
+        top: 60px; 
         left: 0;
         width: 100%;
         padding: 20px 0;
@@ -243,7 +251,7 @@ html {
         display: none;
         flex-direction: column;
         position: absolute;
-        background-color: #2d2b3a;
+        background-color: #1a1a1a;
         top: 70px;
         right: 0;
         width: 100%;
@@ -254,69 +262,7 @@ html {
         display: flex;
     }
 
-    .mobile-menu.active {
-        display: flex;
-    }
-
-    .navbar.active {
-        background-color: #2d2b3a;
-    }
-
     .hamburger {
         display: flex;
     }
-}
-
-.nav-links,
-.hamburger {
-    transition: all 0.3s ease;
-}
-
-.login-status {
-    padding: 15px;
-    margin-top: 0px;
-    border-radius: 5px;
-    text-align: center;
-    min-width: 100px;
-}
-
-.login-status.logged-in {
-    background: #c7b9ff;
-    color: #4e3260;
-    border: 1px solid #6a4ca7;
-}
-
-.login-status.logged-out {
-    background: #ffcccc;
-    color: #800000;
-    border: 1px solid #e63946;
-}
-
-.login-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: hsla(0, 0%, 0%, 0.70);
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-.popup-content {
-    background: rgba(20, 20, 20, 0.85);
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-#login-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #4e3260;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
 }
