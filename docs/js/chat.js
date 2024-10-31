@@ -704,7 +704,7 @@ async function sendMessage() {
 } catch (error) {
     console.error('Error:', error);
 
-    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+    displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
 }
