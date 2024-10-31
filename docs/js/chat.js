@@ -650,7 +650,7 @@ async function sendMessage() {
                 const errorData = await response.json();
                 displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
                 return; // Exit early if the request failed
-        } else if (response.status === 426) {
+        } else if (response.status === 429) {
             const errorData = await response.json();
             displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
             return; // Exit early if the request failed
