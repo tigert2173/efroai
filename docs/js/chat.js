@@ -731,7 +731,7 @@ async function sendMessage() {
     }
 } catch (error) {
     console.error('Error:', error);
-    displayBotMessage(errorMessage, 'temporary-notice');
+    displayMessage(errorMessage, 'temporary-notice');
 
     //displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
