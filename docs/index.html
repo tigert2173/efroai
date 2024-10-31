@@ -78,32 +78,40 @@
 #continue-btn:hover {
     background-color: #3367d6; /* Darker blue on hover */
 }
+.header {
+    height: 60px; /* Example height of the header */
+    background-color: #f8f8f8; /* Your header background */
+    z-index: 1000; /* Set a z-index to layer it below the maintenance warning */
+    position: relative; /* Keep it relative for proper stacking context */
+}
 
-        .maintenance-warning {
-            background-color: #ffcc00;
-            color: #333;
-            padding: 15px;
-            border: 1px solid #cc9900;
-            border-radius: 5px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1010;
-            display: none; /* Initially hidden */
-            font-family: Arial, sans-serif; /* Better font */
-            text-align: center; /* Center the text */
-        }
-        .close-btn {
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            color: #333;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-        }
+.maintenance-warning {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 15px;
+    border: 1px solid #cc9900;
+    border-radius: 5px;
+    position: fixed; /* Keeps it at the top */
+    top: 60px; /* Position it below the header */
+    left: 0;
+    right: 0;
+    z-index: 1001; /* Ensure it's above other elements */
+    display: none; /* Initially hidden */
+    font-family: Arial, sans-serif; /* Better font */
+    text-align: center; /* Center the text */
+}
+
+.close-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
 
     </style>
 </head>
