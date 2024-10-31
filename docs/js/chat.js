@@ -728,13 +728,35 @@ function sendGreeting() {
     }
 }
 
-function displayBotMessage(content, sender) {
+function displayBotMessage(message, type) {
+    const chatContainer = document.getElementById('chat-container');
+    if (!chatContainer) {
+        console.error("Chat container with ID 'chat-container' not found.");
+        return;
+    }
+
+    // Create and style the message element
     const messageElement = document.createElement('div');
-    messageElement.className = `message ${sender}`;
-    messageElement.innerHTML = `<span class="message-content">${content}</span>`;
+    messageElement.className = `bot-message ${type}`; // Apply the message type for custom styling
+    messageElement.innerHTML = message; // Use innerHTML to allow HTML formatting
+
+    // Append the message to the chat container
     chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
+    console.log("Message added:", message);
+
+    // Remove the message automatically after 10 seconds
+    setTimeout(() => {
+        if (messageElement && messageElement.parentNode) {
+            messageElement.remove();
+            console.log("Message removed:", message);
+        }
+    }, 10000); // Adjust timeout duration as needed
 }
+
+// Example usage
+document.addEventListener('DOMContentLoaded', () => {
+    displayBotMessage("Hello! This is a test message.", "temporary-notice");
+});
 
 
 function regenerateMessage() {
