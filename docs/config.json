@@ -1,6 +1,6 @@
 {
     "maintenanceMode": true,
-    "maintenanceUpcoming": true,
+    "maintenanceUpcoming": false,
     "maintenanceMessage": "Scheduled maintenance will occur on November 5th at 2:00 AM. Please plan accordingly."
 
 }
