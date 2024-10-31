@@ -661,7 +661,7 @@ async function sendMessage() {
         }
     }
 
-    if (response.body === "Too many requests from this IP, please try again later.") {
+    if (response.message === "Too many requests from this IP, please try again later.") {
         const errorData = await response.json();
         displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
         return; // Exit early if the request failed
