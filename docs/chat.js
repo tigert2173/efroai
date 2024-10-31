@@ -630,7 +630,7 @@ async function sendMessage() {
         console.error('Error:', error);
         
         let errorMessage;
-        console.log(error.response);
+
         if (error.response) {
             // Check the status code of the response
             switch (error.response.status) {
@@ -656,7 +656,7 @@ async function sendMessage() {
         }
 
         displayBotMessage(errorMessage, 'temporary-notice');
-        displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+     //   displayBotMessage('Sorry, there was an error processing your request.', 'temporary-notice');
     } finally {
         isResend = false;
     }
