@@ -650,7 +650,7 @@ async function sendMessage() {
                 const errorData = await response.json();
                 displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
                 return; // Exit early if the request failed
-        } else if (response.status === 429) {
+        } else if (response.status === 429 || response.data === "Too many requests from this IP, please try again later.") {
             const errorData = await response.json();
             displayBotMessage(errorData.message || `Error: ${response.status}, this usually means you are not logged in.`, 'temporary-notice');
             return; // Exit early if the request failed
@@ -731,11 +731,7 @@ async function sendMessage() {
     }
 } catch (error) {
     console.error('Error:', error);
-    if (error.message.includes('Too Many Requests')) {
-        displayMessage('You are sending requests too quickly. Please wait a moment before trying again.', 'temporary-notice');
-    } else {
-        displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
-    }
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
 }
