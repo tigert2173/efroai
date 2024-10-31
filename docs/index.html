@@ -399,7 +399,7 @@ fetch('config.json')
             showMaintenanceMode();
         }
         if (data.maintenanceUpcoming) {
-            showMaintenanceMode();
+            showMaintenanceUpcoming();
         }
     })
     .catch(error => console.error('Error loading config:', error));
