@@ -794,6 +794,13 @@ function loadCharacterData() {
 
 document.getElementById('saveForm').addEventListener('submit', function (e) {
     e.preventDefault();
+
+    // Check if we are in editing mode
+    if (!isEditing) {
+        document.getElementById('errorMessage').textContent = 'Character must already exist to be saved.';
+        return; // Exit early if not editing
+    }
+
     const character = {
         name: cleanInput(document.getElementById('name').value),
         status: document.getElementById('status').value,
