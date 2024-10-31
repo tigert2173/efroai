@@ -89,7 +89,7 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
+            z-index: 1010;
             display: none; /* Initially hidden */
             font-family: Arial, sans-serif; /* Better font */
             text-align: center; /* Center the text */
@@ -114,9 +114,6 @@
     <p>Please consider disabling your ad blocker to support us. We don't place very many ads.</p>
 </div>
 
-<div id="maintenance-warning" class="maintenance-warning">
-    <p id="maintenance-message"></p>
-    <button class="close-btn">×</button>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -187,6 +184,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="maintenance-warning" class="maintenance-warning">
+        <p id="maintenance-message"></p>
+        <button class="close-btn">×</button>
     <!-- Header -->
     <header>
         <nav class="navbar">
