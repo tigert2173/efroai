@@ -660,7 +660,8 @@ async function sendMessage() {
             return; // Exit early if the request failed
         }
     }
-    
+    displayBotMessage(errorMessage, 'temporary-notice');
+
     if (response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -731,9 +732,8 @@ async function sendMessage() {
     }
 } catch (error) {
     console.error('Error:', error);
-    displayMessage(errorMessage, 'temporary-notice');
 
-    //displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
+    displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
 }
