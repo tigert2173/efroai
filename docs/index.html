@@ -80,31 +80,30 @@
 }
 
 .maintenance-warning {
-    background-color: #fff3cd; /* Light yellow background */
-    color: #856404; /* Dark yellow text */
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
-    position: relative; /* Allows for absolute positioning of the close button */
-    z-index: 1000; /* Ensure it appears above other elements */
-    border: 1px solid #ffeeba; /* Light border */
-}
-
-.maintenance-warning p {
-    margin: 0; /* Remove default margin */
-}
-
-/* Optional: Close button styling */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 18px;
-    color: #856404;
-    cursor: pointer;
-}
+            background-color: #ffcc00;
+            color: #333;
+            padding: 15px;
+            border: 1px solid #cc9900;
+            border-radius: 5px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+            font-family: Arial, sans-serif; /* Better font */
+            text-align: center; /* Center the text */
+        }
+        .close-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #333;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
 
     </style>
 </head>
@@ -114,12 +113,34 @@
     <h1>Ad Blocker Detected!</h1>
     <p>Please consider disabling your ad blocker to support us. We don't place very many ads.</p>
 </div>
+
 <div id="maintenance-warning" class="maintenance-warning">
     <p id="maintenance-message"></p>
     <button class="close-btn">×</button>
 </div>
+<script src="path/to/your/config.json" type="application/json" id="config"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const config = document.getElementById('config').innerHTML;
+        const settings = JSON.parse(config);
 
+        if (settings.maintenanceMode) {
+            displayUpcomingMaintenanceNotice(settings);
+        }
+    });
 
+    // Renamed function to show the maintenance notice
+    function displayUpcomingMaintenanceNotice(settings) {
+        const maintenanceMessage = settings.maintenanceMessage;
+        document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
+        document.getElementById("maintenance-warning").style.display = "block";
+
+        const closeButton = document.querySelector(".close-btn");
+        closeButton.addEventListener("click", function() {
+            document.getElementById("maintenance-warning").style.display = "none";
+        });
+    }
+</script>
 <script>
     // Function to check for ad blocker
     function detectAdBlocker() {
@@ -366,17 +387,6 @@
     
 <script>
 
-function showMaintenanceUpcoming(settings) {
-            const maintenanceMessage = settings.maintenanceMessage;
-            document.getElementById("maintenance-message").innerText = "⚠️ Attention: " + maintenanceMessage;
-            document.getElementById("maintenance-warning").style.display = "block";
-
-            const closeButton = document.querySelector(".close-btn");
-            closeButton.addEventListener("click", function() {
-                document.getElementById("maintenance-warning").style.display = "none";
-            });
-        }
-
 // Function to show the maintenance mode
 function showMaintenanceMode() {
     document.getElementById('maintenance-overlay').style.display = 'block';
@@ -396,9 +406,6 @@ fetch('config.json')
     .then(data => {
         if (data.maintenanceMode) {
             showMaintenanceMode();
-        }
-        if (data.maintenanceUpcoming) {
-            showMaintenanceUpcoming();
         }
     })
     .catch(error => console.error('Error loading config:', error));
