@@ -653,7 +653,7 @@ async function sendMessage() {
         } else if (response.status === 429) {
             const errorData = await response.json();
            // displayBotMessage(errorData.message || `Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our fetish AI might just short-circuit from excitement! 😅`, 'temporary-notice');
-            displayBotMessage(`Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our fetish AI might just short-circuit from excitement! 😅`, 'temporary-notice');
+            displayBotMessage(`Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our AI might just short-circuit from excitement! 😅`, 'temporary-notice');
             //displayBotMessage(errorData.message || `Whoa there! It looks like you're trying to send messages faster than our circuits can handle. Even our fetish AI needs a moment to catch its breath! Slow down, or we might just short-circuit! 😏`, 'temporary-notice');
             return; // Exit early if the request failed
         } else {
