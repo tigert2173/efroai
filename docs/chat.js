@@ -630,7 +630,7 @@ async function sendMessage() {
         console.error('Error:', error);
         
         let errorMessage;
-        
+        console.log(error.response);
         if (error.response) {
             // Check the status code of the response
             switch (error.response.status) {
