@@ -149,7 +149,7 @@ main {
 .character-card:hover, .recommendation-card:hover {
     /* transform: translateY(-10px); Lift card on hover */
     transform: scale(1.25); /* Scale up the card slightly */
-    z-index: 10;
+    z-index: 5;
 }
 
 .card-header {
