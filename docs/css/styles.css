@@ -94,14 +94,10 @@ main {
 
 /* Character Grid */
 #characters {
-    transform: scale(0.75); /* Scale down the grid to 85% */
-
     padding: 5px; /* Optional padding around the section */
 }
 
 .character-grid {
-    transform: scale(0.75); /* Scale down the grid to 85% */
-
     flex: 1; /* Take up remaining space */
     display: grid;
     width: 100%;
