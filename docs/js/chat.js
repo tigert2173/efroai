@@ -170,7 +170,7 @@ function populateCharacterSettings() {
     fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`, // Prefix with "Bearer "
+            'Authorization': `${token}`, // Prefix with "Bearer "
             'Content-Type': 'application/json'
         }
     })
