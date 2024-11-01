@@ -123,7 +123,6 @@ main {
 .character-card, .recommendation-card{
     background-color: #2f3136;
     justify-content: center; /* Center horizontally */
-
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
