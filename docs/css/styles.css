@@ -113,8 +113,6 @@ main {
 
 /* Character Card Styles */
 .character-card, .recommendation-card {
-    justify-content: flex-start; /* Align content to the top */
-    align-items: center; /* Center horizontally */
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
@@ -133,12 +131,14 @@ main {
     max-height: 300px; /* Limit the maximum height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
     margin: 0 auto; /* Center the image horizontally */
+    display: block; /* Ensure the image behaves like a block element */
 }
 
-/* Button Styles */
-.character-card button, .recommendation-card button {
+/* Additional styles for buttons (if needed) */
+.character-card .button-container {
+    display: flex; /* Ensure buttons are in a row */
+    justify-content: center; /* Center buttons horizontally */
     margin-top: auto; /* Push buttons to the bottom of the card */
-    /* Add any other button styles here */
 }
 
 
