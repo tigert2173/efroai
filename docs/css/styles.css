@@ -102,9 +102,9 @@ main {
     display: grid;
     width: 133.33333%;
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
-    grid-template-columns: repeat(10, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
-    gap: 10px; /* Space between grid items */
+    gap: -100px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
     /* overflow: hidden; Prevent overflow */
     transform: scale(0.75); /* Scale down the entire grid */
