@@ -127,17 +127,15 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 0.2s ease; /* Smooth scaling effect on hover */
+    transition: transform 0.2s; /* Smooth scaling effect on hover */
     /* Remove margin */
 }
 
-/* Zoom effect on hover */
 .character-card:hover {
+    transform: translateY(-4px); /* Lift card on hover */
     transform: scale(1.50); /* Scale up the card slightly */
-    z-index: 1; /* Ensure hovered card appears above others */
+
 }
-
-
 
 .card-header {
     border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
