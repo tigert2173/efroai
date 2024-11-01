@@ -120,7 +120,7 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 0.5s ease-in, transform 2.5s ease-out, box-shadow 0.5s ease; /* Simplified transition */
+    transition: transform 2.5s ease-in, transform 0.5s ease-out, box-shadow 0.5s ease; /* Simplified transition */
     z-index: 5;
 }
 
