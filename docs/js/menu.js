@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         loginStatusElement.textContent = `${username}`;
         loginStatusElement.className = 'login-status logged-in'; // Add logged-in styling
-        loginPopup.style.display = 'none'; // Hide the login popup
+        if (loginPopup) {
+            loginPopup.style.display = 'none'; // Hide the login popup
+        }
     }
 
     // Event listener for login button in the popup
