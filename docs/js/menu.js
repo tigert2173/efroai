@@ -9,13 +9,23 @@ function toggleMenu() {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
-    if (document.getElementById('search-bar')) { document.getElementById('search-bar').addEventListener('input', filterCharacters); }
-    if (document.getElementById('character-form')) { document.getElementById('character-form').addEventListener('submit', uploadCharacter); }
+
+    const searchBar = document.getElementById('search-bar');
+    if (searchBar && searchBar.offsetParent !== null && !searchBar.disabled) {
+        searchBar.addEventListener('input', filterCharacters);
+    }
+
+    const characterForm = document.getElementById('character-form');
+    if (characterForm && characterForm.offsetParent !== null && !characterForm.disabled) {
+        characterForm.addEventListener('submit', uploadCharacter);
+    }
+
     document.querySelectorAll('.filter').forEach(filter => {
-        filter.addEventListener('change', filterCharacters);
+        if (filter.offsetParent !== null && !filter.disabled) {
+            filter.addEventListener('change', filterCharacters);
+        }
     });
 });
-
 
   // Check login status and display username
   document.addEventListener('DOMContentLoaded', () => {
