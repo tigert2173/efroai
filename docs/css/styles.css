@@ -112,9 +112,9 @@ main {
 }
 
 /* Character Card Styles */
-.character-card, .recommendation-card{
+.character-card, .recommendation-card {
     justify-content: center; /* Center horizontally */
-
+    align-items: center; /* Center vertically */
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
@@ -124,15 +124,18 @@ main {
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-
 }
 
+/* Image Styles */
 .character-card img {
     width: 200px; /* Set a fixed width for the image */
     height: auto; /* Allow height to scale automatically */
     max-height: 300px; /* Limit the maximum height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
+    display: block; /* Ensure the image behaves like a block element */
+    margin: 0 auto; /* Center the image horizontally */
 }
+
 
 
 
@@ -156,7 +159,7 @@ main {
 
 .card-body {
     position: relative; /* Make it relative for absolute positioning of the overlay */
-    flex-grow: 0.1; /* Allow card body to take up available space */
+    flex-grow: 1; /* Allow card body to take up available space */
     font-size: 0.8em; /* Decrease font size for card body text */
 }
 .tags {
