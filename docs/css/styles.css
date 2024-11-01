@@ -121,6 +121,8 @@ main {
 
 /* Character Card Styles */
 .character-card, .recommendation-card{
+    justify-content: center; /* Center horizontally */
+
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
