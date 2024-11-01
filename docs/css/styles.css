@@ -111,14 +111,6 @@ main {
     transform-origin: top left; /* Set the origin for the scaling */
 }
 
-.character-card img {
-    width: 200px; /* Set a fixed width for the image */
-    height: auto; /* Allow height to scale automatically */
-    max-height: 300px; /* Limit the maximum height to prevent overflow */
-    object-fit: cover; /* Ensure the image covers the box without stretching */
-}
-
-
 /* Character Card Styles */
 .character-card, .recommendation-card{
     justify-content: center; /* Center horizontally */
@@ -134,6 +126,16 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 }
+
+.character-card img {
+    width: 200px; /* Set a fixed width for the image */
+    height: auto; /* Allow height to scale automatically */
+    max-height: 300px; /* Limit the maximum height to prevent overflow */
+    object-fit: cover; /* Ensure the image covers the box without stretching */
+}
+
+
+
 
 .character-card:hover, .recommendation-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
