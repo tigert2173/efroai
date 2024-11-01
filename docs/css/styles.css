@@ -140,6 +140,7 @@ main {
     border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
     padding-bottom: 10px; /* Space below header */
 }
+
 .card-header h3 {
     color: #28a745; /* Bright green for the name */
     font-size: 1.6em; /* Slightly larger font size */
