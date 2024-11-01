@@ -121,7 +121,6 @@ main {
 /* Character Card Styles */
 .character-card, .recommendation-card{
     background-color: #2f3136;
-    align-content: center; /* Center horizontally */
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -154,6 +153,8 @@ main {
     position: relative; /* Make it relative for absolute positioning of the overlay */
     flex-grow: 1; /* Allow card body to take up available space */
     font-size: 0.8em; /* Decrease font size for card body text */
+    justify-content: center; /* Center horizontally */
+
 }
 .tags {
     display: flex; /* Use flexbox for alignment */
