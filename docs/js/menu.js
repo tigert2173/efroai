@@ -8,8 +8,6 @@ function toggleMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadCharacters();
-
     const searchBar = document.getElementById('search-bar');
     if (searchBar && searchBar.offsetParent !== null && !searchBar.disabled) {
         searchBar.addEventListener('input', filterCharacters);
@@ -26,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
   // Check login status and display username
   document.addEventListener('DOMContentLoaded', () => {
     const token = sessionStorage.getItem('token'); // Retrieve the JWT from session storage
