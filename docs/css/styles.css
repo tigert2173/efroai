@@ -156,7 +156,7 @@ main {
 
 .card-body {
     position: relative; /* Make it relative for absolute positioning of the overlay */
-    flex-grow: 1.2; /* Allow card body to take up available space */
+    flex-grow: 0.1; /* Allow card body to take up available space */
     font-size: 0.8em; /* Decrease font size for card body text */
 }
 .tags {
