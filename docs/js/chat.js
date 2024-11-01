@@ -155,7 +155,7 @@ function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
     const characterUploader = sessionStorage.getItem('characterUploader');
-    const authToken = sessionStorage.getItem('authToken'); // Retrieve the token
+    const token = sessionStorage.getItem('token'); // Retrieve the token
 
     // Fetch the character data from the backend
     const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
@@ -163,7 +163,7 @@ function populateCharacterSettings() {
     fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${authToken}`, // Add the auth token here
+            'Authorization': `${token}`, // Add the auth token here
             'Content-Type': 'application/json'
         }
     })
