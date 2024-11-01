@@ -120,7 +120,7 @@ function populateCharacterSettings() {
     fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': `${token}`, // Add the auth token here
+            'Authorization': `Bearer ${token}`, // Add the auth token here
             'Content-Type': 'application/json'
         }
     })
