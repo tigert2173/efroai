@@ -104,9 +104,7 @@ main {
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
     /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); Adjusts columns automatically */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    /* grid-auto-rows: minmax(120px, auto); Minimum height for each item */
-    grid-auto-rows: auto; /* Allow dynamic height for each card */
-
+    grid-auto-rows: minmax(120px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
     transform-origin: top left; /* Set the origin for the scaling */
