@@ -115,7 +115,7 @@ main {
     width: 80%; /* Make the image fill the width of the card */
     height: auto; /* Maintain aspect ratio */
     max-height: 400px; /* Limit the height to prevent overflow */
-    object-fit: cover; /* Ensure the image covers the box without stretching */
+    object-fit: scale-down ; /* Ensure the image covers the box without stretching */
     align-content: center;
 }
 
