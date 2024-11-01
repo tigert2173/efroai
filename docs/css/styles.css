@@ -102,8 +102,8 @@ main {
     display: grid;
     width: 133.33333%;
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    grid-auto-rows: minmax(280px, auto); /* Minimum height for each item */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-auto-rows: minmax(180px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
     /* overflow: hidden; Prevent overflow */
