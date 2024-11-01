@@ -191,17 +191,17 @@ function openCharacterPage(characterId, uploader) {
     window.location.href = '/chat.html';
 }
 
+// Select all character cards
 const characterCards = document.querySelectorAll('.character-card, .recommendation-card');
 
+// Add event listeners for mouse enter and leave
 characterCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
-        card.style.zIndex = 10; // Set z-index to 10 on hover
+        card.classList.add('card-scaled'); // Add the class when hovered
     });
 
-    card.addEventListener('transitionend', (event) => {
-        if (event.propertyName === 'transform') { // Check if the transform property is finished
-            card.style.zIndex = ''; // Reset z-index after scaling transition
-        }
+    card.addEventListener('mouseleave', () => {
+        card.classList.remove('card-scaled'); // Remove the class when no longer hovered
     });
 });
 
