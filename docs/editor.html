@@ -626,7 +626,11 @@ function loadFormData() {
             document.querySelector('button[type="submit"]').textContent = 'Create Character';
         }).catch(error => {
             console.error(error);
-            errorMessage.textContent = 'Failed to update character.';
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
         });
     } else {
         // If no image is selected, just send character data
@@ -665,7 +669,11 @@ function loadFormData() {
 
         }).catch(error => {
             console.error(error);
-            errorMessage.textContent = 'Failed to update character.';
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
         });
     }
 });
@@ -877,7 +885,11 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
             // Reset the form if needed
         }).catch(error => {
             console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
         });
     } else {
         // If no image is selected, just send character data
@@ -902,7 +914,11 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
             console.log('Automod request sent successfully!', modResponse.data);
         }).catch(error => {
             console.error(error);
-            document.getElementById('errorMessage').textContent = 'Failed to update character.';
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
         });
     }
 });
