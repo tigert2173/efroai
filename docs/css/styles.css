@@ -95,8 +95,6 @@ main {
 /* Character Grid */
 #characters {
     padding: 5px; /* Optional padding around the section */
-    transform: scale(0.15); /* Scale down the grid to 85% */
-
 }
 
 .character-grid {
@@ -118,6 +116,8 @@ main {
 }
 /* Character Card Styles */
 .character-card {
+    transform: scale(0.15); /* Scale down the grid to 85% */
+
     background-color: #fff; /* White background for the card */
     border-radius: 12px; /* Slightly more rounded corners */
     padding: 20px; /* Padding inside the card */
