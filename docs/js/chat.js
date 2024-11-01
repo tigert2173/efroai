@@ -155,22 +155,15 @@ function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
     const characterUploader = sessionStorage.getItem('characterUploader');
-    const token = sessionStorage.getItem('token'); // Retrieve the token
-    console.log(token); // Check if the token is being retrieved correctly
-
-    // Check if the token exists
-    if (!token) {
-        console.error('Error: No token provided.');
-        return; // Exit the function if there's no token
-    }
+    const authToken = sessionStorage.getItem('authToken'); // Retrieve the token
 
     // Fetch the character data from the backend
     const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
-
+    
     fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': `${token}`, // Prefix with "Bearer "
+            'Authorization': `Bearer ${authToken}`, // Add the auth token here
             'Content-Type': 'application/json'
         }
     })
