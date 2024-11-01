@@ -116,11 +116,11 @@ function populateCharacterSettings() {
 
     // Fetch the character data from the backend
     const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
-    
+    console.log(token);
     fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`, // Add the auth token here
+            'Authorization': `${token}`, // Add the auth token here
             'Content-Type': 'application/json'
         }
     })
