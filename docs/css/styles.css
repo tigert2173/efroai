@@ -121,20 +121,21 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 5.0s ease-in; /* Ensure box-shadow eases in on hover */
+    transition: transform 5.0s ease-in, box-shadow 0.5s ease-in; /* Ensure box-shadow eases in on hover */
     z-index: 5;
 }
 
 /* Hover Effect */
 .character-card:hover, .recommendation-card:hover {
     transform: translateX(-40px) translateY(-100px) scale(1.25); /* Lift card up and scale */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover with increased opacity */
     z-index: 10; /* Ensure it appears above other cards */
 }
 
 /* Reset Transition for Non-Hover Effect */
 .character-card:not(:hover), .recommendation-card:not(:hover) {
-    transition: transform 0.5s ease-out; /* Smooth ease-out for box-shadow */
+    transition: transform 0.5s ease-out, box-shadow 0.5s ease-out; /* Smooth ease-out for box-shadow */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Reset shadow */
 }
 
 
