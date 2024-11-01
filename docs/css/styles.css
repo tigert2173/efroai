@@ -110,7 +110,6 @@ main {
     transform: scale(0.75); /* Scale down the entire grid */
     transform-origin: top left; /* Set the origin for the scaling */
 }
-
 /* Character Card Styles */
 .character-card, .recommendation-card {
     background-color: #2f3136;
@@ -121,9 +120,17 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 2.5s ease-in, transform 10.5s ease-out, box-shadow 0.5s ease;
+    transition: transform 0.5s ease, box-shadow 0.5s ease; /* Simplified transition */
     z-index: 5;
 }
+
+/* Hover Effect */
+.character-card:hover, .recommendation-card:hover {
+    transform: translateY(-15px) scale(1.1); /* Lift card up and scale */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
+    z-index: 10; /* Ensure it appears above other cards */
+}
+
 
 /* Image Styles */
 .character-card img {
@@ -140,14 +147,6 @@ main {
     display: flex; /* Ensure buttons are in a row */
     justify-content: center; /* Center buttons horizontally */
     margin-top: auto; /* Push buttons to the bottom of the card */
-}
-
-.character-card:hover, .recommendation-card:hover {
-    transform: translateY(-10px) scale(1.25); /* Lift card up and scale up */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
-
-    transition: transform 2.3s ease; /* Smooth scaling transition */
-    z-index: 10;
 }
 
 
