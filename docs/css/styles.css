@@ -101,16 +101,12 @@ main {
     flex: 1; /* Take up remaining space */
     display: grid;
     width: 100%;
+    transform: scale(0.15); /* Scale down the grid to 85% */
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusts columns automatically */
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
-}
-.character-grid-container {
-    overflow: hidden; /* Prevents overflow due to scaling */
-    transform: scale(0.15); /* Scale down the grid to 85% */
-    transform-origin: top left; /* Set origin for the scaling */
 }
 
 .character-card img {
