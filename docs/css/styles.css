@@ -133,7 +133,7 @@ main {
 
 /* Reset Transition for Non-Hover Effect */
 .character-card:not(:hover), .recommendation-card:not(:hover) {
-    transition: transform 0.5s ease-out; /* Slower ease-out transition */
+    transition: transform 0.5s ease-out, box-shadow 1.5s ease; /* Slower ease-out transition */
 }
 
 /* Image Styles */
