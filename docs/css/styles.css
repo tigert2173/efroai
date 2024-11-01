@@ -128,7 +128,6 @@ main {
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-left: -12.5%; /* Shift left to center the scaled grid */
 
 }
 
@@ -136,6 +135,8 @@ main {
     transform: translateY(-4px); /* Lift card on hover */
     transform: scale(1.50); /* Scale up the card slightly */
     z-index: 10;
+    margin-left: -12.5%; /* Shift left to center the scaled grid */
+
 
 }
 
