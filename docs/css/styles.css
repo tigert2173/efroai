@@ -127,15 +127,8 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 0.2s; /* Smooth scaling effect on hover */
+    transition: transform 0.2s ease; /* Smooth scaling effect on hover */
     /* Remove margin */
-}
-.character-card {
-    padding: 10px; /* Adjust padding as needed */
-    font-size: 0.9em; /* Adjust font size */
-    min-height: 120px; /* Optional: Set a minimum height */
-    transition: transform 0.3s ease; /* Smooth transition for scaling */
-    overflow: hidden; /* Prevent content overflow when zoomed */
 }
 
 /* Zoom effect on hover */
