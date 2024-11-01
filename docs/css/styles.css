@@ -140,7 +140,7 @@ main {
 
 /* Zoom effect on hover */
 .character-card:hover {
-    transform: scale(1.05); /* Scale up the card slightly */
+    transform: scale(1.50); /* Scale up the card slightly */
     z-index: 1; /* Ensure hovered card appears above others */
 }
 
