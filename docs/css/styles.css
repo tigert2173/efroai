@@ -118,7 +118,7 @@ main {
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
 /* Character Card Styles */
-.character-card .recommendation-card{
+.character-card, .recommendation-card{
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
@@ -130,7 +130,7 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.character-card:hover .recommendation-card:hover {
+.character-card:hover, .recommendation-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
     transform: scale(1.50); /* Scale up the card slightly */
 
@@ -140,7 +140,6 @@ main {
     border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
     padding-bottom: 10px; /* Space below header */
 }
-
 .card-header h3 {
     color: #28a745; /* Bright green for the name */
     font-size: 1.6em; /* Slightly larger font size */
