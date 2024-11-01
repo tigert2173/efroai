@@ -345,8 +345,13 @@ button:hover {
         window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
     }
 
-    function openCharacterPage(characterId, uploader) {
-        window.open(`../character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`, '_blank');
+        function openCharacterPage(characterId, uploader) {
+        // Use sessionStorage to save the character ID and uploader information
+        sessionStorage.setItem('selectedCharacterId', characterId);
+        sessionStorage.setItem('characterUploader', uploader);
+
+        // Redirect to the chat page
+        window.location.href = '/chat.html';
     }
 
     // function editCharacter(characterId, uploader) {
