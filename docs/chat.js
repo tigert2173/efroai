@@ -112,7 +112,7 @@ function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
     const characterUploader = sessionStorage.getItem('characterUploader');
-    const token = sessionStorage.getItem('token'); // Retrieve the token
+    const token = localStorage.getItem('token'); // Retrieve the token
     console.log(token); // Check if the token is being retrieved correctly
 
     // Check if the token exists
@@ -628,12 +628,12 @@ async function sendMessage() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'), // Use 'Bearer' followed by the token
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
             },
             body: JSON.stringify(requestData)
         });
         
-        console.log(sessionStorage.getItem('token'));
+        console.log(localStorage.getItem('token'));
 
         if (!response.ok) {
             if (response.status === 451) {

@@ -122,7 +122,7 @@ function displayCharacters(characters) {
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
-    const token = sessionStorage.getItem('token'); // Adjust the key based on your implementation
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
 
     // Example of an AJAX request to save the like
     fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL

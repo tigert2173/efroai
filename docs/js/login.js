@@ -26,7 +26,7 @@ function loginUser() {
         }
     })
     .then(data => {
-        sessionStorage.setItem('token', data.token); // Store token in sessionStorage
+        localStorage.setItem('token', data.token); // Store token in sessionStorage
           // Store user ID in a cookie
         document.cookie = `userID=${username}; path=/;`;
 

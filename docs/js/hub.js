@@ -27,7 +27,7 @@ function loadCharacters() {
         return response.json();
     })
     .then(characters => {
-        const userToken = sessionStorage.getItem('token'); // Replace with your method of obtaining the token
+        const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
         adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
         displayCharacters(characters);
     })
@@ -152,7 +152,7 @@ function getRandomAdInterval() {
 
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
-    const token = sessionStorage.getItem('token'); // Adjust the key based on your implementation
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
 
     // Example of an AJAX request to save the like
     fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL

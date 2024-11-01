@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
   // Check login status and display username
   document.addEventListener('DOMContentLoaded', () => {
-    const token = sessionStorage.getItem('token'); // Retrieve the JWT from session storage
+    const token = localStorage.getItem('token'); // Retrieve the JWT from session storage
     const loginStatusElement = document.getElementById('login-status');
     const loginPopup = document.getElementById('login-popup');
 

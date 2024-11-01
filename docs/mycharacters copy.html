@@ -81,7 +81,7 @@
         });
 
         async function fetchCharacters() {
-            const token = sessionStorage.getItem('token');
+            const token = locaStorage.getItem('token');
             if (!token) {
                 console.error('No token found. User may not be logged in.');
                 return;
@@ -122,7 +122,7 @@
 
         }
     function editCharacter(characterId, uploader) {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (!token) {
         console.error('No token found. User may not be logged in.');
         alert('You must be logged in to edit a character.');
