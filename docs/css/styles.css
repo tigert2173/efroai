@@ -120,7 +120,7 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 2.5s ease-in, box-shadow 0.5s ease-in; /* Faster ease-in transition for scaling */
+    transition: transform 2.5s ease-in, box-shadow 0.5s ease; /* Faster ease-in transition for scaling */
     z-index: 5;
 }
 
@@ -133,7 +133,7 @@ main {
 
 /* Reset Transition for Non-Hover Effect */
 .character-card:not(:hover), .recommendation-card:not(:hover) {
-    transition: transform 0.5s ease-out, box-shadow 0.5s ease-out; /* Slower ease-out transition */
+    transition: transform 0.5s ease-out; /* Slower ease-out transition */
 }
 
 /* Image Styles */
