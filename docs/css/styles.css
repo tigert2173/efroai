@@ -121,7 +121,7 @@ main {
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transition: transform 2.5s ease, box-shadow 0.5s ease;
 }
 
 /* Image Styles */
@@ -147,7 +147,7 @@ main {
 
 .character-card:hover, .recommendation-card:hover {
     /* transform: translateY(-10px); Lift card on hover */
-    transform: scale(1.10); /* Scale up the card slightly */
+    transform: scale(1.25); /* Scale up the card slightly */
     z-index: 10;
 }
 
