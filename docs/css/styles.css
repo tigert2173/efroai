@@ -110,31 +110,33 @@ main {
     transform: scale(0.75); /* Scale down the entire grid */
     transform-origin: top left; /* Set the origin for the scaling */
 }
+
 /* Character Card Styles */
 .character-card, .recommendation-card {
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px; /* Padding inside the card */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Initial box shadow */
     display: flex; /* Use flexbox for the card */
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 1.0s ease-in, box-shadow 1.5s ease; /* Faster ease-in transition for scaling */
+    transition: transform 0.5s ease-in, box-shadow 0.5s ease-in; /* Ensure box-shadow eases in on hover */
     z-index: 5;
 }
 
 /* Hover Effect */
 .character-card:hover, .recommendation-card:hover {
     transform: translateX(-40px) translateY(-75px) scale(1.25); /* Lift card up and scale */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
     z-index: 10; /* Ensure it appears above other cards */
 }
 
 /* Reset Transition for Non-Hover Effect */
 .character-card:not(:hover), .recommendation-card:not(:hover) {
-    transition: transform 0.5s ease-out; /* Slower ease-out transition */
+    transition: transform 2.5s ease-out, box-shadow 0.5s ease-out; /* Smooth ease-out for box-shadow */
 }
+
 
 /* Image Styles */
 .character-card img {
