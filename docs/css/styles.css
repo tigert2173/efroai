@@ -112,10 +112,12 @@ main {
 }
 
 .character-card img {
-    width: 100%; /* Make the image fill the width of the card */
-    height: 300px; /* Limit the height to prevent overflow */
+    width: 200px; /* Set a fixed width for the image */
+    height: auto; /* Allow height to scale automatically */
+    max-height: 300px; /* Limit the maximum height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
+
 
 /* Character Card Styles */
 .character-card, .recommendation-card{
