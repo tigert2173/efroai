@@ -260,7 +260,7 @@ main {
 }
 
 /* Character Cards */
-.character-card, .recommendation-card {
+.recommendation-card {
     background-color: #2f3136;
     border-radius: 15px;
     padding: 20px;
@@ -268,17 +268,14 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.character-card:hover, .recommendation-card:hover {
+.recommendation-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     transform: scale(1.50); /* Scale up the card slightly */
 
 }
 
-.card-header h3 {
-    margin: 0;
-    color: #fbbc04;
-}
+
 
 .card-body {
     margin-top: 10px;
