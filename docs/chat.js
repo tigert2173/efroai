@@ -113,10 +113,10 @@ function populateCharacterSettings() {
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
     const characterUploader = sessionStorage.getItem('characterUploader');
     const token = sessionStorage.getItem('token'); // Retrieve the token
-
+    console.log(token);
     // Fetch the character data from the backend
     const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
-    console.log(token);
+
     fetch(url, {
         method: 'GET',
         headers: {
