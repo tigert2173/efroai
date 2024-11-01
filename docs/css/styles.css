@@ -106,7 +106,7 @@ main {
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
-    overflow: hidden; /* Prevent overflow */
+    /* overflow: hidden; Prevent overflow */
     transform: scale(0.75); /* Scale down the entire grid */
     transform-origin: top left; /* Set the origin for the scaling */
 }
