@@ -149,6 +149,8 @@ main {
 .character-card:hover, .recommendation-card:hover {
     /* transform: translateY(-10px); Lift card on hover */
     transform: scale(1.25); /* Scale up the card slightly */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
+
     transition: 2.5s;
     z-index: 10;
 }

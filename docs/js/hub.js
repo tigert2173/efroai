@@ -191,6 +191,20 @@ function openCharacterPage(characterId, uploader) {
     window.location.href = '/chat.html';
 }
 
+const characterCards = document.querySelectorAll('.character-card, .recommendation-card');
+
+characterCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.zIndex = 10; // Set z-index to 10 on hover
+    });
+
+    card.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'transform') { // Check if the transform property is finished
+            card.style.zIndex = ''; // Reset z-index after scaling transition
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
     if (document.getElementById('search-bar')) {
