@@ -627,7 +627,7 @@ function loadFormData() {
         }).catch(error => {
             console.error(error);
                 if (error.response && error.response.status === 500) {
-                    errorMessage.textContent = 'Automod system failed.';
+                    errorMessage.textContent = 'Automod system likely failed.';
                 } else {
                     errorMessage.textContent = 'Failed to update character.';
                 }
@@ -670,7 +670,7 @@ function loadFormData() {
         }).catch(error => {
             console.error(error);
                 if (error.response && error.response.status === 500) {
-                    errorMessage.textContent = 'Automod system failed.';
+                    errorMessage.textContent = 'Automod system likely failed.';
                 } else {
                     errorMessage.textContent = 'Failed to update character.';
                 }
@@ -886,7 +886,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         }).catch(error => {
             console.error(error);
                 if (error.response && error.response.status === 500) {
-                    errorMessage.textContent = 'Automod system failed.';
+                    errorMessage.textContent = 'Automod system likely failed.';
                 } else {
                     errorMessage.textContent = 'Failed to update character.';
                 }
@@ -915,7 +915,7 @@ document.getElementById('saveForm').addEventListener('submit', function (e) {
         }).catch(error => {
             console.error(error);
                 if (error.response && error.response.status === 500) {
-                    errorMessage.textContent = 'Automod system failed.';
+                    errorMessage.textContent = 'Automod system likely failed.';
                 } else {
                     errorMessage.textContent = 'Failed to update character.';
                 }
