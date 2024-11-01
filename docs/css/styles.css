@@ -118,20 +118,19 @@ main {
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
 /* Character Card Styles */
-.character-card {
-    background-color: #fff; /* White background for the card */
-    border-radius: 12px; /* Slightly more rounded corners */
+.character-card .recommendation-card{
+    background-color: #2f3136;
+    border-radius: 15px;
     padding: 20px; /* Padding inside the card */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     display: flex; /* Use flexbox for the card */
     flex-direction: column; /* Stack elements vertically */
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
-    transition: transform 0.2s; /* Smooth scaling effect on hover */
-    /* Remove margin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.character-card:hover {
+.character-card:hover .recommendation-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
     transform: scale(1.50); /* Scale up the card slightly */
 
@@ -141,7 +140,6 @@ main {
     border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
     padding-bottom: 10px; /* Space below header */
 }
-
 .card-header h3 {
     color: #28a745; /* Bright green for the name */
     font-size: 1.6em; /* Slightly larger font size */
@@ -260,22 +258,10 @@ main {
 }
 
 /* Character Cards */
-.recommendation-card {
-    background-color: #2f3136;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.card-header h3 {
+    margin: 0;
+    color: #fbbc04;
 }
-
-.recommendation-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    transform: scale(1.50); /* Scale up the card slightly */
-
-}
-
-
 
 .card-body {
     margin-top: 10px;
