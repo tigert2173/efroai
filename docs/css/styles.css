@@ -146,7 +146,7 @@ main {
 
 /* Add a class for when the scaling is done */
 .card-scaled {
-    transition: z-index 10s ease 0.3s; /* Delay the z-index change */
+    transition: z-index 10s ease 10.3s; /* Delay the z-index change */
 }
 
 .character-card:hover, .recommendation-card:hover {
