@@ -110,7 +110,7 @@ main {
 }
 
 .character-card img {
-    transform: scale(0.75); /* Scale down the grid to 85% */
+    transform: scale(0.75); /* Scale down the grid to 75% */
 
     width: 100%; /* Make the image fill the width of the card */
     height: auto; /* Maintain aspect ratio */
@@ -119,7 +119,6 @@ main {
 }
 /* Character Card Styles */
 .character-card {
-    transform: scale(0.75); /* Scale down the grid to 85% */
 
     background-color: #fff; /* White background for the card */
     border-radius: 12px; /* Slightly more rounded corners */
