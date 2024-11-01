@@ -191,20 +191,6 @@ function openCharacterPage(characterId, uploader) {
     window.location.href = '/chat.html';
 }
 
-// Select all character cards
-const characterCards = document.querySelectorAll('.character-card, .recommendation-card');
-
-// Add event listeners for mouse enter and leave
-characterCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.classList.add('card-scaled'); // Add the class when hovered
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.classList.remove('card-scaled'); // Remove the class when no longer hovered
-    });
-});
-
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
     if (document.getElementById('search-bar')) {
