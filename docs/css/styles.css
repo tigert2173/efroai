@@ -106,7 +106,6 @@ main {
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
-    overflow: hidden; /* Prevent overflow */
     transform: scale(0.75); /* Scale down the entire grid */
     transform-origin: top left; /* Set the origin for the scaling */
 }
@@ -133,7 +132,7 @@ main {
 .character-card:hover, .recommendation-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
     transform: scale(1.50); /* Scale up the card slightly */
-    z-index: 2050;
+    z-index: 10;
 
 }
 
