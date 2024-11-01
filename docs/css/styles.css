@@ -107,6 +107,8 @@ main {
     grid-auto-rows: minmax(150px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
+    transform: scale(0.85); /* Scale down the grid to 85% */
+    transform-origin: top left; /* Set the origin for the scaling */
 }
 
 .character-card img {
@@ -117,8 +119,6 @@ main {
 }
 /* Character Card Styles */
 .character-card {
-    transform: scale(0.75); /* Scale down the grid to 85% */
-
     background-color: #fff; /* White background for the card */
     border-radius: 12px; /* Slightly more rounded corners */
     padding: 20px; /* Padding inside the card */
