@@ -155,51 +155,65 @@ function populateCharacterSettings() {
     // Retrieve the character data from sessionStorage
     const selectedCharacterId = sessionStorage.getItem('selectedCharacterId');
     const characterUploader = sessionStorage.getItem('characterUploader');
+    const token = sessionStorage.getItem('token'); // Retrieve the token
+    console.log(token); // Check if the token is being retrieved correctly
+
+    // Check if the token exists
+    if (!token) {
+        console.error('Error: No token provided.');
+        return; // Exit the function if there's no token
+    }
 
     // Fetch the character data from the backend
-    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
-    
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(character => {
-            // Define the character object
-            const characterData = {
-                charname: character.name || '',
-                uploader: character.uploader || '',
-                persona: character.persona || '',
-                context: character.context || '',
-                scenario: character.scenario || '',
-                greeting: character.greeting || '',
-                exampledialogue: character.exampledialogue || ''
-            };
+    const url = `https://characters.efroai.net:443/api/chat/${characterUploader}/${selectedCharacterId}`;
 
-            // Populate each field with the character's data
-            document.getElementById('user-name').value = userID || "{{user}";
-            // document.getElementById('persona').value = characterData.persona;
-            // document.getElementById('context').value = characterData.context;
-            // document.getElementById('scenario').value = characterData.scenario;
-            // document.getElementById('greeting').value = characterData.greeting;
-            // document.getElementById('exampledialogue').value = characterData.exampledialogue;
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Prefix with "Bearer "
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(character => {
+        // Define the character object
+        const characterData = {
+            uploader: character.uploader || '',
+            persona: character.persona || '',
+            context: character.context || '',
+            scenario: character.scenario || '',
+            greeting: character.greeting || '',
+            exampledialogue: character.exampledialogue || ''
+        };
 
-            // Update settings
-            settings.charname = characterData.charname;
-            settings.persona = characterData.persona;
-            settings.context = characterData.context;
-            settings.greeting = characterData.greeting;
-            settings.scenario = characterData.scenario;
-            settings.exampledialogue = characterData.exampledialogue;
-            // Display the greeting as a bot message
-            displayMessage(characterData.greeting, 'assistant', true); // Display greeting as bot message
-        })
-        .catch(error => {
-            console.error('Error fetching character data:', error);
-        });
+        // Populate each field with the character's data
+        document.getElementById('user-name').value = characterData.uploader;
+        document.getElementById('persona').value = characterData.persona;
+        document.getElementById('context').value = characterData.context;
+        document.getElementById('scenario').value = characterData.scenario;
+        document.getElementById('greeting').value = characterData.greeting;
+        document.getElementById('exampledialogue').value = characterData.exampledialogue;
+
+        // Update settings
+        settings.persona = characterData.persona;
+        settings.context = characterData.context;
+        settings.greeting = characterData.greeting;
+        settings.scenario = characterData.scenario;
+        settings.exampledialogue = characterData.exampledialogue;
+
+        // Display the greeting as a bot message
+        displayMessage(characterData.greeting, 'bot'); // Display greeting as bot message
+    })
+    .catch(error => {
+        console.error('Error fetching character data:', error);
+    });
 }
+
 
 function updateSettings() {
     checkAPIStatus();
