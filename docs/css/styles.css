@@ -142,21 +142,14 @@ main {
     margin-top: auto; /* Push buttons to the bottom of the card */
 }
 
-
-
-/* Add a class for when the scaling is done */
-.card-scaled {
-    transition: z-index 10s ease 10.3s; /* Delay the z-index change */
-}
-
 .character-card:hover, .recommendation-card:hover {
-    /* transform: translateY(-10px); Lift card on hover */
-    transform: scale(1.25); /* Scale up the card slightly */
+    transform: translateY(-10px) scale(1.25); /* Lift card up and scale up */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
 
     transition: transform 2.3s ease; /* Smooth scaling transition */
     z-index: 10;
 }
+
 
 .card-header {
     border-bottom: 2px solid #28a745; /* Green bottom border for modern look */

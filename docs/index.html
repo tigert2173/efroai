@@ -399,19 +399,6 @@
     </script>
     
 <script>
-// Select all character cards
-const characterCards = document.querySelectorAll('.character-card, .recommendation-card');
-
-// Add event listeners for mouse enter and leave
-characterCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.classList.add('card-scaled'); // Add the class when hovered
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.classList.remove('card-scaled'); // Remove the class when no longer hovered
-    });
-});
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {
