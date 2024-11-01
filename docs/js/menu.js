@@ -64,13 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
       //  loginPopup.style.display = 'none'; // Hide the login popup
     }
 
-    // Event listener for login button in the popup
-    document.getElementById('login-btn').addEventListener('click', () => {
-        //window.location.href = '/login.html', '_blank'; // Redirect to login page
-         // Redirect to the login page in a new tab
-        const loginWindow = window.open('/login.html', '_blank');
-    });
+    // Get the login button element
+    const loginButton = document.getElementById('login-btn');
 
+    // Only add the event listener if the login button is defined
+    if (loginButton) {
+        // Event listener for login button in the popup
+        loginButton.addEventListener('click', () => {
+            // Redirect to the login page in a new tab
+            const loginWindow = window.open('/login.html', '_blank');
+        });
+    }
     // Listen for messages from the login window
     window.addEventListener('message', (event) => {
         if (event.origin === window.location.origin) {
