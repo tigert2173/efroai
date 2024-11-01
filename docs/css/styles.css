@@ -112,9 +112,9 @@ main {
 }
 
 .character-card img {
-    width: 80%; /* Make the image fill the width of the card */
+    max-width: 100%; /* Make the image fill the width of the card */
     height: auto; /* Maintain aspect ratio */
-    max-height: 400px; /* Limit the height to prevent overflow */
+    max-height: 300px; /* Limit the height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
 
@@ -153,8 +153,6 @@ main {
     position: relative; /* Make it relative for absolute positioning of the overlay */
     flex-grow: 1; /* Allow card body to take up available space */
     font-size: 0.8em; /* Decrease font size for card body text */
-    justify-content: center; /* Center horizontally */
-
 }
 .tags {
     display: flex; /* Use flexbox for alignment */
