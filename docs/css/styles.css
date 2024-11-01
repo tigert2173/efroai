@@ -133,7 +133,7 @@ main {
 
 .character-card:hover, .recommendation-card:hover {
     transform: translateY(-4px); /* Lift card on hover */
-    transform: translateX(-50px); /* Lift card on hover */
+    transform: translateX(-100px); /* Lift card on hover */
 
     transform: scale(1.50); /* Scale up the card slightly */
     z-index: 10;
