@@ -103,7 +103,7 @@ main {
     width: 133.33333%;
     /* grid-template-columns: repeat(5, 1fr); 4 columns */
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-auto-rows: minmax(180px, auto); /* Minimum height for each item */
+    grid-auto-rows: minmax(280px, auto); /* Minimum height for each item */
     gap: 10px; /* Space between grid items */
     box-sizing: border-box; /* Include padding and border in width */
     /* overflow: hidden; Prevent overflow */
@@ -114,7 +114,7 @@ main {
 .character-card img {
     width: 100%; /* Make the image fill the width of the card */
     height: auto; /* Maintain aspect ratio */
-    max-height: 200px; /* Limit the height to prevent overflow */
+    max-height: 250px; /* Limit the height to prevent overflow */
     object-fit: cover; /* Ensure the image covers the box without stretching */
 }
 /* Character Card Styles */
