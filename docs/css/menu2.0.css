@@ -86,54 +86,43 @@ html { /*body*/
     /* animation: puff 4s ease-in-out infinite; Animation for puff */
 }
 
+/* Basic styles for mobile-friendly dropdown */
 .nav-links {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove padding */
-    gap: 10 px;
-    display: flex; /* Display items in a row */
+    display: flex;
+    flex-direction: column; /* Stack links on mobile */
 }
 
-.nav-links li {
-    position: relative; /* Relative positioning for dropdowns */
-    margin-left: 0 20px; /* Space between links */
-    display: inline;
+.nav-links.active {
+    display: block; /* Shows the nav-links on mobile when active */
+}
+
+.dropdown-content {
+    display: none;
+    background-color: #2d3e50;
+    position: static; /* Changes to static for better mobile experience */
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.hamburger.active + .nav-links {
+    display: flex;
+}
+
+/* Hide bars and change hamburger icon style when menu is active */
+.hamburger.active .bar {
+    background: #ffcc00;
 }
 
 .nav-links a {
-    color: #66ff66; /* Matching green color for links */
-    text-decoration: none; /* No underline */
-    margin-left: 15px; /* Space between links */
-    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
-}
-
-.nav-links a:hover {
-    color: #ffcc00; /* Yellow color on hover for contrast */
-    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 0, 255, 1); /* Fun glow effect on hover */
-    transform: scale(1.1); /* Scale up effect on hover */
-}
-
-/* Dropdown styles */
-.dropdown-content {
-    display: none; /* Hidden by default */
-    position: absolute; /* Position dropdowns */
-    background-color: #2d3e50; /* Match background */
-    min-width: 160px; /* Minimum width */
-    z-index: 1; /* On top of other elements */
+    color: #66ff66;
+    text-decoration: none;
+    margin: 10px 0;
 }
 
 .dropdown:hover .dropdown-content {
-    display: block; /* Show on hover */
-}
-
-.dropdown-content a {
-    color: #66ff66; /* Color for dropdown links */
-    padding: 12px 16px; /* Padding for dropdown items */
-    text-decoration: none; /* No underline */
-    display: block; /* Block display for full-width clickable area */
-}
-
-.dropdown-content a:hover {
-    background-color: #3a4a60; /* Darker background on hover */
+    display: block;
 }
 
 /* Search bar styles */

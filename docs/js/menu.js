@@ -1,10 +1,16 @@
 
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
-    const hamburger = document.querySelector('.hamburger');
-    
     navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
+}
+
+// Toggle dropdown on mobile
+function toggleDropdown(event) {
+    if (window.innerWidth <= 768) { // Adjust based on your mobile breakpoint
+        event.preventDefault(); // Prevents navigation
+        const dropdownContent = event.target.nextElementSibling;
+        dropdownContent.classList.toggle('show'); // Toggle display
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
