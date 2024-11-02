@@ -17,6 +17,7 @@
     '128.14.173.116', //Path: /sugar_version.json && Path: /cgi-bin/authLogin.cgi && Path: /WebInterface/ <<-- suspicious request 
     '128.14.173.114', //Path: /cgi-bin/config.exp && Path: /owa/ && /admin/ <<-- suspicious request 
     '::ffff:159.203.92.168', //requested /.env
+    '::ffff:87.120.126.202', //requested /php_profiler
     '149.88.23.77', // //wp1/wp-includes/wlwmanifest.xml
     '159.203.92.168', //requested /.env
     '::ffff:92.255.57.58', //accessing directly
