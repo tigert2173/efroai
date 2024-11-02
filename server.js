@@ -86,7 +86,7 @@ app.use(compression({
   // User tracking by IP
   let activeUsers = new Map();
   const waitingQueue = []; // Array to hold waiting users
-  const MAX_ACTIVE_USERS = 100; // Max active users
+  const MAX_ACTIVE_USERS = 200; // Max active users
   const RECONNECT_TIME_LIMIT = 5 * 60 * 1000; // 5 minutes
   const TIMEOUT_LIMIT = 30 * 60 * 1000; // 30 minutes
 
