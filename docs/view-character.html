@@ -36,7 +36,7 @@
 
     /* Scale ad responsively and prevent overflow */
     #ad-container ins {
-        display: inline-block;
+        display: block;
         max-width: 100%;
         height: auto;
         width: auto; /* Allow the ad to adjust its width naturally */
@@ -45,7 +45,7 @@
     /* Optional: for smaller screens, ensure the ad scales down */
     @media (max-width: 600px) {
         #ad-container ins {
-            width: 80%;
+            width: 100%;
         }
     }
 
