@@ -151,42 +151,41 @@
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     <script>
-  function adjustAdSize() {
+   function scaleAd() {
     const adContainer = document.querySelector('.ad-container');
     const adElement = document.querySelector('.eas6a97888e38');
 
-    // Reset the transform to measure the size accurately
-    adElement.style.transform = 'none'; // Remove any scaling
+    // Reset the transform and dimensions to measure accurately
+    adElement.style.transform = 'none'; // Remove previous scaling
     adElement.style.width = 'auto'; // Reset width for measurement
     adElement.style.height = 'auto'; // Reset height for measurement
 
     // Get dimensions
     const containerWidth = adContainer.clientWidth;
     const containerHeight = adContainer.clientHeight;
-    const adWidth = adElement.offsetWidth;
-    const adHeight = adElement.offsetHeight;
+    let adWidth = adElement.offsetWidth;
+    let adHeight = adElement.offsetHeight;
 
-    // Calculate aspect ratio of the ad
-    const aspectRatio = adWidth / adHeight;
+    // Scaling factor
+    let scale = 1;
 
-    // Determine the scaling factors for width and height
-    let scaleWidth = containerWidth / adWidth;
-    let scaleHeight = containerHeight / adHeight;
+    // Keep scaling down until the ad fits in the container
+    while (adWidth > containerWidth || adHeight > containerHeight) {
+        scale -= 0.01; // Decrease scale by 1%
+        adElement.style.transform = `scale(${scale})`;
+        adElement.style.transformOrigin = 'top left'; // Set the origin for scaling
 
-    // Choose the smaller scale factor to maintain aspect ratio
-    const scale = Math.min(scaleWidth, scaleHeight);
-
-    // Apply the scaling transformation
-    adElement.style.transform = `scale(${scale})`;
-    adElement.style.transformOrigin = 'top left'; // Set the origin for scaling
+        // Update the ad dimensions after scaling
+        adWidth = adElement.offsetWidth * scale;
+        adHeight = adElement.offsetHeight * scale;
+    }
 }
 
-// Run the adjust function after the ad loads
-////window.onload = adjustAdSize;
+// Run the scale function after the ad loads
+window.onload = scaleAd;
 
-// Optionally, also adjust on window resize
-window.onresize = adjustAdSize;
-
+// Optionally, also scale on window resize
+window.onresize = scaleAd;
     </script>
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
