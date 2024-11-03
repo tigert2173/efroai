@@ -470,7 +470,7 @@ main {
 }
 
 .ad-container:hover .ins-animate {
-    transform: scale(1.05); /* Scale up slightly on hover */
+    transform: scale(1.15); /* Scale up slightly on hover */
     opacity: 1; /* Increase opacity on hover */
 }
 
