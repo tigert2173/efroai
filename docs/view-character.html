@@ -27,9 +27,16 @@
             transition: transform 0.3s ease;
             overflow: hidden; /* Prevent overflow */
         }
+     
+        #ad-container {
+            max-width: 100%; /* Make sure it does not exceed the character details container */
+            overflow: hidden; /* Prevent overflow */
+            display: flex; /* Flexbox for centering or aligning content */
+            justify-content: center; /* Center the ad */
+        }
 
         .eas6a97888e38 {
-            max-width: 100%; /* Ensure the ad does not exceed the width of the container */
+            max-width: 100%; /* Ensure the ad does not exceed the width of the ad container */
             height: auto; /* Maintain aspect ratio */
         }
 
@@ -132,7 +139,7 @@
             <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
-        
+
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     
