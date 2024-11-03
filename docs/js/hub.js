@@ -124,7 +124,7 @@ if (!adExempt) {
 
         // Create the <ins> element for the ad
         const insElement = document.createElement('ins');
-        insElement.className = 'eas6a97888e38';
+        insElement.className = 'eas6a97888e38 ins-animate';
         insElement.setAttribute('data-zoneid', '5461570');
         adContainer.appendChild(insElement);
 
