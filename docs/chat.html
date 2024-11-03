@@ -18,13 +18,13 @@
         <style>
             /* Hide ad on screens smaller than 768px */
             .desktop-only-ad {
-              /* display: none; */
+                display: none;
             }
           
             /* Show ad only on larger screens */
             @media (min-width: 768px) {
               .desktop-only-ad {
-                /* display: block; */
+                 display: block;
               }
             }
           </style>
@@ -132,11 +132,13 @@
         <ins class="eas6a97888e2" data-zoneid="5449630"></ins> 
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
+        
+        <div class="desktop-only-ad">
         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
         <ins class="eas6a97888e17" data-zoneid="5461572"></ins> 
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-
+        </div>
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
             <button onclick="sendMessage()">Send</button>
