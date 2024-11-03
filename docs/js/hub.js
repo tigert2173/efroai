@@ -112,14 +112,19 @@ function displayCharacters(characters) {
         // Check if ads should be displayed
         if (!adExempt) {
         // Check if it's time to insert an ad
+//         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+//  <ins class="eas6a97888e38" data-zoneid="5461570"></ins> 
+//  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         if (cardCounter >= nextAdInterval) {
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
 
             // Insert the <ins> element for the ad
             const insElement = document.createElement('ins');
-            insElement.className = 'eas6a97888e2';
-            insElement.setAttribute('data-zoneid', '5449604');
+            // insElement.className = 'eas6a97888e2';
+            // insElement.setAttribute('data-zoneid', '5449604');
+            insElement.className = 'eas6a97888e38';
+            insElement.setAttribute('data-zoneid', '5461570');
             adContainer.appendChild(insElement);
 
             const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
