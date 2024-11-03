@@ -141,6 +141,11 @@ if (cardCounter >= nextAdInterval && !adLoading) {
 
     nextAdInterval = cardCounter + getRandomAdInterval();
 }
+scriptElement.onerror = function() {
+    console.error("Failed to load ad-provider.js");
+    adLoading = false; // Reset flag in case of load failure
+};
+
         }
     });
 }
