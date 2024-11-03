@@ -17,32 +17,24 @@
         }
 
         #character-details-container {
-    max-width: 600px;              /* Set a maximum width for the container */
-    margin: 0 auto;                /* Center the container horizontally */
-    background: rgb(12, 36, 10);   /* Background color */
-    border-radius: 10px;           /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Box shadow */
-    padding: 30px;                 /* Padding around the container */
-    text-align: center;            /* Center text inside the container */
-    overflow: hidden;              /* Hide overflow content */
-    display: flex;                 /* Use flexbox layout */
-    flex-direction: column;        /* Stack children vertically */
-    align-items: center;           /* Center children horizontally */
-}
+            max-width: 600px;
+            margin: auto;
+            background: rgb(12, 36, 10);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            overflow: normal; /* Prevent overflow */
+        }
 
-.scalable-element {
-    max-width: 100%;               /* Ensure the element doesn't exceed the container width */
-    height: auto;                  /* Maintain the aspect ratio */
-    padding: 10px;                 /* Padding around the content */
-    margin: 0;                     /* Remove any margin that could cause misalignment */
-    transition: transform 0.3s ease; /* Smooth transition for scaling */
-}
-
-/* Optional: Add hover effect to scale slightly */
-.scalable-element:hover {
-    transform: scale(1.05);        /* Slightly enlarge on hover */
-}
-
+        .scalable-element {
+            position: absolute; /* Allows it to be positioned within the container */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%) scale(0.8); /* Scale down and center */
+            max-width: none; /* Remove max-width if needed */
+            max-height: none; /* Remove max-height if needed */
+        }
   
 
         #character-details-container:hover {
