@@ -25,14 +25,23 @@
         padding: 30px;
         text-align: center;
         transition: transform 0.3s ease;
-        overflow: normal;
+        overflow: hidden;
     }
 
-    /* Center ad inside ad-container */
+    /* Center and limit the width of the ad to fit within the container */
     #ad-container {
         text-align: center;
         padding-top: 10px;
         padding-bottom: 20px;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    /* Ensure ad scales responsively */
+    #ad-container ins {
+        max-width: 100%;
+        display: inline-block;
+        width: 100%; /* Adjust to fit the container */
     }
 
         #character-details-container:hover {
