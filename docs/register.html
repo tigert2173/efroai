@@ -329,7 +329,7 @@
         errorMessage.textContent = ''; // Clear previous error messages
 
         // Add a check for how quickly the form was filled
-        if (timeTaken < 10) {  // Less than 10 seconds (adjust time limit as needed)
+        if (timeTaken < 8) {  // Less than 10 seconds (adjust time limit as needed)
             errorMessage.textContent = 'Form filled out too quickly. Potential bot activity detected.';
             document.cookie = "botDetected=true; path=/; max-age=900"; // Set a cookie for 15 minutes
             // Log bot detection
