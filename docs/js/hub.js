@@ -115,7 +115,7 @@ if (!adExempt) {
     // Check if it's time to insert an ad
     let adLoading = false; // Track if an ad is currently loading
 
-    if (cardCounter >= nextAdInterval) {
+    if (cardCounter >= nextAdInterval && !adLoading) {
         adLoading = true; // Set flag to prevent additional loads
 
         // Create an ad container
