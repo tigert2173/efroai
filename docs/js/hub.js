@@ -167,13 +167,16 @@ function displayCharacters(characters) {
             const loadMoreButton = document.createElement('button');
             loadMoreButton.textContent = 'Load More Characters';
             loadMoreButton.className = 'load-more-btn';
+        
             loadMoreButton.onclick = () => {
                 loadCharacters(endIndex); // Load the next batch of characters
                 loadMoreButton.remove(); // Remove the button after loading more
             };
+        
+            // Append the button to the grid
             characterGrid.appendChild(loadMoreButton);
         }
-    }
+    }        
 
     // Start by loading the first batch of characters
     loadCharacters(0);
