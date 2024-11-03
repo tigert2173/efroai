@@ -527,7 +527,7 @@ input[type="checkbox"]:not(:checked) + label {
 #save-button,
 #download-button,
 #upload-button {
-    background-color: #4CAF50; /* Green background */
+    background-color: #4ca2af; /* Green background */
     color: white; /* White text */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
@@ -542,7 +542,7 @@ input[type="checkbox"]:not(:checked) + label {
 #save-button:hover,
 #download-button:hover,
 #upload-button:hover {
-    background-color: #45a049; /* Darker green */
+    background-color: #a08845; /* Darker green */
     transform: scale(1.05); /* Slightly increase size */
 }
 
@@ -551,7 +551,7 @@ input[type="checkbox"]:not(:checked) + label {
 #download-button:focus,
 #upload-button:focus {
     outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px #4CAF50; /* Green glow */
+    box-shadow: 0 0 5px #4c91af; /* Green glow */
 }
 
 /* Styles for the saved chats list */
@@ -573,7 +573,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Change background color on hover */
 #saved-chats-list li:hover {
-    background-color: #0ba1007a; /* Slightly darker on hover */
+    background-color: #0005a17a; /* Slightly darker on hover */
 }
 
 /* Delete button styles */
