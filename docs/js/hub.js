@@ -40,7 +40,7 @@ function displayCharacters(characters) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    const batchSize = 5; // Number of characters to display at once
+    const batchSize = 20; // Number of characters to display at once
 
     function loadCharacters(startIndex) {
         const endIndex = Math.min(startIndex + batchSize, characters.length);
@@ -179,9 +179,9 @@ function displayCharacters(characters) {
     loadCharacters(0);
 }
 
-// Function to get a random ad interval between 5 and 12
+// Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
-    return Math.floor(Math.random() * (12 - 5 + 1)) + 5; // Returns a random number between 5 and 12
+    return Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Returns a random number between 5 and 10
 }
 
 
