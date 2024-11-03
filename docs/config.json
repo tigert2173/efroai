@@ -1,5 +1,5 @@
 {
     "maintenanceMode": false,
-    "maintenanceUpcoming": false,
+    "maintenanceUpcoming": true,
     "maintenanceMessage": "Scheduled maintenance will occur on November 6th from 12:00 PM to 3:00 PM EST. During this time, services may be intermittent or unavailable. Please plan accordingly."
 }
