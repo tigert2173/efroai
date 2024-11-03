@@ -17,32 +17,27 @@
         }
 
         #character-details-container {
-    max-width: 600px;
-    margin: auto;
-    background: rgb(12, 36, 10);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    text-align: center;
-    transition: transform 0.3s ease;
-    overflow: hidden; /* Prevent overflow */
-}
+            max-width: 600px;
+            margin: auto;
+            background: rgb(12, 36, 10);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            overflow-wrap: normal; /* Prevent overflow */
+        }
 
-#ad-container {
-    max-width: 100%; /* Allow the ad container to scale with the character details */
-    margin: 20px 0; /* Add margin for spacing */
-    overflow: hidden; /* Prevent any overflow from the ad */
-    display: flex; /* Use flexbox to center the ad */
-    justify-content: center; /* Center the ad horizontally */
-}
+        #ad-container {
+            max-width: 100%; /* Ensure the ad container doesn't exceed the character details */
+            margin: 20px 0; /* Add margin for spacing */
+        }
 
-.ins {
-    display: inline-block; /* Ensure the ad displays inline */
-    width: auto; /* Allow the width to adjust */
-    height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Prevent the ad from exceeding its container */
-}
-
+        .eas6a97888e38 {
+            display: inline-block; /* Ensure the ad displays inline */
+            width: 100%; /* Full width of the container */
+            height: auto; /* Maintain aspect ratio */
+        }
 
         #character-details-container:hover {
             transform: translateY(-5px); /* Subtle lift on hover */
@@ -146,29 +141,6 @@
     
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
-    <script>
-        function scaleAd() {
-            const adContainer = document.getElementById('character-details-container');
-            const adElement = document.querySelector('ad-container');
-            
-            if (adElement && adContainer) {
-                const containerWidth = adContainer.clientWidth; // Get the width of the container
-                const adWidth = adElement.offsetWidth; // Get the width of the ad
-    
-                if (adWidth > containerWidth) {
-                    const scale = containerWidth / adWidth; // Calculate scale factor
-                    adElement.style.transform = `scale(${scale})`; // Apply the scale
-                    adElement.style.transformOrigin = 'top left'; // Set origin to top left for scaling
-                } else {
-                    adElement.style.transform = 'none'; // Reset scale if the ad fits
-                }
-            }
-        }
-    
-        // Scale the ad on window resize and when the ad is loaded
-        window.addEventListener('resize', scaleAd);
-        window.addEventListener('load', scaleAd);
-    </script>
     
     
     <script>
