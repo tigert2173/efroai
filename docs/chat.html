@@ -13,6 +13,22 @@
     <title>Chat - EFRO.AI</title>
     <link rel="stylesheet" href="css/chat.css?v1">
     <link rel="stylesheet" href="css/menu2.0.css">
+
+    <styles>
+        <style>
+            /* Hide ad on screens smaller than 768px */
+            .desktop-only-ad {
+              display: none;
+            }
+          
+            /* Show ad only on larger screens */
+            @media (min-width: 768px) {
+              .desktop-only-ad {
+                display: block;
+              }
+            }
+          </style>
+    </styles>
 </head>
 <body>
 
@@ -110,9 +126,13 @@
     <div id="main-content">
         <div id="chat-container">
         </div>
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
- <ins class="eas6a97888e2" data-zoneid="5449630"></ins> 
- <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+
+        <div class="desktop-only-ad">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e2" data-zoneid="5449630"></ins>
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        </div>
+
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
         <div id="input-container">
