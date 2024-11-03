@@ -454,6 +454,16 @@ main {
         margin-left: 0; /* Remove left margin */
     }
 }
+.ad-container {
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for transform and shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow effect */
+}
+
+.ad-container:hover {
+    transform: scale(1.05); /* Scale up slightly on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow effect on hover */
+}
+
 .ins-animate {
     transition: transform 0.2s ease, opacity 0.2s ease; /* Smooth transition for transform and opacity */
     opacity: 0.8; /* Initial opacity */
