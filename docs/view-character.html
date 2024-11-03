@@ -25,25 +25,28 @@
         padding: 30px;
         text-align: center;
         transition: transform 0.3s ease;
-        overflow: hidden;
     }
 
-    /* Center and limit the width of the ad to fit within the container */
+    /* Center and contain the ad, ensuring no overflow */
     #ad-container {
         text-align: center;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        max-width: 120%;
+        max-width: 100%;
         overflow: hidden;
-        scale: 0.8;
     }
 
-    /* Ensure ad scales responsively */
+    /* Scale ad responsively and prevent overflow */
     #ad-container ins {
-        max-width: 120%;
-    
         display: inline-block;
-        width: 120%; /* Adjust to fit the container */
+        max-width: 100%;
+        height: auto;
+        width: auto; /* Allow the ad to adjust its width naturally */
+    }
+
+    /* Optional: for smaller screens, ensure the ad scales down */
+    @media (max-width: 600px) {
+        #ad-container ins {
+            width: 100%;
+        }
     }
 
         #character-details-container:hover {
