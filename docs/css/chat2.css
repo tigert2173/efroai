@@ -268,12 +268,12 @@ code {
     }
 
 #input-container button {
-    border: 1px solid #2e8b57; /* Softer neon green button */
+    border: 1px solid #2e668b; /* Softer neon green button */
     border-left: none;
     width: 15%;
     min-width: 10%;
     border-radius: 0 5px 5px 0;
-    background-color: #1b663e; /* Softer neon green */
+    background-color: #1b4e66; /* Softer neon green */
     color: #f5f6fa; /* Light grey */
     cursor: pointer;
 }
@@ -282,7 +282,7 @@ code {
     width: 100%;
     max-width: 700px;
     background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #326bcd; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
@@ -306,7 +306,7 @@ label {
 input[type="text"], input[type="number"], select {
     width: 100%;
     padding: 8px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #3282cd; /* Softer neon green border */
     border-radius: 5px;
     background-color: #2f3640; /* Dark grey */
     color: #f5f6fa; /* Light grey */
@@ -320,9 +320,9 @@ input[type="text"], input[type="number"], select {
 #save-load-container button {
     width: 48%;
     padding: 10px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #32b3cd; /* Softer neon green border */
     border-radius: 5px;
-    background-color: #32CD32; /* Softer neon green */
+    background-color: #3297cd; /* Softer neon green */
     color: #f5f6fa; /* Light grey */
     cursor: pointer;
 }
