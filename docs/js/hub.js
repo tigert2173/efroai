@@ -112,10 +112,9 @@ function displayCharacters(characters) {
             cardCounter++; // Increment the counter after adding a card
 // Check if ads should be displayed
 if (!adExempt) {
-    // Track if an ad is currently loading
-    let adLoading = false; 
-
     // Check if it's time to insert an ad
+    let adLoading = false; // Track if an ad is currently loading
+
     if (cardCounter >= nextAdInterval && !adLoading) {
         adLoading = true; // Set flag to prevent additional loads
 
@@ -127,23 +126,24 @@ if (!adExempt) {
         const insElement = document.createElement('ins');
         insElement.className = 'eas6a97888e38';
         insElement.setAttribute('data-zoneid', '5461570');
-        
-        // Set keywords for ad targeting
+        adContainer.appendChild(insElement);
+
         const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
         insElement.setAttribute('data-keywords', keywords);
-        
-        adContainer.appendChild(insElement);
 
         // Create the ad provider script and set up loading behavior
         const scriptElement = document.createElement('script');
         scriptElement.async = true;
         scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
 
-        // Call push() when the script is fully loaded
+        // Only call push() when the script is fully loaded
         scriptElement.onload = function() {
+            // Ensure the AdProvider object exists
             if (window.AdProvider) {
                 window.AdProvider.push({"serve": {}});
-                console.log("Ad loaded");
+                console.log("Ad loaded successfully");
+            } else {
+                console.error("AdProvider object is not available");
             }
             adLoading = false; // Reset flag after ad loads
         };
@@ -163,9 +163,8 @@ if (!adExempt) {
         // Update the interval for the next ad
         nextAdInterval = cardCounter + getRandomAdInterval();
     }
-}
 
-    
+            }
         }
 
         // Create a "Load More" button if there are more characters to load
