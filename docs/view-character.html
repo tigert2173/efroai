@@ -116,6 +116,14 @@
                 font-size: 16px; /* Consistent font size on mobile */
             }
         }
+        .ad-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5px;
+        margin-top: 10px; /* Adjust margin as needed */
+        transform: scale(0.65); /* Apply scaling transformation */
+        transform-origin: center; /* Center the scaling effect */
+    }
     </style>
 </head>
 <body>
@@ -126,8 +134,8 @@
         <p id="character-description"></p>
         <p id="character-tags"></p>
         <p id="character-creator"></p>
-
-        <div style="display: flex; justify-content: center; margin-bottom: 5px; margin-top: -35px; scale: 0.65;">
+        
+        <div class="ad-container">
             <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
             <ins class="eas6a97888e38" data-zoneid="5461748"></ins>
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
