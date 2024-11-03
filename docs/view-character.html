@@ -111,21 +111,30 @@
             }
         }
         .ad-container {
-            width: 100%; /* or a specific width */
-            /* max-width: 300px; Set a maximum width */
-            padding: 5px;
-            padding-bottom: 15px;
-            height: auto; /* Allow height to adjust */
-            overflow: none; /* Hide overflow */
-            text-align: center; /* Center the content */
-            margin: 0 auto; /* Center the container */
+            width: 100%; /* Full width of the parent */
+            max-width: 100%; /* Prevent overflow */
+            height: auto; /* Allow height to adjust automatically */
+            overflow: hidden; /* Hide any overflowing content */
+            text-align: center; /* Center-align content */
+            position: relative; /* Position relative for absolute elements if needed */
         }
 
-        .ins {
-            display: block; /* Ensure block layout */
-            width: 100%; /* Allow to fill the container */
+        .eas6a97888e38 {
+            display: inline-block; /* Ensure it behaves like a block element */
+            max-width: 100%; /* Limit width to container */
             height: auto; /* Allow height to adjust */
         }
+
+        /* Optional: If you want to ensure responsiveness */
+        @media (max-width: 600px) {
+            .ad-container {
+                width: 100%; /* Full width on smaller screens */
+            }
+            .eas6a97888e38 {
+                width: 100%; /* Ensure it shrinks down on small screens */
+            }
+        }
+
 
     </style>
 </head>
