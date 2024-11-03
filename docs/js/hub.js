@@ -40,17 +40,12 @@ function displayCharacters(characters) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    const batchSize = 5; // Number of cards to display at once
+    const batchSize = 5; // Number of characters to display at once
 
-    // Function to display a batch of characters
-    function displayBatch() {
-        const batch = characters.slice(cardCounter, cardCounter + batchSize); // Get the next batch of characters
-        if (batch.length === 0) {
-            console.log("All characters have been displayed.");
-            return; // Exit if there are no more characters to display
-        }
-
-        batch.forEach((character) => {
+    function loadCharacters(startIndex) {
+        const endIndex = Math.min(startIndex + batchSize, characters.length);
+        for (let i = startIndex; i < endIndex; i++) {
+            const character = characters[i];
             const card = document.createElement('div');
             card.className = 'character-card';
 
@@ -118,9 +113,9 @@ function displayCharacters(characters) {
 
             // Check if ads should be displayed
             if (!adExempt) {
+                // Check if it's time to insert an ad
                 let adLoading = false; // Track if an ad is currently loading
 
-                // Check if it's time to insert an ad
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true; // Set flag to prevent additional loads
 
@@ -164,16 +159,23 @@ function displayCharacters(characters) {
                     nextAdInterval = cardCounter + getRandomAdInterval();
                 }
             }
-        });
+        }
 
-        // If more characters are available, load the next batch after a delay
-        if (cardCounter < characters.length) {
-            setTimeout(displayBatch, 8000); // Adjust the delay as needed
+        // Create a "Load More" button if there are more characters to load
+        if (endIndex < characters.length) {
+            const loadMoreButton = document.createElement('button');
+            loadMoreButton.textContent = 'Load More Characters';
+            loadMoreButton.className = 'load-more-btn';
+            loadMoreButton.onclick = () => {
+                loadCharacters(endIndex); // Load the next batch of characters
+                loadMoreButton.remove(); // Remove the button after loading more
+            };
+            characterGrid.appendChild(loadMoreButton);
         }
     }
 
-    // Start displaying the first batch of characters
-    displayBatch();
+    // Start by loading the first batch of characters
+    loadCharacters(0);
 }
 
 // Function to get a random ad interval between 5 and 12
