@@ -287,6 +287,10 @@ html { /*body*/
     .search-bar {
         display: none; /* Hide search bar on small screens */
     }
+    .text {
+        display: none;
+    }
+    
     .nav-links {
         display: none; /* Hide links by default on mobile */
         flex-direction: column; /* Stack links vertically */
