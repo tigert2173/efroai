@@ -256,6 +256,36 @@ html { /*body*/
         text-align: center;
         min-width: 100px;
     }
+    .logo {
+        font-size: 18px;
+        font-weight: bold;
+        vertical-align: middle;
+    }
+    
+    .logo a {
+        color: #ecf0f1; /* Light gray */
+        text-decoration: none;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+    
+    .logo img {
+        width: 40px; /* Adjust the size as necessary */
+        height: auto; /* Maintain aspect ratio */
+        vertical-align: middle; /* Align with text */
+    }
+    
+    .text {
+        display: flex; /* Flexbox for letters */
+        font-family: 'Liberty', sans-serif; /* Unique font for heading */
+        font-size: 2rem; /* Adjust heading size */
+        letter-spacing: -0.05em; /* Slightly reduce spacing */
+        color: #66ff66; /* Text color for letters */
+        position: relative; /* Position relative for pseudo-elements */
+        animation: neonGlow 1.5s infinite alternate; /* Added glow animation */
+    }
+    
 }
 
 
