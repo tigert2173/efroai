@@ -279,7 +279,7 @@ html { /*body*/
     .text {
         display: flex; /* Flexbox for letters */
         font-family: 'Liberty', sans-serif; /* Unique font for heading */
-        font-size: 2rem; /* Adjust heading size */
+        font-size: 1.6rem; /* Adjust heading size */
         letter-spacing: -0.05em; /* Slightly reduce spacing */
         color: #66ff66; /* Text color for letters */
         position: relative; /* Position relative for pseudo-elements */
