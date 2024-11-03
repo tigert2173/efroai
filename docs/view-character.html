@@ -29,11 +29,12 @@
         }
 
         .scalable-element {
-            position: inherit; /* Allows it to be positioned within the container */
+            position: absolute; /* Allows it to be positioned within the container */
             left: 50%; /* Center horizontally */
             transform: translate(-50%, -50%) scale(0.8); /* Scale down and center */
             max-width: none; /* Remove max-width if needed */
             max-height: none; /* Remove max-height if needed */
+            margin-top: 100px;
         }
 
         #character-details-container:hover {
