@@ -142,14 +142,7 @@ function displayCharacters(characters) {
                             window.AdProvider.push({"serve": {}});
                             adLoading = false; // Reset flag after ad loads
                             console.log("loadedad");
-                   
-
-                    // Error handling to reset the flag if the script fails to load
-                    scriptElement.onerror = function() {
-                        console.error("Failed to load ad-provider.js");
-                        adLoading = false; // Reset flag on load failure
-                    };
-
+                        }
                     // Append the script to the ad container
                     adContainer.appendChild(scriptElement);
 
