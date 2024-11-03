@@ -120,27 +120,46 @@ let adLoading = false; // Track if an ad is currently loading
 if (cardCounter >= nextAdInterval && !adLoading) {
     adLoading = true; // Set flag to prevent additional loads
 
+    // Create an ad container
     const adContainer = document.createElement('div');
     adContainer.className = 'ad-container';
 
+    // Create the <ins> element for the ad
     const insElement = document.createElement('ins');
     insElement.className = 'eas6a97888e38';
     insElement.setAttribute('data-zoneid', '5461570');
     adContainer.appendChild(insElement);
 
+    // Create the ad provider script and set up loading behavior
     const scriptElement = document.createElement('script');
     scriptElement.async = true;
     scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+
+    // Only call push() when the script is fully loaded
     scriptElement.onload = function() {
-        (window.AdProvider = window.AdProvider || []).push({"serve": {}});
-        adLoading = false; // Reset flag after ad loads
+        // Ensure the AdProvider object exists
+        if (window.AdProvider) {
+            window.AdProvider.push({"serve": {}});
+            adLoading = false; // Reset flag after ad loads
+        }
     };
 
+    // Error handling to reset the flag if the script fails to load
+    scriptElement.onerror = function() {
+        console.error("Failed to load ad-provider.js");
+        adLoading = false; // Reset flag on load failure
+    };
+
+    // Append the script to the ad container
     adContainer.appendChild(scriptElement);
+
+    // Add the ad container to the grid
     characterGrid.appendChild(adContainer);
 
+    // Update the interval for the next ad
     nextAdInterval = cardCounter + getRandomAdInterval();
 }
+
 scriptElement.onerror = function() {
     console.error("Failed to load ad-provider.js");
     adLoading = false; // Reset flag in case of load failure
