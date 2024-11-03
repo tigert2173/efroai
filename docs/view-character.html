@@ -27,16 +27,15 @@
             transition: transform 0.3s ease;
             overflow: hidden; /* Prevent overflow */
         }
-     
+
         #ad-container {
-            max-width: 100%; /* Make sure it does not exceed the character details container */
-            overflow: hidden; /* Prevent overflow */
-            display: flex; /* Flexbox for centering or aligning content */
-            justify-content: center; /* Center the ad */
+            max-width: 100%; /* Ensure the ad container doesn't exceed the character details */
+            margin: 20px 0; /* Add margin for spacing */
         }
 
         .eas6a97888e38 {
-            max-width: 100%; /* Ensure the ad does not exceed the width of the ad container */
+            display: inline-block; /* Ensure the ad displays inline */
+            width: 100%; /* Full width of the container */
             height: auto; /* Maintain aspect ratio */
         }
 
@@ -133,13 +132,13 @@
         <p id="character-description"></p>
         <p id="character-tags"></p>
         <p id="character-creator"></p>
-
-        <div id="ad-container">
-            <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-            <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
-            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        </div>
-
+        
+            <div id="ad-container">
+                <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+                <ins class="eas6a97888e38" data-zoneid="5461748" style="display: inline-block; width: 100%;"></ins> 
+                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+            </div>
+        
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     
