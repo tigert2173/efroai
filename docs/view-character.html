@@ -15,113 +15,108 @@
             margin: 0;
             padding: 0;
         }
-
         #character-details-container {
-            max-width: 600px;
-            margin: auto;
-            background: rgb(12, 36, 10);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            overflow: normal; /* Prevent overflow */
-        }
+    max-width: 600px;
+    margin: auto;
+    background: rgb(12, 36, 10);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    overflow: normal; /* Prevent overflow */
+}
 
-        .scalable-element {
-            position: absolute; /* Allows it to be positioned within the container */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%) scale(0.8); /* Scale down and center */
-            max-width: none; /* Remove max-width if needed */
-            min-height: 100px;
-            display: block; /* Ensure it behaves like a block element */
+.scalable-element {
+    position: relative; /* Change to relative for layout flow */
+    margin: 20px 0; /* Add margin to create space above and below the ad */
+    width: 100%; /* Ensure it takes full width available */
+    min-height: 100px; /* Maintain minimum height for the ad */
+}
 
-        }
-  
+#character-details-container:hover {
+    transform: translateY(-5px); /* Subtle lift on hover */
+}
 
-        #character-details-container:hover {
-            transform: translateY(-5px); /* Subtle lift on hover */
-        }
+h1 {
+    font-size: 28px; /* Increased font size */
+    margin-bottom: 15px;
+    color: #00ff66;
+}
 
-        h1 {
-            font-size: 28px; /* Increased font size */
-            margin-bottom: 15px;
-            color: #00ff66;
-        }
+#character-image {
+    width: auto;
+    max-height: 500px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 3px solid #00ff66; /* Bright border for images */
+}
 
-        #character-image {
-            width: auto;
-            max-height: 500px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 3px solid #00ff66; /* Bright border for images */
+#character-description {
+    font-size: 18px; /* Increased font size */
+    margin: 15px 0;
+    color: #dedede;
+}
 
-        }
+#character-creator {
+    font-size: 20px; /* Increased font size for the creator's name */
+    color: #ffcc00; /* Yellow color for emphasis */
+    margin-bottom: 25px; /* Increased margin for spacing */
+    font-weight: bold; /* Bold text for emphasis */
+}
 
-        #character-description {
-            font-size: 18px; /* Increased font size */
-            margin: 15px 0;
-            color: #dedede;
-        }
-       
-        #character-creator {
-            font-size: 20px; /* Increased font size for the creator's name */
-            color: #ffcc00; /* Yellow color for emphasis */
-            margin-bottom: 25px; /* Increased margin for spacing */
-            font-weight: bold; /* Bold text for emphasis */
-        }
+#character-tags {
+    font-size: 16px; /* Increased font size for tags */
+    margin-bottom: 20px;
+}
 
-        #character-tags {
-            font-size: 16px; /* Increased font size for tags */
-            margin-bottom: 20px;
-        }
+.tag {
+    display: inline-block;
+    background-color: #333;
+    color: #00ff66;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 2px 3px;
+}
 
-        .tag {
-            display: inline-block;
-            background-color: #333;
-            color: #00ff66;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin: 2px 3px;
-        }
+#chat-button {
+    background-color: #00ff66;
+    color: #1b1b1b;
+    padding: 15px 25px; /* Increased padding */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-size: 18px; /* Increased font size */
+}
 
-        #chat-button {
-            background-color: #00ff66;
-            color: #1b1b1b;
-            padding: 15px 25px; /* Increased padding */
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 18px; /* Increased font size */
-        }
+#chat-button:hover {
+    background-color: #00e55d; /* Darker shade on hover */
+    transform: translateY(-2px);
+}
 
-        #chat-button:hover {
-            background-color: #00e55d; /* Darker shade on hover */
-            transform: translateY(-2px);
-        }
+#chat-button:focus {
+    outline: none; /* Remove focus outline */
+}
 
-        #chat-button:focus {
-            outline: none; /* Remove focus outline */
-        }
+/* Mobile Styles */
+@media (max-width: 600px) {
+    #character-details-container {
+        padding: 20px; /* Less padding on mobile */
+    }
 
-        /* Mobile Styles */
-        @media (max-width: 600px) {
-            #character-details-container {
-                padding: 20px; /* Less padding on mobile */
-            }
+    h1 {
+        font-size: 24px; /* Adjust heading size on mobile */
+    }
 
-            h1 {
-                font-size: 24px; /* Adjust heading size on mobile */
-            }
+    #character-description,
+    #character-creator,
+    #chat-button {
+        font-size: 16px; /* Consistent font size on mobile */
+    }
+}
 
-            #character-description,
-            #character-creator,
-            #chat-button {
-                font-size: 16px; /* Consistent font size on mobile */
-            }
-        }
     </style>
 </head>
 <body>
