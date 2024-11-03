@@ -111,30 +111,32 @@
             }
         }
         .ad-container {
-            width: 100%; /* Full width of the parent */
+            width: 100%; /* Use full width of the parent */
             max-width: 100%; /* Prevent overflow */
             height: auto; /* Allow height to adjust automatically */
-            overflow: hidden; /* Hide any overflowing content */
-            text-align: center; /* Center-align content */
-            position: relative; /* Position relative for absolute elements if needed */
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Center content */
+            align-items: center; /* Vertically center content */
+            overflow: visible; /* Allow content to be visible */
         }
 
         .eas6a97888e38 {
-            display: inline-block; /* Ensure it behaves like a block element */
-            max-width: 100%; /* Limit width to container */
-            height: auto; /* Allow height to adjust */
+            display: block; /* Ensures the ad is treated as a block element */
+            width: 100%; /* Make it responsive to the container */
+            height: auto; /* Keep the height auto to avoid cutting off */
+            max-width: none; /* Remove max-width to prevent cutting off */
+            max-height: 100%; /* Prevent it from exceeding the container height */
         }
 
-        /* Optional: If you want to ensure responsiveness */
+        /* Optional: Ensure the ad is responsive on smaller screens */
         @media (max-width: 600px) {
             .ad-container {
-                width: 100%; /* Full width on smaller screens */
+                width: 100%; /* Full width on small screens */
             }
             .eas6a97888e38 {
-                width: 100%; /* Ensure it shrinks down on small screens */
+                width: 100%; /* Ensure the ad fits the screen */
             }
         }
-
 
     </style>
 </head>
