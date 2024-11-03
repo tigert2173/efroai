@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Character Details</title>
+    <!-- <link rel="stylesheet" href="/css/styles.css"> --> 
 
     <style>
         body {
-            background-color: #1c1c1c;
-            color: #eaeaea;
+            background-color: #1c1c1c; /* Dark background for contrast */
+            color: #eaeaea; /* Light text for readability */
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -23,29 +25,34 @@
             padding: 30px;
             text-align: center;
             transition: transform 0.3s ease;
+            overflow: normal; /* Prevent overflow */
         }
 
         .ad-container {
-            width: 100%;
-            max-width: 600px;
-            height: auto; /* Automatically scale height */
-            margin: 20px auto;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* Optional background */
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .ad-container {
+        max-width: 100%;
+    }
+}
+
+       
+        #character-details-container:hover {
+            transform: translateY(-5px); /* Subtle lift on hover */
         }
 
-        @media (max-width: 600px) {
-            .ad-container {
-                max-width: 100%;
-            }
-        }
-
-        /* Character details styling */
         h1 {
-            font-size: 28px;
+            font-size: 28px; /* Increased font size */
+            margin-bottom: 15px;
             color: #00ff66;
         }
 
@@ -54,27 +61,78 @@
             max-height: 500px;
             border-radius: 10px;
             margin-bottom: 20px;
-            border: 3px solid #00ff66;
+            border: 3px solid #00ff66; /* Bright border for images */
+
         }
 
-        #character-description, #character-creator, #character-tags {
+        #character-description {
+            font-size: 18px; /* Increased font size */
+            margin: 15px 0;
             color: #dedede;
+        }
+       
+        #character-creator {
+            font-size: 20px; /* Increased font size for the creator's name */
+            color: #ffcc00; /* Yellow color for emphasis */
+            margin-bottom: 25px; /* Increased margin for spacing */
+            font-weight: bold; /* Bold text for emphasis */
+        }
+
+        #character-tags {
+            font-size: 16px; /* Increased font size for tags */
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #333;
+            color: #00ff66;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 2px 3px;
         }
 
         #chat-button {
             background-color: #00ff66;
             color: #1b1b1b;
-            padding: 15px 25px;
+            padding: 15px 25px; /* Increased padding */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-size: 18px;
+            font-size: 18px; /* Increased font size */
+        }
+
+        #chat-button:hover {
+            background-color: #00e55d; /* Darker shade on hover */
+            transform: translateY(-2px);
+        }
+
+        #chat-button:focus {
+            outline: none; /* Remove focus outline */
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            #character-details-container {
+                padding: 20px; /* Less padding on mobile */
+            }
+
+            h1 {
+                font-size: 24px; /* Adjust heading size on mobile */
+            }
+
+            #character-description,
+            #character-creator,
+            #chat-button {
+                font-size: 16px; /* Consistent font size on mobile */
+            }
         }
     </style>
 </head>
 <body>
+
     <div id="character-details-container">
         <h1 id="character-name"></h1>
         <img id="character-image" alt="Character Image">
@@ -94,29 +152,145 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const adContainer = document.querySelector('.ad-container');
-            const maxWidth = 600;
-            
+            const maxWidth = 600; // Define your maximum width threshold for scaling
+    
             if (adContainer) {
                 const resizeObserver = new ResizeObserver(entries => {
                     entries.forEach(entry => {
                         const containerWidth = entry.contentRect.width;
-                        if (containerWidth < maxWidth) {
-                            const scaleFactor = containerWidth / maxWidth;
+                        if (containerWidth > maxWidth) {
+                            const scaleFactor = maxWidth / containerWidth;
                             adContainer.style.transform = `scale(${scaleFactor})`;
-                            adContainer.style.height = `${containerWidth * scaleFactor}px`;
                             adContainer.style.transformOrigin = 'top';
                         } else {
-                            adContainer.style.transform = 'scale(1)';
-                            adContainer.style.height = 'auto';
+                            adContainer.style.transform = 'scale(1)'; // Reset scaling if within limit
                         }
                     });
                 });
-
+    
                 resizeObserver.observe(adContainer);
             }
         });
     </script>
+    
+    <script>
+        const backendurl = 'https://characters.efroai.net:3000';
 
-    <!-- Character details script (unchanged) -->
+        // Function to parse URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                uploader: params.get('uploader'),
+                characterId: params.get('characterId')
+            };
+        }
+
+        // Function to load character details
+        function loadCharacterDetails() {
+            const { characterId, uploader } = getUrlParams();
+            fetch(`${backendurl}/api/chat/${uploader}/${characterId}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 403) {
+                        throw new Error('Character is not approved.');
+                    } else if (response.status === 404) {
+                        throw new Error('Character or user not found.');
+                    } else {
+                        throw new Error('An error occurred while fetching character details.');
+                    }
+                })
+                .then(character => displayCharacterDetails(character))
+                .catch(error => {
+                    console.error('Error fetching character details:', error);
+                    document.getElementById('character-details-container').innerHTML = `<p>${error.message}</p>`;
+                });
+        }
+
+        // Function to display character details on the page
+        function displayCharacterDetails(character) {
+            document.getElementById('character-name').textContent = character.name;
+            document.getElementById('character-description').textContent = character.chardescription || 'No description available.';
+            document.getElementById('character-creator').textContent = `Created by: ${character.uploader || 'Unknown'}`;
+
+            // Display tags
+            const tagsElement = document.getElementById('character-tags');
+            tagsElement.innerHTML = (character.tags || []).map(tag => `<span class="tag">${tag}</span>`).join(' ');
+
+            // Display character image with fetch and error handling
+            const imgElement = document.getElementById('character-image');
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            })
+            .then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
+
+            // Display the "Chat" button
+            const chatButton = document.getElementById('chat-button');
+            chatButton.style.display = 'inline-block';
+            chatButton.onclick = () => openCharacterPage(character.id, character.uploader);
+        }
+
+        // // Function to navigate to the chat page using URL parameters
+        // function openCharacterPage(characterId, uploader) {
+        //     // Construct the URL with characterId and uploader as parameters
+        //     const chatUrl = `/chat.html?characterId=${encodeURIComponent(characterId)}&uploader=${encodeURIComponent(uploader)}`;
+
+        //     // Redirect to the chat page with URL parameters
+        //     window.location.href = chatUrl;
+        // }
+
+        // Function to retrieve URL parameters and set them in sessionStorage
+        function setSessionStorageFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const characterId = params.get('characterId');
+            const uploader = params.get('uploader');
+
+            if (characterId) {
+                sessionStorage.setItem('selectedCharacterId', characterId);
+            }
+            if (uploader) {
+                sessionStorage.setItem('characterUploader', uploader);
+            }
+        }
+
+        // Run the function on page load
+        window.addEventListener('DOMContentLoaded', setSessionStorageFromUrl);
+
+
+        // Function to navigate to the chat page
+        function openCharacterPage(characterId, uploader) {
+            // Use sessionStorage to save the character ID and uploader information
+            sessionStorage.setItem('selectedCharacterId', characterId);
+            sessionStorage.setItem('characterUploader', uploader);
+
+            // Redirect to the chat page
+            window.location.href = '/chat.html';
+        }
+
+        // Load character details on page load
+        document.addEventListener('DOMContentLoaded', loadCharacterDetails);
+    </script>      
 </body>
 </html>
