@@ -460,6 +460,8 @@ main {
     margin: 20px 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for transform and shadow */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow effect */
+    outline: greenyellow;
+    outline-width: 2px; 
 }
 
 .ad-container:hover {
