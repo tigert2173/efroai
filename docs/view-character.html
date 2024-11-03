@@ -15,131 +15,108 @@
             margin: 0;
             padding: 0;
         }
+
         #character-details-container {
-    max-width: 600px;
-    margin: auto;
-    background: rgb(12, 36, 10);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
+            max-width: 600px;
+            margin: auto;
+            background: rgb(12, 36, 10);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            overflow: hidden; /* Prevent overflow */
+        }
 
-#character-details-container:hover {
-    transform: translateY(-5px); /* Subtle lift on hover */
-}
+        .eas6a97888e38 {
+            max-width: 100%; /* Ensure the ad does not exceed the width of the container */
+            height: auto; /* Maintain aspect ratio */
+        }
 
-h1 {
-    font-size: 28px; /* Increased font size */
-    margin-bottom: 15px;
-    color: #00ff66;
-}
+        #character-details-container:hover {
+            transform: translateY(-5px); /* Subtle lift on hover */
+        }
 
-#character-image {
-    width: auto;
-    max-height: 500px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 3px solid #00ff66; /* Bright border for images */
-}
+        h1 {
+            font-size: 28px; /* Increased font size */
+            margin-bottom: 15px;
+            color: #00ff66;
+        }
 
-#character-description {
-    font-size: 18px; /* Increased font size */
-    margin: 15px 0;
-    color: #dedede;
-}
+        #character-image {
+            width: auto;
+            max-height: 500px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 3px solid #00ff66; /* Bright border for images */
 
-#character-creator {
-    font-size: 20px; /* Increased font size for the creator's name */
-    color: #ffcc00; /* Yellow color for emphasis */
-    margin-bottom: 25px; /* Increased margin for spacing */
-    font-weight: bold; /* Bold text for emphasis */
-}
+        }
 
-#character-tags {
-    font-size: 16px; /* Increased font size for tags */
-    margin-bottom: 20px;
-}
+        #character-description {
+            font-size: 18px; /* Increased font size */
+            margin: 15px 0;
+            color: #dedede;
+        }
+       
+        #character-creator {
+            font-size: 20px; /* Increased font size for the creator's name */
+            color: #ffcc00; /* Yellow color for emphasis */
+            margin-bottom: 25px; /* Increased margin for spacing */
+            font-weight: bold; /* Bold text for emphasis */
+        }
 
-.tag {
-    display: inline-block;
-    background-color: #333;
-    color: #00ff66;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin: 2px 3px;
-}
+        #character-tags {
+            font-size: 16px; /* Increased font size for tags */
+            margin-bottom: 20px;
+        }
 
-#chat-button {
-    background-color: #00ff66;
-    color: #1b1b1b;
-    padding: 15px 25px; /* Increased padding */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-size: 18px; /* Increased font size */
-}
+        .tag {
+            display: inline-block;
+            background-color: #333;
+            color: #00ff66;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 2px 3px;
+        }
 
-#chat-button:hover {
-    background-color: #00e55d; /* Darker shade on hover */
-    transform: translateY(-2px);
-}
+        #chat-button {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            padding: 15px 25px; /* Increased padding */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px; /* Increased font size */
+        }
 
-#chat-button:focus {
-    outline: none; /* Remove focus outline */
-}
+        #chat-button:hover {
+            background-color: #00e55d; /* Darker shade on hover */
+            transform: translateY(-2px);
+        }
 
-/* Mobile Styles */
-@media (max-width: 600px) {
-    #character-details-container {
-        padding: 20px; /* Less padding on mobile */
-    }
+        #chat-button:focus {
+            outline: none; /* Remove focus outline */
+        }
 
-    h1 {
-        font-size: 24px; /* Adjust heading size on mobile */
-    }
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            #character-details-container {
+                padding: 20px; /* Less padding on mobile */
+            }
 
-    #character-description,
-    #character-creator,
-    #chat-button {
-        font-size: 16px; /* Consistent font size on mobile */
-    }
-}
+            h1 {
+                font-size: 24px; /* Adjust heading size on mobile */
+            }
 
-.ad-container {
-    width: 100%; /* Full width of the parent */
-    max-width: 100%; /* Prevent overflow */
-    display: flex; /* Flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    overflow: hidden; /* Hide overflow */
-    height: auto; /* Allow height to adjust */
-}
-
-.ad-content {
-    width: 100%; /* Allow the ad content to take full width */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 200px; /* Set a max height for the ad content */
-    position: relative; /* Maintain relative positioning */
-    overflow: hidden; /* Hide overflow */
-}
-
-.ad-content ins {
-    display: block; /* Ensure it is treated as a block element */
-    width: 100%; /* Scale to full width */
-    height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Prevent overflow */
-    max-height: 100%; /* Limit height to avoid overflow */
-    box-sizing: border-box; /* Include padding and border in the width/height */
-    object-fit: contain; /* Maintain aspect ratio while scaling */
-}
-
-
+            #character-description,
+            #character-creator,
+            #chat-button {
+                font-size: 16px; /* Consistent font size on mobile */
+            }
+        }
     </style>
-    
 </head>
 <body>
 
@@ -150,13 +127,10 @@ h1 {
         <p id="character-tags"></p>
         <p id="character-creator"></p>
 
-        <div class="ad-container">
-                <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
-                <ins class="eas6a97888e38" data-zoneid="5461748"></ins>
-                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        </div>
-        
-        
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+        <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     
