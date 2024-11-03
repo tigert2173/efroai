@@ -25,13 +25,18 @@
             padding: 30px;
             text-align: center;
             transition: transform 0.3s ease;
-            overflow-wrap: normal; /* Prevent overflow */
+            overflow: normal; /* Prevent overflow */
         }
 
-        #ad-container {
-            max-width: 100%; /* Ensure the ad container doesn't exceed the character details */
-            margin: 20px 0; /* Add margin for spacing */
+        .scalable-element {
+            position: absolute; /* Allows it to be positioned within the container */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%) scale(0.8); /* Scale down and center */
+            max-width: none; /* Remove max-width if needed */
+            max-height: none; /* Remove max-height if needed */
         }
+
 
         .eas6a97888e38 {
             display: inline-block; /* Ensure the ad displays inline */
@@ -133,7 +138,7 @@
         <p id="character-tags"></p>
         <p id="character-creator"></p>
     
-        <div id="ad-container">
+        <div id="scalable-element">
             <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
             <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
