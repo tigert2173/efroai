@@ -246,7 +246,8 @@ html { /*body*/
 @media (max-width: 950px) {
     .search-bar {
         display: none; /* Hide search bar on small screens */
-        
+    }
+
     .login-status {
         transform: scale(0.75);
         padding: 15px;
@@ -254,8 +255,6 @@ html { /*body*/
         border-radius: 5px;
         text-align: center;
         min-width: 100px;
-    }
-
     }
 }
 
