@@ -137,15 +137,12 @@ function displayCharacters(characters) {
                     scriptElement.async = true;
                     scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
 
-                    // Only call push() when the script is fully loaded
-                    scriptElement.onload = function() {
-                        // Ensure the AdProvider object exists
+                    
                         if (window.AdProvider) {
                             window.AdProvider.push({"serve": {}});
                             adLoading = false; // Reset flag after ad loads
                             console.log("loadedad");
-                        }
-                    };
+                   
 
                     // Error handling to reset the flag if the script fails to load
                     scriptElement.onerror = function() {
