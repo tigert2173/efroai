@@ -153,10 +153,10 @@
     const adContainer = document.querySelector('.ad-container');
     const adElement = document.querySelector('.eas6a97888e38');
 
-    // Reset the transform property to measure the size
-    adElement.style.transform = 'none'; // Remove previous scaling
-    adElement.style.width = 'auto'; // Reset width to auto for measurement
-    adElement.style.height = 'auto'; // Reset height to auto for measurement
+    // Reset the transform to measure the size accurately
+    adElement.style.transform = 'none';
+    adElement.style.width = 'auto';
+    adElement.style.height = 'auto';
 
     // Get dimensions
     const containerWidth = adContainer.clientWidth;
@@ -164,28 +164,26 @@
     const adWidth = adElement.offsetWidth;
     const adHeight = adElement.offsetHeight;
 
-    // Calculate the scale factor
+    // Calculate scale factor
     let scale = 1;
 
     // Check if the ad overflows the container
     if (adWidth > containerWidth || adHeight > containerHeight) {
-        // Calculate scale needed to fit
+        // Calculate the required scale to fit the container
         const widthScale = containerWidth / adWidth;
         const heightScale = containerHeight / adHeight;
-        scale = Math.min(widthScale, heightScale); // Use the smaller scale factor
+        scale = Math.min(widthScale, heightScale); // Use the smaller scale
 
         // Apply the scale transformation
         adElement.style.transform = `scale(${scale})`;
         adElement.style.transformOrigin = 'top left'; // Set origin for scaling
-        adElement.style.width = `${adWidth}px`; // Set width for proper scaling
-        adElement.style.height = `${adHeight}px`; // Set height for proper scaling
     }
 }
 
 // Run the scale function after the ad loads
 window.onload = scaleAd;
 
-// Optionally, also scale on window resize
+// Optionally, scale on window resize
 window.onresize = scaleAd;
 
     </script>
