@@ -115,37 +115,43 @@ function displayCharacters(characters) {
 //         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
 //  <ins class="eas6a97888e38" data-zoneid="5461570"></ins> 
 //  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        if (cardCounter >= nextAdInterval) {
-            const adContainer = document.createElement('div');
-            adContainer.className = 'ad-container';
+if (cardCounter >= nextAdInterval) {
+    // Create a container for the ad
+    const adContainer = document.createElement('div');
+    adContainer.className = 'ad-container';
 
-            // Insert the <ins> element for the ad
-            const insElement = document.createElement('ins');
-            // insElement.className = 'eas6a97888e2';
-            // insElement.setAttribute('data-zoneid', '5449604');
-            insElement.className = 'eas6a97888e38';
-            insElement.setAttribute('data-zoneid', '5461570');
-            adContainer.appendChild(insElement);
+    // Insert the <ins> element for the ad
+    const insElement = document.createElement('ins');
+    insElement.className = 'eas6a97888e38';
+    insElement.setAttribute('data-zoneid', '5461570');
+    adContainer.appendChild(insElement);
 
-           // const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-          //  insElement.setAttribute('data-keywords', keywords);
+    // Optionally, set keywords for targeting if needed
+    /*
+    const keywords = 'AI chatbots, artificial intelligence, virtual companions, engaging chat experiences, AI humor, unique chat experiences, etc.';
+    insElement.setAttribute('data-keywords', keywords);
+    */
 
-            // Insert the script tag for the ad provider
-            const scriptElement = document.createElement('script');
-            scriptElement.async = true;
-            scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-            scriptElement.onload = function() {
-                (AdProvider = window.AdProvider || []).push({"serve": {}});
-            };
-            document.body.appendChild(scriptElement); // Append script to body
+    // Insert the ad container into the grid
+    characterGrid.appendChild(adContainer);
 
-            // Append the ad container to the grid
-            characterGrid.appendChild(adContainer);
+    // Insert the script for the ad provider
+    const scriptElement = document.createElement('script');
+    scriptElement.async = true;
+    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+    scriptElement.onload = function() {
+        // Trigger the ad once the script is loaded
+        (window.AdProvider = window.AdProvider || []).push({ "serve": {} });
+    };
 
-            // Set the next ad interval
-            nextAdInterval = cardCounter + getRandomAdInterval(); // Set the next interval
+    // Append the script to the ad container, ensuring it loads within context
+    adContainer.appendChild(scriptElement);
+
+    // Set the next ad interval to load the next ad at the right time
+    nextAdInterval = cardCounter + getRandomAdInterval(); // Adjust interval as needed
+}
+
         }
-    }
     });
 }
 
