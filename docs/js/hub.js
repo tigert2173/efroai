@@ -140,6 +140,7 @@ function displayCharacters(characters) {
                         if (window.AdProvider) {
                             window.AdProvider.push({"serve": {}});
                             adLoading = false; // Reset flag after ad loads
+                            console.log("loadedad");
                         }
                     };
 
