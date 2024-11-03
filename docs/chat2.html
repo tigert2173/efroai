@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <audio id="christmas-music">
+        <source src="christmas_jingle.mp3" type="audio/mpeg">
+      </audio>
+      
+      <audio id="santa-voice">
+        <source src="ho_ho_ho.mp3" type="audio/mpeg">
+      </audio>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - BotBridge.AI</title>
+    <link rel="stylesheet" href="css/chat.css?v1">
+    <link rel="stylesheet" href="css/menu2.0.css">
+</head>
+<body>
+
+     <!-- Header -->
+     <header>
+<!-- Header -->
+<header>
+    <nav class="navbar">
+        <div class="left-content">
+            <a href="/" class="logo"> <!-- Make the logo clickable -->
+            <div class="logo">
+                <img src="logo.png" alt=" ">
+            </div>
+        </a>
+        <a href="/" class="text">
+           <div class="text">
+                    <span class="letter letter-1">B</span>
+                    <span class="letter letter-2">o</span>
+                    <span class="letter letter-3">t</span>
+                    <span class="letter letter-4">B</span>
+                    <span class="letter letter-5">r</span>
+                    <span class="letter letter-6">i</span>
+                    <span class="letter letter-7">d</span>
+                    <span class="letter letter-8">g</span>
+                    <span class="letter letter-9">e</span>
+                </div>
+        </a>
+        </div>
+<div class="right-content">
+    <ul class="nav-links">
+        <!-- Characters with dropdown -->
+        <li class="dropdown">
+            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+            <div class="dropdown-content">
+                <a href="index.html">Characters Hub</a>
+                <a href="editor.html">Upload Character</a>
+                <a href="mycharacters.html">My Characters</a>
+            </div>
+        </li>
+
+        <!-- Community with dropdown -->
+        <li class="dropdown">
+            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+            <div class="dropdown-content">
+                <a href="rules.html">Rules</a>
+                <a href="join-our-team.html">Get Involved in the AI Scene</a>
+                <a href="/BotBridgeTales/">Old Stories Page</a>
+            </div>
+        </li>
+
+        <!-- Account with dropdown -->
+        <li class="dropdown">
+            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+            <div class="dropdown-content">
+                <a href="myaccount.html">Account</a>
+                <a href="mylikes.html">My Likes</a>
+                <a href="login.html">Login</a>
+            </div>
+        </li>
+
+        <!-- Help with dropdown -->
+        <li class="dropdown">
+            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+            <div class="dropdown-content">
+                <a href="documentation.html">Documentation</a>
+                <a href="updates.html">Updates & Features</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </li>
+
+        <!-- Contribute Button -->
+        <li>
+            <a href="contribute.html" class="nav-btn">Contribute</a>
+        </li>
+    </ul>     
+
+        <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
+
+        <!-- Popup Modal for Login Warning -->
+        <div id="login-popup" class="login-popup">
+            <div class="popup-content">
+                <p>You must be logged in to chat. Please log in or register to continue.</p>
+                <button id="login-btn">Log In</button>
+            </div>
+        </div>
+        
+        <!-- Hamburger menu for mobile view -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>  
+    </div>
+</div>
+</nav>
+    </header>
+    <div id="main-content">
+        <div id="chat-container">
+        </div>
+        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+        </div>
+            <div class="status">
+                <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
+            </div>
+            <div id="speed-indicator-container">
+                <div id="speed-indicator" class="speed-indicator"></div>
+            </div>
+            <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
+           
+            <button id="save-button">Save Chat</button>
+
+        <button id="download-button">Download Chat as JSON</button>
+        <input type="file" id="upload-input" style="display:none;" />
+        <button id="upload-button">Upload Chat</button>
+        
+      
+        <div id="saved-chats">
+            <h2 style="text-align: center;">Saved Chats</h2>
+            <div id="storage-notice" style="color: red; font-weight: bold;">
+                Note: Clearing your browser storage will delete all saved chats!
+            </div>    
+            <ul id="saved-chats-list"></ul>
+        </div>
+        
+        <div id="popup-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black; z-index: 1000;">
+            <!-- The delete button will be dynamically added here -->
+        </div>
+    
+        <div id="settings-container">
+            <div class="setting">
+                <label for="user-name">Your Name: </label>
+                <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
+            </div>
+            <label for="systemPrompt">System Prompt:</label>
+            <select id="systemPrompt">
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
+                <option value="Write {{char}} next response.">Default</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}.">Descriptive</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction.">Humor</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact.">Knowledge Sharing</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle.">Emotional Support</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about.">Educational</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}.">Advice</option>
+            </select>
+            <br>
+            <br>
+            <label for="systemParameters">Parameters:</label>
+            <select id="systemParameters">
+                <option value="Ethereal Winds">𝐄𝐭𝐡𝐞𝐫𝐞𝐚𝐥 𝐖𝐢𝐧𝐝𝐬 - 𝘈 𝘴𝘰𝘧𝘵 𝘣𝘳𝘦𝘦𝘻𝘦 𝘵𝘩𝘢𝘵 𝘯𝘶𝘳𝘵𝘶𝘳𝘦𝘴 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘪𝘵𝘺, 𝘪𝘥𝘦𝘢𝘭 𝘧𝘰𝘳 𝘴𝘦𝘳𝘦𝘯𝘦 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨</option>
+                <option value="AetherFume">𝐀𝐞𝐭𝐡𝐞𝐫𝐅𝐮𝐦𝐞 - 𝘈𝘯 𝘪𝘯𝘷𝘪𝘨𝘰𝘳𝘢𝘵𝘪𝘯𝘨 𝘧𝘰𝘳𝘤𝘦 𝘵𝘩𝘢𝘵 𝘱𝘳𝘰𝘱𝘦𝘭𝘴 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨 𝘧𝘰𝘳𝘸𝘢𝘳𝘥, 𝘪𝘯𝘷𝘪𝘵𝘪𝘯𝘨 𝘯𝘦𝘸 𝘪𝘥𝘦𝘢𝘴 𝘢𝘯𝘥 𝘢𝘥𝘷𝘦𝘯𝘵𝘶𝘳𝘦𝘴</option>
+                <option value="Nebula Drift">𝐍𝐞𝐛𝐮𝐥𝐚 𝐃𝐫𝐢𝐟𝐭 - 𝘌𝘮𝘣𝘳𝘢𝘤𝘦 𝘵𝘩𝘦 𝘦𝘵𝘩𝘦𝘳 𝘰𝘧 𝘯𝘦𝘣𝘶𝘭𝘢𝘳 𝘨𝘢𝘴𝘦𝘴, 𝘶𝘯𝘭𝘦𝘢𝘴𝘩 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘦 𝘢𝘯𝘴𝘸𝘦𝘳𝘴 𝘧𝘳𝘰𝘮 𝘥𝘦𝘦𝘱 𝘴𝘱𝘢𝘤𝘦</option>
+                <option value="Chaos Catalyst">𝐂𝐡𝐚𝐨𝐬 𝐂𝐚𝐭𝐚𝐥𝐲𝐬𝐭 - 𝘈 𝘧𝘰𝘳𝘤𝘦𝘧𝘶𝘭 𝘥𝘪𝘴𝘳𝘶𝘱𝘵𝘪𝘰𝘯 𝘮𝘰𝘥𝘦 𝘵𝘰 𝘣𝘳𝘦𝘢𝘬 𝘤𝘺𝘤𝘭𝘦𝘴 𝘰𝘧 𝘳𝘦𝘱𝘦𝘵𝘪𝘵𝘪𝘷𝘦 𝘭𝘰𝘰𝘱𝘴, 𝘧𝘰𝘳𝘤𝘪𝘯𝘨 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘶𝘯𝘦𝘹𝘱𝘦𝘤𝘵𝘦𝘥 𝘰𝘶𝘵𝘱𝘶𝘵.</option>
+                <option value="Llama 3 Default">Llama 3 Default</option>
+                <option value="Creative Boost">Creative Boost</option>
+                <option value="Yodayo Default">Yodayo Default</option>
+                <option value="Clarity Forge">Clarity Forge</option>
+                <option value="Divine Intellect">Divine Intellect</option>
+                <option value="Fantastic">Fantastic</option>
+                <option value="Basic">Basic</option>
+                <option value="LLama Precise">LLama Precise</option>
+                <option value="Midnight Enigma">Midnight Enigma</option>
+                <option value="Shortwave">Shortwave</option>
+                <option value="Star Chat">Star Chat</option>
+                <option value="Yara">Yara</option>
+            </select>
+            <br>
+            <br>
+            <div class="setting hidden">
+                <label for="persona">Character Persona</label>
+                <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="context">Context</label>
+                <textarea type="text" id="context" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="scenario">Scenario</label>
+                <textarea type="text" id="scenario" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="greeting">Greeting</label>
+                <textarea type="text" id="greeting" placeholder="e.g., Hello! How can I help you?" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="exampledialogue">Example Dialogue</label>
+                <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting">
+                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
+                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
+                <span id="SettingsMaxTokensValue">256 Tokens</span>
+            
+                <div class="setting">
+                    <label for="model">Select Model</label>
+                    <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
+                        <option value="gastronova" data-description="BotBridgeAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
+                        <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
+                        <!-- Other options will be populated here -->
+                    </select>
+                    <div id="tooltip" class="tooltip"></div>
+                </div>
+            <div class="setting">
+                <a class="add-api" target="_blank" href="https://api.botbridge.net/dashboard.html">Add API</a>
+            </div>
+
+            <div class="setting">
+                <label for="temperature">Temperature</label>
+                <input type="number" id="temperature" min="0.2" max="2" step="0.1" value="1.10">
+            </div>
+
+            <div class="setting">
+                <label for="messages-sent">Messages Sent</label>
+                <input type="text" id="messages-sent" value="0" readonly>
+            </div>
+            <div id="save-load-container">
+                <button onclick="saveCharacter()">Save Character</button>
+                <button onclick="updateSettings()">Update Settings</button>
+            </div>
+            <div class="setting">
+                <label for="advanced-debugging">Debugging</label>
+                <textarea id="advanced-debugging" value="" rows="20" style="width: 100%;" readonly></textarea>
+            </div>
+            <!-- Checkbox -->
+            <label for="show-expert">Show Expert Settings:</label>
+            <input type="checkbox" id="show-expert" onchange="toggleExpertSettings()">
+        </div>
+        
+        <!-- Expert Settings Section -->
+        <div id="expert-settings">
+            <h3>Expert Settings</h3>
+            <button id="toggleSettings">Toggle Character Information</button>
+            <!-- Expert settings go here -->
+            <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
+            <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
+            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span>
+            chat
+            <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
+            <input type="range" id="ESettingsRandomNUMsentencesSlider" min="1" max="500" step="1" value="200">
+            <span id="ESettingsRandomNUMsentencesValue">Select 200 Random Sentences</span>
+            <br><i>Older Content has a lower and lower chance of being selected</i>
+            <label for="setting2">Expert Setting 2:</label>
+            <input type="text" id="setting2"><br><br>
+
+            <label for="setting3">Expert Setting 3:</label>
+            <input type="text" id="setting3"><br><br>
+        </div>
+    </div>
+
+    <script>
+          document.getElementById('toggleSettings').addEventListener('click', function() {
+        const settings = document.querySelectorAll('.setting');
+        settings.forEach(setting => {
+            setting.classList.toggle('hidden');
+        });
+    });
+        function showTooltip(event) {
+    const selectElement = event.target;
+    const tooltip = document.getElementById('tooltip');
+    
+    // Get the currently selected option
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    
+    // Set tooltip content
+    tooltip.textContent = selectedOption.getAttribute('data-description');
+    
+    // Position the tooltip
+    const rect = selectElement.getBoundingClientRect();
+    tooltip.style.left = `${rect.left}px`;
+    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+    
+    // Show the tooltip
+    tooltip.style.display = 'block';
+}
+
+function hideTooltip() {
+    const tooltip = document.getElementById('tooltip');
+    tooltip.style.display = 'none';
+}
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Spec Notification</title>
+    <style>
+        #notification {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 20px;
+            border-radius: 8px; /* Rounded corners */
+            z-index: 1000; /* High z-index to appear above other content */
+            opacity: 0; /* Initially invisible */
+            transform: translateY(-20px); /* Slide from top */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        #notification.show {
+            display: block; /* Show when needed */
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Slide in */
+            animation: bounceIn 0.5s forwards; /* Animation when shown */
+        }
+
+        .notification-buttons {
+            margin-top: 10px; /* Space between message and buttons */
+        }
+
+        .notification-buttons button {
+            background-color: #f44336; /* Red background for buttons */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition */
+            margin-right: 5px; /* Space between buttons */
+        }
+
+        .notification-buttons button:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+        #notification a {
+            color: #FFD700; /* Gold color for the link */
+            text-decoration: underline; /* Underline to indicate it's a link */
+        }
+
+        #closeButton {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 16px; /* Adjust size as needed */
+        }
+
+        /* Optional: Add a fade-out effect */
+        #notification.fade-out {
+            animation: fadeOut 0.5s forwards; /* Animation for fade out */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none; /* Hide it after fading out */
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            80% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="notification" class="notification">
+        <p>For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally!</p>
+        <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
+        <div class="notification-buttons">
+            <button id="hideNotificationButton">Don't show for 30 days</button>
+            <button id="closeButton">Close</button>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    const hideNotification = getCookie('hideNotification');
+
+    // Get user device specifications and show notification if not hidden
+    if (!hideNotification) {
+        const userAgent = navigator.userAgent;
+        const screenWidth = screen.width;
+        const screenHeight = screen.height;
+        const colorDepth = screen.colorDepth;
+        const deviceMemory = navigator.deviceMemory || 'Unknown';
+        const cpuCores = navigator.hardwareConcurrency || 'Unknown';
+
+        console.log(`User Agent: ${userAgent}`);
+        console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
+        console.log(`Device Memory: ${deviceMemory} GB`);
+        console.log(`CPU Cores: ${cpuCores}`);
+
+        // Example decision-making based on device specs
+        if (deviceMemory < 6) {
+            console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
+        } else {
+            console.log("Your device seems capable! Enjoy exploring our content.");
+        }
+
+        // Check for dedicated GPU
+        checkGPU(cpuCores, deviceMemory);
+        }
+    });
+
+    // Function to check for dedicated GPU and suggest local hosting
+    function checkGPU(cpuCores, deviceMemory) {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+        if (!gl) {
+            console.log('WebGL not supported');
+            return;
+        }
+
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
+
+        console.log(`GPU Renderer: ${gpuRenderer}`);
+
+        // Check for specific keywords that may indicate a dedicated GPU
+        const dedicatedGPUKeywords = [
+            'nvidia', 'amd',
+            'geforce', 'tesla',
+        ];
+
+        const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
+        const hasHighCores = cpuCores > 10;
+        const hasEnoughMemory = deviceMemory >= 6;
+
+        if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show'); // Add class to show notification
+            
+            // Optional: Automatically hide the notification after a few seconds
+            setTimeout(() => {
+                notification.classList.add('fade-out'); // Add fade-out class
+            }, 30500); // Start fade out after 5 seconds
+
+            // Hide it completely after the fade-out animation
+            setTimeout(() => {
+                notification.style.display = 'none'; // Hide it after fading out
+            }, 30500); // Adjust timing to match the fade-out duration
+        } else {
+            console.log('User does not meet the criteria for local hosting suggestion.');
+        }
+    }
+
+    // Close button functionality
+    document.getElementById('closeButton').addEventListener('click', () => {
+        const notification = document.getElementById('notification');
+        notification.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            notification.style.display = 'none'; // Hide it after fading out
+        }, 500); // Match this with the fade-out duration
+    });
+
+    // Don't show again button functionality
+    document.getElementById('hideNotificationButton').addEventListener('click', () => {
+        setCookie('hideNotification', 'true', 30); // Set cookie for 30 days
+        const notification = document.getElementById('notification');
+        notification.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            notification.style.display = 'none'; // Hide it after fading out
+        }, 500); // Match this with the fade-out duration
+    });
+
+    // Function to set a cookie with a specified expiration in days
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+        const expires = "expires=" + date.toUTCString(); // Format the expiration date
+        document.cookie = `${name}=${value}; ${expires}; path=/`; // Set the cookie
+    }
+
+    // Function to get a cookie value by its name
+    function getCookie(name) {
+        const nameEQ = name + "="; // Define the cookie name to search for
+        const ca = document.cookie.split(';'); // Split the document cookie string into an array
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim(); // Remove leading spaces
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length); // Return the cookie value
+        }
+        return null; // Return null if the cookie doesn't exist
+    }
+
+
+</script>
+<script>
+    const socket = new WebSocket('wss://BotBridgeai.net'); // Update with your domain
+
+    // Connection opened
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to WebSocket server');
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', (event) => {
+        console.log('Message from server:', event.data);
+        // Handle ping or any other messages from the server
+        if (event.data === 'ping') {
+            // You can respond to pings if needed
+            socket.send('pong'); // Example response
+        }
+    });
+
+    // Connection closed
+    socket.addEventListener('close', (event) => {
+        console.log('Disconnected from WebSocket server');
+    });
+    
+</script>
+
+<script src="js/scripts/chat/savechatlocally.js?v=1"></script>
+<script src="js/chat.js?v=1"></script>
+<script src="js/scripts/checkbot.js"></script>
+<script src="js/menu.js" defer></script>
+</body>
+</html>
