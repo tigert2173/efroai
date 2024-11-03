@@ -114,7 +114,7 @@
             width: 100%; /* Full width of the parent */
             max-width: 100%; /* Prevent overflow */
             height: auto; /* Allow height to adjust */
-            display: flex; /* Flexbox for centering */
+            display: flex; /* Use flexbox for alignment */
             justify-content: center; /* Center horizontally */
             align-items: center; /* Center vertically */
             overflow: hidden; /* Hide overflow */
@@ -122,10 +122,10 @@
 
         .eas6a97888e38 {
             display: block; /* Block display for the ad */
-            width: auto; /* Allow width to be set by transform */
+            width: auto; /* Allow width to be adjusted */
             height: auto; /* Auto height */
+            max-width: none; /* Prevent max-width restrictions */
         }
-
 
     </style>
     
@@ -145,16 +145,19 @@
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
         
+        
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     <script>
-        function scaleAd() {
+    function scaleAd() {
     const adContainer = document.querySelector('.ad-container');
     const adElement = document.querySelector('.eas6a97888e38');
 
     // Reset the transform property to measure the size
-    adElement.style.transform = 'none';
-    
+    adElement.style.transform = 'none'; // Remove previous scaling
+    adElement.style.width = 'auto'; // Reset width to auto for measurement
+    adElement.style.height = 'auto'; // Reset height to auto for measurement
+
     // Get dimensions
     const containerWidth = adContainer.clientWidth;
     const containerHeight = adContainer.clientHeight;
@@ -166,19 +169,24 @@
 
     // Check if the ad overflows the container
     if (adWidth > containerWidth || adHeight > containerHeight) {
-        // Determine the scale needed to fit
+        // Calculate scale needed to fit
         const widthScale = containerWidth / adWidth;
         const heightScale = containerHeight / adHeight;
-        scale = Math.min(widthScale, heightScale);
-        
-        // Apply the scale
+        scale = Math.min(widthScale, heightScale); // Use the smaller scale factor
+
+        // Apply the scale transformation
         adElement.style.transform = `scale(${scale})`;
-        adElement.style.transformOrigin = 'top left'; // Adjust origin for scaling
+        adElement.style.transformOrigin = 'top left'; // Set origin for scaling
+        adElement.style.width = `${adWidth}px`; // Set width for proper scaling
+        adElement.style.height = `${adHeight}px`; // Set height for proper scaling
     }
 }
 
 // Run the scale function after the ad loads
 window.onload = scaleAd;
+
+// Optionally, also scale on window resize
+window.onresize = scaleAd;
 
     </script>
     <script>
