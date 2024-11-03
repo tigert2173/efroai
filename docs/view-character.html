@@ -116,12 +116,15 @@ h1 {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     overflow: hidden; /* Hide overflow */
+    height: auto; /* Allow height to adjust */
 }
 
 .ad-content {
     width: 100%; /* Allow the ad content to take full width */
     height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Set a max height for the ad content */
     position: relative; /* Maintain relative positioning */
+    overflow: hidden; /* Hide overflow */
 }
 
 .ad-content ins {
@@ -131,6 +134,7 @@ h1 {
     max-width: 100%; /* Prevent overflow */
     max-height: 100%; /* Limit height to avoid overflow */
     box-sizing: border-box; /* Include padding and border in the width/height */
+    object-fit: contain; /* Maintain aspect ratio while scaling */
 }
 
 
@@ -147,11 +151,9 @@ h1 {
         <p id="character-creator"></p>
 
         <div class="ad-container">
-            <div class="ad-content">
                 <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
                 <ins class="eas6a97888e38" data-zoneid="5461748"></ins>
                 <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-            </div>
         </div>
         
         
