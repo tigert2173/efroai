@@ -111,25 +111,15 @@
             }
         }
         .ad-container {
-            position: relative; /* For positioning child elements */
-            width: 100%; /* Full width */
-            max-width: 600px; /* Set a max width for larger screens */
+            width: 100%; /* Full width of the parent */
+            max-width: 100%; /* Prevent overflow */
+            height: auto; /* Allow height to adjust */
+            display: flex; /* Flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
             overflow: hidden; /* Hide overflow */
-            margin: 0 auto; /* Center the container */
-        }
 
-        .ad-content {
-            position: absolute; /* Positioning to scale down */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Adjust for the center */
-            width: 100%; /* Full width */
-            height: auto; /* Maintain aspect ratio */
-            max-height: 100%; /* Limit height */
-            max-width: 100%; /* Limit width */
-            object-fit: contain; /* Scale while maintaining aspect ratio */
         }
-
 
     </style>
     
@@ -144,13 +134,10 @@
         <p id="character-creator"></p>
 
         <div class="ad-container">
-            <div class="ad-content">
-                <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-                <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
-                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-            </div>
+            <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+            <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
+            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
-        
         
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
