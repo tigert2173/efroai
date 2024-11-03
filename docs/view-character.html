@@ -110,6 +110,21 @@
                 font-size: 16px; /* Consistent font size on mobile */
             }
         }
+        .ad-container {
+            width: 100%; /* or a specific width */
+            max-width: 300px; /* Set a maximum width */
+            height: auto; /* Allow height to adjust */
+            overflow: hidden; /* Hide overflow */
+            text-align: center; /* Center the content */
+            margin: 0 auto; /* Center the container */
+        }
+
+        .ins {
+            display: block; /* Ensure block layout */
+            width: 100%; /* Allow to fill the container */
+            height: auto; /* Allow height to adjust */
+        }
+
     </style>
 </head>
 <body>
@@ -121,10 +136,12 @@
         <p id="character-tags"></p>
         <p id="character-creator"></p>
 
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-        <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-
+        <div class="ad-container">
+            <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+            <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
+            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        </div>
+        
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     
