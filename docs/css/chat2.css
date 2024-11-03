@@ -1,0 +1,676 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1e272e; /* Dark grey */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Change to column to stack elements */
+    align-items: center; /* Center items horizontally */
+    color: #f5f6fa; /* Light grey for text */
+    overflow-x: hidden;
+} 
+
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 1000;
+}
+
+.temporary-notice {
+    background-color: #ffcc00; /* Yellow or any color you prefer */
+    color: #000; /* Text color */
+    /* Additional styling */
+}
+
+#queue-counter {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.status {
+    margin: 10px 0;
+    padding: 15px;
+    border-left: 4px solid #32CD32; /* Softer neon green */
+    border-radius: 5px;
+}
+
+.status p {
+    font-size: 1.2em;
+    margin: 8px 0;
+}
+
+.status .queue {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.status .queue.low {
+    color: #28a745; /* Green for low queue */
+}
+
+.status .queue.medium {
+    color: #f2a900; /* Orange for medium queue */
+}
+
+.status .queue.high {
+    color: #d9534f; /* Red for high queue */
+}
+
+/* Default link color */
+a {
+    color: #32CD32; /* Softer neon green */
+    text-decoration: none;
+}
+
+/* Link color on hover */
+a:hover {
+    color: #ff6600; /* Orange */
+    text-decoration: underline;
+}
+
+/* Link color when visited */
+a:visited {
+    color: #00aaff; /* Light blue */
+}
+
+/* Link color when active */
+a:active {
+    color: #b1e5ff; /* Light blue */
+}
+
+#api-status-text {
+    font-weight: bold;
+}
+
+.status-checking {
+    color: rgb(155, 156, 207);
+}
+
+.status-operational {
+    color: #00FF00; /* Softer neon green for All Systems Operational */
+}
+
+.status-fully-functional {
+    color: #ADD8E6; /* Medium Green for Fully Functional */
+}
+
+.status-mostly-functional {
+    color: #FFFF00; /* Bright Yellow for Mostly Functional */
+}
+
+.status-partially-functional {
+    color: #FF8C00; /* Orange for Partially Functional */
+}
+
+.status-degraded-service {
+    color: #FF6F20; /* Deep Orange for Degraded Service */
+}
+
+.status-limited-availability {
+    color: #FF1493; /* Orange for Limited Availability */
+}
+
+.status-offline {
+    color: #8B0000; /* Dark Red for All Services Offline */
+}
+
+.status-code {
+    color: #d06aff; /* Orange */
+}
+.status-error {
+    color: #ff0000; /* Orange */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+    50% {
+        background-position: 100% 50%; /* Move to the right */
+    }
+    100% {
+        background-position: 0% 50%; /* Reset to start position */
+    }
+}
+
+#speed-indicator-container {
+    max-width: 50%;
+    width: 500px;
+    height: 10px;
+    background-color: #444; /* Dark grey for the background */
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative; /* Position relative for stacking indicators */
+    margin: 5px;
+}
+
+/* Main speed indicator with animated gradient */
+.speed-indicator {
+    height: 100%;
+    width: 0%; /* Start at 0% width */
+    background: linear-gradient(270deg, #32CD32, #3CB371, #228B22); /* Define the gradient colors */
+    background-size: 200% 200%; /* Size the gradient for movement */
+    animation: gradientAnimation 5s linear infinite; /* Apply the gradient animation */
+    position: relative; /* Position relative for pseudo-elements */
+}
+
+.nav-arrows {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 1.2em;
+    color: #32CD32; /* Softer neon green */
+}
+
+.nav-arrows.disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 100%; /* Take full width */
+    max-width: 700px; /* Limit max width */
+}
+/* Style for block code */
+.code-block {
+    background-color: #303030;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "Courier New", Courier, monospace;
+    overflow-x: auto; /* For long lines of code */
+}
+
+/* Style for inline code */
+codelight {
+    /* background-color: #2e2e2e; */
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: "Courier New", Courier, monospace;
+}
+/* Style for inline code */
+code {
+    background-color: #2e2e2e;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: "Courier New", Courier, monospace;
+}
+#chat-container {
+    width: 100%;
+    z-index: 500;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    overflow-y: auto;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #353b48; /* Dark grey */
+}
+
+.assistant {
+    text-align: left;
+    background-color: #124429; /* Orange background for bot */
+}
+
+.user {
+    text-align: right;
+    background-color: #1b663e; /* Softer neon green background for user */
+}
+
+.system {
+    text-align: left;
+    background-color: brown; /* Orange background for bot */
+}
+
+#input-container {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 10px;
+}
+
+#input-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px 0 0 5px;
+    /* background-color: #2f3640; Dark grey */
+    background-color: #124429; 
+    color: #f5f6fa; /* Light grey */
+}
+
+#user-input {
+    background-color: #2e2e2e; /* Slightly lighter green for the input field */
+    color: #f9f9fc;
+}
+
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
+
+#input-container button {
+    border: 1px solid #2e8b57; /* Softer neon green button */
+    border-left: none;
+    width: 15%;
+    min-width: 10%;
+    border-radius: 0 5px 5px 0;
+    background-color: #1b663e; /* Softer neon green */
+    color: #f5f6fa; /* Light grey */
+    cursor: pointer;
+}
+
+#settings-container {
+    width: 100%;
+    max-width: 700px;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.setting {
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f5f6fa; /* Light grey */
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px;
+    background-color: #2f3640; /* Dark grey */
+    color: #f5f6fa; /* Light grey */
+}
+
+#save-load-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#save-load-container button {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 5px;
+    background-color: #32CD32; /* Softer neon green */
+    color: #f5f6fa; /* Light grey */
+    cursor: pointer;
+}
+
+#api-status {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #32CD32; /* Softer neon green */
+}
+
+#SettingsMaxTokensSlider {
+    width: 100%;
+}
+
+#SettingsMaxTokensValue {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Simple styling to hide expert settings initially */
+#expert-settings {
+    display: none; /* Hidden by default */
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #1e272e; /* Dark grey */
+    width: 100%;
+    max-width: 700px;
+    border-radius: 5px;
+}
+
+button.expert-settings-toggle {
+    background-color: #d9534f; /* Red for the toggle button */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.expert-settings-toggle:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}
+
+/* Active states */
+input:focus, select:focus {
+    outline: none;
+    border: 1px solid #ffcc00; /* Active border color */
+}
+
+input[type="checkbox"]:checked + label {
+    color: #32CD32; /* Softer neon green */
+}
+
+input[type="checkbox"]:not(:checked) + label {
+    color: #f5f6fa; /* Light grey */
+}
+
+.button-disabled {
+    background-color: #555; /* Grey for disabled buttons */
+    cursor: not-allowed;
+}
+
+
+.color-red {
+    color: red;
+}
+.color-blue {
+    color: blue;
+}
+.color-green {
+    color: green;
+}
+.color-yellow {
+    color: yellow;
+}
+.color-purple {
+    color: purple;
+}
+.color-orange {
+    color: orange;
+}
+.color-pink {
+    color: pink;
+}
+.color-brown {
+    color: brown;
+}
+
+
+
+
+/* Snowflake animation */
+.snowflake {
+    position: fixed;
+    top: -50px; /* Start above the viewport */
+    color: white;
+    z-index: 1; /* Ensure it's on top */
+    pointer-events: none; /* Snowflakes should not interfere with clicks */
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(200vh); /* Fall to the bottom of the viewport */
+    }
+}
+
+
+/* Santa image */
+.santa-image {
+    position: fixed;
+    top: 45px;
+    z-index: 1000;
+    right: 0;
+    width: 75px;
+    animation: santaEntrance 10s ease-out forwards;
+}
+
+@keyframes santaEntrance {
+    0% {right: -200px;}
+    100% {right: 120%;}
+}
+
+/* Gift box animation */
+.gift-box {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    animation: giftBounce 2s infinite;
+}
+
+@keyframes giftBounce {
+    0%, 100% {transform: translateX(-50%) translateY(0);}
+    50% {transform: translateX(-50%) translateY(-20px);}
+}
+
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Stack elements vertically on mobile */
+        padding: 10px; /* Add some padding */
+    }
+
+    #main-content {
+        padding: 10px; /* Reduce padding on main content */
+        width: 100%; /* Full width */
+    }
+
+    #chat-container {
+        height: 300px; /* Adjust height for mobile */
+        padding: 15px; /* Adjust padding */
+    }
+
+    #input-container {
+        flex-direction: row; /* Stack input and button vertically */
+        align-items: stretch; /* Full width for both */
+        min-width: 50%;
+    }
+
+    #input-container input {
+        width: 100%; /* Full width */
+        margin-bottom: 5px; /* Space between input and button */
+    }
+
+    #input-container button {
+        width: 20%; /* Full width for button */
+        min-width: 100px; /* Remove min-width to fit */
+    }
+
+    #settings-container, #api-status {
+        width: 100%; /* Full width */
+        padding: 10px; /* Adjust padding */
+    }
+
+    .message {
+        font-size: 0.9em; /* Slightly smaller text for messages */
+        padding: 8px; /* Less padding */
+    }
+
+    .status {
+        font-size: 0.9em; /* Adjust font size for status */
+        padding: 10px; /* Less padding */
+    }
+
+    .tooltip {
+        font-size: 10px; /* Smaller tooltip font size */
+        padding: 4px; /* Less padding */
+    }
+
+    #speed-indicator-container {
+        width: 100%; /* Full width for speed indicator */
+    }
+}
+
+
+/* Modern button styles */
+#save-button,
+#download-button,
+#upload-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Top/bottom and left/right padding */
+    font-size: 16px; /* Larger font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    margin: 5px; /* Space between buttons */
+}
+
+/* Change background on hover */
+#save-button:hover,
+#download-button:hover,
+#upload-button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: scale(1.05); /* Slightly increase size */
+}
+
+/* Add focus outline for accessibility */
+#save-button:focus,
+#download-button:focus,
+#upload-button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px #4CAF50; /* Green glow */
+}
+
+/* Styles for the saved chats list */
+#saved-chats-list {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove padding */
+}
+
+/* Styles for each saved chat item */
+#saved-chats-list li {
+    padding: 5px; /* Padding for each chat item */
+    border: 1px solid #ccc; /* Light grey border */
+    margin: 5px 0; /* Margin for spacing between items */
+    cursor: pointer; /* Pointer cursor on hover */
+    position: relative; /* For positioning the delete button */
+    background-color: #f9f9f924; /* Light background for better visibility */
+    transition: background-color 0.3s; /* Smooth background color change */
+}
+
+/* Change background color on hover */
+#saved-chats-list li:hover {
+    background-color: #0ba1007a; /* Slightly darker on hover */
+}
+
+/* Delete button styles */
+.delete-button {
+    position: absolute; /* Position it absolutely within the list item */
+    right: 10px; /* Adjusted right position for better alignment */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust vertical alignment */
+    background: red; /* Red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor on hover */
+    padding: 5px; /* Padding for the button */
+    border-radius: 3px; /* Adds rounded corners */
+    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition for background and transform */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 20px; /* Set a specific height for consistency */
+    width: 20px; /* Set a width for the button */
+}
+
+/* X icon styling */
+.delete-button:before {
+    content: '✖'; /* Use the multiplication sign as an X */
+    font-size: 16px; /* Adjusted size for better fit */
+}
+
+/* Hover effect for the delete button */
+.delete-button:hover {
+    background: darkred; /* Darkens the background on hover */
+    transform: translateY(-50%) scale(1.25); /* Slight upward movement and scaling */
+}
+
+.popup-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Styles for the delete button in the popup menu */
+.popup-delete-button {
+    background-color: red; /* Same red background */
+    color: white; /* Same white text color */
+    border: none; /* Remove default border */
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 5px; /* Rounded corners */
+}
+.popup-download-button {
+    background-color: blue; /* Blue background for download button */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 5px; /* Rounded corners */
+    margin-left: 10px; /* Space between buttons */
+}
+
+#storage-notice {
+    color: red; /* Red color for visibility */
+    margin: 10px 0; /* Margin for spacing */
+    font-weight: bold; /* Bold text for emphasis */
+    font-size: 14px; /* Adjust font size if needed */
+    text-align: center; /* Center the notice */
+}
+
+/* Inline editing area styles */
+.edit-area {
+    width: 100%; /* Full width */
+    min-height: 40px; /* Minimum height */
+    height: auto; /* Allow dynamic height */
+    padding: 5px;
+    border: 1px solid #ccc;
+    color: white;
+    background-color: rgb(30, 48, 31);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden; /* Hide scrollbars */
+    resize: none; /* Disable manual resizing */
+    transition: height 0.2s; /* Smooth transition for height changes */
+}
+
+/* Button styles */
+.edit-btn {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+.edit-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
