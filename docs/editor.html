@@ -186,58 +186,63 @@
                 </div>
             </a>
             </div>
-            
-            <div class="right-content">
-            <ul class="nav-links">
-                <!-- Characters with dropdown -->
-                <li class="dropdown">
-                    <a href="index.html" class="dropbtn">Characters</a>
-                    <div class="dropdown-content">
-                        <a href="editor.html">Upload Character</a>
-                        <a href="mycharacters.html">My Characters</a>
-                    </div>
-                </li>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
     
-                <!-- Community with dropdown -->
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Community</a>
-                    <div class="dropdown-content">
-                        <a href="rules.html">Rules</a>
-                        <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                        <a href="/EFROTales/">Old Stories Page</a>
-                    </div>
-                </li>
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                    <a href="/EFROTales/">Old Stories Page</a>
+                </div>
+            </li>
     
-                <!-- Account with dropdown -->
-                <li class="dropdown">
-                    <a href="myaccount.html" class="dropbtn">Account</a>
-                    <div class="dropdown-content">
-                        <a href="mylikes.html">My Likes</a>
-                        <a href="login.html">Login</a>
-                    </div>
-                </li>
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
     
-                <!-- Help with dropdown -->
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Help</a>
-                    <div class="dropdown-content">
-                        <a href="documentation.html">Documentation</a>
-                        <a href="updates.html">Updates & Features</a>
-                    </div>
-                </li>
-
-            </ul>     
-            <!-- Search bar -->
-            <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
-            <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
-
-            <!-- Hamburger menu for mobile view -->
-            <div class="hamburger" onclick="toggleMenu()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>  
-        </div>
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+    
+            <!-- Contribute Button -->
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
+    
+        <div id="login-status" class="login-status"></div>
+    
+        <!-- Hamburger menu for mobile view -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
     </nav>
 
     </header>
