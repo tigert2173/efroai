@@ -28,26 +28,15 @@
             overflow: normal; /* Prevent overflow */
         }
 
-        .ad-container {
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack children vertically */
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  overflow: hidden; /* Prevent overflow from the container */
-  max-width: 100%; /* Container width */
-  max-height: 100%; /* Container height */
-  padding: 20px; /* Optional padding */
-  box-sizing: border-box; /* Include padding in width/height calculations */
-}
-
-.scalable-element {
-  width: 100%; /* Full width of the container */
-  max-width: 80%; /* Scale down, adjust as needed */
-  height: auto; /* Maintain aspect ratio */
-  transform: scale(0.8); /* Scale down to 80% */
-  transition: transform 0.3s ease; /* Smooth scaling transition */
-}
-
+        .scalable-element {
+            position: absolute; /* Allows it to be positioned within the container */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%) scale(0.8); /* Scale down and center */
+            max-width: none; /* Remove max-width if needed */
+            max-height: none; /* Remove max-height if needed */
+            padding: 10;
+        }
+  
 
         #character-details-container:hover {
             transform: translateY(-5px); /* Subtle lift on hover */
@@ -142,14 +131,13 @@
         <p id="character-description"></p>
         <p id="character-tags"></p>
         <p id="character-creator"></p>
-       
-        <div class="ad-container">
+        
         <div class="scalable-element">
             <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
             <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
-        </div>
+
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
     
