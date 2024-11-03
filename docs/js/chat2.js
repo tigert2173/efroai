@@ -158,7 +158,7 @@ function populateCharacterSettings() {
     const token = localStorage.getItem('token'); // Retrieve the token
 
     // Fetch the character data from the backend
-    const url = `https://74.208.46.27:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
+    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
     
     fetch(url, {
         method: 'GET',
