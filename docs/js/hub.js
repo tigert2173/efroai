@@ -115,42 +115,32 @@ function displayCharacters(characters) {
 //         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
 //  <ins class="eas6a97888e38" data-zoneid="5461570"></ins> 
 //  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-if (cardCounter >= nextAdInterval) {
-    // Create a container for the ad
+let adLoading = false; // Track if an ad is currently loading
+
+if (cardCounter >= nextAdInterval && !adLoading) {
+    adLoading = true; // Set flag to prevent additional loads
+
     const adContainer = document.createElement('div');
     adContainer.className = 'ad-container';
 
-    // Insert the <ins> element for the ad
     const insElement = document.createElement('ins');
     insElement.className = 'eas6a97888e38';
     insElement.setAttribute('data-zoneid', '5461570');
     adContainer.appendChild(insElement);
 
-    // Optionally, set keywords for targeting if needed
-    /*
-    const keywords = 'AI chatbots, artificial intelligence, virtual companions, engaging chat experiences, AI humor, unique chat experiences, etc.';
-    insElement.setAttribute('data-keywords', keywords);
-    */
-
-    // Insert the ad container into the grid
-    characterGrid.appendChild(adContainer);
-
-    // Insert the script for the ad provider
     const scriptElement = document.createElement('script');
     scriptElement.async = true;
     scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
     scriptElement.onload = function() {
-        // Trigger the ad once the script is loaded
-        (window.AdProvider = window.AdProvider || []).push({ "serve": {} });
+        (window.AdProvider = window.AdProvider || []).push({"serve": {}});
+        adLoading = false; // Reset flag after ad loads
     };
 
-    // Append the script to the ad container, ensuring it loads within context
     adContainer.appendChild(scriptElement);
+    characterGrid.appendChild(adContainer);
 
-    // Set the next ad interval to load the next ad at the right time
-    nextAdInterval = cardCounter + getRandomAdInterval(); // Adjust interval as needed
+    nextAdInterval = cardCounter + getRandomAdInterval();
 }
-
         }
     });
 }
