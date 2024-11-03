@@ -40,7 +40,7 @@ function displayCharacters(characters) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    const batchSize = 20; // Number of characters to display at once
+    const batchSize = 40; // Number of characters to display at once
 
     function loadCharacters(startIndex) {
         const endIndex = Math.min(startIndex + batchSize, characters.length);
