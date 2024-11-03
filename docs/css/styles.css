@@ -462,10 +462,11 @@ main {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow effect */
 }
 
-.ad-container:hover {
+.eas6a97888e38:hover {
     transform: scale(1.05); /* Scale up slightly on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow effect on hover */
 }
+
 
 /* Footer */
 footer {
