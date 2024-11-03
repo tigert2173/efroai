@@ -17,7 +17,7 @@
         }
 
         #character-details-container {
-            max-width: 600px;
+            max-width: 7500px;
             margin: auto;
             background: rgb(12, 36, 10);
             border-radius: 10px;
@@ -27,24 +27,6 @@
             transition: transform 0.3s ease;
             overflow: normal; /* Prevent overflow */
         }
-
-        .ad-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1); /* Optional background */
-    border-radius: 5px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-}
-
-@media (max-width: 600px) {
-    .ad-container {
-        max-width: 100%;
-    }
-}
-
        
         #character-details-container:hover {
             transform: translateY(-5px); /* Subtle lift on hover */
@@ -140,11 +122,9 @@
         <p id="character-tags"></p>
         <p id="character-creator"></p>
         
-        <div class="ad-container">
             <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
             <ins class="eas6a97888e38" data-zoneid="5461748"></ins> 
             <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        </div>
 
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
