@@ -17,24 +17,32 @@
         }
 
         #character-details-container {
-            max-width: 600px;
-            margin: auto;
-            background: rgb(12, 36, 10);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            overflow: hidden; /* Prevent overflow */
-        }
+    max-width: 600px;
+    margin: auto;
+    background: rgb(12, 36, 10);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Prevent overflow */
+}
 
-        #ad-container {
-            max-width: 600px; /* Ensure the ad container doesn't exceed the character details */
-            margin: 20px 0; /* Add margin for spacing */
-            overflow: hidden; /* Prevent any overflow from the ad */
-            display: flex; /* Use flexbox to center the ad */
-            justify-content: center; /* Center the ad horizontally */
-        }
+#ad-container {
+    max-width: 100%; /* Allow the ad container to scale with the character details */
+    margin: 20px 0; /* Add margin for spacing */
+    overflow: hidden; /* Prevent any overflow from the ad */
+    display: flex; /* Use flexbox to center the ad */
+    justify-content: center; /* Center the ad horizontally */
+}
+
+.ins {
+    display: inline-block; /* Ensure the ad displays inline */
+    width: auto; /* Allow the width to adjust */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Prevent the ad from exceeding its container */
+}
+
 
         #character-details-container:hover {
             transform: translateY(-5px); /* Subtle lift on hover */
