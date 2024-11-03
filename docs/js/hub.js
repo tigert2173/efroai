@@ -34,139 +34,146 @@ function loadCharacters() {
     .catch(error => console.error('Error fetching characters:', error));
 }
 
-
 function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
+    const batchSize = 5; // Number of cards to display at once
 
-    characters.forEach((character) => {
-        const card = document.createElement('div');
-        card.className = 'character-card';
+    // Function to display a batch of characters
+    function displayBatch() {
+        const batch = characters.slice(cardCounter, cardCounter + batchSize); // Get the next batch of characters
+        if (batch.length === 0) {
+            console.log("All characters have been displayed.");
+            return; // Exit if there are no more characters to display
+        }
 
-        const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+        batch.forEach((character) => {
+            const card = document.createElement('div');
+            card.className = 'character-card';
 
-        // Create image element
-        const imgElement = document.createElement('img');
-        imgElement.alt = `${character.name} image`;
-        imgElement.onerror = () => {
-            imgElement.src = 'noimage.jpg'; // Set default image on error
-        };
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
-        // Fetch the image
-        fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-            }
-        }).then(response => {
-            if (!response.ok) {
-                console.error(`Failed to fetch image: ${response.statusText}`);
+            // Create image element
+            const imgElement = document.createElement('img');
+            imgElement.alt = `${character.name} image`;
+            imgElement.onerror = () => {
+                imgElement.src = 'noimage.jpg'; // Set default image on error
+            };
+
+            // Fetch the image
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            }).then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            }).catch(error => {
+                console.error('Error fetching image:', error);
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
-                return;
+            });
+
+            // Add the inner HTML to the card
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3>${character.name}</h3>
+                </div>
+                <div class="card-body">
+                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
+                </div>
+                <p class="tags">
+                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    <span class="full-tags-overlay">
+                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    </span>
+                </p>
+                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+                <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+                <div class="button-container">
+                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                        <span role="img" aria-hidden="true">❤️</span>
+                    </button>
+                </div>
+            `;
+
+            // Append the image element after setting the card innerHTML
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+
+            characterGrid.appendChild(card);
+            cardCounter++; // Increment the counter after adding a card
+
+            // Check if ads should be displayed
+            if (!adExempt) {
+                let adLoading = false; // Track if an ad is currently loading
+
+                // Check if it's time to insert an ad
+                if (cardCounter >= nextAdInterval && !adLoading) {
+                    adLoading = true; // Set flag to prevent additional loads
+
+                    // Create an ad container
+                    const adContainer = document.createElement('div');
+                    adContainer.className = 'ad-container';
+
+                    // Create the <ins> element for the ad
+                    const insElement = document.createElement('ins');
+                    insElement.className = 'eas6a97888e38';
+                    insElement.setAttribute('data-zoneid', '5461570');
+                    adContainer.appendChild(insElement);
+
+                    // Create the ad provider script and set up loading behavior
+                    const scriptElement = document.createElement('script');
+                    scriptElement.async = true;
+                    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+
+                    // Only call push() when the script is fully loaded
+                    scriptElement.onload = function() {
+                        // Ensure the AdProvider object exists
+                        if (window.AdProvider) {
+                            window.AdProvider.push({"serve": {}});
+                            adLoading = false; // Reset flag after ad loads
+                        }
+                    };
+
+                    // Error handling to reset the flag if the script fails to load
+                    scriptElement.onerror = function() {
+                        console.error("Failed to load ad-provider.js");
+                        adLoading = false; // Reset flag on load failure
+                    };
+
+                    // Append the script to the ad container
+                    adContainer.appendChild(scriptElement);
+
+                    // Add the ad container to the grid
+                    characterGrid.appendChild(adContainer);
+
+                    // Update the interval for the next ad
+                    nextAdInterval = cardCounter + getRandomAdInterval();
+                }
             }
-            return response.blob();
-        }).then(imageBlob => {
-            if (imageBlob) {
-                const imageObjectURL = URL.createObjectURL(imageBlob);
-                imgElement.src = imageObjectURL;
-            }
-        }).catch(error => {
-            console.error('Error fetching image:', error);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
         });
 
-        // Add the inner HTML to the card
-        card.innerHTML = `
-            <div class="card-header">
-                <h3>${character.name}</h3>
-            </div>
-            <div class="card-body">
-                <p>${character.chardescription || 'Error: Description is missing.'}</p>
-            </div>
-            <p class="tags">
-                ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                <span class="full-tags-overlay">
-                    ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                </span>
-            </p>
-            <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-            <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-            <div class="button-container">
-                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                    <span role="img" aria-hidden="true">❤️</span>
-                </button>
-            </div>
-        `;
-
-        // Append the image element after setting the card innerHTML
-        card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-
-        characterGrid.appendChild(card);
-        cardCounter++; // Increment the counter after adding a card
-
-        console.log(adExempt);
-        // Check if ads should be displayed
-        if (!adExempt) {
-        // Check if it's time to insert an ad
-//         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-//  <ins class="eas6a97888e38" data-zoneid="5461570"></ins> 
-//  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-let adLoading = false; // Track if an ad is currently loading
-
-if (cardCounter >= nextAdInterval && !adLoading) {
-    adLoading = true; // Set flag to prevent additional loads
-
-    // Create an ad container
-    const adContainer = document.createElement('div');
-    adContainer.className = 'ad-container';
-
-    // Create the <ins> element for the ad
-    const insElement = document.createElement('ins');
-    insElement.className = 'eas6a97888e38';
-    insElement.setAttribute('data-zoneid', '5461570');
-    adContainer.appendChild(insElement);
-
-    // Create the ad provider script and set up loading behavior
-    const scriptElement = document.createElement('script');
-    scriptElement.async = true;
-    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-
-    // Only call push() when the script is fully loaded
-    scriptElement.onload = function() {
-        // Ensure the AdProvider object exists
-        if (window.AdProvider) {
-            window.AdProvider.push({"serve": {}});
-            adLoading = false; // Reset flag after ad loads
+        // If more characters are available, load the next batch after a delay
+        if (cardCounter < characters.length) {
+            setTimeout(displayBatch, 8000); // Adjust the delay as needed
         }
-    };
+    }
 
-    // Error handling to reset the flag if the script fails to load
-    scriptElement.onerror = function() {
-        console.error("Failed to load ad-provider.js");
-        adLoading = false; // Reset flag on load failure
-    };
-
-    // Append the script to the ad container
-    adContainer.appendChild(scriptElement);
-
-    // Add the ad container to the grid
-    characterGrid.appendChild(adContainer);
-
-    // Update the interval for the next ad
-    nextAdInterval = cardCounter + getRandomAdInterval();
-}
-
-scriptElement.onerror = function() {
-    console.error("Failed to load ad-provider.js");
-    adLoading = false; // Reset flag in case of load failure
-};
-
-        }
-    });
+    // Start displaying the first batch of characters
+    displayBatch();
 }
 
 // Function to get a random ad interval between 5 and 12
