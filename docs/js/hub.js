@@ -169,9 +169,9 @@ scriptElement.onerror = function() {
     });
 }
 
-// Function to get a random ad interval between 3 and 6
+// Function to get a random ad interval between 3 and 8
 function getRandomAdInterval() {
-    return Math.floor(Math.random() * (8 - 3 + 1)) + 3; // Returns a random number between 3 and 6
+    return Math.floor(Math.random() * (8 - 3 + 1)) + 3; // Returns a random number between 3 and 8
 }
 
 
