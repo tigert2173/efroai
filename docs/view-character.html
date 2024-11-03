@@ -28,19 +28,20 @@
             overflow: normal; /* Prevent overflow */
         }
 
-    .ad-container {
-    width: 100%; /* Full width of the parent */
-    max-width: 600px; /* Set a maximum width */
-    padding: 10px; /* Optional padding */
-    background-color: rgba(255, 255, 255, 0.1); /* Optional background for visibility */
-    border-radius: 5px; /* Optional rounded corners */
-    overflow: hidden; /* Hide overflow if any */
-    transition: transform 0.3s ease; /* Smooth transition for scaling */
+        .ad-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* Optional background */
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 @media (max-width: 600px) {
     .ad-container {
-        max-width: 100%; /* Allow full width on smaller screens */
+        max-width: 100%;
     }
 }
 
@@ -147,25 +148,30 @@
 
         <button id="chat-button" style="display: none;">Chat</button>
     </div>
+    
     <script>
-        function scaleAd() {
+        document.addEventListener("DOMContentLoaded", () => {
             const adContainer = document.querySelector('.ad-container');
-            const maxWidth = 750; // Define your maximum width threshold
+            const maxWidth = 500; // Define your maximum width threshold for scaling
     
-            if (adContainer.offsetWidth > maxWidth) {
-                const scaleFactor = maxWidth / adContainer.offsetWidth;
-                adContainer.style.transform = `scale(${scaleFactor})`;
-                adContainer.style.transformOrigin = 'top'; // Scale from the top
-            } else {
-                adContainer.style.transform = 'scale(1)'; // Reset scaling if within limit
+            if (adContainer) {
+                const resizeObserver = new ResizeObserver(entries => {
+                    entries.forEach(entry => {
+                        const containerWidth = entry.contentRect.width;
+                        if (containerWidth > maxWidth) {
+                            const scaleFactor = maxWidth / containerWidth;
+                            adContainer.style.transform = `scale(${scaleFactor})`;
+                            adContainer.style.transformOrigin = 'top';
+                        } else {
+                            adContainer.style.transform = 'scale(1)'; // Reset scaling if within limit
+                        }
+                    });
+                });
+    
+                resizeObserver.observe(adContainer);
             }
-        }
-    
-        // Run the scaleAd function when the window is resized or when the ad is loaded
-        window.addEventListener('resize', scaleAd);
-        window.addEventListener('load', scaleAd); // Ensure to check on load
+        });
     </script>
-    
     
     <script>
         const backendurl = 'https://characters.efroai.net:3000';
