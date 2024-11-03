@@ -227,12 +227,12 @@ code {
 
 .assistant {
     text-align: left;
-    background-color: #124429; /* Orange background for bot */
+    background-color: #122744; /* Orange background for bot */
 }
 
 .user {
     text-align: right;
-    background-color: #1b663e; /* Softer neon green background for user */
+    background-color: #1b4d66; /* Softer neon green background for user */
 }
 
 .system {
@@ -250,7 +250,7 @@ code {
 #input-container input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #32a4cd; /* Softer neon green border */
     border-radius: 5px 0 0 5px;
     /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
