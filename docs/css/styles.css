@@ -455,13 +455,6 @@ main {
     }
 }
 
-.ad-container {
-    text-align: center;
-    margin: 20px 0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for transform and shadow */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow effect */
-}
-
 .eas6a97888e38:hover {
     transform: scale(1.05); /* Scale up slightly on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow effect on hover */
