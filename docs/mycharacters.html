@@ -334,11 +334,11 @@ button:hover {
                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                 <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
                 <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-            </div>
-             <span class="character-likes">
+                 <span class="character-likes">
                     <i class="fa-solid fa-heart" aria-hidden="true"></i> 
                     <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                 </span>
+            </div>
         `;
 
         characterItem.insertBefore(imgElement, characterItem.firstChild);
