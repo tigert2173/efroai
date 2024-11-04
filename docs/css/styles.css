@@ -247,15 +247,28 @@ main {
     background-color: #e68a00; /* Darker orange on hover */
     transform: scale(1.05);    /* Slightly enlarge button on hover */
 }
-
 .like-btn {
+    position: relative; /* Establishes a positioning context */
     display: inline-flex;
     align-items: center;
-    font-size: 1.2em; /* Adjust the size as needed */
+    font-size: 1.5em; /* Adjust size as needed */
+    background: none; /* Remove button background */
+    border: none; /* Remove button border */
+    cursor: pointer; /* Cursor pointer for button */
+}
+
+.heart-icon {
+    position: relative; /* Allows positioning of the count relative to the heart */
 }
 
 .likes-count {
-    margin-left: 5px; /* Adds space between the heart and the count */
+    position: absolute;
+    top: 0; /* Adjusts the vertical position */
+    left: 50%; /* Centers it horizontally */
+    transform: translate(-50%, -50%); /* Centers the number over the heart */
+    color: white; /* White text for better visibility */
+    font-size: 0.6em; /* Adjust size of the number */
+    font-weight: bold; /* Makes the number stand out */
 }
 
 
