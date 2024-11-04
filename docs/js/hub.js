@@ -83,28 +83,28 @@ function displayCharacters(characters) {
 
             // Add the inner HTML to the card
             card.innerHTML = `
-                <div class="card-header">
-                    <h3>${character.name}</h3>
-                </div>
-                <div class="card-body">
-                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
-                </div>
-                <p class="tags">
-                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    <span class="full-tags-overlay">
-                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    </span>
-                </p>
-                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+            <div class="card-header">
+                <h3>${character.name}</h3>
+            </div>
+            <div class="card-body">
+                <p>${character.chardescription || 'Error: Description is missing.'}</p>
+            </div>
+            <p class="tags">
+                ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                <span class="full-tags-overlay">
+                    ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                </span>
+            </p>
+            <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+            <div class="button-container">
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                <div class="button-container">
-                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                        <span role="img" aria-hidden="true">❤️</span>
-                    </button>
-                </div>
-            `;
-
+                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                    <span role="img" aria-hidden="true">❤️</span> <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                </button>
+            </div>
+        `;
+        
             // Append the image element after setting the card innerHTML
             card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 

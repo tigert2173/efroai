@@ -248,6 +248,16 @@ main {
     transform: scale(1.05);    /* Slightly enlarge button on hover */
 }
 
+.like-btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.2em; /* Adjust the size as needed */
+}
+
+.likes-count {
+    margin-left: 5px; /* Adds space between the heart and the count */
+}
+
 
 /* Recommendations Section */
 .recommendation-grid {
