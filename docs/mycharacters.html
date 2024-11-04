@@ -327,10 +327,6 @@ button:hover {
         characterItem.innerHTML = `
             <div class="character-info">
                 <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
-                <span class="character-likes">
-                    <i class="fa-solid fa-heart" aria-hidden="true"></i> 
-                    <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
-                </span>
             </div>
             <div class="character-actions">
                 <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
@@ -339,6 +335,10 @@ button:hover {
                 <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
                 <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
             </div>
+             <span class="character-likes">
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i> 
+                    <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                </span>
         `;
 
         characterItem.insertBefore(imgElement, characterItem.firstChild);
