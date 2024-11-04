@@ -38,19 +38,25 @@
 //   next();
 // });
 
-// Middleware to make the EFROTales route case-insensitive
-app.use('/efrotales', (req, res, next) => {
-    // If the URL is not already uppercase, redirect to the uppercase version
-    if (req.url.toLowerCase() !== req.url) {
-        res.redirect(301, '/EFROTales'); // Redirect to the uppercase URL
+// Middleware to make /efrotales and subdirectories case-insensitive
+app.use((req, res, next) => {
+    // Check if the request path, in lowercase, starts with '/efrotales'
+    if (req.path.toLowerCase().startsWith('/efrotales')) {
+        // Serve files from the 'EFROTales' directory without changing the URL
+        const filePath = path.join(__dirname, 'docs', 'EFROTales', req.path.slice('/efrotales'.length));
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                next(); // If there's an error, proceed to next middleware/404 handler
+            }
+        });
     } else {
-        next(); // If already uppercase, proceed to the next middleware
+        next(); // Not a /efrotales request, continue with other routes
     }
 });
 
-// Route for the uppercase URL serving the specific HTML file
-app.get('/EFROTales', (req, res) => {
-    res.sendFile(path.join(__dirname, 'docs', 'EFROTales', 'index.html')); // Serve the HTML file
+// Optional: Define a fallback route for requests to /EFROTales or /efrotales root path
+app.get(['/EFROTales', '/efrotales'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'docs', 'EFROTales', 'index.html'));
 });
 
   // Use compression middleware with Brotli support
