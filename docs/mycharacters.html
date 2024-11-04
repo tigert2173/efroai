@@ -302,12 +302,6 @@ button:hover {
     const characterList = document.getElementById('characterList');
     characterList.innerHTML = '';
 
-    // Display the total number of characters
-    const totalCharacters = document.createElement('div');
-    totalCharacters.classList.add('total-characters');
-    totalCharacters.innerText = `Total Characters: ${characters.length}`;
-    characterList.appendChild(totalCharacters);
-
     characters.forEach(character => {
         const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
         const imgElement = createImageElement(imageUrl, character.name);
@@ -317,7 +311,7 @@ button:hover {
         characterItem.innerHTML = `
             <div class="character-info">
                 <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
-                <span class="character-likes">Likes: ${character.likes || 0}</span>
+                <span class="character-likes">Likes: ${character.likes ? character.likes.length : 0}</span>
             </div>
             <div class="character-actions">
                 <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
