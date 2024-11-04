@@ -251,7 +251,6 @@ main {
 .likes-count {
     position: relative;
     top: 0; /* Adjusts the vertical position */
-    left: 50%; /* Centers it horizontally */
     /* transform: translate(-50%, -50%); Centers the number over the heart */
     color: white; /* White text for better visibility */
     font-size: 0.6em; /* Adjust size of the number */
