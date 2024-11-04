@@ -101,7 +101,7 @@ function displayCharacters(characters) {
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                         <span role="img" aria-hidden="true">❤️</span>
-                                            <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
                 </div>
             `;

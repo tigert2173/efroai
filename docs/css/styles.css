@@ -247,19 +247,6 @@ main {
     background-color: #e68a00; /* Darker orange on hover */
     transform: scale(1.05);    /* Slightly enlarge button on hover */
 }
-.like-btn {
-    position: relative; /* Establishes a positioning context */
-    display: inline-flex;
-    align-items: center;
-    font-size: 1.5em; /* Adjust size as needed */
-    background: none; /* Remove button background */
-    border: none; /* Remove button border */
-    cursor: pointer; /* Cursor pointer for button */
-}
-
-.heart-icon {
-    position: relative; /* Allows positioning of the count relative to the heart */
-}
 
 .likes-count {
     position: absolute;
