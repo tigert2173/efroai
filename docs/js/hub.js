@@ -100,7 +100,7 @@ function displayCharacters(characters) {
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                     <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 2em;">❤️</span>
+                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                         <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
                 </div>
