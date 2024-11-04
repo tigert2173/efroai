@@ -175,6 +175,29 @@ button:hover {
         width: 100%; /* Full width for buttons on smaller screens */
     }
 }
+.character-likes {
+    position: relative;
+    font-size: 1.2em;
+    color: #e74c3c; /* Heart color */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.heart-icon {
+    font-size: 1.5em;
+    color: #e74c3c;
+}
+
+.likes-count {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    pointer-events: none;
+}
 
     </style>
 </head>
@@ -311,7 +334,10 @@ button:hover {
         characterItem.innerHTML = `
             <div class="character-info">
                 <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
-                <span class="character-likes">Likes: ${character.likes ? character.likes.length : 0}</span>
+                <span class="character-likes">
+                    <i class="heart-icon">&#x2764;</i>
+                    <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                </span>
             </div>
             <div class="character-actions">
                 <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
