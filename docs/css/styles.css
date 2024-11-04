@@ -252,7 +252,7 @@ main {
     position: absolute;
     /* transform: translate(-50%, -50%); Centers the number over the heart */
     color: white; /* White text for better visibility */
-    font-size: 0.5em; /* Adjust size of the number */
+    font-size: 0.6em; /* Adjust size of the number */
     font-weight: bold; /* Makes the number stand out */
 }
 
