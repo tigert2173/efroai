@@ -250,7 +250,7 @@ main {
 
 .likes-count {
     position: absolute;
-    top: -5px; /* Adjust this value to move the number up or down */
+    top: 0.1px; /* Adjust this value to move the number up or down */
     /* transform: translate(-50%, -50%); Centers the number over the heart */
     color: white; /* White text for better visibility */
     font-size: 0.6em; /* Adjust size of the number */
