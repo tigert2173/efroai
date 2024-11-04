@@ -176,27 +176,17 @@ button:hover {
     }
 }
 .character-likes {
-    position: relative;
-    font-size: 1.2em;
-    color: #e74c3c; /* Heart color */
     display: inline-flex;
     align-items: center;
     gap: 4px;
-}
-
-.heart-icon {
-    font-size: 1.5em;
-    color: #e74c3c;
-}
-
-.likes-count {
-    position: absolute;
-    top: 3px;
-    left: 8px;
-    color: white;
+    color: #e74c3c; /* Heart and text color */
     font-weight: bold;
-    font-size: 0.8em;
-    pointer-events: none;
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+.character-likes .fa-heart {
+    font-size: 1.2em;
 }
 
     </style>
@@ -335,7 +325,7 @@ button:hover {
             <div class="character-info">
                 <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
                 <span class="character-likes">
-                    <i class="heart-icon">&#x2764;</i>
+                    <i class="fa fa-heart" aria-hidden="true"></i> 
                     <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                 </span>
             </div>
