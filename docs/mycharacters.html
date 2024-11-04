@@ -177,19 +177,32 @@ button:hover {
         width: 100%; /* Full width for buttons on smaller screens */
     }
 }
+.character-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.character-actions {
+    margin-top: 10px;
+}
+
 .character-likes {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
     color: #e74c3c; /* Heart and text color */
     font-weight: bold;
     font-size: 1em;
-    margin-top: 5px;
+    margin-top: auto;
+    padding-top: 10px;
 }
 
-.character-likes .fa-heart, .character-likes .fa-solid {
-    font-size: 1.2em;
-}
 
 
     </style>
@@ -334,7 +347,10 @@ button:hover {
                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
                 <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
                 <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-           
+            </div>
+            <div class="character-likes">
+                <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
             </div>
         `;
 
