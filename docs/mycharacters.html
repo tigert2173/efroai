@@ -299,32 +299,33 @@ button:hover {
     }
 
     function displayCharacters(characters) {
-        const characterList = document.getElementById('characterList');
-        characterList.innerHTML = '';
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = '';
 
-        characters.forEach(character => {
-            const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
-            const imgElement = createImageElement(imageUrl, character.name);
+    characters.forEach(character => {
+        const imageUrl = `${BACKEND_URL}/characters/${character.uploader}/images/${character.id}`;
+        const imgElement = createImageElement(imageUrl, character.name);
 
-            const characterItem = document.createElement('div');
-            characterItem.classList.add('character-item');
-            characterItem.innerHTML = `
-                <div class="character-info">
-                    <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
-                </div>
-                <div class="character-actions">
-                    <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
-                    <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
-                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
-                    <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                </div>
-            `;
+        const characterItem = document.createElement('div');
+        characterItem.classList.add('character-item');
+        characterItem.innerHTML = `
+            <div class="character-info">
+                <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
+                <span class="character-likes">Likes: ${character.likes || 0}</span>
+            </div>
+            <div class="character-actions">
+                <button class="action-btn" onclick="editCharacter(${character.id}, '${character.uploader}')">Edit</button>
+                <button class="action-btn" onclick="archiveCharacter(${character.id}, '${character.uploader}')">Archive</button>
+                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                <button class="share-btn" onclick="shareCharacter('${character.id}', '${character.uploader}')">Share Character</button>
+                <button class="chat-button action-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+            </div>
+        `;
 
-            characterItem.insertBefore(imgElement, characterItem.firstChild);
-            characterList.appendChild(characterItem);
-        });
-    }
+        characterItem.insertBefore(imgElement, characterItem.firstChild);
+        characterList.appendChild(characterItem);
+    });
+}
 
     function createImageElement(imageUrl, characterName) {
         const imgElement = document.createElement('img');
