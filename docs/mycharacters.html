@@ -70,6 +70,8 @@ h1 {
 
 .character-info {
     text-align: center; /* Center text for character info */
+    flex-grow: 1; /* Allow character info to take available space */
+
 }
 
 .character-info h2 {
@@ -89,6 +91,10 @@ h1 {
     flex-wrap: wrap; /* Wrap buttons if not enough space */
     gap: 10px; /* Space between buttons */
     justify-content: center; /* Center align buttons */
+    position: absolute; /* Position the buttons at the bottom */
+    bottom: 10px; /* Space from the bottom */
+    left: 10px; /* Align to the left */
+    right: 10px; /* Align to the right */
 }
 
 .action-btn, .view-btn, .share-btn {
@@ -178,10 +184,6 @@ button:hover {
     }
 }
 
-.character-actions {
-    margin-top: 10px;
-}
-
 .character-likes {
     display: flex;
     align-items: center;
@@ -189,7 +191,7 @@ button:hover {
     color: #e74c3c; /* Heart and text color */
     font-weight: bold;
     font-size: 1em;
-    margin-top: auto;
+    margin-top: 10px; /* Space from buttons */
     padding-top: 10px;
 }
 
