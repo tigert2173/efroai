@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Characters – EFRO.AI</title>
     <link rel="stylesheet" href="css/menu2.0.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
       body {
     font-family: 'Arial', sans-serif;
@@ -185,9 +187,10 @@ button:hover {
     margin-top: 5px;
 }
 
-.character-likes .fa-heart {
+.character-likes .fa-heart, .character-likes .fa-solid {
     font-size: 1.2em;
 }
+
 
     </style>
 </head>
@@ -325,7 +328,7 @@ button:hover {
             <div class="character-info">
                 <span class="character-name">${character.name} (Uploaded by: ${character.uploader})</span>
                 <span class="character-likes">
-                    <i class="fa fa-heart" aria-hidden="true"></i> 
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i> 
                     <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                 </span>
             </div>
@@ -342,6 +345,7 @@ button:hover {
         characterList.appendChild(characterItem);
     });
 }
+
 
     function createImageElement(imageUrl, characterName) {
         const imgElement = document.createElement('img');
