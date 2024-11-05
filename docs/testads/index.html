@@ -1,0 +1,38 @@
+<!-- Ad container -->
+<div id="rotating-ad">
+    <a href="" target="_blank" id="ad-link">
+        <img src="" alt="Rotating Ad" id="ad-image" width="300" height="250">
+    </a>
+</div>
+
+<script>
+    // Array of image paths and corresponding UTM links
+    const ads = [
+        { img: "testads/adimages/160x600.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-1.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-2.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-3.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-4.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-5.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" },
+        { img: "testads/adimages/160x600-6.jpg", link: "https://pephop.ai/talk-to-ai/?utm_source=efroai.net&utm_medium=link&utm_campaign=aff&utm_id=160-600" }
+    ];
+
+    let currentIndex = 0;
+
+    function rotateAds() {
+        // Get the ad link and image elements
+        const adLink = document.getElementById("ad-link");
+        const adImage = document.getElementById("ad-image");
+
+        // Update the link href and image src with the current ad
+        adLink.href = ads[currentIndex].link;
+        adImage.src = ads[currentIndex].img;
+
+        // Move to the next ad in the array, loop back to the start if at the end
+        currentIndex = (currentIndex + 1) % ads.length;
+    }
+
+    // Initialize the first ad and set an interval to rotate every 5 seconds
+    rotateAds(); // Load the first ad immediately
+    setInterval(rotateAds, 5000); // Rotate every 5000 ms (5 seconds)
+</script>
