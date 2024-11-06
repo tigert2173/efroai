@@ -72,14 +72,17 @@ async function checkAPIStatus() {
 
         console.log(`Total Servers: ${totalServers}, Operational Servers: ${operationalServers}`);
 
-        const operationalPercentage = (operationalServers+1 / totalServers) * 100;
+        const operationalPercentage = (operationalServers / totalServers) * 130;
         const speedIndicator = document.getElementById('speed-indicator');
         speedIndicator.style.width = `${operationalPercentage}%`;
 
         if (totalServers === 0) {
             statusTextElement.textContent = 'No Servers Listed';
             statusTextElement.className = 'status-code';
-        } else if (operationalPercentage >= 100) {
+        } else if (operationalPercentage > 100) {
+            statusTextElement.textContent = 'All Systems Operational';
+            statusTextElement.className = 'status-operational';
+        } else if (operationalPercentage == 100) {
             statusTextElement.textContent = 'All Systems Operational';
             statusTextElement.className = 'status-operational';
         } else if (operationalPercentage >= 90) {
