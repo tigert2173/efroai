@@ -196,8 +196,9 @@
             <select id="negativePrompt">
                 <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
                 <option value="Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.">[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+                <option value="Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Avoid repeating the last generation.">[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
             </select>
-            
+
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
