@@ -514,11 +514,20 @@ function updateSystemPrompt() {
     console.log("Updated systemPrompt:", settings.systemPrompt); // Optional: for debugging
 }
 
+function updateNegativePrompt() {
+    const selectElement = document.getElementById('negativePrompt');
+    settings.negativePrompt = selectElement.value;
+    console.log("Updated negativePrompt:", settings.negativePrompt); // Optional: for debugging
+    console.log("Here's the systemPrompt:", settings.systemPrompt); // Optional: for debugging
+}
+
 // // Set the initial value for systemPrompt
 // document.getElementById('systemPrompt').value = settings.systemPrompt;
 
 // Add event listener for change events on the select element
 document.getElementById('systemPrompt').addEventListener('change', updateSystemPrompt);
+document.getElementById('negativePrompt').addEventListener('change', updateNegativePrompt);
+
 // let settings = {
 //     persona: '',
 //     context: '',

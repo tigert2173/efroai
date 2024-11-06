@@ -192,8 +192,24 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
+            <label for="negativePrompt">Negative Prompt:</label>
+            <select id="negativePrompt">
+                <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+                <option value="Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.">[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+            </select>
+            
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details...">Spicy Roleplay v2</option>
+                <option value="Write {{char}} next response...">Default v2</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}...">Descriptive v2</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction...">Humor v2</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact...">Knowledge Sharing v2</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle...">Emotional Support v2</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about...">Educational v2</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}...">Advice v2</option>
+
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
                 <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
                 <option value="Write {{char}} next response.">Default</option>

@@ -457,6 +457,7 @@ let settings = {
     repetitionPenalty: 1.15,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     negativePrompt: "Do not talk about sexual topics or explicit content.",
+    
     context: "",
     enablePreload: false, // Default to false if not provided
     sessionId: 1,
