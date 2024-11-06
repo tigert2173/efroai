@@ -1070,26 +1070,27 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
 }
 
 function deleteMessage(index) {
-    // Ask for confirmation before deleting the message
-    const isConfirmed = confirm("Are you sure you want to delete this message?");
-
-    if (isConfirmed) {
-        // Remove the message from the messages array
-        messages.splice(index, 1);
-
-        // Remove the corresponding message element from the UI
-        const messageElements = document.querySelectorAll('.message');
-        messageElements[index].remove();
-
-        // Update the botMessages array if the message was from the assistant
-        if (messages[index]?.role === 'assistant') {
-            botMessages.splice(index, 1);
-        }
-
-        // Re-index the remaining messages and update the display
-        updateMessageIndexes();
-        console.log('Updated messages array after deletion:', messages);
+    // Ask for user confirmation before deleting
+    const userConfirmed = confirm('Are you sure you want to delete this message?');
+    if (!userConfirmed) {
+        return; // Exit if the user cancels
     }
+
+    // Remove the message from the messages array
+    messages.splice(index, 1);
+
+    // Remove the corresponding message element from the UI
+    const messageElements = document.querySelectorAll('.message');
+    messageElements[index].remove();
+
+    // Update the botMessages array if the message was from the assistant
+    if (messages[index]?.role === 'assistant') {
+        botMessages.splice(index, 1);
+    }
+
+    // Re-index the remaining messages and update the display
+    updateMessageIndexes();
+    console.log('Updated messages array after deletion:', messages);
 }
 
 function updateMessageIndexes() {
