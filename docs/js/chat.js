@@ -1020,6 +1020,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             currentBotMessageElement.innerHTML =  `
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         }
         // If the message is final, update the navigation header
