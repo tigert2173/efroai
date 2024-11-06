@@ -325,6 +325,7 @@ function getAllMessagesExceptLast() {
     .map(message => message.textContent.trim()) // Get text content of each message
     .join(' '); // Join all messages into a single string
 
+    console.log("Messages Except Last: " + messagesExceptLast);
     return messagesExceptLast;
 }
 
