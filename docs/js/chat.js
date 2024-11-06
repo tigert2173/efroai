@@ -1053,6 +1053,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         messageElement.innerHTML = `
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         chatContainer.appendChild(messageElement);
     }
@@ -1065,6 +1066,33 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function deleteMessage(index) {
+    // Remove the message from the messages array
+    messages.splice(index, 1);
+
+    // Remove the corresponding message element from the UI
+    const messageElements = document.querySelectorAll('.message');
+    messageElements[index].remove();
+
+    // Update the botMessages array if the message was from the assistant
+    if (messages[index]?.role === 'assistant') {
+        botMessages.splice(index, 1);
+    }
+
+    // Re-index the remaining messages and update the display
+    updateMessageIndexes();
+    console.log('Updated messages array after deletion:', messages);
+}
+
+function updateMessageIndexes() {
+    // Update the message indexes after deletion
+    const messageElements = document.querySelectorAll('.message');
+    messageElements.forEach((element, index) => {
+        element.querySelector('.edit-btn').onclick = function() { enableEditMode(this, index); };
+        element.querySelector('.delete-btn').onclick = function() { deleteMessage(index); };
+    });
 }
 
 function navigateBotMessages(direction) {
@@ -1147,6 +1175,7 @@ function editMessage(index) {
         messageElement.innerHTML = `
             ${newContent.replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}
             <button class="edit-btn" onclick="editMessage(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         console.log('Updated message:', messages);
     }
