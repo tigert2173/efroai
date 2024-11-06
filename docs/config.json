@@ -1,5 +1,5 @@
 {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "maintenanceUpcoming": true,
-    "maintenanceMessage": "Scheduled maintenance will occur on November 6th from 12:00 PM to 3:00 PM EST. During this time, services may be intermittent or unavailable. Please plan accordingly. \n \n **Additionally,** we're looking for users interested in hosting a backend server to help improve performance, as some of you may have noticed slower server speeds. Our goal is for this AI site to remain free for the community, so if you have an extra PC and would like to support, please reach out to us at hosting@efroai.net."
+    "maintenanceMessage": "Scheduled maintenance will occur on November 6th from 11:40 PM to 2:00 PM EST. During this time, services may be intermittent or unavailable. Please plan accordingly. \n \n **Additionally,** we're looking for users interested in hosting a backend server to help improve performance, as some of you may have noticed slower server speeds. Our goal is for this AI site to remain free for the community, so if you have an extra PC and would like to support, please reach out to us at hosting@efroai.net."
 }
