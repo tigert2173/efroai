@@ -71,7 +71,7 @@ async function checkAPIStatus() {
         console.log(`Total Servers: ${totalServers}, Operational Servers: ${operationalServers}`);
 
         // Calculate the percentage of operational servers
-        const operationalPercentage = (operationalServers / totalServers) * 100;
+        const operationalPercentage = (operationalServers+1 / totalServers) * 100;
         const speedIndicator = document.getElementById('speed-indicator');
         speedIndicator.style.width = `${operationalPercentage}%`;
 
@@ -79,7 +79,7 @@ async function checkAPIStatus() {
         if (totalServers === 0) {
             statusTextElement.textContent = 'No Servers Listed';
             statusTextElement.className = 'status-code';
-        } else if (operationalPercentage === 100) {
+        } else if (operationalPercentage >= 100) {
             statusTextElement.textContent = 'All Systems Operational';
             statusTextElement.className = 'status-operational';
         } else if (operationalPercentage >= 90) {
