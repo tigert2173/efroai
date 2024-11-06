@@ -72,7 +72,7 @@ async function checkAPIStatus() {
 
         console.log(`Total Servers: ${totalServers}, Operational Servers: ${operationalServers}`);
 
-        const operationalPercentage = (operationalServers / totalServers) * 150;
+        const operationalPercentage = (operationalServers / totalServers) * 140;
         const speedIndicator = document.getElementById('speed-indicator');
         speedIndicator.style.width = `${operationalPercentage}%`;
 
