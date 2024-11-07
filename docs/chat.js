@@ -220,6 +220,38 @@ function populateCharacterSettings() {
 //         });
 // }
 
+function likeCharacter(characterId, uploader) {
+    // Get the token from local storage (or wherever you store it)
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+
+    // Example of an AJAX request to save the like
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `${token}` // Include the token in the Authorization header
+        },
+        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to like character');
+        }
+        return response.json(); // Return the response as JSON
+    })
+    .then(data => {
+        // Optionally, update the UI to reflect the like
+        console.log(data.message); // Display a success message or perform other actions
+        alert(data.message); // Display success or failure message
+    })
+    .catch(error => {
+        console.error('Error liking character:', error);
+        alert('Failed to like character. Please try again.'); // Simple error message
+    });
+}
+
+
 function loadCharacter(charName, listItem) {
     clearCurrentBotMessage();
 
