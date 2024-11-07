@@ -1297,7 +1297,9 @@ function updateLikeButton() {
 async function fetchCharacterLikes(characterId, characterUploader) {
     const token = localStorage.getItem('token'); // Retrieve the token
     const userID = sessionStorage.getItem('userID'); // Get the current user's ID
+    console.log(characterUploader);
 
+    console.log(characterId);
     try {
         // Fetch the character data from the backend
         const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
