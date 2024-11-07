@@ -208,6 +208,8 @@ function populateCharacterSettings() {
 
         // Display the greeting as a bot message
         displayMessage(characterData.greeting, 'assistant', true); // Display greeting as bot message
+        checkIfLiked(selectedCharacterId);
+
     })
     .catch(error => {
         console.error('Error fetching character data:', error);
@@ -1327,8 +1329,6 @@ function getCharacterDataById(characterId) {
 
     return CharacterData;
 }
-
-checkIfLiked(selectedCharacterId);
 
 // Function to handle like action
 function likeCharacter(characterId, uploader) {
