@@ -195,6 +195,11 @@ function getRandomAdInterval() {
 
 function likeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get the token from local storage
+    if (!token) {
+        alert("You must be logged in to like a character.");
+        return; // Exit if not logged in
+    }
+
     const likeButton = document.querySelector(`#like-btn-${characterId}`); // Get the like button for the character card
     const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
@@ -202,58 +207,38 @@ function likeCharacter(characterId, uploader) {
     // Check if the heart is already red (i.e., liked)
     const isLiked = heartIcon.innerHTML === '❤️'; // Check if the heart is solid red
 
-    // If the character is already liked, unlike it
-    if (isLiked) {
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}` // Make sure token is prefixed with 'Bearer'
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to unlike character');
-            }
-            return response.json();
-        })
-        .then(data => {
-            heartIcon.innerHTML = '🤍'; // Change the heart to an empty heart
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error unliking character:', error);
-            alert('Failed to unlike character. Please try again.');
-        });
+    // Define the URL for the like/unlike action
+    const url = `${backendurl}/api/characters/${uploader}/${characterId}/like`;
 
-    } else {
-        // If the character is not liked, like it
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}` // Make sure token is prefixed with 'Bearer'
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to like character');
-            }
-            return response.json();
-        })
-        .then(data => {
-            heartIcon.innerHTML = '❤️'; // Change the heart to a solid red heart
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error liking character:', error);
-            alert('Failed to like character. Please try again.');
-        });
-    }
+    // Perform the like/unlike action
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}` // Make sure token is prefixed with 'Bearer'
+        },
+        body: JSON.stringify({ characterId: characterId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update like status');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Update the heart icon and like count based on the like status
+        if (isLiked) {
+            heartIcon.innerHTML = '🤍'; // Change to hollow heart if already liked
+        } else {
+            heartIcon.innerHTML = '❤️'; // Change to solid heart if not liked
+        }
+        likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+    })
+    .catch(error => {
+        console.error('Error updating like status:', error);
+        alert('Failed to update like status. Please try again.');
+    });
 }
 
 
