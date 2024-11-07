@@ -1340,7 +1340,6 @@ async function checkIfLiked(selectedCharacterId) {
     const likedUsers = characterData.likedUsers || []; // Safely access the likedUsers array
 
     // Check if the current user ID exists in the liked users array
-    const userID = sessionStorage.getItem('userID'); // Get the user ID from sessionStorage
     const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
 
     return isLiked; // Return the like status
