@@ -111,25 +111,8 @@ function displayCharacters(characters) {
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
-            const userToken = localStorage.getItem('token'); // Retrieve user token
-            if (userToken) {
-                fetch(`${backendurl}/api/characters/${character.uploader}/${character.id}/like`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${userToken}`,
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const heartIcon = card.querySelector('.heart-icon');
-                    if (data.liked) {
-                        heartIcon.classList.add('liked'); // Mark as liked
-                        heartIcon.style.color = 'red'; // Change heart color to red
-                    }
-                })
-                .catch(error => console.error('Error checking like status:', error));
-            }
+
+            
 // Check if ads should be displayed
 if (!adExempt) {
     // Check if it's time to insert an ad
@@ -210,6 +193,59 @@ if (!adExempt) {
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
     return Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Returns a random number between 5 and 10
+}
+
+
+window.addEventListener('load', () => {
+    const userToken = localStorage.getItem('token'); // Retrieve the logged-in user token
+    const currentUser = getUserFromToken(userToken); // Assuming you have a function to get user details from the token
+
+    if (userToken && currentUser) {
+        // Loop through all character cards to check if the current user has liked them
+        const allCharacters = document.querySelectorAll('.character-card'); // Select all character cards
+
+        allCharacters.forEach(card => {
+            const characterId = card.id.replace('character-card-', ''); // Extract characterId from card ID
+            const likesCountElement = card.querySelector('.likes-count');
+            const heartIcon = card.querySelector('.heart-icon');
+            
+            // Find the character object in the data (you might need to fetch it dynamically or pass it along)
+            const character = getCharacterById(characterId); // Assuming a function that gets character data
+            
+            if (character && character.likes && Array.isArray(character.likes)) {
+                const isLiked = character.likes.includes(currentUser.name); // Check if current user's name is in the likes array
+
+                // Update the like button UI based on whether the character is liked or not
+                if (isLiked) {
+                    heartIcon.classList.add('liked'); // Add 'liked' class
+                    heartIcon.style.color = 'red'; // Change heart color to red
+                } else {
+                    heartIcon.classList.remove('liked'); // Remove 'liked' class
+                    heartIcon.style.color = ''; // Reset heart color to default (gray)
+                }
+
+                // Update the like count
+                likesCountElement.textContent = character.likes.length;
+            }
+        });
+    }
+});
+
+function getUserFromToken(token) {
+    // Assuming the token contains user info (in a real-world case, you'd decode it to extract user details)
+    try {
+        const decoded = JSON.parse(atob(token.split('.')[1])); // Decode the JWT token to get the user data
+        return decoded ? decoded.user : null; // Return user info (you may have other properties like user ID)
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+}
+
+function getCharacterById(characterId) {
+    // You should have a way to fetch character data (either from an API or from a pre-loaded variable)
+    // Example:
+    return allCharactersData.find(character => character.id === characterId); // Assuming allCharactersData is preloaded
 }
 
 
