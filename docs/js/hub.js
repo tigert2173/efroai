@@ -99,7 +99,7 @@ function displayCharacters(characters) {
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                   <button class="like-btn" id="like-btn-${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                         <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                         <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
