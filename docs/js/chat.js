@@ -1237,7 +1237,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Assuming you have the following variables available:
 const selectedCharacterId = '123'; // Replace with actual ID
-const characterUploader = 'UploaderName'; // Replace with actual uploader name
 const characterName = 'Character Name'; // Replace with actual character name
 
 // Get the settings container
