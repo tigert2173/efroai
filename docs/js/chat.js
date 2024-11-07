@@ -1268,12 +1268,8 @@ function likeCharacter(characterId, uploader) {
     });
 }
 
-
-function openCharacterPage(characterId, uploader) {
-    // Use sessionStorage to save the character ID and uploader information
-    sessionStorage.setItem('selectedCharacterId', characterId);
-    sessionStorage.setItem('characterUploader', uploader);
-
-    // Redirect to the chat page
-    window.location.href = '/chat.html';
+// Function to view character details (can be implemented further)
+function viewCharacter(characterId, uploader) {
+    // Logic to display character details (e.g., navigate to a new page or show a modal)
+    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
