@@ -99,7 +99,7 @@ function displayCharacters(characters) {
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                   <button class="like-btn" id="like-btn-${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                         <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                         <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
@@ -111,8 +111,6 @@ function displayCharacters(characters) {
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
-
-            
 // Check if ads should be displayed
 if (!adExempt) {
     // Check if it's time to insert an ad
@@ -196,124 +194,36 @@ function getRandomAdInterval() {
 }
 
 
-window.addEventListener('load', () => {
-    const userToken = localStorage.getItem('token'); // Retrieve the logged-in user token
-    const currentUser = getUserFromToken(userToken); // Assuming you have a function to get user details from the token
-
-    if (userToken && currentUser) {
-        // Loop through all character cards to check if the current user has liked them
-        const allCharacters = document.querySelectorAll('.character-card'); // Select all character cards
-
-        allCharacters.forEach(card => {
-            const characterId = card.id.replace('character-card-', ''); // Extract characterId from card ID
-            const likesCountElement = card.querySelector('.likes-count');
-            const heartIcon = card.querySelector('.heart-icon');
-            
-            // Find the character object in the data (you might need to fetch it dynamically or pass it along)
-            const character = getCharacterById(characterId); // Assuming a function that gets character data
-            
-            if (character && character.likes && Array.isArray(character.likes)) {
-                const isLiked = character.likes.includes(currentUser.name); // Check if current user's name is in the likes array
-
-                // Update the like button UI based on whether the character is liked or not
-                if (isLiked) {
-                    heartIcon.classList.add('liked'); // Add 'liked' class
-                    heartIcon.style.color = 'red'; // Change heart color to red
-                } else {
-                    heartIcon.classList.remove('liked'); // Remove 'liked' class
-                    heartIcon.style.color = ''; // Reset heart color to default (gray)
-                }
-
-                // Update the like count
-                likesCountElement.textContent = character.likes.length;
-            }
-        });
-    }
-});
-
-function getUserFromToken(token) {
-    // Assuming the token contains user info (in a real-world case, you'd decode it to extract user details)
-    try {
-        const decoded = JSON.parse(atob(token.split('.')[1])); // Decode the JWT token to get the user data
-        return decoded ? decoded.user : null; // Return user info (you may have other properties like user ID)
-    } catch (error) {
-        console.error('Error decoding token:', error);
-        return null;
-    }
-}
-
-function getCharacterById(characterId) {
-    // You should have a way to fetch character data (either from an API or from a pre-loaded variable)
-    // Example:
-    return allCharactersData.find(character => character.id === characterId); // Assuming allCharactersData is preloaded
-}
-
-
 function likeCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token'); // Get the token from local storage
-    const likeButton = document.querySelector(`#like-btn-${characterId}`); // Get the like button for the character card
-    const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
-    const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
+    // Get the token from local storage (or wherever you store it)
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
 
-    // Check if the heart is already red (i.e., liked)
-    const isLiked = heartIcon.classList.contains('liked');
-
-    // If the character is already liked, unlike it
-    if (isLiked) {
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `${token}`
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to unlike character');
-            }
-            return response.json();
-        })
-        .then(data => {
-            heartIcon.classList.remove('liked'); // Remove 'liked' class
-            heartIcon.style.color = ''; // Reset heart color to default (gray)
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error unliking character:', error);
-            alert('Failed to unlike character. Please try again.');
-        });
-
-    } else {
-        // If the character is not liked, like it
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `${token}`
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to like character');
-            }
-            return response.json();
-        })
-        .then(data => {
-            heartIcon.classList.add('liked'); // Add 'liked' class
-            heartIcon.style.color = 'red'; // Change heart color to red
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error liking character:', error);
-            alert('Failed to like character. Please try again.');
-        });
-    }
+    // Example of an AJAX request to save the like
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `${token}` // Include the token in the Authorization header
+        },
+        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to like character');
+        }
+        return response.json(); // Return the response as JSON
+    })
+    .then(data => {
+        // Optionally, update the UI to reflect the like
+        console.log(data.message); // Display a success message or perform other actions
+        alert(data.message); // Display success or failure message
+    })
+    .catch(error => {
+        console.error('Error liking character:', error);
+        alert('Failed to like character. Please try again.'); // Simple error message
+    });
 }
-
 
 
 function openCharacterPage(characterId, uploader) {
