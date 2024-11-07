@@ -199,8 +199,8 @@ function likeCharacter(characterId, uploader) {
     const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
-    // Check if the heart is already red (i.e., liked)
-    const isLiked = heartIcon.innerHTML === '❤️'; // Check if the heart is solid red
+    // Check if the heart is currently solid (liked)
+    const isLiked = heartIcon.innerHTML === '❤️'; // Checking if the icon is the solid heart emoji
 
     // If the character is already liked, unlike it
     if (isLiked) {
@@ -220,8 +220,10 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            heartIcon.innerHTML = '🤍'; // Change to hollow heart (empty)
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+            // Change heart icon to empty (hollow)
+            heartIcon.innerHTML = '🤍'; // Update to empty heart emoji
+            // Update like count
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; 
         })
         .catch(error => {
             console.error('Error unliking character:', error);
@@ -246,8 +248,10 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            heartIcon.innerHTML = '❤️'; // Change to solid heart (filled)
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+            // Change heart icon to solid (filled)
+            heartIcon.innerHTML = '❤️'; // Update to solid heart emoji
+            // Update like count
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; 
         })
         .catch(error => {
             console.error('Error liking character:', error);
