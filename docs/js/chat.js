@@ -1234,6 +1234,9 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
+
+const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+
 // Assuming you have the following variables available:
 const selectedCharacterId = sessionStorage.getItem('selectedCharacterId'); // Correct assignment
 const characterUploader = sessionStorage.getItem('characterUploader'); // Fetch the character uploader name from sessionStorage
