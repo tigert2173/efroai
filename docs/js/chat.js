@@ -1309,7 +1309,6 @@ function getCharacterDataById(characterId) {
     // For demonstration, let's assume this is a mock response:
     return {
         id: characterId,
-        likes: characterData.likes// Array of users who liked this character
     };
 }
 
