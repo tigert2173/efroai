@@ -1234,6 +1234,9 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
+const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+
+
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
     const token = localStorage.getItem('token'); // Adjust the key based on your implementation
