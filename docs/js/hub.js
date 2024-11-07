@@ -193,53 +193,71 @@ function getRandomAdInterval() {
     return Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Returns a random number between 5 and 10
 }
 
+
 function likeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get the token from local storage
     const likeButton = document.querySelector(`#like-btn-${characterId}`); // Get the like button for the character card
     const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
-    // Check if the heart is currently solid (liked)
-    const isLiked = heartIcon.innerHTML === '❤️'; // Checking if the icon is the solid heart emoji
+    // Check if the heart is already red (i.e., liked)
+    const isLiked = heartIcon.classList.contains('liked');
 
-    // Define the URL for the like/unlike action
-    const url = `${backendurl}/api/characters/${uploader}/${characterId}/like`;
+    // If the character is already liked, unlike it
+    if (isLiked) {
+        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify({ characterId: characterId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to unlike character');
+            }
+            return response.json();
+        })
+        .then(data => {
+            heartIcon.classList.remove('liked'); // Remove 'liked' class
+            heartIcon.classList.add('heart-empty'); // Add 'heart-empty' class (hollow heart)
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+        })
+        .catch(error => {
+            console.error('Error unliking character:', error);
+            alert('Failed to unlike character. Please try again.');
+        });
 
-    // Prepare the fetch request for liking or unliking the character
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}` // Authorization header
-        },
-        body: JSON.stringify({ characterId: characterId }) // Pass the character ID in the request body
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(isLiked ? 'Failed to unlike character' : 'Failed to like character');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Toggle the heart icon and like count based on the current state
-        if (isLiked) {
-            // Change heart icon to empty (hollow)
-            heartIcon.innerHTML = '🤍'; // Update to hollow heart emoji
-        } else {
-            // Change heart icon to solid (filled)
-            heartIcon.innerHTML = '❤️'; // Update to solid heart emoji
-        }
-
-        // Update the like count based on the response data
-        likesCountElement.textContent = data.likes ? data.likes.length : 0; 
-    })
-    .catch(error => {
-        console.error('Error updating like status:', error);
-        alert(isLiked ? 'Failed to unlike character. Please try again.' : 'Failed to like character. Please try again.');
-    });
+    } else {
+        // If the character is not liked, like it
+        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify({ characterId: characterId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to like character');
+            }
+            return response.json();
+        })
+        .then(data => {
+            heartIcon.classList.add('liked'); // Add 'liked' class (solid heart)
+            heartIcon.classList.remove('heart-empty'); // Remove 'heart-empty' class
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+        })
+        .catch(error => {
+            console.error('Error liking character:', error);
+            alert('Failed to like character. Please try again.');
+        });
+    }
 }
-
 
 
 
