@@ -151,7 +151,7 @@ let settings = {
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
-    useExampleDialogue: false, // Set to true to enable, false to disable
+    useExampleDialogue: true, // Set to true to enable, false to disable
     sessionId: 1,
 };
 
@@ -507,7 +507,7 @@ function getAllMessagesExceptLast() {
                 console.log("No matching config found.");
                 break;
         }
-        
+
         // Update the temperature input element based on the selected preset
         document.getElementById('temperature').value = settings.temperature;
 
