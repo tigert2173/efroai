@@ -111,6 +111,25 @@ function displayCharacters(characters) {
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
+            const userToken = localStorage.getItem('token'); // Retrieve user token
+            if (userToken) {
+                fetch(`${backendurl}/api/characters/${character.uploader}/${character.id}/liked`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${userToken}`,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const heartIcon = card.querySelector('.heart-icon');
+                    if (data.liked) {
+                        heartIcon.classList.add('liked'); // Mark as liked
+                        heartIcon.style.color = 'red'; // Change heart color to red
+                    }
+                })
+                .catch(error => console.error('Error checking like status:', error));
+            }
 // Check if ads should be displayed
 if (!adExempt) {
     // Check if it's time to insert an ad
