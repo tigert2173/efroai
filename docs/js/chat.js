@@ -1378,7 +1378,7 @@ function getCharacterDataById(characterId) {
     // For now, this mock function assumes that you retrieve this data from a backend or sessionStorage
     // Here's a mock example, you would replace it with actual data fetching logic
     const characterData = {
-        id: characterId,
+        id: selectedCharacterId,
     };
 
     return characterData;
