@@ -113,7 +113,7 @@ function displayCharacters(characters) {
             cardCounter++; // Increment the counter after adding a card
             const userToken = localStorage.getItem('token'); // Retrieve user token
             if (userToken) {
-                fetch(`${backendurl}/api/characters/${character.uploader}/${character.id}/liked`, {
+                fetch(`${backendurl}/api/characters/${character.uploader}/${character.id}/like`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${userToken}`,
