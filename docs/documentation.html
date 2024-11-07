@@ -102,69 +102,81 @@
     <header>
         <nav class="navbar">
             <div class="left-content">
-                <a href="/" class="logo">
-                    <div class="logo">
-                        <img src="logo.png" alt=" ">
-                    </div>
-                </a>
-                <a href="/" class="text">
-                    <div class="text">
-                        <span class="letter letter-1">E</span>
-                        <span class="letter letter-2">F</span>
-                        <span class="letter letter-3">R</span>
-                        <span class="letter letter-4">O</span>
-                        <span class="letter letter-5">.</span>
-                        <span class="letter letter-6">A</span>
-                        <span class="letter letter-7">I</span>
-                    </div>
-                </a>
-            </div>
-            <div class="right-content">
-                <ul class="nav-links">
-                    <li class="dropdown">
-                        <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-                        <div class="dropdown-content">
-                            <a href="index.html">Characters Hub</a>
-                            <a href="editor.html">Upload Character</a>
-                            <a href="mycharacters.html">My Characters</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-                        <div class="dropdown-content">
-                            <a href="rules.html">Rules</a>
-                            <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                            <a href="/EFROTales/">Old Stories Page</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-                        <div class="dropdown-content">
-                            <a href="myaccount.html">Account</a>
-                            <a href="mylikes.html">My Likes</a>
-                            <a href="login.html">Login</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-                        <div class="dropdown-content">
-                            <a href="documentation.html">Documentation</a>
-                            <a href="updates.html">Updates & Features</a>
-                            <a href="contact.html">Contact</a>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="contribute.html" class="nav-btn">Contribute</a>
-                    </li>
-                </ul>
-                <div id="login-status" class="login-status"></div>
-                <div class="hamburger" onclick="toggleMenu()">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
+                <a href="/" class="logo"> <!-- Make the logo clickable -->
+                <div class="logo">
+                    <img src="logo.png" alt=" ">
                 </div>
+            </a>
+            <a href="/" class="text">
+                <div class="text">
+                    <span class="letter letter-1">E</span>
+                    <span class="letter letter-2">F</span>
+                    <span class="letter letter-3">R</span>
+                    <span class="letter letter-4">O</span>
+                    <span class="letter letter-5">.</span>
+                    <span class="letter letter-6">A</span>
+                    <span class="letter letter-7">I</span>
+                </div>
+            </a>
             </div>
-        </nav>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
+    
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                    <a href="/EFROTales/">Old Stories Page</a>
+                </div>
+            </li>
+    
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
+    
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+    
+            <!-- Contribute Button -->
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
+    
+        <div id="login-status" class="login-status"></div>
+    
+        <!-- Hamburger menu for mobile view -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
+    </nav>
     </header>
 
     <!-- Hero Section -->
@@ -220,31 +232,62 @@
                 </div>
 
                 <h2 id="expert">Expert Section</h2>
-                <div class="content-container">
-                    <h4>Auto-Response</h4>
-                    <code>Your bot can send a default response if no input matches the user’s request.</code>
+                <button type="button" class="collapsible">Expert Section (Click to Expand)</button>
+                <div class="collapsible-content" style="display: none;">
+                    <p>This section contains information on expert features/settings for expert users.</p>
+                    <div class="content-container">
+                        <h3>Expert Settings Section</h3>
+                        <p><em>These settings can be modified if you want the bot to respond in a certain way.</em></p>
+                        <h4>Previous Sentences Window</h4>
+                        <code>The number of sentences directly before the last bot message that should be considered during message generation.</code>
+                        <h4>Temporal Sentence Sampling</h4>
+                        <code>This setting weights previous sentences based on recency, offering a broader context for responses while maintaining timeline order.</code>
+                    </div>
+                    <div class="content-container">
+                        <h3>API Security</h3>
+                        <p>For securing the API, ensure that you use proper authentication methods such as JWT (JSON Web Token) or OAuth.</p>
+                        <p>Example of a secure request:</p>
+                        <pre><code>curl -H "Authorization: Bearer your-token" https://api.yoursite.com/protected-endpoint</code></pre>
+                    </div>
                 </div>
 
-                <h2 id="models">Models</h2>
+                <h2 id="models">Models Section</h2>
                 <div class="content-container">
-                    <h4>GPT Model</h4>
-                    <code>Our system supports the GPT model for dialogue-based interactions.</code>
+                    <h4>Nephra 8B (Recommended)</h4>
+                    <code>Our recommended model, optimized for better efficiency.</code>
+                    <h4>Thespis Mistral 7B</h4>
+                    <code>Another good model for roleplay, typically playful.</code>
+                    <h4>Thespis 13B (Selective, Unavailable)</h4>
+                    <code>A larger model, available during select times due to resource limitations.</code>
+                    <h4>Dolphin 3B</h4>
+                    <code>A lightweight storytelling model that can be hosted by anyone. Currently the results are subpar.</code>
+                    <h4>[3rd Party]</h4>
+                    <code><em>Means a model is hosted by a user within the community, though we do our best, you should especially avoid sending personal information while using these APIs.</em></code>
+                </div>
+
+                <div class="content-container">
+                    <h2>Need Help?</h2>
+                    <p>If you encounter issues, feel free to reach out at <a href="mailto:support@efroai.net">support@efroai.net</a>.</p>
                 </div>
             </section>
         </div>
     </main>
-
+    <script src="js/menu.js"></script>
     <script>
-        // Toggle collapsible sections
-        document.querySelectorAll('.collapsible').forEach(button => {
-            button.addEventListener('click', () => {
-                button.classList.toggle('active');
-                const content = button.nextElementSibling;
-                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        var collapsibles = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < collapsibles.length; i++) {
+            collapsibles[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
             });
-        });
+        }
     </script>
-
+    
     <script>
         const socket = new WebSocket('wss://efroai.net'); // Update with your domain
     
