@@ -507,6 +507,10 @@ function getAllMessagesExceptLast() {
                 console.log("No matching config found.");
                 break;
         }
+        
+        // Update the temperature input element based on the selected preset
+        document.getElementById('temperature').value = settings.temperature;
+
         console.log('Updated settings:', settings);
     }
 
