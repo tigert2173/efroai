@@ -209,7 +209,7 @@ function likeCharacter(characterId, uploader) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `${token}`
+                'Authorization': `Bearer ${token}` // Make sure token is prefixed with 'Bearer'
             },
             body: JSON.stringify({ characterId: characterId })
         })
@@ -237,7 +237,7 @@ function likeCharacter(characterId, uploader) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `${token}`
+                'Authorization': `Bearer ${token}` // Make sure token is prefixed with 'Bearer'
             },
             body: JSON.stringify({ characterId: characterId })
         })
