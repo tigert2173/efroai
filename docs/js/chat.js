@@ -1234,10 +1234,9 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
-
 // Assuming you have the following variables available:
-const selectedCharacterId = selectedCharacterId = sessionStorage.getItem('selectedCharacterId');// Replace with actual ID
-const characterUploader = sessionStorage.getItem('characterUploader'); // Replace with actual uploader name
+const selectedCharacterId = sessionStorage.getItem('selectedCharacterId'); // Correct assignment
+const characterUploader = sessionStorage.getItem('characterUploader'); // Fetch the character uploader name from sessionStorage
 const characterName = 'Character Name'; // Replace with actual character name
 
 // Get the settings container
@@ -1285,7 +1284,7 @@ settingsContainer.insertBefore(buttonContainer, settingsContainer.firstChild);
 
 const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
 
-
+// Function to like the character
 function likeCharacter(characterId, uploader) {
     // Get the token from local storage (or wherever you store it)
     const token = localStorage.getItem('token'); // Adjust the key based on your implementation
