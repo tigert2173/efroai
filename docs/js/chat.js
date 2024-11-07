@@ -1297,9 +1297,7 @@ function updateLikeButton() {
 async function fetchCharacterLikes(characterId, characterUploader) {
     const token = localStorage.getItem('token'); // Retrieve the token
     const userID = sessionStorage.getItem('userID'); // Get the current user's ID
-    console.log("uploader: " + characterUploader);
 
-    console.log("ID: " + characterId);
     try {
         // Fetch the character data from the backend
         const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
@@ -1317,35 +1315,17 @@ async function fetchCharacterLikes(characterId, characterUploader) {
         }
 
         const character = await response.json();
+        console.log('Character Data:', character); // Log the full character data
+
         const likedUsers = character.likes || [];
+        console.log('Liked Users:', likedUsers); // Log the likes array
 
-        // Log the likes array for debugging
-        console.log('Liked Users:', likedUsers);
-
-        // Display the number of likes (optional)
-        const likesCountElement = document.getElementById('likes-count');
-        if (likesCountElement) {
-            likesCountElement.textContent = likedUsers.length;
-        }
-
-        // Check if the current user has liked the character
-        const isLiked = likedUsers.includes(userID);
-
-        // Update the like button visual state
-        const likeButton = document.getElementById('like-button'); // Assuming you have a like button with this ID
-        if (likeButton) {
-            if (isLiked) {
-                likeButton.classList.add('liked'); // Add 'liked' class if user has liked
-            } else {
-                likeButton.classList.remove('liked'); // Remove 'liked' class if user has not liked
-            }
-        }
-
-        return { likedUsers, isLiked };
+        return { likedUsers };
     } catch (error) {
         console.error('Error fetching character likes:', error);
     }
 }
+
 
 // Check if the character is liked (based on the "likes" array)
 // Function to check if the character is liked by the current user
