@@ -1275,49 +1275,77 @@ likesCount.id = `likes-count-${selectedCharacterId}`; // Dynamic ID for likes co
 likeBtn.appendChild(heartIcon);
 likeBtn.appendChild(likesCount);
 
+// Function to update the like button appearance based on whether the character is liked
+function updateLikeButton() {
+    const liked = checkIfLiked(selectedCharacterId); // This function checks if the character has been liked (replace with your logic)
+
+    if (liked) {
+        // If liked, change the heart icon and background color
+        heartIcon.textContent = '❤️'; // Filled heart for liked state
+        likeBtn.style.backgroundColor = '#ff5a5f'; // Example: Red for liked state
+    } else {
+        // If not liked, use an empty heart and default background color
+        heartIcon.textContent = '🤍'; // Empty heart for not liked state
+        likeBtn.style.backgroundColor = ''; // Reset to default background
+    }
+}
+
+// Check if the character is liked (example logic, replace with actual check)
+function checkIfLiked(characterId) {
+    // This can be fetched from sessionStorage, localStorage, or an API to check the like status
+    const likedCharacters = JSON.parse(localStorage.getItem('likedCharacters')) || [];
+    return likedCharacters.includes(characterId);
+}
+
+// Function to handle like action
+function likeCharacter(characterId, uploader) {
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `${token}`
+        },
+        body: JSON.stringify({ characterId: characterId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to like character');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message); // Success message
+
+        // Update the local storage to reflect the like status (example logic)
+        let likedCharacters = JSON.parse(localStorage.getItem('likedCharacters')) || [];
+        if (!likedCharacters.includes(characterId)) {
+            likedCharacters.push(characterId);
+            localStorage.setItem('likedCharacters', JSON.stringify(likedCharacters));
+        }
+
+        updateLikeButton(); // Update button appearance
+    })
+    .catch(error => {
+        console.error('Error liking character:', error);
+        alert('Failed to like character. Please try again.');
+    });
+}
+
+// Function to view character details
+function viewCharacter(characterId, uploader) {
+    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+}
+
+// Initially update the like button appearance
+updateLikeButton();
+
 // Append the buttons to the button container
 buttonContainer.appendChild(viewBtn);
 buttonContainer.appendChild(likeBtn);
 
 // Prepend the button container to the settings container
 settingsContainer.insertBefore(buttonContainer, settingsContainer.firstChild);
-
-const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
-
-// Function to like the character
-function likeCharacter(characterId, uploader) {
-    // Get the token from local storage (or wherever you store it)
-    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
-
-    // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `${token}` // Include the token in the Authorization header
-        },
-        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to like character');
-        }
-        return response.json(); // Return the response as JSON
-    })
-    .then(data => {
-        // Optionally, update the UI to reflect the like
-        console.log(data.message); // Display a success message or perform other actions
-        alert(data.message); // Display success or failure message
-    })
-    .catch(error => {
-        console.error('Error liking character:', error);
-        alert('Failed to like character. Please try again.'); // Simple error message
-    });
-}
-
-// Function to view character details (can be implemented further)
-function viewCharacter(characterId, uploader) {
-    // Logic to display character details (e.g., navigate to a new page or show a modal)
-    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-}
