@@ -1329,18 +1329,23 @@ async function fetchCharacterLikes(characterId, characterUploader) {
 
 // Check if the character is liked (based on the "likes" array)
 // Function to check if the character is liked by the current user
-function checkIfLiked(selectedCharacterId) {
-    // Retrieve character data by characterId
-    const characterData = fetchCharacterLikes(selectedCharacterId, characterUploader);
+async function checkIfLiked(selectedCharacterId) {
+    const characterData = await fetchCharacterLikes(selectedCharacterId, characterUploader); // Await the async function to get data
 
-    // Extract the likedUsers array from character data (defaults to an empty array if not available)
-    const likedUsers = characterData.likes || []; 
+    if (!characterData) {
+        console.error('No character data available');
+        return false;
+    }
+
+    const likedUsers = characterData.likedUsers || []; // Safely access the likedUsers array
 
     // Check if the current user ID exists in the liked users array
+    const userID = sessionStorage.getItem('userID'); // Get the user ID from sessionStorage
     const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
 
     return isLiked; // Return the like status
 }
+
 
 
 // Calling the function to check if the character is liked
