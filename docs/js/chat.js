@@ -1331,7 +1331,7 @@ async function fetchCharacterLikes(characterId, characterUploader) {
 // Function to check if the character is liked by the current user
 function checkIfLiked(selectedCharacterId) {
     // Retrieve character data by characterId
-    const characterData = fetchCharacterLikes(selectedCharacterId);
+    const characterData = fetchCharacterLikes(selectedCharacterId, characterUploader);
 
     // Log the character data to verify
     console.log('Character Data:', characterData);
