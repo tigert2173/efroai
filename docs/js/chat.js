@@ -1298,19 +1298,37 @@ function checkIfLiked(characterId) {
     // Fetch the character's data (this example assumes it's available from a global or session variable)
     const characterData = getCharacterDataById(characterId); // Replace with actual data retrieval logic
 
+    // Log the character data to verify
+    console.log('Character Data:', characterData);
+
     // Check if the current username is in the likes array of the character
     const likedUsers = characterData.likes || [];
-    return likedUsers.includes(userID); // Returns true if the user has liked the character
+    
+    // Log the liked users array and userID
+    console.log('Liked Users:', likedUsers);
+    console.log('Current UserID:', userID);
+
+    const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
+    
+    // Log the result
+    console.log(`Is character liked by current user? ${isLiked}`);
+
+    return isLiked;
 }
 
 // Function to get character data by ID (replace with actual data fetching logic)
 function getCharacterDataById(characterId) {
     // Here you should fetch the character data from the backend, sessionStorage, or another data source.
     // For demonstration, let's assume this is a mock response:
-    return {
+    const mockCharacterData = {
         id: characterId,
+        likes: ['baconjason', 'harryy44'] // Example liked users
     };
+
+    return mockCharacterData;
 }
+
+checkIfLiked(characterId);
 
 // Function to handle like action
 function likeCharacter(characterId, uploader) {
