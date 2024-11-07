@@ -1294,28 +1294,27 @@ function updateLikeButton() {
     }
 }
 
-function fetchCharacterLikes(characterId, characterUploader) {
+async function fetchCharacterLikes(characterId, characterUploader) {
     const token = localStorage.getItem('token'); // Retrieve the token
-    const userID = sessionStorage.getItem('userID'); // Get the current user's ID from sessionStorage (or use another method)
+    const userID = sessionStorage.getItem('userID'); // Get the current user's ID
 
-    // Fetch the character data from the backend
-    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
+    try {
+        // Fetch the character data from the backend
+        const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `${token}`, // Add the auth token here
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
+        // Check for a successful response
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
-        return response.json();
-    })
-    .then(character => {
-        // Retrieve only the 'likes' array from the response
+
+        const character = await response.json();
         const likedUsers = character.likes || [];
 
         // Log the likes array for debugging
@@ -1329,7 +1328,7 @@ function fetchCharacterLikes(characterId, characterUploader) {
 
         // Check if the current user has liked the character
         const isLiked = likedUsers.includes(userID);
-        
+
         // Update the like button visual state
         const likeButton = document.getElementById('like-button'); // Assuming you have a like button with this ID
         if (likeButton) {
@@ -1340,12 +1339,10 @@ function fetchCharacterLikes(characterId, characterUploader) {
             }
         }
 
-        // Optionally return the likedUsers or isLiked to use elsewhere
         return { likedUsers, isLiked };
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error fetching character likes:', error);
-    });
+    }
 }
 
 // Check if the character is liked (based on the "likes" array)
