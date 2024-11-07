@@ -1234,6 +1234,12 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
+
+// Assuming you have the following variables available:
+const selectedCharacterId = '123'; // Replace with actual ID
+const characterUploader = 'UploaderName'; // Replace with actual uploader name
+const characterName = 'Character Name'; // Replace with actual character name
+
 // Get the settings container
 const settingsContainer = document.getElementById('settings-container');
 
@@ -1250,6 +1256,7 @@ viewBtn.setAttribute('onclick', `viewCharacter('${selectedCharacterId}', '${char
 // Create the Like button
 const likeBtn = document.createElement('button');
 likeBtn.classList.add('like-btn');
+likeBtn.setAttribute('aria-label', `Like ${characterName}`);
 likeBtn.setAttribute('onclick', `likeCharacter('${selectedCharacterId}', '${characterUploader}')`);
 
 // Create the heart icon inside the like button
