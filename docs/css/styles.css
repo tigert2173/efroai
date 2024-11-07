@@ -504,6 +504,20 @@ footer p {
     transform: scale(1.25);    /* Slightly enlarge button on hover */
 }
 
+.heart-icon {
+    font-size: 1.4em;
+    transition: color 0.3s ease; /* Optional: smooth transition for color change */
+}
+
+.heart-icon.liked {
+    color: red; /* Solid heart */
+}
+
+.heart-icon.heart-empty {
+    color: gray; /* Hollow heart */
+}
+
+
 /* Media Query for super small screens */
 @media (max-width: 768px) {
     /* Additional styles for main content */

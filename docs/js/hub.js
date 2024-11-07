@@ -201,62 +201,45 @@ function likeCharacter(characterId, uploader) {
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
     // Check if the heart is already red (i.e., liked)
-    const isLiked = heartIcon.classList.contains('liked');
+    const isLiked = heartIcon.classList.contains('liked'); // Check for the 'liked' class
+
+    // Fetch request URL
+    const url = `${backendurl}/api/characters/${uploader}/${characterId}/like`;
 
     // If the character is already liked, unlike it
-    if (isLiked) {
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `${token}`
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to unlike character');
-            }
-            return response.json();
-        })
-        .then(data => {
-            heartIcon.classList.remove('liked'); // Remove 'liked' class
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}` // Authorization header
+        },
+        body: JSON.stringify({ characterId: characterId }) // Pass the character ID in the request body
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(isLiked ? 'Failed to unlike character' : 'Failed to like character');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (isLiked) {
+            // If the character was already liked, remove 'liked' class (hollow heart)
+            heartIcon.classList.remove('liked'); // Remove 'liked' class (solid heart)
             heartIcon.classList.add('heart-empty'); // Add 'heart-empty' class (hollow heart)
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error unliking character:', error);
-            alert('Failed to unlike character. Please try again.');
-        });
-
-    } else {
-        // If the character is not liked, like it
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `${token}`
-            },
-            body: JSON.stringify({ characterId: characterId })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to like character');
-            }
-            return response.json();
-        })
-        .then(data => {
+        } else {
+            // If the character is not liked, add 'liked' class (solid heart)
             heartIcon.classList.add('liked'); // Add 'liked' class (solid heart)
             heartIcon.classList.remove('heart-empty'); // Remove 'heart-empty' class
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
-        })
-        .catch(error => {
-            console.error('Error liking character:', error);
-            alert('Failed to like character. Please try again.');
-        });
-    }
+        }
+
+        // Update the like count
+        likesCountElement.textContent = data.likes ? data.likes.length : 0;
+    })
+    .catch(error => {
+        console.error('Error updating like status:', error);
+        alert(isLiked ? 'Failed to unlike character. Please try again.' : 'Failed to like character. Please try again.');
+    });
 }
 
 
