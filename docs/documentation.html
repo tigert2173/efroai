@@ -228,21 +228,22 @@
                     <code>Describe your bot's personality, using the W++ format if desired. This will define how the bot reacts and interacts with users based on its character traits.</code>
                     <p><strong>Example:</strong> "Bot Personality: Friendly, Patient, Enthusiastic. Always eager to help and encourage users."</p>
                     <p>Persona helps shape the tone of the responses, e.g., is your bot sarcastic, cheerful, or formal?</p>
+
+                    <h4>Example Dialogue</h4>
+                    <p>Here is an example of how a conversation might look between the user and the assistant. This will help you understand how the bot's greeting, context, and persona work together to create a natural dialogue.</p>
+                    <code>
+                        <strong>Assistant:</strong> "Hello, {{user}}! How can I assist you today?" <br>
+                        <strong>User:</strong> "Can you help me with my homework?" <br>
+                        <strong>Assistant:</strong> "Of course! What subject are you working on?" <br>
+                        <strong>User:</strong> "I'm working on my math assignment." <br>
+                        <strong>Assistant:</strong> "Great! What’s the question you’re stuck on?" <br>
+                    </code>
+                    <p>In this example, the bot follows a friendly and helpful tone, acknowledging the user's request and then diving into the specifics of the task. Notice how the bot’s responses are aligned with its persona (Friendly, Patient, Enthusiastic) and the context (helping with homework).</p>
+                    <p><strong>Tip:</strong> Ensure your dialogue maintains natural flow by varying the responses, asking open-ended questions, and addressing user needs directly.</p>
+
                 </div>
             
-                <h2 id="usage">Usage</h2>
-                <div class="content-container">
-                    <h4>Example Dialogue Greeting</h4>
-                    <p>Once your bot’s persona, scenario, and greeting are set, it will be ready to engage with the users.</p>
-                    <code>
-                        User: Hello! <br>
-                        Bot: "Hello, {{user}}! How can I assist you today?" <br>
-                        User: Can you help me with my homework? <br>
-                        Bot: "Sure! What subject are you working on?"
-                    </code>
-                    <p>This example demonstrates a friendly and helpful bot greeting, leading into the context of offering homework assistance.</p>
-                </div>
-
+                   
                 <h2 id="advanced">Advanced Section</h2>
                 <div class="content-container">
                     <h4>Temperature (0.2 to 1.2)</h4>
