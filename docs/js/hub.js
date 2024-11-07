@@ -111,9 +111,6 @@ function displayCharacters(characters) {
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
-
-               // Check if user has already liked the character
-               toggleHeartColor(character.id);
 // Check if ads should be displayed
 if (!adExempt) {
     // Check if it's time to insert an ad
@@ -199,48 +196,70 @@ function getRandomAdInterval() {
 
 function likeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get the token from local storage
+    const likeButton = document.querySelector(`#like-btn-${characterId}`); // Get the like button for the character card
+    const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
+    const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
-    // Send a request to like/unlike the character
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}` // Include token in Authorization header
-        },
-        body: JSON.stringify({ characterId: characterId }) // Send the character ID
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to like/unlike character');
-        }
-        return response.json(); // Return response as JSON
-    })
-    .then(data => {
-        console.log(data.message); // Display success message or perform other actions
-        // Toggle heart color based on new state
-        toggleHeartColor(characterId);
-    })
-    .catch(error => {
-        console.error('Error liking character:', error);
-        alert('Failed to like/unlike character. Please try again.');
-    });
-}
+    // Check if the heart is already red (i.e., liked)
+    const isLiked = heartIcon.classList.contains('liked');
 
-// Function to toggle heart color
-function toggleHeartColor(characterId) {
-    // Get the heart icon element for the given character
-    const heartIcon = document.querySelector(`.character-card[data-character-id="${characterId}"] .heart-icon`);
-
-    // Check if the character is liked
-    const isLiked = localStorage.getItem(`liked-${characterId}`) === 'true'; // This assumes you're storing the like state in localStorage
-
+    // If the character is already liked, unlike it
     if (isLiked) {
-        heartIcon.style.color = 'red'; // Change heart color to red if liked
+        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/unlike`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify({ characterId: characterId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to unlike character');
+            }
+            return response.json();
+        })
+        .then(data => {
+            heartIcon.classList.remove('liked'); // Remove 'liked' class
+            heartIcon.style.color = ''; // Reset heart color to default (gray)
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+        })
+        .catch(error => {
+            console.error('Error unliking character:', error);
+            alert('Failed to unlike character. Please try again.');
+        });
+
     } else {
-        heartIcon.style.color = ''; // Default color if not liked
+        // If the character is not liked, like it
+        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify({ characterId: characterId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to like character');
+            }
+            return response.json();
+        })
+        .then(data => {
+            heartIcon.classList.add('liked'); // Add 'liked' class
+            heartIcon.style.color = 'red'; // Change heart color to red
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
+        })
+        .catch(error => {
+            console.error('Error liking character:', error);
+            alert('Failed to like character. Please try again.');
+        });
     }
 }
+
+
 
 function openCharacterPage(characterId, uploader) {
     // Use sessionStorage to save the character ID and uploader information
