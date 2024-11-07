@@ -99,7 +99,7 @@ function displayCharacters(characters) {
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                     <button class="like-btn" data-character-id="${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                         <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                         <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
@@ -186,6 +186,7 @@ if (!adExempt) {
 
     // Start by loading the first batch of characters
     loadCharacters(0);
+    
 }
 
 // Function to get a random ad interval between 5 and 10
@@ -195,18 +196,16 @@ function getRandomAdInterval() {
 
 
 function likeCharacter(characterId, uploader) {
-    // Get the token from local storage (or wherever you store it)
-    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+    const token = localStorage.getItem('token'); // Get the token from local storage
 
-    // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `${token}` // Include the token in the Authorization header
+            'Authorization': `${token}`
         },
-        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+        body: JSON.stringify({ characterId: characterId })
     })
     .then(response => {
         if (!response.ok) {
@@ -218,12 +217,16 @@ function likeCharacter(characterId, uploader) {
         // Optionally, update the UI to reflect the like
         console.log(data.message); // Display a success message or perform other actions
         alert(data.message); // Display success or failure message
+
+        // After liking, update the heart color
+        updateHeartColor(characterId, uploader);
     })
     .catch(error => {
         console.error('Error liking character:', error);
         alert('Failed to like character. Please try again.'); // Simple error message
     });
 }
+
 
 
 function openCharacterPage(characterId, uploader) {
@@ -287,4 +290,39 @@ function hideUploadForm() {
 function viewCharacter(characterId, uploader) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+}
+
+function updateHeartColor(characterId, uploader) {
+    // Get the like button for the specific character
+    const likeButton = document.querySelector(`button.like-btn[data-character-id="${characterId}"]`);
+    const heartIcon = likeButton.querySelector('.heart-icon');
+    const likesCountElement = likeButton.querySelector('.likes-count');
+
+    // Get the token from local storage (or wherever you store it)
+    const token = localStorage.getItem('token');
+    
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/liked`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Check if the user has already liked the character
+        const hasLiked = data.liked; // Assuming the backend returns { liked: true/false }
+
+        // Update the heart color based on like status
+        if (hasLiked) {
+            heartIcon.style.color = 'red';  // Change color to red if liked
+        } else {
+            heartIcon.style.color = 'gray'; // Default color if not liked
+        }
+
+        // Optionally, update the likes count
+        likesCountElement.textContent = data.likesCount;
+    })
+    .catch(error => {
+        console.error('Error checking like status:', error);
+    });
 }
