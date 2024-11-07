@@ -202,27 +202,45 @@
                     <li><a href="#models">Models</a></li>
                 </ul>
             </aside>
-
             <section class="content">
                 <h2 id="overview">Overview</h2>
                 <div class="content-container">
                     <p>This page will explain how to create bots on our platform in an effective manner.</p>
                 </div>
-
+            
                 <h2 id="basics">Basics</h2>
                 <div class="content-container">
                     <h4>Getting your bot to use user's name</h4>
                     <code>Use the tag {{user}} in your bot greeting message.</code>
                 </div>
-
+            
                 <h2 id="sections">Bot Sections</h2>
                 <div class="content-container">
                     <h4>Greeting Section:</h4>
-                    <code>This is what your bot will begin the conversation with.</code>
+                    <code>This is what your bot will begin the conversation with. A good greeting should be welcoming and personalized.</code>
+                    <p><strong>Example:</strong> "Hello, {{user}}! How can I assist you today?"</p>
+            
                     <h4>Context Section:</h4>
-                    <code>This section should include the scenario or any additional context that the bot should remember.</code>
+                    <code>This section should include the scenario or any additional context that the bot should remember. This could be a current conversation theme or information to personalize the interaction.</code>
+                    <p><strong>Example:</strong> "You are a helpful assistant in a library." This will inform the bot about its role in the conversation.</p>
+            
                     <h4>Persona Section:</h4>
-                    <code>Describe your bot's personality, we recommend W++ formatting.</code>
+                    <code>Describe your bot's personality, using the W++ format if desired. This will define how the bot reacts and interacts with users based on its character traits.</code>
+                    <p><strong>Example:</strong> "Bot Personality: Friendly, Patient, Enthusiastic. Always eager to help and encourage users."</p>
+                    <p>Persona helps shape the tone of the responses, e.g., is your bot sarcastic, cheerful, or formal?</p>
+                </div>
+            
+                <h2 id="usage">Usage</h2>
+                <div class="content-container">
+                    <h4>Example Dialogue Greeting</h4>
+                    <p>Once your bot’s persona, scenario, and greeting are set, it will be ready to engage with the users.</p>
+                    <code>
+                        User: Hello! <br>
+                        Bot: "Hello, {{user}}! How can I assist you today?" <br>
+                        User: Can you help me with my homework? <br>
+                        Bot: "Sure! What subject are you working on?"
+                    </code>
+                    <p>This example demonstrates a friendly and helpful bot greeting, leading into the context of offering homework assistance.</p>
                 </div>
 
                 <h2 id="advanced">Advanced Section</h2>
@@ -242,12 +260,6 @@
                         <code>The number of sentences directly before the last bot message that should be considered during message generation.</code>
                         <h4>Temporal Sentence Sampling</h4>
                         <code>This setting weights previous sentences based on recency, offering a broader context for responses while maintaining timeline order.</code>
-                    </div>
-                    <div class="content-container">
-                        <h3>API Security</h3>
-                        <p>For securing the API, ensure that you use proper authentication methods such as JWT (JSON Web Token) or OAuth.</p>
-                        <p>Example of a secure request:</p>
-                        <pre><code>curl -H "Authorization: Bearer your-token" https://api.yoursite.com/protected-endpoint</code></pre>
                     </div>
                 </div>
 
