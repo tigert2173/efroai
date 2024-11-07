@@ -1324,7 +1324,7 @@ function getCharacterDataById(characterId) {
     // For demonstration, let's assume this is a mock response:
     const CharacterData = {
         id: characterId,
-        likes: characterData.likes// Example liked users
+        likes: likes.likes// Example liked users
     };
 
     return CharacterData;
