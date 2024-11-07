@@ -583,6 +583,7 @@ async function sendMessage() {
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+        ${settings.exampledialogue ? `Example Dialogue:\n${settings.exampledialogue}` : ''}
         `,
     };
     
