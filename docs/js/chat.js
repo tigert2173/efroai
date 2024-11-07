@@ -1337,7 +1337,7 @@ function checkIfLiked(selectedCharacterId) {
     console.log('Character Data:', characterData);
 
     // Extract the likedUsers array from character data (defaults to an empty array if not available)
-    const likedUsers = characterData.likes || [];
+    const likedUsers = characterData.likes;
 
     // Log the liked users array and the current userID
     console.log('Liked Users:', likedUsers);
