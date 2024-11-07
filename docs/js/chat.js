@@ -1331,13 +1331,13 @@ async function fetchCharacterLikes(characterId, characterUploader) {
 // Function to check if the character is liked by the current user
 function checkIfLiked(selectedCharacterId) {
     // Retrieve character data by characterId
-    const characterData = getCharacterDataById(selectedCharacterId); 
+    const characterData = getCharacterDataById(selectedCharacterId);
 
     // Log the character data to verify
     console.log('Character Data:', characterData);
 
     // Extract the likedUsers array from character data (defaults to an empty array if not available)
-    const likedUsers = characterData.likes;
+    const likedUsers = characterData.likes || [];
 
     // Log the liked users array and the current userID
     console.log('Liked Users:', likedUsers);
@@ -1350,17 +1350,6 @@ function checkIfLiked(selectedCharacterId) {
     console.log(`Is character liked by current user? ${isLiked}`);
 
     return isLiked; // Return the like status
-}
-
-// Function to get character data by ID (mock implementation for demo purposes)
-function getCharacterDataById(selectedCharacterId) {
-    // For now, this mock function assumes that you retrieve this data from a backend or sessionStorage
-    // Here's a mock example, you would replace it with actual data fetching logic
-    const characterData = {
-        id: selectedCharacterId,
-    };
-
-    return characterData;
 }
 
 // Calling the function to check if the character is liked
