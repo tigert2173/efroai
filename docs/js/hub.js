@@ -195,35 +195,45 @@ function getRandomAdInterval() {
 
 
 function likeCharacter(characterId, uploader) {
-    // Get the token from local storage (or wherever you store it)
-    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+    const token = localStorage.getItem('token'); // Get the token from local storage
 
-    // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `${token}` // Include the token in the Authorization header
         },
-        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+        body: JSON.stringify({ characterId: characterId })
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Failed to like character');
         }
-        return response.json(); // Return the response as JSON
+        return response.json();
     })
     .then(data => {
-        // Optionally, update the UI to reflect the like
-        console.log(data.message); // Display a success message or perform other actions
-        alert(data.message); // Display success or failure message
+        console.log(data.message); // Display success message
+        alert(data.message); // Show success alert
+        updateHeartIcon(characterId, true); // Update the heart icon color to red
     })
     .catch(error => {
         console.error('Error liking character:', error);
         alert('Failed to like character. Please try again.'); // Simple error message
     });
 }
+
+function updateHeartIcon(characterId, isLiked) {
+    const likeButton = document.querySelector(`button.like-btn[data-character-id="${characterId}"]`);
+    const heartIcon = likeButton.querySelector('.heart-icon');
+
+    if (isLiked) {
+        heartIcon.style.color = 'red'; // Change heart color to red when liked
+    } else {
+        heartIcon.style.color = ''; // Reset to default color when unliked
+    }
+}
+
 
 
 function openCharacterPage(characterId, uploader) {
