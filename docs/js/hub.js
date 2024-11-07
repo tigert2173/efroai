@@ -193,14 +193,15 @@ function getRandomAdInterval() {
     return Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Returns a random number between 5 and 10
 }
 
+
 function likeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get the token from local storage
     const likeButton = document.querySelector(`#like-btn-${characterId}`); // Get the like button for the character card
     const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon element
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
-    // Check if the heart is currently solid (liked)
-    const isLiked = heartIcon.innerHTML === '❤️'; // Checking if the icon is the solid heart emoji
+    // Check if the heart is already red (i.e., liked)
+    const isLiked = heartIcon.classList.contains('liked');
 
     // If the character is already liked, unlike it
     if (isLiked) {
@@ -209,7 +210,7 @@ function likeCharacter(characterId, uploader) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `${token}`
             },
             body: JSON.stringify({ characterId: characterId })
         })
@@ -220,10 +221,9 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            // Change heart icon to empty (hollow)
-            heartIcon.innerHTML = '🤍'; // Update to empty heart emoji
-            // Update like count
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; 
+            heartIcon.classList.remove('liked'); // Remove 'liked' class
+            heartIcon.classList.add('heart-empty'); // Add 'heart-empty' class (hollow heart)
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
             console.error('Error unliking character:', error);
@@ -237,7 +237,7 @@ function likeCharacter(characterId, uploader) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `${token}`
             },
             body: JSON.stringify({ characterId: characterId })
         })
@@ -248,10 +248,9 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            // Change heart icon to solid (filled)
-            heartIcon.innerHTML = '❤️'; // Update to solid heart emoji
-            // Update like count
-            likesCountElement.textContent = data.likes ? data.likes.length : 0; 
+            heartIcon.classList.add('liked'); // Add 'liked' class (solid heart)
+            heartIcon.classList.remove('heart-empty'); // Remove 'heart-empty' class
+            likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
             console.error('Error liking character:', error);
@@ -259,7 +258,6 @@ function likeCharacter(characterId, uploader) {
         });
     }
 }
-
 
 
 
