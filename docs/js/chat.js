@@ -1234,6 +1234,50 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCharacterSettings();
 });
 
+
+// Get the settings container
+const settingsContainer = document.getElementById('settings-container');
+
+// Create the button container
+const buttonContainer = document.createElement('div');
+buttonContainer.classList.add('button-container');
+
+// Create the view button
+const viewBtn = document.createElement('button');
+viewBtn.classList.add('view-btn');
+viewBtn.textContent = 'View Character';
+viewBtn.setAttribute('onclick', `viewCharacter('${selectedCharacterId}', '${characterUploader}')`);
+
+// Create the like button
+const likeBtn = document.createElement('button');
+likeBtn.classList.add('like-btn');
+likeBtn.setAttribute('aria-label', `Like ${characterName}`);
+likeBtn.setAttribute('onclick', `likeCharacter('${selectedCharacterId}', '${characterUploader}')`);
+
+// Create the heart icon inside the like button
+const heartIcon = document.createElement('span');
+heartIcon.classList.add('heart-icon');
+heartIcon.setAttribute('role', 'img');
+heartIcon.setAttribute('aria-hidden', 'true');
+heartIcon.style.fontSize = '1.4em';
+heartIcon.textContent = '❤️';
+
+// Create the likes count span
+const likesCount = document.createElement('span');
+likesCount.classList.add('likes-count');
+likesCount.id = `likes-count-${selectedCharacterId}`; // Dynamic ID for likes count
+
+// Append the heart icon and likes count to the like button
+likeBtn.appendChild(heartIcon);
+likeBtn.appendChild(likesCount);
+
+// Append the buttons to the button container
+buttonContainer.appendChild(viewBtn);
+buttonContainer.appendChild(likeBtn);
+
+// Prepend the button container to the settings container
+settingsContainer.insertBefore(buttonContainer, settingsContainer.firstChild);
+
 const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
 
 
