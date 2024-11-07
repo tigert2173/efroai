@@ -223,7 +223,6 @@ function likeCharacter(characterId, uploader) {
         .then(data => {
             heartIcon.classList.remove('liked'); // Remove 'liked' class
             heartIcon.classList.add('heart-empty'); // Add 'heart-empty' class (hollow heart)
-            heartIcon.style.color = ''; // Reset heart color to default (gray)
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
@@ -251,7 +250,6 @@ function likeCharacter(characterId, uploader) {
         .then(data => {
             heartIcon.classList.add('liked'); // Add 'liked' class (solid heart)
             heartIcon.classList.remove('heart-empty'); // Remove 'heart-empty' class
-            heartIcon.style.color = 'red'; // Change heart color to red
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
