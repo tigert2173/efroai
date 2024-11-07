@@ -3,204 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Roleplay Bot Documentation</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>EFRO.AI Character Hub - Documentation</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/menu2.0.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        nav {
-            background-color: #444;
-            padding: 10px;
-        }
-        nav a {
-            color: white;
-            padding: 10px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        nav a:hover {
-            background-color: #575757;
-        }
+        /* Add custom styles for the sidebar */
         .container {
-            padding: 20px;
+            display: flex;
+            margin: 20px;
         }
-        h2 {
-            color: #4CAF50;
+        .sidebar {
+            position: sticky;
+            top: 20px; /* Offset from the top */
+            width: 200px; /* Fixed width for the sidebar */
+            padding: 10px;
+            background-color: #1e1e1e; /* Dark background for sidebar */
+            border-radius: 8px; /* Optional: rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+            height: fit-content; /* Adjust height to content */
+        }
+        .sidebar h3 {
+            color: #e67e22; /* Orange color for headings */
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #3498db; /* Bright link color */
+            transition: color 0.3s;
+        }
+        .sidebar ul li a:hover {
+            color: #e67e22; /* Change link color on hover */
+        }
+        .content {
+            flex: 1; /* Take the remaining space */
+            margin-left: 20px; /* Space between sidebar and content */
+        }
+        .collapsible {
+            background-color: #3498db; /* Bright button */
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .collapsible.active, .collapsible:hover {
+            background-color: #e67e22; /* Orange when active */
+        }
+        .collapsible-content {
+            padding: 15px;
+            display: none;
+            overflow: hidden;
+            background-color: #1e1e1e; /* Dark collapsible content */
+            border-left: 5px solid #3498db;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         code {
-            background-color: #f4f4f4;
-            padding: 5px;
-            border-radius: 3px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .code-block {
-            background-color: #2d2d2d;
-            color: #f5f5f5;
+            background-color: #333; /* Darker code block */
             padding: 10px;
-            border-radius: 5px;
-            font-family: "Courier New", Courier, monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            border-radius: 10px;
+            color: #ddd; /* Lighter text */
+            display: inline-block;
+            font-size: 90%;
         }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
+        .content-container {
+            margin-left: 20px; /* Indent content container */
             padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            border-left: 2px solid #3498db; /* Optional: left border for emphasis */
+            background-color: #2b2b2b; /* Dark background for better readability */
+            border-radius: 5px; /* Optional: rounded corners */
+        }
+        h2, h3, h4 {
+            margin: 0; /* Remove default margin for headers */
+        }
+        h2 {
+            margin-bottom: 10px; /* Space below main headers */
+        }
+        h3, h4 {
+            margin-bottom: 5px; /* Space below subheaders */
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="left-content">
+                <a href="/" class="logo">
+                    <div class="logo">
+                        <img src="logo.png" alt=" ">
+                    </div>
+                </a>
+                <a href="/" class="text">
+                    <div class="text">
+                        <span class="letter letter-1">E</span>
+                        <span class="letter letter-2">F</span>
+                        <span class="letter letter-3">R</span>
+                        <span class="letter letter-4">O</span>
+                        <span class="letter letter-5">.</span>
+                        <span class="letter letter-6">A</span>
+                        <span class="letter letter-7">I</span>
+                    </div>
+                </a>
+            </div>
+            <div class="right-content">
+                <ul class="nav-links">
+                    <li class="dropdown">
+                        <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Characters Hub</a>
+                            <a href="editor.html">Upload Character</a>
+                            <a href="mycharacters.html">My Characters</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                        <div class="dropdown-content">
+                            <a href="rules.html">Rules</a>
+                            <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                            <a href="/EFROTales/">Old Stories Page</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                        <div class="dropdown-content">
+                            <a href="myaccount.html">Account</a>
+                            <a href="mylikes.html">My Likes</a>
+                            <a href="login.html">Login</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                        <div class="dropdown-content">
+                            <a href="documentation.html">Documentation</a>
+                            <a href="updates.html">Updates & Features</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="contribute.html" class="nav-btn">Contribute</a>
+                    </li>
+                </ul>
+                <div id="login-status" class="login-status"></div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<header>
-    <h1>Roleplay Bot Documentation</h1>
-    <p>Guide to creating and configuring LLaMA 3 8B / Nephra Yodayos 8B Roleplay Bots</p>
-</header>
-
-<nav>
-    <a href="#getting-started">Getting Started</a>
-    <a href="#persona-scenario">Persona & Scenario</a>
-    <a href="#dialogue-structure">Dialogue Structure</a>
-    <a href="#wplusplus-formatting">W++ Formatting</a>
-    <a href="#advanced-configuration">Advanced Configuration</a>
-    <a href="#testing-debugging">Testing & Debugging</a>
-    <a href="#common-issues">Common Issues</a>
-    <a href="#best-practices">Best Practices</a>
-</nav>
-
-<div class="container">
-    <section id="getting-started" class="section">
-        <h2>1. Getting Started</h2>
-        <p>Before creating your roleplay bot, make sure you have the following prerequisites:</p>
-        <ul>
-            <li><strong>LLaMA 3 8B or Nephra Yodayos 8B API Access</strong> - Ensure you have access to the required model API.</li>
-            <li><strong>Persona and Scenario Data</strong> - Prepare the character and scenario data.</li>
-            <li><strong>Server Setup</strong> - Host your bot on a capable server.</li>
-        </ul>
-        <p>Follow the installation instructions to get started.</p>
-    </section>
-
-    <section id="persona-scenario" class="section">
-        <h2>2. Creating Persona and Scenario Data</h2>
-        <p>Define the core attributes for your persona and scenario. Example:</p>
-        <div class="code-block">
-            {
-                "persona": {
-                    "name": "Raven",
-                    "age": "25",
-                    "appearance": "Long black hair, dark leather outfit",
-                    "personality": ["Mysterious", "Cunning", "Sarcastic"],
-                    "tone": "Dark and witty"
-                },
-                "scenario": {
-                    "title": "The Shadow Realm",
-                    "setting": "A dark, enchanted forest",
-                    "goal": "Survive the night and uncover the truth about the forest's curse",
-                    "conflict": "Navigate through illusions and traps set by a malevolent spirit."
-                }
-            }
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Documentation</h1>
+            <p>Explore how to create bots effectively on our platform.</p>
         </div>
     </section>
 
-    <section id="dialogue-structure" class="section">
-        <h2>3. Dialogue Structure</h2>
-        <p>The dialogue should guide user interactions and include branching choices.</p>
-        <div class="code-block">
-            {
-                "user_input": "What should I do next?",
-                "bot_response": "The trees begin to move, casting shadows in every direction. 'You have two choices,' Raven whispers. 'You can follow the path to the left or venture into the cave ahead.'",
-                "choices": [
-                    {"text": "Take the path to the left", "next_scenario": "forest_path"},
-                    {"text": "Enter the cave", "next_scenario": "mysterious_cave"}
-                ]
-            }
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <aside class="sidebar">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#basics">Basics</a></li>
+                    <li><a href="#sections">Bot Sections</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#advanced">Advanced Section</a></li>
+                    <li><a href="#expert">Expert Section</a></li>
+                    <li><a href="#models">Models</a></li>
+                </ul>
+            </aside>
+
+            <section class="content">
+                <h2 id="overview">Overview</h2>
+                <div class="content-container">
+                    <p>This page will explain how to create bots on our platform in an effective manner.</p>
+                </div>
+
+                <h2 id="basics">Basics</h2>
+                <div class="content-container">
+                    <h4>Getting your bot to use user's name</h4>
+                    <code>Use the tag {{user}} in your bot greeting message.</code>
+                </div>
+
+                <h2 id="sections">Bot Sections</h2>
+                <div class="content-container">
+                    <h4>Greeting Section:</h4>
+                    <code>This is what your bot will begin the conversation with.</code>
+                    <h4>Context Section:</h4>
+                    <code>This section should include the scenario or any additional context that the bot should remember.</code>
+                    <h4>Persona Section:</h4>
+                    <code>Describe your bot's personality, we recommend W++ formatting.</code>
+                </div>
+
+                <h2 id="advanced">Advanced Section</h2>
+                <div class="content-container">
+                    <h4>Temperature (0.2 to 1.2)</h4>
+                    <code>How predictable or unpredictable message responses from the bot are. A higher temperature is generally more creative.</code>
+                </div>
+
+                <h2 id="expert">Expert Section</h2>
+                <div class="content-container">
+                    <h4>Auto-Response</h4>
+                    <code>Your bot can send a default response if no input matches the user’s request.</code>
+                </div>
+
+                <h2 id="models">Models</h2>
+                <div class="content-container">
+                    <h4>GPT Model</h4>
+                    <code>Our system supports the GPT model for dialogue-based interactions.</code>
+                </div>
+            </section>
         </div>
-    </section>
+    </main>
 
-    <section id="wplusplus-formatting" class="section">
-        <h2>4. W++ Formatting for Roleplay</h2>
-        <p>W++ formatting ensures the bot responds consistently with its persona and scenario. Here's an example:</p>
-        <div class="code-block">
-            {
-                "persona": {
-                    "name": "Lucius the Wizard",
-                    "tone": "Wise and gentle",
-                    "behavior": "Guides the user with calm, thoughtful advice."
-                },
-                "scenario": {
-                    "title": "The Temple of Knowledge",
-                    "setting": "Ancient temple with forgotten scrolls",
-                    "goal": "Help the user retrieve a lost artifact"
-                },
-                "dialogue": [
-                    {
-                        "user_input": "How do I open the hidden door?",
-                        "bot_response": "Lucius gazes at the stone door, then turns to you with a knowing smile. 'The key is hidden in the stars above. Focus on their alignment, and the path will reveal itself.'"
-                    }
-                ]
+    <script>
+        // Toggle collapsible sections
+        document.querySelectorAll('.collapsible').forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+                const content = button.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+</html>
+    
+    <script>
+        const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+    
+        // Connection opened
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+    
+        // Listen for messages
+        socket.addEventListener('message', (event) => {
+            console.log('Message from server:', event.data);
+            // Handle ping or any other messages from the server
+            if (event.data === 'ping') {
+                // You can respond to pings if needed
+                socket.send('pong'); // Example response
             }
-        </div>
-    </section>
-
-    <section id="advanced-configuration" class="section">
-        <h2>5. Advanced Configuration</h2>
-        <p>For more dynamic bots, consider advanced features like:</p>
-        <ul>
-            <li><strong>User Memory</strong> - Store decisions made by the user for a personalized experience.</li>
-            <li><strong>Dynamic Choices</strong> - Generate choices based on the scenario or user input.</li>
-            <li><strong>Response Variation</strong> - Avoid repetitive dialogue by introducing variety.</li>
-        </ul>
-    </section>
-
-    <section id="testing-debugging" class="section">
-        <h2>6. Testing and Debugging</h2>
-        <p>Test your bot with various inputs to ensure responses align with the persona and scenario.</p>
-        <ul>
-            <li>Test different user inputs.</li>
-            <li>Check for response consistency.</li>
-            <li>Verify that dynamic choices are generated correctly.</li>
-        </ul>
-    </section>
-
-    <section id="common-issues" class="section">
-        <h2>7. Common Issues and Troubleshooting</h2>
-        <ul>
-            <li><strong>Bot Doesn't Follow Persona:</strong> Double-check persona settings and tone.</li>
-            <li><strong>Dialogue Feels Repetitive:</strong> Introduce response variation and conditional logic.</li>
-            <li><strong>Bot Breaks Character:</strong> Reinforce the persona in prompts.</li>
-        </ul>
-    </section>
-
-    <section id="best-practices" class="section">
-        <h2>8. Best Practices</h2>
-        <ul>
-            <li>Ensure consistency in the bot’s tone and persona.</li>
-            <li>Allow adaptability in the dialogue based on user choices.</li>
-            <li>Provide vivid descriptions to immerse the user in the experience.</li>
-        </ul>
-    </section>
-</div>
-
-<footer>
-    <p>&copy; 2024 Roleplay Bot Documentation. All rights reserved.</p>
-</footer>
-
+        });
+    
+        // Connection closed
+        socket.addEventListener('close', (event) => {
+            console.log('Disconnected from WebSocket server');
+        });
+    </script>
+    
 </body>
 </html>
