@@ -151,7 +151,7 @@ let settings = {
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
-    useExampleDialogue = false, // Set to true to enable, false to disable
+    useExampleDialogue: false, // Set to true to enable, false to disable
     sessionId: 1,
 };
 
