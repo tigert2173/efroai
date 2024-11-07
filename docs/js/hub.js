@@ -200,7 +200,7 @@ function likeCharacter(characterId, uploader) {
     const likesCountElement = likeButton.querySelector('.likes-count'); // Get the likes count element
 
     // Check if the heart is already red (i.e., liked)
-    const isLiked = heartIcon.classList.contains('liked');
+    const isLiked = heartIcon.innerHTML === '❤️'; // Check if the heart is solid red
 
     // If the character is already liked, unlike it
     if (isLiked) {
@@ -220,9 +220,7 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            heartIcon.classList.remove('liked'); // Remove 'liked' class
-            heartIcon.classList.add('heart-empty'); // Add 'heart-empty' class (hollow heart)
-            heartIcon.style.color = 'gray'; // Set heart color to gray (hollow heart color)
+            heartIcon.innerHTML = '🤍'; // Change the heart to an empty heart
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
@@ -248,9 +246,7 @@ function likeCharacter(characterId, uploader) {
             return response.json();
         })
         .then(data => {
-            heartIcon.classList.add('liked'); // Add 'liked' class (solid heart)
-            heartIcon.classList.remove('heart-empty'); // Remove 'heart-empty' class
-            heartIcon.style.color = 'red'; // Set heart color to red (liked heart color)
+            heartIcon.innerHTML = '❤️'; // Change the heart to a solid red heart
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
