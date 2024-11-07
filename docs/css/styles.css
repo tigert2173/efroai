@@ -503,7 +503,8 @@ footer p {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
 }
-liked {
+
+.liked {
     background-color: wheat;
 }
 /* Media Query for super small screens */
