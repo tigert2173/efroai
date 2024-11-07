@@ -111,6 +111,9 @@ function displayCharacters(characters) {
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
+
+               // Check if user has already liked the character
+               toggleHeartColor(character.id);
 // Check if ads should be displayed
 if (!adExempt) {
     // Check if it's time to insert an ad
@@ -195,36 +198,49 @@ function getRandomAdInterval() {
 
 
 function likeCharacter(characterId, uploader) {
-    // Get the token from local storage (or wherever you store it)
-    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+    const token = localStorage.getItem('token'); // Get the token from local storage
 
-    // Example of an AJAX request to save the like
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
+    // Send a request to like/unlike the character
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `${token}` // Include the token in the Authorization header
+            'Authorization': `Bearer ${token}` // Include token in Authorization header
         },
-        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
+        body: JSON.stringify({ characterId: characterId }) // Send the character ID
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Failed to like character');
+            throw new Error('Failed to like/unlike character');
         }
-        return response.json(); // Return the response as JSON
+        return response.json(); // Return response as JSON
     })
     .then(data => {
-        // Optionally, update the UI to reflect the like
-        console.log(data.message); // Display a success message or perform other actions
-        alert(data.message); // Display success or failure message
+        console.log(data.message); // Display success message or perform other actions
+        // Toggle heart color based on new state
+        toggleHeartColor(characterId);
     })
     .catch(error => {
         console.error('Error liking character:', error);
-        alert('Failed to like character. Please try again.'); // Simple error message
+        alert('Failed to like/unlike character. Please try again.');
     });
 }
 
+// Function to toggle heart color
+function toggleHeartColor(characterId) {
+    // Get the heart icon element for the given character
+    const heartIcon = document.querySelector(`.character-card[data-character-id="${characterId}"] .heart-icon`);
+
+    // Check if the character is liked
+    const isLiked = localStorage.getItem(`liked-${characterId}`) === 'true'; // This assumes you're storing the like state in localStorage
+
+    if (isLiked) {
+        heartIcon.style.color = 'red'; // Change heart color to red if liked
+    } else {
+        heartIcon.style.color = ''; // Default color if not liked
+    }
+}
 
 function openCharacterPage(characterId, uploader) {
     // Use sessionStorage to save the character ID and uploader information
