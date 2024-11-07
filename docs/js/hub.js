@@ -205,7 +205,7 @@ function likeCharacter(characterId, uploader) {
 
     // If the character is already liked, unlike it
     if (isLiked) {
-        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/unlike`, {
+        fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
