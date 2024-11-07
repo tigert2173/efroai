@@ -504,18 +504,19 @@ footer p {
     transform: scale(1.25);    /* Slightly enlarge button on hover */
 }
 
-/* Hollow heart style */
-.heart-icon.hollow-heart {
-    color: gray; /* or any color you prefer for the hollow heart */
-    border: 2px solid gray; /* border to simulate hollow effect */
-    border-radius: 50%;
-    padding: 5px;
+.heart-icon {
+    color: gray; /* Default color for unliked */
+    font-size: 24px;
 }
 
-/* Filled heart style */
-.heart-icon.filled-heart {
-    color: red; /* or the red color of your choice */
-    fill: red; /* fill the heart with red */
+.heart-empty {
+    /* Style for hollow heart (e.g., using an outline or a different icon) */
+    color: gray;
+}
+
+.liked {
+    /* Style for filled heart */
+    color: red;
 }
 
 /* Media Query for super small screens */
