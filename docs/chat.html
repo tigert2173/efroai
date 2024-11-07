@@ -189,8 +189,8 @@
         
         <div id="settings-container">
             <div class="button-container">
-                <button class="view-btn" onclick="viewCharacter('${selectedCharacterId}', '${characterUploader}')">View Character</button>
-                <button class="like-btn" onclick="likeCharacter('${selectedCharacterId}', '${characterUploader}')" aria-label="Like ${character.name}">
+                <button class="view-btn" onclick="viewCharacter(selectedCharacterId, characterUploader)">View Character</button>
+                <button class="like-btn" onclick="likeCharacter(selectedCharacterId, characterUploader)" aria-label="Like ${character.name}">
                     <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                     <span class="likes-count" id="likes-count-${selectedCharacterId}"></span>
                 </button>
