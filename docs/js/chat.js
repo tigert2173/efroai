@@ -1328,7 +1328,7 @@ function getCharacterDataById(characterId) {
     return mockCharacterData;
 }
 
-checkIfLiked(characterId);
+checkIfLiked(selectedCharacterId);
 
 // Function to handle like action
 function likeCharacter(characterId, uploader) {
