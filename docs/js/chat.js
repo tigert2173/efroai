@@ -1293,11 +1293,26 @@ function updateLikeButton() {
     }
 }
 
-// Check if the character is liked (example logic, replace with actual check)
+// Check if the character is liked (replace with actual logic from characterData)
 function checkIfLiked(characterId) {
-    // This can be fetched from sessionStorage, localStorage, or an API to check the like status
-    const likedCharacters = JSON.parse(localStorage.getItem('likedCharacters')) || [];
-    return likedCharacters.includes(characterId);
+    // Fetch the character's data (this example assumes it's available from a global or session variable)
+    const characterData = getCharacterDataById(characterId); // Replace with actual data retrieval logic
+
+    // Check if the current username is in the liked array of the character's exampledialogue
+    const likedUsers = characterData.exampledialogue.liked || [];
+    return likedUsers.includes(username); // Returns true if the user has liked the character
+}
+
+// Function to get character data by ID (replace with actual data fetching logic)
+function getCharacterDataById(characterId) {
+    // Here you should fetch the character data from the backend, sessionStorage, or another data source.
+    // For demonstration, let's assume this is a mock response:
+    return {
+        id: characterId,
+        exampledialogue: {
+            liked: ['username1', 'username2'] // Array of users who liked this character
+        }
+    };
 }
 
 // Function to handle like action
