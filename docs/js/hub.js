@@ -222,7 +222,7 @@ function likeCharacter(characterId, uploader) {
         })
         .then(data => {
             heartIcon.classList.remove('liked'); // Remove 'liked' class
-            heartIcon.style.color = ''; // Reset heart color to default (gray)
+            heartIcon.style.color = 'white'; // Set heart color to white when unliked
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
@@ -249,7 +249,7 @@ function likeCharacter(characterId, uploader) {
         })
         .then(data => {
             heartIcon.classList.add('liked'); // Add 'liked' class
-            heartIcon.style.color = 'red'; // Change heart color to red
+            heartIcon.style.color = 'red'; // Change heart color to red when liked
             likesCountElement.textContent = data.likes ? data.likes.length : 0; // Update like count
         })
         .catch(error => {
@@ -258,6 +258,7 @@ function likeCharacter(characterId, uploader) {
         });
     }
 }
+
 
 
 
