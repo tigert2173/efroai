@@ -1300,7 +1300,7 @@ function checkIfLiked(characterId) {
 
     // Check if the current username is in the liked array of the character's exampledialogue
     const likedUsers = characterData.exampledialogue.liked || [];
-    return likedUsers.includes(username); // Returns true if the user has liked the character
+    return likedUsers.includes(userID); // Returns true if the user has liked the character
 }
 
 // Function to get character data by ID (replace with actual data fetching logic)
