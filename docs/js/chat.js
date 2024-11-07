@@ -1235,6 +1235,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Assuming you have the following variables available:
+const selectedCharacterId = '123'; // Replace with actual ID
+const characterUploader = 'UploaderName'; // Replace with actual uploader name
+const characterName = 'Character Name'; // Replace with actual character name
+
 // Get the settings container
 const settingsContainer = document.getElementById('settings-container');
 
@@ -1242,13 +1247,13 @@ const settingsContainer = document.getElementById('settings-container');
 const buttonContainer = document.createElement('div');
 buttonContainer.classList.add('button-container');
 
-// Create the view button
+// Create the View Character button
 const viewBtn = document.createElement('button');
 viewBtn.classList.add('view-btn');
 viewBtn.textContent = 'View Character';
 viewBtn.setAttribute('onclick', `viewCharacter('${selectedCharacterId}', '${characterUploader}')`);
 
-// Create the like button
+// Create the Like button
 const likeBtn = document.createElement('button');
 likeBtn.classList.add('like-btn');
 likeBtn.setAttribute('aria-label', `Like ${characterName}`);
