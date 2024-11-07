@@ -505,18 +505,18 @@ footer p {
 }
 
 .heart-icon {
-    color: gray; /* Default color for unliked */
+    color: gray; /* Default gray color for the hollow heart */
     font-size: 24px;
+    transition: color 0.3s ease; /* Optional smooth transition */
 }
 
 .heart-empty {
-    /* Style for hollow heart (e.g., using an outline or a different icon) */
-    color: gray;
+    color: gray; /* Hollow heart color (usually gray) */
+    /* Optionally use an icon or border to show an empty heart */
 }
 
 .liked {
-    /* Style for filled heart */
-    color: red;
+    color: red; /* Solid red color for the filled heart */
 }
 
 /* Media Query for super small screens */
