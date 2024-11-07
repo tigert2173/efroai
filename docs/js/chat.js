@@ -1281,7 +1281,7 @@ likeBtn.appendChild(likesCount);
 
 // Function to update the like button appearance based on whether the character is liked
 function updateLikeButton() {
-    const liked = checkIfLiked(selectedCharacterId, sett); // This function checks if the character has been liked (replace with your logic)
+    const liked = checkIfLiked(selectedCharacterId); // This function checks if the character has been liked (replace with your logic)
 
     if (liked) {
         // If liked, change the heart icon and background color
