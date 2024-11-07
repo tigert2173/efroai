@@ -1293,13 +1293,13 @@ function updateLikeButton() {
     }
 }
 
-// Check if the character is liked (replace with actual logic from characterData)
+// Check if the character is liked (based on the "likes" array)
 function checkIfLiked(characterId) {
     // Fetch the character's data (this example assumes it's available from a global or session variable)
     const characterData = getCharacterDataById(characterId); // Replace with actual data retrieval logic
 
-    // Check if the current username is in the liked array of the character's exampledialogue
-    const likedUsers = characterData.exampledialogue.liked || [];
+    // Check if the current username is in the likes array of the character
+    const likedUsers = characterData.likes || [];
     return likedUsers.includes(userID); // Returns true if the user has liked the character
 }
 
@@ -1309,9 +1309,7 @@ function getCharacterDataById(characterId) {
     // For demonstration, let's assume this is a mock response:
     return {
         id: characterId,
-        exampledialogue: {
-            liked: ['username1', 'username2'] // Array of users who liked this character
-        }
+        likes: characterData.likes// Array of users who liked this character
     };
 }
 
