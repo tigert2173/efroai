@@ -503,6 +503,17 @@ footer p {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
 }
+.heart-icon {
+    font-size: 1.4em;
+}
+
+.heart-empty {
+    color: gray; /* Unliked heart color */
+}
+
+.liked {
+    color: red; /* Liked heart color */
+}
 
 /* Media Query for super small screens */
 @media (max-width: 768px) {
