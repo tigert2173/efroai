@@ -99,7 +99,7 @@ function displayCharacters(characters) {
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                     <button class="like-btn" data-character-id="${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
                         <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
                         <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
                     </button>
@@ -186,7 +186,6 @@ if (!adExempt) {
 
     // Start by loading the first batch of characters
     loadCharacters(0);
-    
 }
 
 // Function to get a random ad interval between 5 and 10
@@ -195,17 +194,35 @@ function getRandomAdInterval() {
 }
 
 
+// Function to like a character and update the heart icon color
 function likeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get the token from local storage
+    const likeButton = document.querySelector(`.like-btn[data-character-id="${characterId}"]`); // Get the like button for the character
+    const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon inside the button
 
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+    // Check if the character is already liked
+    const isLiked = heartIcon.classList.contains('liked'); // Check if the heart is already filled (liked)
+
+    // Toggle the like status
+    if (isLiked) {
+        // If already liked, set to unliked
+        heartIcon.classList.remove('liked');
+        heartIcon.style.color = 'black'; // Change the color back to black (or your default color)
+    } else {
+        // If not liked, set to liked
+        heartIcon.classList.add('liked');
+        heartIcon.style.color = 'red'; // Change the color to red when liked
+    }
+
+    // Send the like request to the server
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `${token}`
+            'Authorization': `${token}` // Include the token in the Authorization header
         },
-        body: JSON.stringify({ characterId: characterId })
+        body: JSON.stringify({ characterId: characterId }) // Send the character ID
     })
     .then(response => {
         if (!response.ok) {
@@ -214,17 +231,46 @@ function likeCharacter(characterId, uploader) {
         return response.json(); // Return the response as JSON
     })
     .then(data => {
-        // Optionally, update the UI to reflect the like
+        // Optionally, update the UI to reflect the like action
         console.log(data.message); // Display a success message or perform other actions
-        alert(data.message); // Display success or failure message
-
-        // After liking, update the heart color
-        updateHeartColor(characterId, uploader);
     })
     .catch(error => {
         console.error('Error liking character:', error);
         alert('Failed to like character. Please try again.'); // Simple error message
     });
+}
+
+// Update the HTML to include the data attribute for the like button
+// Example:
+card.innerHTML = `
+    <div class="card-header">
+        <h3>${character.name}</h3>
+    </div>
+    <div class="card-body">
+        <p>${character.chardescription || 'Error: Description is missing.'}</p>
+    </div>
+    <p class="tags">
+        ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+        <span class="full-tags-overlay">
+            ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+        </span>
+    </p>
+    <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+    <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+    <div class="button-container">
+        <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+        <button class="like-btn" data-character-id="${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+            <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+            <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+        </button>
+    </div>
+`;
+
+// Now, ensure the button reflects whether the character is liked when the page loads by checking the initial liked status
+// If the character is liked by the current user, apply the "liked" class to the heart icon
+if (character.likes && character.likes.includes(userToken)) { // Check if the user has already liked this character
+    heartIcon.classList.add('liked');
+    heartIcon.style.color = 'red'; // Apply red color if liked
 }
 
 
@@ -290,39 +336,4 @@ function hideUploadForm() {
 function viewCharacter(characterId, uploader) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
-}
-
-function updateHeartColor(characterId, uploader) {
-    // Get the like button for the specific character
-    const likeButton = document.querySelector(`button.like-btn[data-character-id="${characterId}"]`);
-    const heartIcon = likeButton.querySelector('.heart-icon');
-    const likesCountElement = likeButton.querySelector('.likes-count');
-
-    // Get the token from local storage (or wherever you store it)
-    const token = localStorage.getItem('token');
-    
-    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/liked`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `${token}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Check if the user has already liked the character
-        const hasLiked = data.liked; // Assuming the backend returns { liked: true/false }
-
-        // Update the heart color based on like status
-        if (hasLiked) {
-            heartIcon.style.color = 'red';  // Change color to red if liked
-        } else {
-            heartIcon.style.color = 'gray'; // Default color if not liked
-        }
-
-        // Optionally, update the likes count
-        likesCountElement.textContent = data.likesCount;
-    })
-    .catch(error => {
-        console.error('Error checking like status:', error);
-    });
 }
