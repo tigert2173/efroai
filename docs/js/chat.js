@@ -208,7 +208,6 @@ function populateCharacterSettings() {
 
         // Display the greeting as a bot message
         displayMessage(characterData.greeting, 'assistant', true); // Display greeting as bot message
-        checkIfLiked(character.likes);
 
     })
     .catch(error => {
@@ -1282,7 +1281,7 @@ likeBtn.appendChild(likesCount);
 
 // Function to update the like button appearance based on whether the character is liked
 function updateLikeButton() {
-    const liked = checkIfLiked(selectedCharacterId); // This function checks if the character has been liked (replace with your logic)
+    const liked = checkIfLiked(selectedCharacterId, sett); // This function checks if the character has been liked (replace with your logic)
 
     if (liked) {
         // If liked, change the heart icon and background color
@@ -1295,40 +1294,99 @@ function updateLikeButton() {
     }
 }
 
+function fetchCharacterLikes(characterId, characterUploader) {
+    const token = localStorage.getItem('token'); // Retrieve the token
+    const userID = sessionStorage.getItem('userID'); // Get the current user's ID from sessionStorage (or use another method)
+
+    // Fetch the character data from the backend
+    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `${token}`, // Add the auth token here
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(character => {
+        // Retrieve only the 'likes' array from the response
+        const likedUsers = character.likes || [];
+
+        // Log the likes array for debugging
+        console.log('Liked Users:', likedUsers);
+
+        // Display the number of likes (optional)
+        const likesCountElement = document.getElementById('likes-count');
+        if (likesCountElement) {
+            likesCountElement.textContent = likedUsers.length;
+        }
+
+        // Check if the current user has liked the character
+        const isLiked = likedUsers.includes(userID);
+        
+        // Update the like button visual state
+        const likeButton = document.getElementById('like-button'); // Assuming you have a like button with this ID
+        if (likeButton) {
+            if (isLiked) {
+                likeButton.classList.add('liked'); // Add 'liked' class if user has liked
+            } else {
+                likeButton.classList.remove('liked'); // Remove 'liked' class if user has not liked
+            }
+        }
+
+        // Optionally return the likedUsers or isLiked to use elsewhere
+        return { likedUsers, isLiked };
+    })
+    .catch(error => {
+        console.error('Error fetching character likes:', error);
+    });
+}
+
 // Check if the character is liked (based on the "likes" array)
+// Function to check if the character is liked by the current user
 function checkIfLiked(characterId) {
-    // Fetch the character's data (this example assumes it's available from a global or session variable)
-    const characterData = getCharacterDataById(characterId); // Replace with actual data retrieval logic
+    // Retrieve character data by characterId
+    const characterData = getCharacterDataById(characterId); 
 
     // Log the character data to verify
     console.log('Character Data:', characterData);
 
-    // Check if the current username is in the likes array of the character
+    // Extract the likedUsers array from character data (defaults to an empty array if not available)
     const likedUsers = characterData.likes || [];
-    
-    // Log the liked users array and userID
+
+    // Log the liked users array and the current userID
     console.log('Liked Users:', likedUsers);
     console.log('Current UserID:', userID);
 
+    // Check if the current user ID exists in the liked users array
     const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
-    
+
     // Log the result
     console.log(`Is character liked by current user? ${isLiked}`);
 
-    return isLiked;
+    return isLiked; // Return the like status
 }
 
-// Function to get character data by ID (replace with actual data fetching logic)
-function getCharacterDataById(characterId, likes) {
-    // Here you should fetch the character data from the backend, sessionStorage, or another data source.
-    // For demonstration, let's assume this is a mock response:
-    const CharacterData = {
+// Function to get character data by ID (mock implementation for demo purposes)
+function getCharacterDataById(characterId) {
+    // For now, this mock function assumes that you retrieve this data from a backend or sessionStorage
+    // Here's a mock example, you would replace it with actual data fetching logic
+    const characterData = {
         id: characterId,
-        likes: likes// Example liked users
     };
 
-    return CharacterData;
+    return characterData;
 }
+
+// Calling the function to check if the character is liked
+const isLiked = checkIfLiked(characterId);
+console.log(`Is character ${characterId} liked by user ${userID}? ${isLiked}`);
 
 // Function to handle like action
 function likeCharacter(characterId, uploader) {
