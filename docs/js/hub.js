@@ -194,27 +194,11 @@ function getRandomAdInterval() {
 }
 
 
-// Function to like a character and update the heart icon color
 function likeCharacter(characterId, uploader) {
-    const token = localStorage.getItem('token'); // Get the token from local storage
-    const likeButton = document.querySelector(`.like-btn[data-character-id="${characterId}"]`); // Get the like button for the character
-    const heartIcon = likeButton.querySelector('.heart-icon'); // Get the heart icon inside the button
+    // Get the token from local storage (or wherever you store it)
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
 
-    // Check if the character is already liked
-    const isLiked = heartIcon.classList.contains('liked'); // Check if the heart is already filled (liked)
-
-    // Toggle the like status
-    if (isLiked) {
-        // If already liked, set to unliked
-        heartIcon.classList.remove('liked');
-        heartIcon.style.color = 'black'; // Change the color back to black (or your default color)
-    } else {
-        // If not liked, set to liked
-        heartIcon.classList.add('liked');
-        heartIcon.style.color = 'red'; // Change the color to red when liked
-    }
-
-    // Send the like request to the server
+    // Example of an AJAX request to save the like
     fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, { // Include uploader in the URL
         method: 'POST',
         headers: {
@@ -222,7 +206,7 @@ function likeCharacter(characterId, uploader) {
             'Accept': 'application/json',
             'Authorization': `${token}` // Include the token in the Authorization header
         },
-        body: JSON.stringify({ characterId: characterId }) // Send the character ID
+        body: JSON.stringify({ characterId: characterId }) // Sending the character ID
     })
     .then(response => {
         if (!response.ok) {
@@ -231,48 +215,15 @@ function likeCharacter(characterId, uploader) {
         return response.json(); // Return the response as JSON
     })
     .then(data => {
-        // Optionally, update the UI to reflect the like action
+        // Optionally, update the UI to reflect the like
         console.log(data.message); // Display a success message or perform other actions
+        alert(data.message); // Display success or failure message
     })
     .catch(error => {
         console.error('Error liking character:', error);
         alert('Failed to like character. Please try again.'); // Simple error message
     });
 }
-
-// Update the HTML to include the data attribute for the like button
-// Example:
-card.innerHTML = `
-    <div class="card-header">
-        <h3>${character.name}</h3>
-    </div>
-    <div class="card-body">
-        <p>${character.chardescription || 'Error: Description is missing.'}</p>
-    </div>
-    <p class="tags">
-        ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-        <span class="full-tags-overlay">
-            ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-        </span>
-    </p>
-    <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-    <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-    <div class="button-container">
-        <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-        <button class="like-btn" data-character-id="${character.id}" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-            <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
-            <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
-        </button>
-    </div>
-`;
-
-// Now, ensure the button reflects whether the character is liked when the page loads by checking the initial liked status
-// If the character is liked by the current user, apply the "liked" class to the heart icon
-if (character.likes && character.likes.includes(userToken)) { // Check if the user has already liked this character
-    heartIcon.classList.add('liked');
-    heartIcon.style.color = 'red'; // Apply red color if liked
-}
-
 
 
 function openCharacterPage(characterId, uploader) {
