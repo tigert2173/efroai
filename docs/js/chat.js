@@ -151,6 +151,7 @@ let settings = {
     negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
+    useExampleDialogue = false, // Set to true to enable, false to disable
     sessionId: 1,
 };
 
@@ -233,6 +234,11 @@ function updateSettings() {
 let lastBotMessage = ''; // Variable to store the last bot message
 let lastUserMessage = ''; // Variable to store the last user message
 
+// Function to toggle example dialogue
+function toggleExampleDialogue() {
+    settings.useExampleDialogue = !settings.useExampleDialogue;
+    console.log("Example Dialogue Feature Enabled:", settings.useExampleDialogue);
+}
 
 // Function to clear the content of the current bot message element
 function clearCurrentBotMessage() {
@@ -583,7 +589,7 @@ async function sendMessage() {
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
         ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
-        ${settings.exampledialogue ? `Example Dialogue:\n${settings.exampledialogue}` : ''}
+        ${settings.useExampleDialogue && settings.exampleDialogue ? `Example Dialogue:\n${settings.exampleDialogue}` : ''}
         `,
     };
     
