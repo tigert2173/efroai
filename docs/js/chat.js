@@ -1319,12 +1319,12 @@ function checkIfLiked(characterId) {
 }
 
 // Function to get character data by ID (replace with actual data fetching logic)
-function getCharacterDataById(characterId) {
+function getCharacterDataById(characterId, likes) {
     // Here you should fetch the character data from the backend, sessionStorage, or another data source.
     // For demonstration, let's assume this is a mock response:
     const CharacterData = {
         id: characterId,
-        likes: character.likes// Example liked users
+        likes: likes// Example liked users
     };
 
     return CharacterData;
