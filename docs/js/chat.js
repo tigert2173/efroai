@@ -1385,8 +1385,8 @@ function getCharacterDataById(characterId) {
 }
 
 // Calling the function to check if the character is liked
-const isLiked = checkIfLiked(characterId);
-console.log(`Is character ${characterId} liked by user ${userID}? ${isLiked}`);
+const isLiked = checkIfLiked(selectedCharacterId);
+console.log(`Is character ${selectedCharacterId} liked by user ${userID}? ${isLiked}`);
 
 // Function to handle like action
 function likeCharacter(characterId, uploader) {
