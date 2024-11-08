@@ -283,7 +283,7 @@ async function filterCharacters() {
 
     try {
         // Fetch the full character database (replace with your actual API endpoint)
-        const response = await fetch('https://your-api-endpoint.com/characters'); // Update the URL to your actual character database API
+        const response = await fetch(`https://${backendurl}/characters`); // Update the URL to your actual character database API
         const characters = await response.json();
 
         // Clear the current character cards before adding new ones
