@@ -44,7 +44,8 @@ function displayCharacters(characters) {
 
     function loadCharacters(startIndex) {
         const endIndex = Math.min(startIndex + batchSize, characters.length);
-        for (let i = startIndex; i < endIndex; i++) {
+
+        function appendCharacter(i) {
             const character = characters[i];
             const card = document.createElement('div');
             card.className = 'character-card';
@@ -151,7 +152,7 @@ function displayCharacters(characters) {
                     scriptElement.onload = function() {
                         // Ensure the AdProvider object exists
                         if (window.AdProvider) {
-                            window.AdProvider.push({"serve": {}});
+                            window.AdProvider.push({"serve": {}}); // Serve the ad
                             console.log("Ad loaded successfully");
                         } else {
                             console.error("AdProvider object is not available");
@@ -175,6 +176,11 @@ function displayCharacters(characters) {
                     nextAdInterval = cardCounter + getRandomAdInterval();
                 }
             }
+        }
+
+        // Loop through the current batch and append characters one by one with delay
+        for (let i = startIndex; i < endIndex; i++) {
+            setTimeout(() => appendCharacter(i), (i - startIndex) * 200); // Delay each character by 200ms
         }
 
         // Create a "Load More" button if there are more characters to load
