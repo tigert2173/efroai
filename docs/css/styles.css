@@ -517,8 +517,8 @@ footer p {
     }
 }
 .loading-spinner {
-    border: 6px solid #2f3d46; /* Darker gray background */
-    border-top: 6px solid #34db39; /* Neon green top for EFROAI branding */
+    border: 6px solid #333333; /* Dark gray background */
+    border-top: 6px solid #34db39; /* Green for the top of the spinner */
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -544,7 +544,7 @@ footer p {
     left: 50%;
     width: 20px;
     height: 20px;
-    background-color: #34db39; /* Neon green dot */
+    background-color: #FFA500; /* Orange dot for EFROAI branding */
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: dotPulse 1.5s ease-in-out infinite;
