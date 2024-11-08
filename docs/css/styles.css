@@ -517,16 +517,63 @@ footer p {
     }
 }
 .loading-spinner {
-    border: 4px solid #f3f3f3; /* Light gray background */
-    border-top: 4px solid #34db39; /* Blue spinner */
+    position: relative;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
+    animation: rotateSearch 2s linear infinite;
     margin: 0 auto;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.loading-spinner::before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    left: 22px;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #34db39; /* Green for handle */
+    border-radius: 50%;
+    transform-origin: center;
+    animation: rotateHandle 2s linear infinite;
+}
+
+.loading-spinner::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 35px;
+    height: 35px;
+    border: 4px solid #f3f3f3; /* Light gray background */
+    border-top: 4px solid #34db39; /* Green spinner for the lens */
+    border-radius: 50%;
+    animation: spinLens 2s linear infinite;
+}
+
+@keyframes rotateSearch {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateHandle {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes spinLens {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
