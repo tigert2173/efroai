@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO Story Catalog</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        .navbar nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+        }
+
+        .navbar nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .catalog {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 12px 18px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:focus {
+            border-color: #007BFF;
+        }
+
+        .search-bar button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Tagging System */
+        .tags {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tag:hover {
+            background-color: #0056b3;
+        }
+
+        .tag.selected {
+            background-color: #0056b3;
+        }
+
+        /* Story Card */
+        .story {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .story:hover {
+            transform: translateY(-5px);
+        }
+
+        .story h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .story p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .story a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .story a:hover {
+            text-decoration: underline;
+        }
+
+        /* Matches Section */
+        .matches-section {
+            margin-bottom: 20px;
+        }
+
+        .matches-section h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .faded {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>EFRO Story Catalog</h1>
+        <nav>
+            <a href="/EFROTales/index.html">Stories</a>
+            <a href="/index.html">EFRO.AI</a>
+            <a href="/EFROTales/editor.html">Editor</a>
+            <a href="https://discord.gg/E7TRzsEMkD">Discord</a>
+            <a href="/EFROTales/features.html">Upcoming Features</a>
+        </nav>
+    </div>
+
+    <div class="catalog">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for stories...">
+            <button>Search</button>
+        </div>
+
+        <!-- Tagging System -->
+        <div class="tags">
+            <span class="tag" onclick="toggleTagSelection(this, 'Reader-Insert')">{Reader-Insert}</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Skunk')">Skunk</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Fart')">Fart</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Burp')">Burp</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Fantasy')">Fantasy</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Romantic Comedy')">Romantic Comedy</span>
+            <span class="tag" onclick="toggleTagSelection(this, 'Adventure')">Adventure</span>
+        </div>
+
+        <!-- Matches Sections -->
+        <div class="matches-section" id="exactMatches">
+            <h3>Exact Matches</h3>
+        </div>
+
+        <div class="matches-section" id="nearMatches">
+            <h3>Near Matches</h3>
+        </div>
+
+        <div class="matches-section" id="closeMatches">
+            <h3>Close Matches</h3>
+        </div>
+
+        <div class="matches-section" id="looseMatches">
+            <h3>Partial Matches</h3>
+        </div>
+
+        <div class="matches-section" id="possibleMatches">
+            <h3>Could this be what you're looking for?</h3>
+        </div>
+
+        <!-- Story List -->
+        <div class="story" data-tags="{{Reader-Insert}}, [Skunks]">
+            <h2><a href="/EFROTales/Stories/The Pillory.html">The Pillory</a></h2>
+            <p><b>Author:</b> SolamenteCelia</p>
+            <p><i>Topics:</i> {{Reader-Insert}}, Skunk</p>
+            <p>When a rotten man is locked up in the pillory, a skunk he'd wronged takes the opportunity to get her revenge on him.</p>
+        </div>
+        
+        <div class="story" data-tags="{{Reader-Insert}}, [Skunks], [Farts], [Burps]">
+            <h2><a href="/EFROTales/Stories/Skunked by a Dare - An Unexpected Romance.html">Skunked by a Dare: An Unexpected Romance</a></h2>
+            <p><b>Author:</b> TigerT2173</p>
+            <p><i>Topics:</i> {{Reader-Insert}}, [Skunks], [Farts], [Burps]</p>
+            <p>During a game of Truth or Dare, homeless skunk girl, Aimee is dared to ask you out!</p>
+        </div>
+
+        <div class="story" data-tags="Fantasy">
+            <h2><a href="story1.html">The Skunk Hybrid's Dilemma</a></h2>
+            <p><i>Genre:</i> Fantasy</p>
+            <p>A tale of a skunk hybrid girl navigating a world where she's seen as an outcast due to her unique abilities and challenges.</p>
+        </div>
+
+        <div class="story" data-tags="Romantic Comedy">
+            <h2><a href="story2.html">Midnight at MicroCenter</a></h2>
+            <p><i>Genre:</i> Romantic Comedy</p>
+            <p>A quirky romance unfolds when two socially awkward individuals meet at a computer store after hours.</p>
+        </div>
+
+        <div class="story" data-tags="Adventure">
+            <h2><a href="story3.html">The Quest for the Perfect PC</a></h2>
+            <p><i>Genre:</i> Adventure</p>
+            <p>Follow a group of friends as they embark on an epic journey to build the ultimate gaming PC, facing unexpected challenges along the way.</p>
+        </div>
+
+        <!-- Add more stories as needed -->
+    </div>
+
+    <script>
+        function toggleTagSelection(element, tag) {
+            element.classList.toggle('selected');
+            console.log(`Tag ${tag} selected:`, element.classList.contains('selected'));
+        }
+    </script>
+</body>
+</html>
