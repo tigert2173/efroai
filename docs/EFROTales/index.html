@@ -166,18 +166,21 @@
             color: #888;
         }
 
-        /* Ad Banners on the Sides */
-        .side-ad {
-            position: fixed;
-            top: 50%;
-            z-index: 1000;
-            background-color: #eaeaea;
-            text-align: center;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: top 0.3s ease; /* Smooth transition for vertical movement */
-        }
+       /* Ad Banners on the Sides */
+.side-ad {
+    position: fixed;
+    top: 50%;
+    left: 0; /* Adjust this for the left side ad */
+    right: 0; /* Adjust this for the right side ad */
+    z-index: 1000;
+    background-color: #eaeaea;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: top 0.3s ease; /* Smooth transition for vertical movement */
+    transform: translateY(-50%); /* This will center it vertically */
+}
 
         .side-ad-left {
             left: 10px;
