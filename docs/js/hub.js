@@ -14,201 +14,271 @@ function isAdExempt(token) {
 let adExempt = false // Check if the user is Ad-Exempt
 
 // Function to load characters from the backend
+let characters = [];  // Your initial character array (can be fetched from server)
+let currentIndex = 0; // The index to start loading characters from
+const batchSize = 10; // Number of characters to load per batch
+let isLoading = false; // Flag to prevent multiple simultaneous loads
+
 function loadCharacters() {
-    fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
-    .then(response => {
-        if (response.status === 429) {
-            // Show an alert message to the user
-            alert("We're sorry, but you've made too many requests in a short period of time. This is usually caused by refreshing the page too frequently or making repeated requests. Please wait 15 minutes and try again. Thank you for your patience!");
-        }
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.body.getReader(); // Use a stream reader to get the response in chunks
-    })
-    .then(reader => {
-        const decoder = new TextDecoder();
-        let buffer = ''; // Temporary buffer to store incoming chunks
+    if (isLoading) return; // Prevent simultaneous loads
+    isLoading = true;
 
-        // Read the response stream
-        function processStream({ done, value }) {
-            if (done) return; // End of stream, exit
-
-            // Decode the chunk and append it to the buffer
-            buffer += decoder.decode(value, { stream: true });
-
-            // Check if we have a full JSON array in the buffer
-            try {
-                const characters = JSON.parse(buffer);
-                console.log("Characters fetched:", characters); // Log the data to verify it's correct
-
-                displayCharacters(characters); // Display the characters as they arrive
-
-                // Clear the buffer after processing
-                buffer = '';
-            } catch (e) {
-                // If the buffer doesn't contain valid JSON yet, wait for more data
-                // Continue reading the stream
-            }
-
-            // Continue reading the next chunk
-            reader.read().then(processStream).catch(error => console.error("Error reading stream:", error));
-        }
-
-        // Start reading the stream
-        reader.read().then(processStream);
-    })
-    .catch(error => console.error('Error fetching characters:', error));
-}
-
-function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
-    let cardCounter = 0; // Counter to keep track of the number of displayed cards
-    let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    let adLoading = false; // Flag to track if an ad is currently loading
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'loading-indicator';
+    loadingIndicator.innerHTML = 'Loading more characters...';
+    characterGrid.appendChild(loadingIndicator);
 
-    // Function to load one character at a time
-    function loadCharacter(index) {
-        if (index >= characters.length) {
-            return; // Stop if we've processed all characters
-        }
+    // Fetch the next batch of characters (this can be from an API or local array)
+    const batch = characters.slice(currentIndex, currentIndex + batchSize);
+    setTimeout(() => {
+        batch.forEach(character => {
+            const card = document.createElement('div');
+            card.className = 'character-card';
 
-        const character = characters[index];
-        const card = document.createElement('div');
-        card.className = 'character-card';
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
-        const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            // Create image element
+            const imgElement = document.createElement('img');
+            imgElement.alt = `${character.name} image`;
 
-        // Create image element
-        const imgElement = document.createElement('img');
-        imgElement.alt = `${character.name} image`;
+            // Add the card header, body, and buttons
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3>${character.name}</h3>
+                </div>
+                <div class="card-body">
+                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
+                </div>
+                <p class="tags">
+                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    <span class="full-tags-overlay">
+                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    </span>
+                </p>
+                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+                <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+                <div class="button-container">
+                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                    </button>
+                </div>
+            `;
 
-        // Add the card header, body, and buttons
-        card.innerHTML = `
-            <div class="card-header">
-                <h3>${character.name}</h3>
-            </div>
-            <div class="card-body">
-                <p>${character.chardescription || 'Error: Description is missing.'}</p>
-            </div>
-            <p class="tags">
-                ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                <span class="full-tags-overlay">
-                    ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                </span>
-            </p>
-            <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-            <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-            <div class="button-container">
-                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                    <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
-                    <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
-                </button>
-            </div>
-        `;
+            // Insert a loading spinner while fetching the image
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
-        // Insert a loading spinner while fetching the image
-        const spinner = document.createElement('div');
-        spinner.className = 'loading-spinner';
-        card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
-
-        // Fetch the image
-        fetch(imageUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-            }
-        }).then(response => {
-            if (!response.ok) {
-                console.error(`Failed to fetch image: ${response.statusText}`);
+            // Fetch the image
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            }).then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            }).catch(error => {
+                console.error('Error fetching image:', error);
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
-                return;
-            }
-            return response.blob();
-        }).then(imageBlob => {
-            if (imageBlob) {
-                const imageObjectURL = URL.createObjectURL(imageBlob);
-                imgElement.src = imageObjectURL;
-            }
-        }).catch(error => {
-            console.error('Error fetching image:', error);
-            imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
+
+            // When the image is loaded or error occurs, remove the spinner and append the image
+            imgElement.onload = () => {
+                spinner.remove(); // Remove spinner once image is loaded
+                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            };
+            imgElement.onerror = () => {
+                spinner.remove(); // Remove spinner if image fails to load
+            };
+
+            // Add the character card to the grid
+            characterGrid.appendChild(card);
         });
 
-        // When the image is loaded or error occurs, remove the spinner and append the image
-        imgElement.onload = () => {
-            spinner.remove(); // Remove spinner once image is loaded
-            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-        };
-        imgElement.onerror = () => {
-            spinner.remove(); // Remove spinner if image fails to load
-        };
+        // Remove the loading indicator
+        characterGrid.removeChild(loadingIndicator);
 
-        // Add the character card to the grid
-        characterGrid.appendChild(card);
-        cardCounter++; // Increment the counter after adding a card
+        // Update the index for the next batch
+        currentIndex += batchSize;
 
-        // Check if ads should be displayed
-        if (!adExempt && !adLoading) {
-            if (cardCounter >= nextAdInterval) {
-                adLoading = true; // Set flag to prevent additional loads
-
-                // Create an ad container
-                const adContainer = document.createElement('div');
-                adContainer.className = 'ad-container';
-
-                // Create the <ins> element for the ad
-                const insElement = document.createElement('ins');
-                insElement.className = 'eas6a97888e38 ins-animate';
-                insElement.setAttribute('data-zoneid', '5461570');
-                adContainer.appendChild(insElement);
-
-                const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-                insElement.setAttribute('data-keywords', keywords);
-
-                // Create the ad provider script and set up loading behavior
-                const scriptElement = document.createElement('script');
-                scriptElement.async = true;
-                scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-
-                // Only call push() when the script is fully loaded
-                scriptElement.onload = function() {
-                    // Ensure the AdProvider object exists
-                    if (window.AdProvider) {
-                        window.AdProvider.push({"serve": {}}); // Serve the ad
-                        console.log("Ad loaded successfully");
-                    } else {
-                        console.error("AdProvider object is not available");
-                    }
-                    adLoading = false; // Reset flag after ad loads
-                };
-
-                // Error handling to reset the flag if the script fails to load
-                scriptElement.onerror = function() {
-                    console.error("Failed to load ad-provider.js");
-                    adLoading = false; // Reset flag on load failure
-                };
-
-                // Append the script to the ad container
-                adContainer.appendChild(scriptElement);
-
-                // Add the ad container to the grid
-                characterGrid.appendChild(adContainer);
-
-                // Update the interval for the next ad
-                nextAdInterval = cardCounter + getRandomAdInterval();
-            }
-        }
-
-        // Load the next character after a slight delay to manage load speed
-        setTimeout(() => loadCharacter(index + 1), 100);
-    }
-
-    // Start loading characters incrementally from the first one
-    loadCharacter(0);
+        isLoading = false; // Reset the loading flag
+    }, 1000); // Simulate async loading with delay
 }
 
+// Initialize loading characters on page load
+window.onload = () => loadCharacters();
+
+// Infinite Scroll: Load more characters when user scrolls near the bottom of the page
+window.onscroll = () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollTop + windowHeight >= documentHeight - 100) {
+        loadCharacters(); // Load next batch when reaching near the bottom
+    }
+};
+
+
+// function displayCharacters(characters) {
+//     const characterGrid = document.getElementById('character-grid');
+//     characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+
+//     let cardCounter = 0; // Counter to keep track of the number of displayed cards
+//     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
+//     let adLoading = false; // Flag to track if an ad is currently loading
+
+//     function loadCharacter(index) {
+//         const character = characters[index];
+//         const card = document.createElement('div');
+//         card.className = 'character-card';
+
+//         const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+//         // Create image element
+//         const imgElement = document.createElement('img');
+//         imgElement.alt = `${character.name} image`;
+
+//         // Add the card header, body, and buttons
+//         card.innerHTML = `
+//             <div class="card-header">
+//                 <h3>${character.name}</h3>
+//             </div>
+//             <div class="card-body">
+//                 <p>${character.chardescription || 'Error: Description is missing.'}</p>
+//             </div>
+//             <p class="tags">
+//                 ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+//                 <span class="full-tags-overlay">
+//                     ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+//                 </span>
+//             </p>
+//             <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+//             <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+//             <div class="button-container">
+//                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+//                 <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+//                     <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+//                     <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+//                 </button>
+//             </div>
+//         `;
+
+//         // Insert a loading spinner while fetching the image
+//         const spinner = document.createElement('div');
+//         spinner.className = 'loading-spinner';
+//         card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+
+//         // Fetch the image
+//         fetch(imageUrl, {
+//             method: 'GET',
+//             headers: {
+//                 'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+//             }
+//         }).then(response => {
+//             if (!response.ok) {
+//                 console.error(`Failed to fetch image: ${response.statusText}`);
+//                 imgElement.src = 'noimage.jpg'; // Fallback to default image
+//                 return;
+//             }
+//             return response.blob();
+//         }).then(imageBlob => {
+//             if (imageBlob) {
+//                 const imageObjectURL = URL.createObjectURL(imageBlob);
+//                 imgElement.src = imageObjectURL;
+//             }
+//         }).catch(error => {
+//             console.error('Error fetching image:', error);
+//             imgElement.src = 'noimage.jpg'; // Fallback to default image
+//         });
+
+//         // When the image is loaded or error occurs, remove the spinner and append the image
+//         imgElement.onload = () => {
+//             spinner.remove(); // Remove spinner once image is loaded
+//             card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+//         };
+//         imgElement.onerror = () => {
+//             spinner.remove(); // Remove spinner if image fails to load
+//         };
+
+//         // Add the character card to the grid
+//         characterGrid.appendChild(card);
+//         cardCounter++; // Increment the counter after adding a card
+
+//         // Check if ads should be displayed
+//         if (!adExempt && !adLoading) {
+//             if (cardCounter >= nextAdInterval) {
+//                 adLoading = true; // Set flag to prevent additional loads
+
+//                 // Create an ad container
+//                 const adContainer = document.createElement('div');
+//                 adContainer.className = 'ad-container';
+
+//                 // Create the <ins> element for the ad
+//                 const insElement = document.createElement('ins');
+//                 insElement.className = 'eas6a97888e38 ins-animate';
+//                 insElement.setAttribute('data-zoneid', '5461570');
+//                 adContainer.appendChild(insElement);
+
+//                 const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+//                 insElement.setAttribute('data-keywords', keywords);
+
+//                 // Create the ad provider script and set up loading behavior
+//                 const scriptElement = document.createElement('script');
+//                 scriptElement.async = true;
+//                 scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+
+//                 // Only call push() when the script is fully loaded
+//                 scriptElement.onload = function() {
+//                     // Ensure the AdProvider object exists
+//                     if (window.AdProvider) {
+//                         window.AdProvider.push({"serve": {}});
+//                         console.log("Ad loaded successfully");
+//                     } else {
+//                         console.error("AdProvider object is not available");
+//                     }
+//                     adLoading = false; // Reset flag after ad loads
+//                 };
+
+//                 // Error handling to reset the flag if the script fails to load
+//                 scriptElement.onerror = function() {
+//                     console.error("Failed to load ad-provider.js");
+//                     adLoading = false; // Reset flag on load failure
+//                 };
+
+//                 // Append the script to the ad container
+//                 adContainer.appendChild(scriptElement);
+
+//                 // Add the ad container to the grid
+//                 characterGrid.appendChild(adContainer);
+
+//                 // Update the interval for the next ad
+//                 nextAdInterval = cardCounter + getRandomAdInterval();
+//             }
+//         }
+
+//         // Load the next character if available
+//         if (index + 1 < characters.length) {
+//             setTimeout(() => loadCharacter(index + 1), 100); // Load the next character after a slight delay
+//         }
+//     }
+
+//     // Start loading characters one by one
+//     loadCharacter(0);
+// }
 
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
