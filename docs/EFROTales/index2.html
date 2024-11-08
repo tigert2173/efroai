@@ -208,14 +208,18 @@
     <!-- Left Side Ad -->
     <div class="side-ad side-ad-left">
         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
-        <ins class="eas6a97888e2" data-zoneid="5467192" onload="adLoaded()"></ins>
+        <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
     </div>
     
     <script>
-        function adLoaded() {
-            console.log('Ad has fully loaded');
-        }
+        // Set a timeout to handle long loading times
+        setTimeout(function() {
+            if (!document.querySelector('.eas6a97888e2').innerHTML) {
+                console.log('Ad did not load, retrying...');
+                // Optionally, retry the ad or display a fallback ad
+            }
+        }, 5000); // 5 seconds timeout
     </script>
     
 
