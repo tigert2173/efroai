@@ -517,63 +517,46 @@ footer p {
     }
 }
 .loading-spinner {
-    position: relative;
+    border: 6px solid #2f3d46; /* Darker gray background */
+    border-top: 6px solid #34db39; /* Neon green top for EFROAI branding */
+    border-radius: 50%;
     width: 60px;
     height: 60px;
-    border-radius: 50%;
-    animation: rotateSearch 2s linear infinite;
+    animation: spin 1.5s linear infinite;
     margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-spinner::before {
     content: '';
     position: absolute;
-    top: -18px;
-    left: 22px;
+    top: 50%;
+    left: 50%;
     width: 20px;
     height: 20px;
-    border: 4px solid #34db39; /* Green for handle */
+    background-color: #34db39; /* Neon green dot */
     border-radius: 50%;
-    transform-origin: center;
-    animation: rotateHandle 2s linear infinite;
+    transform: translate(-50%, -50%);
+    animation: dotPulse 1.5s ease-in-out infinite;
 }
 
-.loading-spinner::after {
-    content: '';
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 35px;
-    height: 35px;
-    border: 4px solid #f3f3f3; /* Light gray background */
-    border-top: 4px solid #34db39; /* Green spinner for the lens */
-    border-radius: 50%;
-    animation: spinLens 2s linear infinite;
-}
-
-@keyframes rotateSearch {
-    0% {
-        transform: rotate(0deg);
+@keyframes dotPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
     }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes rotateHandle {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(-360deg);
-    }
-}
-
-@keyframes spinLens {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.5;
     }
 }
