@@ -31,26 +31,30 @@ function loadCharacters() {
         let buffer = ''; // Temporary buffer to store incoming chunks
 
         // Read the response stream
-        reader.read().then(function processText({ done, value }) {
+        function processStream({ done, value }) {
             if (done) return; // End of stream, exit
 
             // Decode the chunk and append it to the buffer
             buffer += decoder.decode(value, { stream: true });
 
-            // Try to parse any complete JSON objects from the buffer
-            let lastIndex = buffer.lastIndexOf('}');
-            if (lastIndex !== -1) {
-                // We have a complete character object (or more)
-                const characters = JSON.parse(buffer.slice(0, lastIndex + 1));
-                displayCharacters(characters); // Display each batch of characters as they arrive
+            // Check if we have a full JSON array in the buffer
+            try {
+                const characters = JSON.parse(buffer);
+                displayCharacters(characters); // Display the characters as they arrive
 
-                // Keep the remaining characters in the buffer for the next read
-                buffer = buffer.slice(lastIndex + 1);
+                // Clear the buffer after processing
+                buffer = '';
+            } catch (e) {
+                // If the buffer doesn't contain valid JSON yet, wait for more data
+                // Continue reading the stream
             }
 
             // Continue reading the next chunk
-            reader.read().then(processText);
-        });
+            reader.read().then(processStream).catch(error => console.error("Error reading stream:", error));
+        }
+
+        // Start reading the stream
+        reader.read().then(processStream);
     })
     .catch(error => console.error('Error fetching characters:', error));
 }
