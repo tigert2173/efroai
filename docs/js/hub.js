@@ -41,23 +41,8 @@ function displayCharacters(characters) {
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
     const batchSize = 500; // Number of characters to display at once
-    let isLoading = false; // Flag to prevent multiple loading requests
 
-    // Create the loading spinner
-    const loadingSpinner = document.createElement('div');
-    loadingSpinner.className = 'loading-spinner';
-    loadingSpinner.innerHTML = 'Loading...'; // You can replace this with a spinner icon
-    characterGrid.appendChild(loadingSpinner); // Initially append it to the grid
-
-    // Function to load the next batch of characters
     function loadCharacters(startIndex) {
-        if (isLoading) return; // Prevent loading while already loading
-        isLoading = true;
-
-        // Show the spinner while loading
-        loadingSpinner.style.display = 'block';
-        console.log('Loading started'); // Debug log to check if the spinner is triggered
-
         const endIndex = Math.min(startIndex + batchSize, characters.length);
         for (let i = startIndex; i < endIndex; i++) {
             const character = characters[i];
@@ -69,8 +54,18 @@ function displayCharacters(characters) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
+
+            // Create loading spinner element
+            const loadingSpinner = document.createElement('div');
+            loadingSpinner.className = 'loading-spinner';
+            loadingSpinner.style.display = 'block'; // Show loading spinner
+
+            // Add the loading spinner before the image
+            card.querySelector('.card-body').insertBefore(loadingSpinner, card.querySelector('.card-body p'));
+
             imgElement.onerror = () => {
                 imgElement.src = 'noimage.jpg'; // Set default image on error
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
             };
 
             // Fetch the image
@@ -91,9 +86,11 @@ function displayCharacters(characters) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
                 }
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
             }).catch(error => {
                 console.error('Error fetching image:', error);
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
             });
 
             // Add the inner HTML to the card
@@ -145,7 +142,7 @@ function displayCharacters(characters) {
                     insElement.setAttribute('data-zoneid', '5461570');
                     adContainer.appendChild(insElement);
 
-                    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions, niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+                    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
                     insElement.setAttribute('data-keywords', keywords);
 
                     // Create the ad provider script and set up loading behavior
@@ -157,7 +154,7 @@ function displayCharacters(characters) {
                     scriptElement.onload = function() {
                         // Ensure the AdProvider object exists
                         if (window.AdProvider) {
-                            window.AdProvider.push({"serve": {}}); 
+                            window.AdProvider.push({"serve": {}});
                             console.log("Ad loaded successfully");
                         } else {
                             console.error("AdProvider object is not available");
@@ -183,20 +180,24 @@ function displayCharacters(characters) {
             }
         }
 
-        // Hide the spinner after loading
-        loadingSpinner.style.display = 'none';
-        isLoading = false;
+        // Create a "Load More" button if there are more characters to load
+        if (endIndex < characters.length) {
+            const loadMoreButton = document.createElement('button');
+            loadMoreButton.textContent = 'Load More Characters';
+            loadMoreButton.className = 'load-more-btn';
+        
+            loadMoreButton.onclick = () => {
+                loadCharacters(endIndex); // Load the next batch of characters
+                loadMoreButton.remove(); // Remove the button after loading more
+            };
+        
+            // Append the button to the grid
+            characterGrid.appendChild(loadMoreButton);
+        }
     }
 
     // Start by loading the first batch of characters
     loadCharacters(0);
-
-    // Add scroll event listener to load more characters when reaching the bottom
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-            loadCharacters(cardCounter); // Load the next batch
-        }
-    });
 }
 
 
