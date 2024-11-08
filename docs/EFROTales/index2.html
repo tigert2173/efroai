@@ -186,7 +186,7 @@
 
         .side-ad img {
             max-width: 100%;
-            height: auto;
+            height: 100%;
             border-radius: 8px;
         }
 
@@ -205,51 +205,19 @@
         </nav>
     </div>    
   
-   <!-- Left Side Ad -->
-<div class="side-ad side-ad-left" data-ad-loaded="false">
-    <script async type="application/javascript" data-src="https://a.magsrv.com/ad-provider.js"></script>
-    <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-</div>
+    <!-- Left Side Ad -->
+    <div class="side-ad side-ad-left">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+    </div>
 
-<!-- Right Side Ad -->
-<div class="side-ad side-ad-right" data-ad-loaded="false">
-    <script async type="application/javascript" data-src="https://a.magsrv.com/ad-provider.js"></script>
-    <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-</div>
-
-<script>
-    // Lazy load function for ads
-    function loadAd(adElement) {
-        if (adElement.getAttribute('data-ad-loaded') === 'false') {
-            // Load the ad script
-            const script = adElement.querySelector('script[data-src]');
-            if (script) {
-                const newScript = document.createElement('script');
-                newScript.async = true;
-                newScript.src = script.getAttribute('data-src');
-                adElement.appendChild(newScript);
-                adElement.setAttribute('data-ad-loaded', 'true');
-            }
-        }
-    }
-
-    // IntersectionObserver to observe when ads come into view
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                loadAd(entry.target);
-                observer.unobserve(entry.target);  // Stop observing after loading
-            }
-        });
-    }, { threshold: 0.5 });  // Trigger when 50% of the element is in view
-
-    // Start observing the ads
-    const ads = document.querySelectorAll('.side-ad');
-    ads.forEach(ad => observer.observe(ad));
-</script>
-
+    <!-- Right Side Ad -->
+    <div class="side-ad side-ad-right">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+    </div>
     <div class="catalog">
         <!-- Search Bar -->
         <div class="search-bar">
