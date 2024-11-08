@@ -524,4 +524,5 @@ footer p {
     transform: translate(-50%, -50%);
     font-size: 1.5em;
     display: none; /* Initially hidden */
+    color: #4CAF50; /* Customize the spinner color if desired */
 }
