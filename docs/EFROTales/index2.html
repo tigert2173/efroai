@@ -168,7 +168,7 @@
         /* Ad Banners on the Sides */
         .side-ad {
             position: fixed;
-            top: 120px; /* Adjust this value to ensure the ads are below the navbar */
+            top: 120px; /* Default position below navbar */
             z-index: 999; /* Ensure ads are below the navbar */
             background-color: #eaeaea;
             text-align: center;
@@ -485,6 +485,32 @@
         socket.addEventListener('close', (event) => {
             console.log('Disconnected from WebSocket server');
         });
+        window.addEventListener('load', function() {
+    const sideAds = document.querySelectorAll('.side-ad');
+    const navbar = document.querySelector('.navbar');
+
+    // Function to check if the ad is colliding with the navbar
+    function checkAdPosition() {
+        sideAds.forEach(ad => {
+            const navbarRect = navbar.getBoundingClientRect();
+            const adRect = ad.getBoundingClientRect();
+
+            // If the ad is colliding with the navbar
+            if (adRect.top < navbarRect.bottom) {
+                // Push the ad down
+                ad.style.top = `${navbarRect.bottom + 10}px`; // Add 10px for spacing
+            } else {
+                // Reset the ad to its default position
+                ad.style.top = '120px';
+            }
+        });
+    }
+
+    // Check position initially and on window resize
+    checkAdPosition();
+    window.addEventListener('resize', checkAdPosition);
+});
+
     </script>
     
 </body>
