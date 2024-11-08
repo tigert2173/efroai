@@ -63,13 +63,16 @@ function loadCharacters() {
 
 function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
-    characterGrid.innerHTML = ''; // Clear the grid before adding new characters
-
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
     let adLoading = false; // Flag to track if an ad is currently loading
 
+    // Function to load one character at a time
     function loadCharacter(index) {
+        if (index >= characters.length) {
+            return; // Stop if we've processed all characters
+        }
+
         const character = characters[index];
         const card = document.createElement('div');
         card.className = 'character-card';
@@ -173,7 +176,7 @@ function displayCharacters(characters) {
                 scriptElement.onload = function() {
                     // Ensure the AdProvider object exists
                     if (window.AdProvider) {
-                        window.AdProvider.push({"serve": {}});
+                        window.AdProvider.push({"serve": {}}); // Serve the ad
                         console.log("Ad loaded successfully");
                     } else {
                         console.error("AdProvider object is not available");
@@ -198,15 +201,14 @@ function displayCharacters(characters) {
             }
         }
 
-        // Load the next character if available
-        if (index + 1 < characters.length) {
-            setTimeout(() => loadCharacter(index + 1), 100); // Load the next character after a slight delay
-        }
+        // Load the next character after a slight delay to manage load speed
+        setTimeout(() => loadCharacter(index + 1), 100);
     }
 
-    // Start loading characters one by one
+    // Start loading characters incrementally from the first one
     loadCharacter(0);
 }
+
 
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
