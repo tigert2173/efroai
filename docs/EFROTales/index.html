@@ -166,20 +166,16 @@
             color: #888;
         }
 
-        .side-ad {
+       /* Ensure the ad containers are visible */
+.side-ad {
     position: fixed;
     top: 50%;
-    left: 0; /* For left side ad */
-    right: 0; /* For right side ad */
-    transform: translateY(-50%); /* Center the ad vertically */
+    transform: translateY(-50%);
     z-index: 1000;
-    background-color: #eaeaea;
-    text-align: center;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: top 0.3s ease; /* Smooth transition for vertical movement */
+    width: 300px;
+    height: 600px; /* Adjust as needed for your ad's dimensions */
 }
+
 
         .side-ad-left {
             left: 10px;
