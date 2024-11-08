@@ -174,6 +174,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: top 0.3s ease; /* Smooth transition for vertical movement */
         }
 
         .side-ad-left {
@@ -189,6 +190,7 @@
             height: auto;
             border-radius: 8px;
         }
+
 
     </style>
 </head>
@@ -483,6 +485,40 @@
         socket.addEventListener('close', (event) => {
             console.log('Disconnected from WebSocket server');
         });
+        // Function to check for collisions and adjust the ad positions
+function adjustAdPositions() {
+    const leftAd = document.querySelector('.side-ad-left');
+    const rightAd = document.querySelector('.side-ad-right');
+    const catalog = document.querySelector('.catalog');
+
+    // Get the bounding box of the catalog and ad elements
+    const catalogRect = catalog.getBoundingClientRect();
+    const leftAdRect = leftAd.getBoundingClientRect();
+    const rightAdRect = rightAd.getBoundingClientRect();
+
+    // Check if left ad collides with the catalog
+    if (leftAdRect.bottom > catalogRect.top && leftAdRect.top < catalogRect.bottom) {
+        // Push left ad down
+        leftAd.style.top = `${catalogRect.bottom + 20}px`;
+    } else {
+        // Restore original position
+        leftAd.style.top = '50%';
+    }
+
+    // Check if right ad collides with the catalog
+    if (rightAdRect.bottom > catalogRect.top && rightAdRect.top < catalogRect.bottom) {
+        // Push right ad down
+        rightAd.style.top = `${catalogRect.bottom + 20}px`;
+    } else {
+        // Restore original position
+        rightAd.style.top = '50%';
+    }
+}
+
+// Call the adjustAdPositions function on page load and on window resize
+window.addEventListener('load', adjustAdPositions);
+window.addEventListener('resize', adjustAdPositions);
+
     </script>
     
 </body>
