@@ -22,6 +22,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100; /* Ensure navbar is always on top */
         }
 
         .navbar h1 {
@@ -49,6 +50,7 @@
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 120px; /* Add space to prevent overlap with ads */
         }
 
         /* Search Bar */
@@ -166,14 +168,14 @@
         /* Ad Banners on the Sides */
         .side-ad {
             position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1000;
+            top: 120px; /* Adjust this value to ensure the ads are below the navbar */
+            z-index: 999; /* Ensure ads are below the navbar */
             background-color: #eaeaea;
             text-align: center;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px; /* Adjust width as needed */
         }
 
         .side-ad-left {
