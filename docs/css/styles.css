@@ -523,7 +523,8 @@ footer p {
     justify-content: space-between;
 }
 
-.loader::after, .loader::before {
+.loader::after,
+.loader::before {
     content: '';
     display: inline-block;
     width: 48px;
