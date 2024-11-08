@@ -473,6 +473,17 @@
             // Additional code to handle the ad loading
             console.log('Ad script loaded successfully');
             // You may also trigger some specific styling adjustments here if necessary
+            const sideAds = document.querySelectorAll('.side-ad');
+            sideAds.forEach(ad => {
+                const img = ad.querySelector('img');
+                img.onload = function() {
+                    ad.classList.add('loaded');
+                };
+                img.onerror = function() {
+                    ad.classList.add('error');
+                };
+            });
+
         }
     </script>
 
