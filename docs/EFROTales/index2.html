@@ -483,6 +483,11 @@
         socket.addEventListener('close', (event) => {
             console.log('Disconnected from WebSocket server');
         });
+        const adElement = document.querySelector('.side-ad img');
+adElement.onload = function() {
+    // The ad image has loaded, now you can display it fully
+    adElement.style.display = 'block';
+};
     </script>
     
 </body>
