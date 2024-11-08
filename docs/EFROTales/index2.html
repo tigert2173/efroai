@@ -252,10 +252,196 @@
     </div>
 
     <script>
-        function toggleTagSelection(element, tag) {
-            element.classList.toggle('selected');
-            console.log(`Tag ${tag} selected:`, element.classList.contains('selected'));
+        let selectedTags = new Set();
+        let searchInTitle = false; // Default to searching all content
+
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const input = this.value.toLowerCase();
+            filterStories(input, selectedTags);
+        });
+
+        function toggleTagSelection(tagElement, tag) {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag);
+                tagElement.classList.remove('selected');
+            } else {
+                selectedTags.add(tag);
+                tagElement.classList.add('selected');
+            }
+            filterStories(document.getElementById('searchInput').value.toLowerCase(), selectedTags);
         }
+
+        function filterStories(input, tags) {
+    const stories = document.getElementsByClassName('story');
+    const storiesArray = Array.from(stories);
+    const exactMatches = [];
+    const nearMatches = [];
+    const closeMatches = [];
+    const looseMatches = [];
+    const possibleMatches = [];
+    let anyStoryVisible = true;
+
+    // Normalize input
+    const normalizedInput = input.toLowerCase().trim();
+   
+    // Create a regular expression for the input, ignoring case
+    const regex = new RegExp(normalizedInput.split(' ').map(word => `(?=.*${word})`).join(''), 'i');
+
+    storiesArray.forEach(story => {
+        const title = story.querySelector('h2').innerText.toLowerCase();
+        const content = story.innerText.toLowerCase();
+        const storyTags = story.getAttribute('data-tags').split(', ').map(tag => tag.toLowerCase());
+
+        // Normalize tags for matching
+        const normalizedTags = storyTags.map(tag => tag.trim());
+        
+        //For percent Revelvance
+        const numberOfSelectedTags = tags.size;
+        
+        let matchCount = 0;
+        tags.forEach(tag => {
+            const normalizedTag = tag.toLowerCase().replace(/s$/, '');
+            if (normalizedTags.some(storyTag => storyTag.includes(normalizedTag))) {
+                matchCount++;
+            }
+        });
+
+        // Check if the normalized input partially matches any tag
+        const matchesATag = Array.from(tags).some(tag => normalizedTags.some(storyTag => storyTag.includes(tag.toLowerCase())));
+        //const matchesATags = Array.from(tags).some(tag => storyTags.includes(tag));
+        const matchesTags = Array.from(tags).every(tag => normalizedTags.some(storyTag => storyTag.includes(tag.toLowerCase())));
+
+        //const matchesTags = Array.from(tags).every(tag => storyTags.includes(tag));
+        const matchesContent = searchInTitle ? regex.test(title) : regex.test(content);
+
+        if (matchesATag || matchesTags || matchesContent) {
+            let score = 0;
+            let isExactMatch = false;
+            let isNearMatch = false;
+            let isCloseMatch = false;
+            let isPossibleMatch = false;
+
+            const percentofselectedtags = (matchCount/numberOfSelectedTags)*100;
+
+            // Check for exact matches
+            // Slider functionality
+            if (searchInTitle && title.includes(input) && matchesTags) {
+                score = 2; // Full match on title
+                isExactMatch = true;
+            } else if (!searchInTitle && content.includes(input) && matchesTags) {
+                score = 2; // Full match on content
+                isExactMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 90) {
+                score = 2; // Full match on title
+                isExactMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 90) {
+                score = 2; // Full match on content
+                isExactMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 60) {
+                score = 2; // Full match on title
+                isNearMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 60) {
+                score = 2; // Full match on content
+                isNearMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 30) {
+                score = 2; // Full match on title
+                isCloseMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 30) {
+                score = 2; // Full match on content
+                isCloseMatch = true;
+            } else if (searchInTitle && title.includes(input) && percentofselectedtags > 1) {
+                score = 1; // Partial match on title
+                isPossibleMatch = true;
+            } else if (!searchInTitle && content.includes(input) && percentofselectedtags > 1) {
+                score = content.startsWith(input) ? 2 : 1; // Full or partial match on content
+                isPossibleMatch = true;
+            }
+            
+            if (isExactMatch) {
+                exactMatches.push(story);
+            } else if (isNearMatch) {
+                nearMatches.push(story);
+            } else if (isCloseMatch) {
+                closeMatches.push(story);
+            } else if (isPossibleMatch) {
+                looseMatches.push(story);
+            } else if (matchesContent) {
+                possibleMatches.push(story);
+            }
+    
+
+            anyStoryVisible = true;
+        }
+    });
+
+    // Clear previous results
+    //document.getElementById('exactMatches').innerHTML = '<h3>Exact Matches</h3>';
+   // document.getElementById('closeMatches').innerHTML = '<h3>Close Matches</h3>';
+
+    // Display exact matches
+    exactMatches.forEach(story => {
+        document.getElementById('exactMatches').appendChild(story);
+    });
+
+    // Display near matches
+        nearMatches.forEach(story => {
+        document.getElementById('nearMatches').appendChild(story);
+    });
+
+    // Display close matches
+    closeMatches.forEach(story => {
+        document.getElementById('closeMatches').appendChild(story);
+    });
+
+    possibleMatches.forEach(story => {
+        document.getElementById('possibleMatches').appendChild(story);
+    });
+    
+    looseMatches.forEach(story => {
+        document.getElementById('looseMatches').appendChild(story);
+    });
+
+    // Ensure all stories not in either match section are displayed if no filter is applied
+    storiesArray.forEach(story => {
+        if (!exactMatches.includes(story) && !nearMatches.includes(story) && !closeMatches.includes(story) && !possibleMatches.includes(story) && !looseMatches.includes(story)) {
+            story.style.display = 'none';
+        } else {
+            story.style.display = '';
+        }
+    });
+
+    // If no filters are applied, ensure all stories are visible
+    if (!anyStoryVisible) {
+        storiesArray.forEach(story => {
+            story.style.display = '';
+        });
+    }
+}
     </script>
+    
+    <script>
+        const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+    
+        // Connection opened
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+    
+        // Listen for messages
+        socket.addEventListener('message', (event) => {
+            console.log('Message from server:', event.data);
+            // Handle ping or any other messages from the server
+            if (event.data === 'ping') {
+                // You can respond to pings if needed
+                socket.send('pong'); // Example response
+            }
+        });
+    
+        // Connection closed
+        socket.addEventListener('close', (event) => {
+            console.log('Disconnected from WebSocket server');
+        });
+    </script>
+    
 </body>
 </html>
