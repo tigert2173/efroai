@@ -174,7 +174,6 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: top 0.3s ease; /* Smooth transition for vertical movement */
-            display: none;
         }
 
         .side-ad-left {
@@ -189,10 +188,6 @@
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-        }
-        
-        .side-ad.loaded {
-            display: block;
         }
 
     </style>
@@ -223,7 +218,7 @@
         <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
     </div>
-
+    
     <div class="catalog">
         <!-- Search Bar -->
         <div class="search-bar">
@@ -465,29 +460,8 @@
         });
     }
 }
-
     </script>
-    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js" onload="adLoaded()"></script>
-    <script>
-        function adLoaded() {
-            // Additional code to handle the ad loading
-            console.log('Ad script loaded successfully');
-            // You may also trigger some specific styling adjustments here if necessary
-            const sideAds = document.querySelectorAll('.side-ad');
-            sideAds.forEach(ad => {
-                const img = ad.querySelector('img');
-                img.onload = function() {
-                    ad.classList.add('loaded');
-                };
-                img.onerror = function() {
-                    ad.classList.add('error');
-                };
-            });
-
-        }
-    </script>
-
-
+    
     <script>
         const socket = new WebSocket('wss://efroai.net'); // Update with your domain
     
