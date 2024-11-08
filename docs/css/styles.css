@@ -516,3 +516,12 @@ footer p {
         text-align: center; /* Center align main text */
     }
 }
+
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    display: none; /* Initially hidden */
+}

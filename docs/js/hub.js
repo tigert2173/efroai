@@ -41,45 +41,22 @@ function displayCharacters(characters) {
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
     const batchSize = 500; // Number of characters to display at once
+    let isLoading = false; // Flag to prevent multiple loading requests
 
-    // Create an intersection observer to lazy load images
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const card = entry.target;
-                const imageElement = card.querySelector('img[data-src]');
-                if (imageElement) {
-                    const imageUrl = imageElement.getAttribute('data-src');
-                    // Fetch and display the image
-                    fetch(imageUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                        }
-                    }).then(response => {
-                        if (!response.ok) {
-                            console.error(`Failed to fetch image: ${response.statusText}`);
-                            imageElement.src = 'noimage.jpg'; // Fallback to default image
-                            return;
-                        }
-                        return response.blob();
-                    }).then(imageBlob => {
-                        if (imageBlob) {
-                            const imageObjectURL = URL.createObjectURL(imageBlob);
-                            imageElement.src = imageObjectURL;
-                        }
-                    }).catch(error => {
-                        console.error('Error fetching image:', error);
-                        imageElement.src = 'noimage.jpg'; // Fallback to default image
-                    });
+    // Create the loading spinner
+    const loadingSpinner = document.createElement('div');
+    loadingSpinner.className = 'loading-spinner';
+    loadingSpinner.innerHTML = 'Loading...'; // You can replace this with a spinner icon
+    characterGrid.appendChild(loadingSpinner); // Initially append it to the grid
 
-                    observer.unobserve(card); // Stop observing once the image is loaded
-                }
-            }
-        });
-    }, { rootMargin: '100px' }); // Load images a little before they come into view
-
+    // Function to load the next batch of characters
     function loadCharacters(startIndex) {
+        if (isLoading) return; // Prevent loading while already loading
+        isLoading = true;
+
+        // Show the spinner while loading
+        loadingSpinner.style.display = 'block';
+
         const endIndex = Math.min(startIndex + batchSize, characters.length);
         for (let i = startIndex; i < endIndex; i++) {
             const character = characters[i];
@@ -88,11 +65,35 @@ function displayCharacters(characters) {
 
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
-            // Create image element with lazy loading
+            // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-            imgElement.setAttribute('data-src', imageUrl); // Store the image URL in data-src
-            imgElement.src = 'noimage.jpg'; // Set a placeholder image initially
+            imgElement.onerror = () => {
+                imgElement.src = 'noimage.jpg'; // Set default image on error
+            };
+
+            // Fetch the image
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            }).then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            }).catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
 
             // Add the inner HTML to the card
             card.innerHTML = `
@@ -121,9 +122,6 @@ function displayCharacters(characters) {
 
             // Append the image element after setting the card innerHTML
             card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-
-            // Start observing the card for lazy loading the image when it enters the viewport
-            imageObserver.observe(card);
 
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
@@ -184,24 +182,20 @@ function displayCharacters(characters) {
             }
         }
 
-        // Create a "Load More" button if there are more characters to load
-        if (endIndex < characters.length) {
-            const loadMoreButton = document.createElement('button');
-            loadMoreButton.textContent = 'Load More Characters';
-            loadMoreButton.className = 'load-more-btn';
-        
-            loadMoreButton.onclick = () => {
-                loadCharacters(endIndex); // Load the next batch of characters
-                loadMoreButton.remove(); // Remove the button after loading more
-            };
-        
-            // Append the button to the grid
-            characterGrid.appendChild(loadMoreButton);
-        }
+        // Hide the spinner after loading
+        loadingSpinner.style.display = 'none';
+        isLoading = false;
     }
 
     // Start by loading the first batch of characters
     loadCharacters(0);
+
+    // Add scroll event listener to load more characters when reaching the bottom
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+            loadCharacters(cardCounter); // Load the next batch
+        }
+    });
 }
 
 
