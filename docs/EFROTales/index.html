@@ -166,11 +166,12 @@
             color: #888;
         }
 
-       /* Ad Banners on the Sides */
-.side-ad {
+        .side-ad {
     position: fixed;
-    left: 0; /* Adjust this for the left side ad */
-    right: 0; /* Adjust this for the right side ad */
+    top: 50%;
+    left: 0; /* For left side ad */
+    right: 0; /* For right side ad */
+    transform: translateY(-50%); /* Center the ad vertically */
     z-index: 1000;
     background-color: #eaeaea;
     text-align: center;
@@ -178,8 +179,8 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: top 0.3s ease; /* Smooth transition for vertical movement */
-    transform: translateY(-50%); /* This will center it vertically */
 }
+
 
         .side-ad-left {
             left: 10px;
