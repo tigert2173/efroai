@@ -152,11 +152,6 @@ const isExternalRequest = (path) => {
 };
 
 
-// Function to check if the request is external
-const isExternalRequest = (filePath) => {
-    return filePath.includes('magsrv.com'); // Modify this condition to check for external resources
-  };
-  
 // Serve static files from the public directory with caching headers
 app.use(express.static(path.join(__dirname, 'docs'), {
   setHeaders: (res, path) => {
@@ -165,10 +160,10 @@ app.use(express.static(path.join(__dirname, 'docs'), {
     // res.setHeader('Pragma', 'no-cache');
     // res.setHeader('Expires', '0');
 
-       // Skip caching headers for internal files
-    if (!isExternalRequest(filePath)) {
-      return;
-    }
+      // Do not cache external requests
+      if (isExternalRequest(path)) {
+          return; // Skip setting headers for external requests
+      }
     //   Set Cache-Control and Expires headers for caching
     //   res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
     //   res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
