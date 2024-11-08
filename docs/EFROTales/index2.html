@@ -162,6 +162,34 @@
         .faded {
             color: #888;
         }
+
+        /* Ad Banners on the Sides */
+        .side-ad {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            background-color: #eaeaea;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .side-ad-left {
+            left: 10px;
+        }
+
+        .side-ad-right {
+            right: 10px;
+        }
+
+        .side-ad img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
     </style>
 </head>
 <body>
@@ -174,6 +202,20 @@
             <a href="https://discord.gg/E7TRzsEMkD">Discord</a>
             <a href="/EFROTales/features.html">Upcoming Features</a>
         </nav>
+    </div>
+
+    <!-- Left Side Ad -->
+    <div class="side-ad side-ad-left">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+    </div>
+
+    <!-- Right Side Ad -->
+    <div class="side-ad side-ad-right">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e2" data-zoneid="5467192"></ins>
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
     </div>
 
     <div class="catalog">
