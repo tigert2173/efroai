@@ -250,28 +250,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// // Function to filter characters based on search and filters
+// function filterCharacters() {
+//     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+
+//     // Get checked filters
+//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+//         .map(filter => filter.id);
+
+//     const characterCards = document.querySelectorAll('.character-card');
+//     characterCards.forEach(card => {
+//         const name = card.querySelector('h3').textContent.toLowerCase();
+//         const tags = card.querySelector('.tags').textContent.toLowerCase();
+
+//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+
+//         // Split filters by comma and trim whitespace
+//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+//     });
+// }
+
 // Function to filter characters based on search and filters
-function filterCharacters() {
+async function filterCharacters() {
     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
     // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
         .map(filter => filter.id);
 
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
+    try {
+        // Fetch the full character database (replace with your actual API endpoint)
+        const response = await fetch('https://your-api-endpoint.com/characters'); // Update the URL to your actual character database API
+        const characters = await response.json();
 
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+        // Clear the current character cards before adding new ones
+        const characterContainer = document.querySelector('.character-container');
+        characterContainer.innerHTML = ''; // Clear existing content
 
-        // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+        // Loop through the characters and apply filters
+        characters.forEach(character => {
+            const name = character.name.toLowerCase();
+            const tags = character.tags.toLowerCase();
 
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-    });
+            const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+
+            // Split filters by comma and trim whitespace
+            const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+            const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+            // If the character matches both the search and filter criteria, display it
+            if (matchesSearch && matchesFilters) {
+                const card = document.createElement('div');
+                card.classList.add('character-card');
+                card.innerHTML = `
+                    <h3>${character.name}</h3>
+                    <p>${character.description}</p>
+                    <div class="tags">${character.tags}</div>
+                `;
+                characterContainer.appendChild(card);
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching characters:', error);
+    }
 }
+
 
 // Function to show upload character form
 function showUploadForm() {
