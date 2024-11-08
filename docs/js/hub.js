@@ -14,124 +14,156 @@ function isAdExempt(token) {
 let adExempt = false // Check if the user is Ad-Exempt
 
 // Function to load characters from the backend
-let characters = [];  // Your initial character array (can be fetched from server)
-let currentIndex = 0; // The index to start loading characters from
-const batchSize = 10; // Number of characters to load per batch
-let isLoading = false; // Flag to prevent multiple simultaneous loads
-
 function loadCharacters() {
-    if (isLoading) return; // Prevent simultaneous loads
-    isLoading = true;
+    fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
+    .then(response => {
+        if (response.status === 429) {
+            // Show an alert message to the user
+            alert("We're sorry, but you've made too many requests in a short period of time. This is usually caused by refreshing the page too frequently or making repeated requests. Please wait 15 minutes and try again. Thank you for your patience!");
+        }
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.body.getReader(); // Use a stream reader to get the response in chunks
+    })
+    .then(reader => {
+        const decoder = new TextDecoder();
+        let buffer = ''; // Temporary buffer to store incoming chunks
 
-    const characterGrid = document.getElementById('character-grid');
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.className = 'loading-indicator';
-    loadingIndicator.innerHTML = 'Loading more characters...';
-    characterGrid.appendChild(loadingIndicator);
+        // Read the response stream
+        function processStream({ done, value }) {
+            if (done) return; // End of stream, exit
 
-    // Fetch the next batch of characters (this can be from an API or local array)
-    const batch = characters.slice(currentIndex, currentIndex + batchSize);
-    setTimeout(() => {
-        batch.forEach(character => {
-            const card = document.createElement('div');
-            card.className = 'character-card';
+            // Decode the chunk and append it to the buffer
+            buffer += decoder.decode(value, { stream: true });
 
-            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+            // Check if we have a full JSON array in the buffer
+            try {
+                const characters = JSON.parse(buffer);
+                console.log("Characters fetched:", characters); // Log the data to verify it's correct
 
-            // Create image element
-            const imgElement = document.createElement('img');
-            imgElement.alt = `${character.name} image`;
+                displayCharacters(characters); // Display the characters as they arrive
 
-            // Add the card header, body, and buttons
-            card.innerHTML = `
-                <div class="card-header">
-                    <h3>${character.name}</h3>
-                </div>
-                <div class="card-body">
-                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
-                </div>
-                <p class="tags">
-                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    <span class="full-tags-overlay">
-                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    </span>
-                </p>
-                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-                <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                <div class="button-container">
-                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
-                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
-                    </button>
-                </div>
-            `;
+                // Clear the buffer after processing
+                buffer = '';
+            } catch (e) {
+                // If the buffer doesn't contain valid JSON yet, wait for more data
+                // Continue reading the stream
+            }
 
-            // Insert a loading spinner while fetching the image
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+            // Continue reading the next chunk
+            reader.read().then(processStream).catch(error => console.error("Error reading stream:", error));
+        }
 
-            // Fetch the image
-            fetch(imageUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg'; // Fallback to default image
-                    return;
-                }
-                return response.blob();
-            }).then(imageBlob => {
-                if (imageBlob) {
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    imgElement.src = imageObjectURL;
-                }
-            }).catch(error => {
-                console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
-            });
-
-            // When the image is loaded or error occurs, remove the spinner and append the image
-            imgElement.onload = () => {
-                spinner.remove(); // Remove spinner once image is loaded
-                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-            };
-            imgElement.onerror = () => {
-                spinner.remove(); // Remove spinner if image fails to load
-            };
-
-            // Add the character card to the grid
-            characterGrid.appendChild(card);
-        });
-
-        // Remove the loading indicator
-        characterGrid.removeChild(loadingIndicator);
-
-        // Update the index for the next batch
-        currentIndex += batchSize;
-
-        isLoading = false; // Reset the loading flag
-    }, 1000); // Simulate async loading with delay
+        // Start reading the stream
+        reader.read().then(processStream);
+    })
+    .catch(error => console.error('Error fetching characters:', error));
 }
 
-// Initialize loading characters on page load
-window.onload = () => loadCharacters();
+function displayCharacters(characters) {
+    const characterGrid = document.getElementById('character-grid');
+    let currentIndex = 0; // Track the current index in the characters array
+    const batchSize = 10; // Number of characters to load at once
 
-// Infinite Scroll: Load more characters when user scrolls near the bottom of the page
-window.onscroll = () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
+    function loadCharacter(index) {
+        const character = characters[index];
+        const card = document.createElement('div');
+        card.className = 'character-card';
 
-    if (scrollTop + windowHeight >= documentHeight - 100) {
-        loadCharacters(); // Load next batch when reaching near the bottom
+        const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+        // Create image element
+        const imgElement = document.createElement('img');
+        imgElement.alt = `${character.name} image`;
+
+        // Add the card header, body, and buttons
+        card.innerHTML = `
+            <div class="card-header">
+                <h3>${character.name}</h3>
+            </div>
+            <div class="card-body">
+                <p>${character.chardescription || 'Error: Description is missing.'}</p>
+            </div>
+            <p class="tags">
+                ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                <span class="full-tags-overlay">
+                    ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                </span>
+            </p>
+            <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+            <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+            <div class="button-container">
+                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                    <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+                    <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                </button>
+            </div>
+        `;
+
+        // Insert a loading spinner while fetching the image
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
+        card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+
+        // Fetch the image
+        fetch(imageUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                console.error(`Failed to fetch image: ${response.statusText}`);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+                return;
+            }
+            return response.blob();
+        }).then(imageBlob => {
+            if (imageBlob) {
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+                imgElement.src = imageObjectURL;
+            }
+        }).catch(error => {
+            console.error('Error fetching image:', error);
+            imgElement.src = 'noimage.jpg'; // Fallback to default image
+        });
+
+        // When the image is loaded or error occurs, remove the spinner and append the image
+        imgElement.onload = () => {
+            spinner.remove(); // Remove spinner once image is loaded
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+        };
+        imgElement.onerror = () => {
+            spinner.remove(); // Remove spinner if image fails to load
+        };
+
+        // Add the character card to the grid
+        characterGrid.appendChild(card);
     }
-};
 
+    // Function to load a batch of characters
+    function loadBatch() {
+        const nextBatchEnd = currentIndex + batchSize;
+        for (let i = currentIndex; i < Math.min(nextBatchEnd, characters.length); i++) {
+            loadCharacter(i);
+        }
+        currentIndex = nextBatchEnd; // Update the current index for the next batch
+    }
+
+    // Initial load
+    loadBatch();
+
+    // Check if more characters need to be loaded when the user scrolls
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.textContent = 'Load More Characters';
+    loadMoreButton.className = 'load-more-btn';
+    loadMoreButton.onclick = loadBatch;
+
+    // Add the "Load More" button to the grid
+    characterGrid.appendChild(loadMoreButton);
+}
 
 // function displayCharacters(characters) {
 //     const characterGrid = document.getElementById('character-grid');
