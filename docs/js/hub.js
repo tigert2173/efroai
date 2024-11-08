@@ -24,15 +24,37 @@ function loadCharacters() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response.body.getReader(); // Use a stream reader to get the response in chunks
     })
-    .then(characters => {
-        const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
-        adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
-        displayCharacters(characters);
+    .then(reader => {
+        const decoder = new TextDecoder();
+        let buffer = ''; // Temporary buffer to store incoming chunks
+
+        // Read the response stream
+        reader.read().then(function processText({ done, value }) {
+            if (done) return; // End of stream, exit
+
+            // Decode the chunk and append it to the buffer
+            buffer += decoder.decode(value, { stream: true });
+
+            // Try to parse any complete JSON objects from the buffer
+            let lastIndex = buffer.lastIndexOf('}');
+            if (lastIndex !== -1) {
+                // We have a complete character object (or more)
+                const characters = JSON.parse(buffer.slice(0, lastIndex + 1));
+                displayCharacters(characters); // Display each batch of characters as they arrive
+
+                // Keep the remaining characters in the buffer for the next read
+                buffer = buffer.slice(lastIndex + 1);
+            }
+
+            // Continue reading the next chunk
+            reader.read().then(processText);
+        });
     })
     .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
