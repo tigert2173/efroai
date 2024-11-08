@@ -40,6 +40,8 @@ function loadCharacters() {
             // Check if we have a full JSON array in the buffer
             try {
                 const characters = JSON.parse(buffer);
+                console.log("Characters fetched:", characters); // Log the data to verify it's correct
+
                 displayCharacters(characters); // Display the characters as they arrive
 
                 // Clear the buffer after processing
@@ -58,7 +60,6 @@ function loadCharacters() {
     })
     .catch(error => console.error('Error fetching characters:', error));
 }
-
 
 function displayCharacters(characters) {
     const characterGrid = document.getElementById('character-grid');
