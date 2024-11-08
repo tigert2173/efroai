@@ -54,19 +54,11 @@ function displayCharacters(characters) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-
-            // Create loading spinner element
-            const loadingSpinner = document.createElement('div');
-            loadingSpinner.className = 'loading-spinner';
-            loadingSpinner.style.display = 'block'; // Show loading spinner
-
-            // Add the loading spinner before the image
-            card.querySelector('.card-body').insertBefore(loadingSpinner, card.querySelector('.card-body p'));
-
-            imgElement.onerror = () => {
-                imgElement.src = 'noimage.jpg'; // Set default image on error
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
-            };
+            
+            // Create a loading spinner element
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            imgElement.parentElement.appendChild(spinner);
 
             // Fetch the image
             fetch(imageUrl, {
@@ -86,12 +78,18 @@ function displayCharacters(characters) {
                     const imageObjectURL = URL.createObjectURL(imageBlob);
                     imgElement.src = imageObjectURL;
                 }
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
             }).catch(error => {
                 console.error('Error fetching image:', error);
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
             });
+
+            // When the image is loaded or error occurs, remove the spinner
+            imgElement.onload = () => {
+                spinner.remove(); // Remove spinner once image is loaded
+            };
+            imgElement.onerror = () => {
+                spinner.remove(); // Remove spinner if image fails to load
+            };
 
             // Add the inner HTML to the card
             card.innerHTML = `
