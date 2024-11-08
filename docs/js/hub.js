@@ -54,44 +54,8 @@ function displayCharacters(characters) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-            
-            // Create a loading spinner element
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            imgElement.parentElement.appendChild(spinner);
 
-            // Fetch the image
-            fetch(imageUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg'; // Fallback to default image
-                    return;
-                }
-                return response.blob();
-            }).then(imageBlob => {
-                if (imageBlob) {
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    imgElement.src = imageObjectURL;
-                }
-            }).catch(error => {
-                console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
-            });
-
-            // When the image is loaded or error occurs, remove the spinner
-            imgElement.onload = () => {
-                spinner.remove(); // Remove spinner once image is loaded
-            };
-            imgElement.onerror = () => {
-                spinner.remove(); // Remove spinner if image fails to load
-            };
-
-            // Add the inner HTML to the card
+            // Add the card header, body, and buttons
             card.innerHTML = `
                 <div class="card-header">
                     <h3>${character.name}</h3>
@@ -116,9 +80,44 @@ function displayCharacters(characters) {
                 </div>
             `;
 
-            // Append the image element after setting the card innerHTML
-            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            // Insert a loading spinner while fetching the image
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
+            // Fetch the image
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            }).then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL;
+                }
+            }).catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
+
+            // When the image is loaded or error occurs, remove the spinner and append the image
+            imgElement.onload = () => {
+                spinner.remove(); // Remove spinner once image is loaded
+                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            };
+            imgElement.onerror = () => {
+                spinner.remove(); // Remove spinner if image fails to load
+            };
+
+            // Add the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
