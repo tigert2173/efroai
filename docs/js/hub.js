@@ -250,28 +250,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// // Function to filter characters based on search and filters
-// function filterCharacters() {
-//     const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+// Function to filter characters based on search and filters
+function filterCharacters() {
+    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
 
-//     // Get checked filters
-//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-//         .map(filter => filter.id);
+    // Get checked filters
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
 
-//     const characterCards = document.querySelectorAll('.character-card');
-//     characterCards.forEach(card => {
-//         const name = card.querySelector('h3').textContent.toLowerCase();
-//         const tags = card.querySelector('.tags').textContent.toLowerCase();
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-//         // Split filters by comma and trim whitespace
-//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+        // Split filters by comma and trim whitespace
+        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
-//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-//     });
-// }
+        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+    });
+}
 
 // Function to show upload character form
 function showUploadForm() {
