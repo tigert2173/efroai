@@ -173,35 +173,13 @@ function displayCharacters(characters) {
 
         // Load the next character if available
         if (index + 1 < characters.length) {
-            setTimeout(() => loadCharacter(index + 1), 100); // Load the next character after a slight delay
+            setTimeout(() => loadCharacter(index + 1), 10); // Load the next character after a slight delay
         }
     }
 
     // Start loading characters one by one
     loadCharacter(0);
 }
-
-// Function to load characters from the backend
-function loadCharacters() {
-    fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
-    .then(response => {
-        if (response.status === 429) {
-            // Show an alert message to the user
-            alert("We're sorry, but you've made too many requests in a short period of time. This is usually caused by refreshing the page too frequently or making repeated requests. Please wait 15 minutes and try again. Thank you for your patience!");
-        }
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(characters => {
-        const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
-        adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
-        displayCharacters(characters);
-    })
-    .catch(error => console.error('Error fetching characters:', error));
-}
-
 
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
