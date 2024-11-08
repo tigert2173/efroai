@@ -191,21 +191,29 @@
             border-radius: 8px;
         }
 
-
+        /* Styling for header and navbar */
+        header {
+            width: 100%;
+            background-color: #333; /* Dark background */
+            color: #fff; /* White text */
+            padding: 10px 0;
+        }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h1>EFRO Story Catalog</h1>
-        <nav>
-            <a href="/EFROTales/index.html">Stories</a>
-            <a href="/index.html">EFRO.AI</a>
-            <a href="/EFROTales/editor.html">Editor</a>
-            <a href="https://discord.gg/E7TRzsEMkD">Discord</a>
-            <a href="/EFROTales/features.html">Upcoming Features</a>
-        </nav>
-    </div>
-
+    <header>
+        <div class="navbar">
+            <h1>EFRO Story Catalog</h1>
+            <nav>
+                <a href="/EFROTales/index.html">Stories</a>
+                <a href="/index.html">EFRO.AI</a>
+                <a href="/EFROTales/editor.html">Editor</a>
+                <a href="https://discord.gg/E7TRzsEMkD">Discord</a>
+                <a href="/EFROTales/features.html">Upcoming Features</a>
+            </nav>
+        </div>
+    </header>
+    
     <!-- Left Side Ad -->
     <div class="side-ad side-ad-left">
         <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
@@ -485,40 +493,6 @@
         socket.addEventListener('close', (event) => {
             console.log('Disconnected from WebSocket server');
         });
-        // Function to check for collisions and adjust the ad positions
-function adjustAdPositions() {
-    const leftAd = document.querySelector('.side-ad-left');
-    const rightAd = document.querySelector('.side-ad-right');
-    const catalog = document.querySelector('.catalog');
-
-    // Get the bounding box of the catalog and ad elements
-    const catalogRect = catalog.getBoundingClientRect();
-    const leftAdRect = leftAd.getBoundingClientRect();
-    const rightAdRect = rightAd.getBoundingClientRect();
-
-    // Check if left ad collides with the catalog
-    if (leftAdRect.bottom > catalogRect.top && leftAdRect.top < catalogRect.bottom) {
-        // Push left ad down
-        leftAd.style.top = `${catalogRect.bottom + 20}px`;
-    } else {
-        // Restore original position
-        leftAd.style.top = '50%';
-    }
-
-    // Check if right ad collides with the catalog
-    if (rightAdRect.bottom > catalogRect.top && rightAdRect.top < catalogRect.bottom) {
-        // Push right ad down
-        rightAd.style.top = `${catalogRect.bottom + 20}px`;
-    } else {
-        // Restore original position
-        rightAd.style.top = '50%';
-    }
-}
-
-// Call the adjustAdPositions function on page load and on window resize
-window.addEventListener('load', adjustAdPositions);
-window.addEventListener('resize', adjustAdPositions);
-
     </script>
     
 </body>
