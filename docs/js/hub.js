@@ -273,52 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
 //     });
 // }
 
-// Function to filter characters based on search and filters
-async function filterCharacters() {
-    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-
-    // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
-
-    try {
-        // Fetch the full character database (replace with your actual API endpoint)
-        const response = await fetch(`https://${backendurl}/characters`); // Update the URL to your actual character database API
-        const characters = await response.json();
-
-        // Clear the current character cards before adding new ones
-        const characterContainer = document.querySelector('.character-container');
-        characterContainer.innerHTML = ''; // Clear existing content
-
-        // Loop through the characters and apply filters
-        characters.forEach(character => {
-            const name = character.name.toLowerCase();
-            const tags = character.tags.toLowerCase();
-
-            const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
-            // Split filters by comma and trim whitespace
-            const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-            const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
-            // If the character matches both the search and filter criteria, display it
-            if (matchesSearch && matchesFilters) {
-                const card = document.createElement('div');
-                card.classList.add('character-card');
-                card.innerHTML = `
-                    <h3>${character.name}</h3>
-                    <p>${character.description}</p>
-                    <div class="tags">${character.tags}</div>
-                `;
-                characterContainer.appendChild(card);
-            }
-        });
-    } catch (error) {
-        console.error('Error fetching characters:', error);
-    }
-}
-
-
 // Function to show upload character form
 function showUploadForm() {
     document.getElementById('upload-form').style.display = 'block'; // Ensure this ID matches your HTML
