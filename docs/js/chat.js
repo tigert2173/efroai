@@ -1342,6 +1342,7 @@ async function checkIfLiked(selectedCharacterId) {
     // Check if the current user ID exists in the liked users array
     const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
 
+    console.log(isLiked);
     return isLiked; // Return the like status
 }
 
