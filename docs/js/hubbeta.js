@@ -40,7 +40,9 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-    characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+    if (page !== 0) {
+        characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+    }
 
     characters.forEach(character => {
         // Filter characters based on the search query
