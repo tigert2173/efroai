@@ -83,6 +83,7 @@ function loadCharacters() {
 }
 
 
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -258,6 +259,7 @@ function createLoadMoreButton() {
         loadMoreButton.style.display = 'none';  // Hide the "Load More" button if no more characters
     }
 }
+
 let typingTimer; 
 const doneTypingInterval = 500; // time in ms (0.5 seconds)
 
