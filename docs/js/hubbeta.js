@@ -292,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
         currentPage = 1;
+        loadCharacters(); // Reload characters based on the selected filter option
     });
 });
 
