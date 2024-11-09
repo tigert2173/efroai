@@ -26,6 +26,9 @@ function filterCharacters() {
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
         .map(filter => filter.id);
 
+    // Update filterTerms with selected filters
+    filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+
     const characterCards = document.querySelectorAll('.character-card');
     characterCards.forEach(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
@@ -33,8 +36,6 @@ function filterCharacters() {
 
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-        // Split filters by comma and trim whitespace
-        filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
@@ -42,11 +43,12 @@ function filterCharacters() {
 }
 
 
+
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query and filters to the backend
+    // Send filters and search query to the backend
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${encodeURIComponent(JSON.stringify(filterTerms))}`)
         .then(response => {
             if (!response.ok) {
