@@ -57,8 +57,6 @@ function displayCharacters(characters, searchQuery) {
 
             // Create image element
             const imgElement = document.createElement('img');
-            imgElement.setAttribute('loading', 'lazy');
-
             imgElement.alt = `${character.name} image`;
             
             // Create and populate card content here as in your current implementation...
