@@ -25,9 +25,10 @@ function loadCharacters() {
 
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+    const filters = getFilters(); // Get filters from the UI (if any)
 
-    // Pass the search query to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    // Pass the search query and filters to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(filters))}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -36,12 +37,24 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            displayCharacters(data.characters, searchQuery, filters); // Display the filtered characters
             currentPage++; // Increment the page after loading characters
         })
         .catch(error => console.error('Error fetching characters:', error))
         .finally(() => isLoading = false); // Reset loading flag after request completes
 }
+
+// Function to get the selected filters from the UI
+function getFilters() {
+    const filters = {};
+    // Example of getting a filter value from a dropdown
+    const categoryFilter = document.getElementById('category-select').value;
+    if (categoryFilter) filters.category = categoryFilter;
+
+    // Add more filters here as needed
+    return filters;
+}
+
 
 // Updated displayCharacters function to handle filtered results
 function displayCharacters(characters, searchQuery, filters) {
@@ -159,6 +172,17 @@ function displayCharacters(characters, searchQuery, filters) {
     });
 }
 
+// Function to match filters
+function matchesFilters(character, filters) {
+    // Check if character matches all selected filters
+    for (const key in filters) {
+        if (filters[key] && character[key] !== filters[key]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Detect when user scrolls to the bottom of the page
 window.addEventListener('scroll', () => {
     const scrollableHeight = document.documentElement.scrollHeight;
@@ -166,18 +190,8 @@ window.addEventListener('scroll', () => {
 
     if (scrollPosition >= scrollableHeight - 100) { // Trigger when user is near the bottom
         loadCharacters(); // Automatically load more characters
-        loadFilteredCharacters();
     }
 });
-
-
-// Function to check if character matches selected filters
-function matchesFilters(character, filters) {
-    if (!filters || filters.length === 0) {
-        return true; // If no filters are selected, return true (show all characters)
-    }
-    return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
-}
 
 
 // Ad creation function
