@@ -299,10 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
 
-    // Initialize filter event listeners
-    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', filterCharacters);
-    });
+    // // Initialize filter event listeners
+    // document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+    //     filter.addEventListener('change', filterCharacters);
+    // });
 });
 
 // Function to filter characters based on search and filters
