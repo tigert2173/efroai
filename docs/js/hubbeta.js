@@ -291,6 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
+        characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+
     });
 });
 
