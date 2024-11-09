@@ -71,7 +71,7 @@ main {
 
 /* Filters Section */
 .filters {
-    flex: 0 0 100px; /* Fixed width for filters */
+    flex: 0 0 200px; /* Fixed width for filters */
     margin-right: 20px; /* Space between filters and character grid */
     background-color: rgb(30, 50, 50);
     border-radius: 10px;
@@ -454,7 +454,7 @@ main {
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 1240px) {
+@media (max-width: 840px) {
     main {
         flex-direction: column; /* Stack layout on smaller screens */
     }
