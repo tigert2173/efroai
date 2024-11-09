@@ -16,6 +16,30 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
+let isLoading = false; // To avoid multiple requests being sent
+
+// Function to load more characters automatically when the user scrolls to the bottom
+function loadMoreOnScroll() {
+    const sentinel = document.getElementById('load-more-sentinel');
+
+    // Create an IntersectionObserver to detect when the sentinel is in view
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !isLoading) {
+                // If sentinel is in view and no request is already being made
+                isLoading = true;
+                currentPage++; // Increase the page number
+                loadMoreCharacters(); // Fetch and display more characters
+            }
+        });
+    }, {
+        rootMargin: '200px', // Trigger the loading a bit before reaching the bottom
+        threshold: 0.1 // Trigger when 10% of the sentinel is in view
+    });
+
+    // Start observing the sentinel
+    observer.observe(sentinel);
+}
 
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
@@ -205,26 +229,27 @@ function createAd() {
     }
 }
 
-// Function to initialize the IntersectionObserver
-function initInfiniteScroll() {
-    // Select the sentinel element at the bottom of the character list
-    const sentinel = document.getElementById('load-more-sentinel');
+function loadMoreCharacters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id) || [];
+    const sortBy = document.getElementById('sort-select').value;
 
-    // Create an IntersectionObserver to detect when the sentinel is visible
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // If the sentinel is visible, load more characters
-                currentPage++;
-                loadCharacters(); // Load the next page of characters
-                loadMoreButton.remove(); // Remove the button after loading more
-            }
+    // Call API to fetch more characters
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(filters))}`)
+        .then(response => response.json())
+        .then(data => {
+            // Display new characters and stop loading state
+            displayCharacters(data.characters, searchQuery, filters);
+            isLoading = false; // Reset loading state
+        })
+        .catch(error => {
+            console.error('Error fetching more characters:', error);
+            isLoading = false; // Reset loading state on error
         });
-    }, { threshold: 1.0 }); // The observer will trigger when 100% of the sentinel is visible
-
-    // Start observing the sentinel element
-    observer.observe(sentinel);
 }
+// Call this function on page load to start observing
+loadMoreOnScroll();
 
 function createLoadMoreButton() {
     const loadMoreButton = document.createElement('button');
@@ -397,7 +422,3 @@ function viewCharacter(characterId, uploader) {
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
 
-// Call initInfiniteScroll on page load
-document.addEventListener('DOMContentLoaded', function() {
-    initInfiniteScroll(); // Initialize infinite scroll functionality
-});
