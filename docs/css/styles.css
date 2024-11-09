@@ -676,6 +676,7 @@ footer p {
 #filterList {
     margin-top: 10px;
     padding-left: 20px;
+    display: none; /* Hide by default */
 }
 
 #filterList li {
@@ -684,6 +685,10 @@ footer p {
 
 .filter-container.minimized #filterList {
     display: none;
+}
+
+.filter-container:not(.minimized) #filterList {
+    display: block; /* Show when not minimized */
 }
 
 .filter-container.minimized #minimizeBtn {

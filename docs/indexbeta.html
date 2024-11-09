@@ -337,9 +337,9 @@
     <div class="filter-container">
         <h2>
             Filters
-            <button id="minimizeBtn" class="minimize-btn">−</button>
+            <button id="minimizeBtn" class="minimize-btn">+</button>
         </h2>
-        <ul id="filterList" style="display: none;">
+        <ul id="filterList">
         <ul>
             <li><input type="checkbox" id="female" name="filter"><label for="female">Female</label></li>
             <li><input type="checkbox" id="male" name="filter"><label for="male">Male</label></li>
@@ -484,6 +484,7 @@ document.getElementById("minimizeBtn").addEventListener("click", function() {
         document.getElementById("minimizeBtn").textContent = "−";
     }
 });
+
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {
