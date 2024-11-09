@@ -563,12 +563,12 @@ footer p {
 /* Container for both columns */
 .sort-search-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;  /* Two equal columns */
+    grid-template-columns: 1fr 1fr;  /* Default to two columns */
     gap: 16px;
     justify-items: start;  /* Align items to the start of the grid cell */
     align-items: center;
     width: 100%;
-    max-width: 500px;  /* Max width for the container to prevent stretching */
+    max-width: 500px;  /* Prevent the container from stretching too wide */
     margin: 0 auto;  /* Center the container horizontally */
 }
 
@@ -588,8 +588,8 @@ footer p {
     background-color: #ff6600;  /* Orange background */
     color: white;
     transition: all 0.3s ease-in-out;
-    width: 100%;  /* Ensures it does not stretch beyond its container */
-    max-width: 250px;  /* Limits the width of the select box */
+    width: 100%;  /* Ensures it doesn't stretch beyond its container */
+    max-width: 250px;  /* Limit the width of the select box */
 }
 
 .custom-select:hover, .custom-select:focus {
@@ -607,8 +607,8 @@ footer p {
     border: 2px solid #33cc33;  /* Green border */
     background-color: #ff6600;  /* Orange background */
     color: white;
-    width: 100%;  /* Ensures it does not stretch beyond its container */
-    max-width: 250px;  /* Limits the width of the input box */
+    width: 100%;  /* Ensures it doesn't stretch beyond its container */
+    max-width: 250px;  /* Limit the width of the input box */
     transition: all 0.3s ease-in-out;
 }
 
@@ -623,14 +623,10 @@ footer p {
     outline: none;
 }
 
-/* Media Query for smaller screens to stack the columns */
-@media (max-width: 600px) {
+/* Media Query for smaller containers to switch to one row */
+@media (max-width: 550px) {
     .sort-search-container {
-        grid-template-columns: 1fr;  /* Stacks elements in one column on small screens */
-    }
-    
-    .column {
-        width: 100%;  /* Ensure each column takes the full width */
+        grid-template-columns: 1fr;  /* Stack items in one column */
     }
 }
 
