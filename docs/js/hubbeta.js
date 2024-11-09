@@ -236,6 +236,12 @@ document.getElementById('sort-select').addEventListener('change', () => {
     loadCharacters(); // Reload characters based on the selected sorting option
 });
 
+document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+    filter.addEventListener('change', () => {
+        currentPage = 1;
+        loadCharacters();
+    });
+});
 
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
