@@ -90,28 +90,34 @@ function displayCharacters(characters, searchQuery) {
             spinner.className = 'loading-spinner';
             card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
-            // Lazy loading function using IntersectionObserver
-            const loadImage = (entry, observer) => {
-                if (entry.isIntersecting) {
-                    // Once the image is in the viewport, load the image
-                    const img = entry.target;
-                    img.src = img.getAttribute('data-src'); // Set the image src from the data-src attribute
-                    img.onload = () => {
-                        spinner.remove(); // Remove the spinner once image is loaded
-                    };
-                    observer.unobserve(entry.target); // Stop observing the image after it is loaded
-                }
-            };
+           // Lazy loading function using IntersectionObserver
+const loadImage = (entry, observer) => {
+    if (entry.isIntersecting) {
+        // Once the image is in the viewport, load the image
+        const img = entry.target;
+        img.src = img.getAttribute('data-src'); // Set the image src from the data-src attribute
 
-            // Create the IntersectionObserver instance
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(loadImage);
-            }, { threshold: 0.1 }); // Trigger when 10% of the image is in the viewport
+        // Handle image load event to remove the spinner
+        img.onload = () => {
+            const spinner = img.closest('.character-card').querySelector('.loading-spinner');
+            if (spinner) {
+                spinner.remove(); // Remove the spinner once image is loaded
+            }
+        };
 
-            // Start observing the image
-            observer.observe(imgElement);
+        observer.unobserve(entry.target); // Stop observing the image after it is loaded
+    }
+};
 
-            // Add the character card to the grid
+// Create the IntersectionObserver instance
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(loadImage);
+}, { threshold: 0.1 }); // Trigger when 10% of the image is in the viewport
+
+// Start observing the image
+observer.observe(imgElement);
+
+// Add the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
