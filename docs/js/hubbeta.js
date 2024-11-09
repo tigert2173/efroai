@@ -49,7 +49,12 @@ function displayCharacters(characters, searchQuery) {
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
             card.className = 'character-card';
+            const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
+            // Create image element
+            const imgElement = document.createElement('img');
+            imgElement.alt = `${character.name} image`;
+            
             // Create and populate card content here as in your current implementation...
             card.innerHTML = `
                 <div class="card-header">
