@@ -39,7 +39,6 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-
     if (currentPage === 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
@@ -88,7 +87,6 @@ function displayCharacters(characters, searchQuery) {
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
             imgElement.setAttribute('data-src', imageUrl);  // Store the image URL in a data attribute
-            console.log('Image URL:', imageUrl);
 
             // Lazy load the image when the card comes into view
             const loadImage = (entries, observer) => {
@@ -96,13 +94,15 @@ function displayCharacters(characters, searchQuery) {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src');
+                        console.log('Image URL:', imageUrl); // Debug the image URL
                         img.src = imageUrl; // Load the image by setting the src attribute
                         img.onload = () => {
                             spinner.remove(); // Remove spinner once image is loaded
                         };
                         img.onerror = () => {
                             spinner.remove(); // Remove spinner if image fails to load
-                            img.alt = 'Image failed to load'; // Display an error message
+                            img.src = 'path/to/default-image.jpg'; // Fallback image
+                            img.alt = 'Image failed to load'; // Show fallback alt text
                         };
                         observer.unobserve(img); // Stop observing the image once it is loaded
                     }
@@ -111,7 +111,7 @@ function displayCharacters(characters, searchQuery) {
 
             // Intersection Observer setup
             const observer = new IntersectionObserver(loadImage, {
-                rootMargin: '200px', // Start loading the image when it’s within 200px of the viewport
+                rootMargin: '50px 0px', // Start loading the image when it’s within 50px of the viewport
             });
 
             observer.observe(imgElement); // Start observing the image element
