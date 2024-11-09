@@ -96,15 +96,9 @@ const loadImage = (entry, observer) => {
         // Once the image is in the viewport, load the image
         const img = entry.target;
         img.src = img.getAttribute('data-src'); // Set the image src from the data-src attribute
-
-        // Handle image load event to remove the spinner
         img.onload = () => {
-            const spinner = img.closest('.character-card').querySelector('.loading-spinner');
-            if (spinner) {
-                spinner.remove(); // Remove the spinner once image is loaded
-            }
+            spinner.remove(); // Remove the spinner once the image is loaded
         };
-
         observer.unobserve(entry.target); // Stop observing the image after it is loaded
     }
 };
@@ -116,8 +110,7 @@ const observer = new IntersectionObserver((entries, observer) => {
 
 // Start observing the image
 observer.observe(imgElement);
-
-// Add the character card to the grid
+          // Add the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
