@@ -20,13 +20,13 @@ const characterGrid = document.getElementById('character-grid');
 
 let filters = []; // Store the selected filters globally
 
-// Get selected filters
+// Get selected tags and send them as a comma-separated string
 function getSelectedFilters() {
     const selectedTags = [];
     document.querySelectorAll('.filter-checkbox:checked').forEach(checkbox => {
         selectedTags.push(checkbox.value);
     });
-    return selectedTags;
+    return selectedTags.join(',');  // Return tags as a comma-separated string
 }
 
 // Apply selected filters when loading characters
