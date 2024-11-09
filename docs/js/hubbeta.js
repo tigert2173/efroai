@@ -50,8 +50,11 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Construct the URL with the filters
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
+    // Get the list of received character IDs (this will need to be tracked in your frontend)
+    const receivedIds = receivedCharacters.join(','); // Assume `receivedCharacters` is an array of IDs you already have
+
+    // Construct the URL with the filters and received parameter
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${receivedIds}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -65,6 +68,7 @@ function loadCharacters() {
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
