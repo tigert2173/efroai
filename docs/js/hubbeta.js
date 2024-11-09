@@ -36,7 +36,7 @@ function filterCharacters() {
         // Split filters by comma and trim whitespace
         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
+console.log(filterTerms);
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
 }
