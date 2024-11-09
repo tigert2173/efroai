@@ -48,6 +48,7 @@ function displayCharacters(characters, searchQuery) {
     characters.forEach(character => {
         // Filter characters based on the search query
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
+            const character = characters[i];
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -72,8 +73,6 @@ function displayCharacters(characters, searchQuery) {
                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
             `;
             
-              // Add the character card to the grid
-              characterGrid.appendChild(card);
               // Insert a loading spinner while fetching the image
               const spinner = document.createElement('div');
               spinner.className = 'loading-spinner';
