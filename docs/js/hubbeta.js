@@ -83,12 +83,15 @@ function createLoadMoreButton() {
     }
 }
 
-// Search functionality
-document.getElementById('search-input').addEventListener('input', () => {
-    currentPage = 1; // Reset to the first page when searching
-    loadCharacters(); // Reload characters based on the search query
-});
+let typingTimer; 
+const doneTypingInterval = 5000; // time in ms (0.5 seconds)
 
+document.getElementById('search-input').addEventListener('input', () => {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+        loadCharacters(); // Reload characters based on the search query
+    }, doneTypingInterval);
+});
 // Sorting functionality
 document.getElementById('sort-select').addEventListener('change', () => {
     currentPage = 1; // Reset to the first page when sorting

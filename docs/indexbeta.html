@@ -503,15 +503,6 @@ fetch('config.json')
                 // Optionally, redirect to login or error page
             }
         };
-        let typingTimer; 
-const doneTypingInterval = 5000; // time in ms (0.5 seconds)
-
-document.getElementById('search-input').addEventListener('input', () => {
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(() => {
-        loadCharacters(); // Reload characters based on the search query
-    }, doneTypingInterval);
-});
 
 </script>
 <script src="js/scripts/checkbot.js"></script>
