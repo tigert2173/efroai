@@ -44,8 +44,6 @@ function filterCharacters() {
 
 
 
-let displayedCharacterIds = []; // Track already displayed character IDs
-
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -70,8 +68,6 @@ function loadCharacters() {
 }
 
 
-
-
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -83,11 +79,8 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        if (displayedCharacterIds.includes(character.id)) {
-            return; // Skip displaying this character
-        }
        // Simply check if the character name or description matches the search query
-       const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
+        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -117,9 +110,6 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
 
-            // Mark this character as displayed
-            displayedCharacterIds.push(character.id);
-            
             // Create a loading spinner element
             const spinner = document.createElement('div');
             spinner.className = 'loading-spinner';
