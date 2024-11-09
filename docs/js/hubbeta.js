@@ -165,6 +165,7 @@ window.addEventListener('scroll', () => {
     const scrollPosition = window.innerHeight + window.scrollY;
 
     if (scrollPosition >= scrollableHeight - 100) { // Trigger when user is near the bottom
+        loadCharacters(); // Automatically load more characters
         loadFilteredCharacters();
     }
 });
