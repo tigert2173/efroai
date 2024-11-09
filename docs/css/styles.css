@@ -592,68 +592,66 @@ footer p {
 /* Container for both columns */
 .sort-search-container {
     display: flex;
-    flex-wrap: wrap;  /* Allow the items to wrap if necessary */
-    gap: 16px;  /* Space between columns */
-    justify-content: space-between;  /* Distribute columns evenly */
-    align-items: center;  /* Center items vertically */
-    max-width: 1000px;  /* Max width of container */
+    flex-wrap: wrap;  /* Allow the items to wrap onto new lines if necessary */
+    gap: 16px;
     width: 100%;
-    margin: 0 auto;  /* Center horizontally */
-    margin-bottom: 20px;  /* Space below container */
-    padding: 20px;  /* Padding for better spacing */
+    max-width: 500px;  /* Prevent the container from stretching too wide */
+    margin: 0 auto;  /* Center the container horizontally */
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    margin-bottom: 20px;      /* Space below search section */
 }
 
 /* Styling for each column */
 .column {
     display: flex;
-    flex-direction: column;  /* Stack elements vertically */
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 240px;  /* Limit the width of each column */
-    margin: 0 10px;  /* Margin between columns */
+    max-width: 250px;  /* Limit the width of each column */
 }
 
 /* Custom select styling */
 .custom-select {
     padding: 12px 18px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 8px;
     border: 2px solid #33cc33;  /* Green border */
-    background-color: #ff6600;  /* Orange background */
-    color: white;
+    background-color: #1e2a33;  /* Darker background to match the theme */
+    color: #ffffff;  /* White text */
     width: 100%;
-    max-width: 100%;  /* Ensure it scales within container */
     transition: all 0.3s ease-in-out;
-    outline: none;  /* Remove default outline */
 }
 
+/* Select hover/focus effects */
 .custom-select:hover, .custom-select:focus {
-    border-color: #ff6600;  /* Hover with orange border */
-    background-color: #33cc33;  /* Hover with green background */
-    color: black;  /* Change text color on hover */
+    border-color: #ff6600;  /* Orange hover border */
+    background-color: #33cc33;  /* Green hover background */
+    color: black;
+    outline: none;
 }
 
 /* Custom input styling */
 .custom-input {
     padding: 12px 18px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 8px;
     border: 2px solid #33cc33;  /* Green border */
-    background-color: #ff6600;  /* Orange background */
+    background-color: #1e2a33;  /* Dark background */
     color: white;
     width: 100%;
-    max-width: 100%;  /* Ensure it scales within container */
     transition: all 0.3s ease-in-out;
-    outline: none;  /* Remove default outline */
 }
 
+/* Placeholder text color */
 .custom-input::placeholder {
-    color: white;
+    color: #66ff66;  /* Lighter green placeholder text */
 }
 
+/* Input hover/focus effects */
 .custom-input:hover, .custom-input:focus {
-    border-color: #ff6600;  /* Hover with orange border */
-    background-color: #33cc33;  /* Hover with green background */
-    color: black;  /* Change text color on hover */
+    border-color: #ff6600;  /* Orange hover border */
+    background-color: #33cc33;  /* Green hover background */
+    color: black;
+    outline: none;
 }
