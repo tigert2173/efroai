@@ -155,14 +155,6 @@ function displayCharacters(characters, searchQuery, filters) {
 
 // Function to check if character matches selected filters
 function matchesFilters(character, filters) {
-    if (!filters || filters.length === 0) {
-        return true; // If no filters are selected, return true (show all characters)
-    }
-    return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
-}
-
-// Function to check if character matches selected filters
-function matchesFilters(character, filters) {
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
 
