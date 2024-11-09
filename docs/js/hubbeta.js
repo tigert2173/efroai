@@ -38,6 +38,7 @@ function loadCharacters() {
 }
 
 
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
