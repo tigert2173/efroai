@@ -43,8 +43,8 @@ function displayCharacters(characters, searchQuery) {
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
-
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
+
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
@@ -85,9 +85,10 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
 
-            // Add the character card to the grid
-            characterGrid.appendChild(card);
-            cardCounter++; // Increment the counter after adding a card
+            // Insert a loading spinner while fetching the image
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
             // Lazy loading function using IntersectionObserver
             const loadImage = (entry, observer) => {
@@ -95,11 +96,9 @@ function displayCharacters(characters, searchQuery) {
                     // Once the image is in the viewport, load the image
                     const img = entry.target;
                     img.src = img.getAttribute('data-src'); // Set the image src from the data-src attribute
-
                     img.onload = () => {
-                        img.classList.remove('lazy'); // Optionally, remove the 'lazy' class after loading
+                        spinner.remove(); // Remove the spinner once image is loaded
                     };
-
                     observer.unobserve(entry.target); // Stop observing the image after it is loaded
                 }
             };
@@ -111,6 +110,10 @@ function displayCharacters(characters, searchQuery) {
 
             // Start observing the image
             observer.observe(imgElement);
+
+            // Add the character card to the grid
+            characterGrid.appendChild(card);
+            cardCounter++; // Increment the counter after adding a card
 
             // Check if ads should be displayed
             if (!adExempt) {
