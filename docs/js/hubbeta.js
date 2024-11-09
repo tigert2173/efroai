@@ -34,16 +34,15 @@ function filterCharacters() {
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
         // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-console.log(filterTerms);
+
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
 }
 
-function loadCharacters() {
-     filterTerms = 'scat';
 
+function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
@@ -62,6 +61,7 @@ function loadCharacters() {
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 
 function displayCharacters(characters, searchQuery) {
@@ -314,12 +314,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('character-form')) {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
+});
 
-    // Initialize filter event listeners
-    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', filterCharacters);
-        currentPage = 1;
-        loadCharacters(); // Reload characters based on the selected filter option
+// Initialize filter event listeners
+document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+    filter.addEventListener('change', () => {
+        filterCharacters();
+        loadCharacters(); // Reload characters after filter change
     });
 });
 
