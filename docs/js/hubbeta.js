@@ -17,7 +17,7 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 let activeFilters = []; // Store active filters globally
-
+let isLoading = false;
 // Updated loadCharacters function with filters passed in
 function loadCharacters() {
     if (isLoading) return; // Prevent multiple requests while loading
