@@ -15,10 +15,6 @@ let adExempt = false // Check if the user is Ad-Exempt
 
 let currentPage = 1;
 let totalCharacters = 0;
-const pageSize = 10;
-
-let currentPage = 1;
-let totalCharacters = 0;
 const pageSize = 10;  // Adjust this value if needed
 
 function loadCharacters() {
