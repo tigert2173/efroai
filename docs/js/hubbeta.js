@@ -58,7 +58,7 @@ function displayCharacters(characters, searchQuery) {
             
             // Create and populate card content here as in your current implementation...
             card.innerHTML = `
-                <div class="card-header">
+                 <div class="card-header">
                     <h3>${character.name}</h3>
                 </div>
                 <div class="card-body">
@@ -66,10 +66,19 @@ function displayCharacters(characters, searchQuery) {
                 </div>
                 <p class="tags">
                     ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    <span class="full-tags-overlay">
+                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    </span>
                 </p>
                 <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                <div class="button-container">
+                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                    </button>
+                </div>
             `;
             
               // Insert a loading spinner while fetching the image
