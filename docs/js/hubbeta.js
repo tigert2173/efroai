@@ -20,33 +20,39 @@ const characterGrid = document.getElementById('character-grid');
 
 let filters = []; // Store the selected filters globally
 
-// Function to load characters from the backend with filters and search query
+// Get selected filters
+function getSelectedFilters() {
+    const selectedTags = [];
+    document.querySelectorAll('.filter-checkbox:checked').forEach(checkbox => {
+        selectedTags.push(checkbox.value);
+    });
+    return selectedTags;
+}
+
+// Apply selected filters when loading characters
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
-    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+    const selectedFilters = getSelectedFilters();
+    const searchQuery = document.getElementById('search-input').value;
+    const currentPage = 1;  // Change this to handle pagination properly
 
-    // Get selected filters
-    filters = getSelectedFilters();
-
-    // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    const url = `/api/v2/characters/all?page=${currentPage}&tags=${selectedFilters.join(',')}&searchQuery=${searchQuery}`;
+    
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
+            // Process the filtered characters
+            displayCharacters(data.characters);
         })
-        .catch(error => console.error('Error fetching characters:', error));
+        .catch(error => {
+            console.error('Error fetching characters:', error);
+        });
 }
 
-// Function to get the selected filters from the UI (checkboxes, dropdowns, etc.)
-function getSelectedFilters() {
-    const selectedFilters = [];
-    // Example: collect selected filters from checkboxes
-    const filterElements = document.querySelectorAll('.filter-checkbox:checked');
-    filterElements.forEach(filter => selectedFilters.push(filter.value));
-    return selectedFilters;
-}
+// Call loadCharacters when filters or search input change
+document.getElementById('search-input').addEventListener('input', loadCharacters);
+document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', loadCharacters);
+});
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
