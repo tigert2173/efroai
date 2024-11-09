@@ -709,7 +709,7 @@ footer p {
 .search-hint {
     color: #6e6e6e; /* Theme color */
     font-size: 0.65em;
-    margin-top: -5px;
+    margin-top: -10px;
     display: block;
     text-align: center;
 }
