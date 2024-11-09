@@ -43,7 +43,7 @@ function filterCharacters() {
 }
 
 
-// Array to store combinations of uploader and character IDs
+// Array to store combinations of uploader name and character ID
 let receivedCharacterIdentifiers = [];
 
 // Function to load characters
@@ -54,7 +54,7 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Send the list of received characters as a comma-separated string of "uploader_name_character_id"
+    // Send the list of received character identifiers as a comma-separated string
     const received = receivedCharacterIdentifiers.join(',');
 
     // Construct the URL with the filters and received character identifiers
@@ -72,12 +72,8 @@ function loadCharacters() {
             displayCharacters(data.characters, searchQuery);
 
             // Update the received character identifiers with the new ones
-            const newCharacterIdentifiers = data.characters.map(character => {
-                return `${character.uploader}_${character.id}`;  // Combine uploader and character ID
-            });
-
-            // Append the new identifiers to the received list
-            receivedCharacterIdentifiers = [...receivedCharacterIdentifiers, ...newCharacterIdentifiers];
+            const newCharacterIdentifiers = data.characters.map(character => `${character.uploader}:${character.id}`);
+            receivedCharacterIdentifiers = [...receivedCharacterIdentifiers, ...newCharacterIdentifiers];  // Append the new identifiers
 
             createLoadMoreButton();
         })
