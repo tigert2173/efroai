@@ -45,13 +45,15 @@ function filterCharacters() {
 }
 
 
-
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${encodeURIComponent(JSON.stringify(filterTerms))}`)
+    // Check if filterTerms have any values before adding them to the URL
+    const filtersParam = filterTerms.length > 0 ? `&filters=${encodeURIComponent(JSON.stringify(filterTerms))}` : '';
+
+    // Send filters and search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}${filtersParam}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
