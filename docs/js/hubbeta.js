@@ -304,9 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters (ensure filters is always an array, even if no checkboxes are checked)
+    // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id) || [];  // Use an empty array if no checkboxes are selected
+        .map(filter => filter.id);
 
     // Reset pagination and load filtered characters
     currentPage = 1;
@@ -332,7 +332,6 @@ function loadFilteredCharacters(searchQuery, filters) {
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
-
 
 // Function to filter characters based on search and filters
 // function filterCharacters() {
