@@ -595,10 +595,13 @@ footer p {
     display: flex;
     flex-wrap: wrap;  /* Allow the items to wrap onto new lines if necessary */
     gap: 16px;
-    justify-content: flex-start;  /* Align items at the start */
     width: 100%;
     max-width: 500px;  /* Prevent the container from stretching too wide */
     margin: 0 auto;  /* Center the container horizontally */
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    margin-bottom: 20px;      /* Space below search section */
 }
 
 /* Styling for each column */
@@ -650,35 +653,4 @@ footer p {
     background-color: #33cc33;  /* Hover effect with green */
     color: black;
     outline: none;
-}
-
-/* Centering the Search Bar */
-.filter-search {
-    display: flex;
-    justify-content: center;  /* Center horizontally */
-    align-items: center;      /* Center vertically */
-    margin-bottom: 20px;      /* Space below search section */
-}
-
-.filter-search input {
-    padding: 8px;
-    margin-right: 10px;  /* Space between the input and the search button */
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    width: 100%;         /* Make it flexible to use available space */
-    max-width: 300px;    /* Optional: Limit the max width of the search bar */
-}
-
-.filter-search button {
-    background-color: #ff9800; /* Orange button color */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.filter-search button:hover {
-    background-color: #fb8c00; /* Darker orange on hover */
 }
