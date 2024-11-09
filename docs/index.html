@@ -308,24 +308,65 @@
 
     <!-- Main Content -->
     <main>
+      
   <!-- Sidebar with Filters -->
     <div class="filters">
-        <h2>Filters</h2>
+        <div class="sort-search-container">
+            <div class="column">
+                <select id="sort-select" class="custom-select">
+                    <option value="date">Sort by Newest</option>
+                    <option value="likes">Sort by Likes</option>
+                    <option value="match">Sort by Relevance</option>
+                </select>            
+            </div>
+        
+            <div class="column">
+                <input type="text" id="search-input" class="custom-input" placeholder="Search Characters..." />
+            </div>
+            
+            <!-- <div class="column">
+                <select id="search-type-select" class="custom-select">
+                    <option value="normal">Normal Search</option>
+                    <option value="tags">Tags Search</option>
+                    <option value="deep">Deep Search</option>
+                </select>            
+            </div> -->
+        </div>
+        
+        
+    <div class="filter-container minimized">
+            <h2>
+            Filters
+            <button id="minimizeBtn" class="minimize-btn">+</button>
+        </h2>
+        <ul id="filterList">
         <ul>
+            <li><input type="checkbox" id="female" name="filter"><label for="female">Female</label></li>
+            <li><input type="checkbox" id="male" name="filter"><label for="male">Male</label></li>
             <li>
                 <input type="checkbox" id="gassy,fart" name="filter" value="gassy,fart">
                 <label for="gassy,fart">Gassy / Fart</label>
             </li>
-            
-            <li><input type="checkbox" id="female" name="filter"><label for="female">Female</label></li>
-            <li><input type="checkbox" id="male" name="filter"><label for="male">Male</label></li>
 
-            <li><input type="checkbox" id="lactose-intolerant,lactose intolerant" name="filter"><label for="lactose-intolerant, lactose intolerant">Lactose-Intolerant</label></li>
+            <li><input type="checkbox" id="feet" name="filter" value="feet"><label for="feet">Feet</label></li>
+            <li><input type="checkbox" id="armpit" name="filter" value="armpit"><label for="armpit">Armpit</label></li>
+
+            <li><input type="checkbox" id="smelly" name="filter"><label for="smelly">Smelly</label></li>
+            <li><input type="checkbox" id="gross" name="filter"><label for="gross">Gross</label></li>
+
+
+            <li><input type="checkbox" id="lactose-intolerant" name="filter"><label for="lactose-intolerant">Lactose-Intolerant</label></li>
             <li><input type="checkbox" id="skunk" name="filter"><label for="skunk">Skunk</label></li>
+            <li><input type="checkbox" id="spray" name="filter"><label for="spray">Spray</label></li>
             <li><input type="checkbox" id="sweat" name="filter"><label for="sweat">Sweat</label></li>
             <li><input type="checkbox" id="scat" name="filter"><label for="scat">Scat</label></li>
             <li><input type="checkbox" id="supremacy" name="filter"><label for="supremacy">Supremacy</label></li>
             <li><input type="checkbox" id="facesitting" name="filter"><label for="facesitting">Facesitting</label></li>
+            <li><input type="checkbox" id="furry" name="filter"><label for="furry">Furry</label></li>
+            <li><input type="checkbox" id="bondage" name="filter"><label for="bondage">Bondage</label></li>
+            <li><input type="checkbox" id="femdom" name="filter"><label for="femdom">Femdom</label></li>
+            <li><input type="checkbox" id="girlfriend" name="filter"><label for="girlfriend">Girlfriend</label></li>
+
             <li>
                 <input type="checkbox" id="piss,pee" name="filter" value="piss,pee">
                 <label for="piss,pee">Piss / Pee</label>
@@ -336,9 +377,11 @@
                 <input type="checkbox" id="futa,futanari" name="filter" value="futa,futanari">
                 <label for="futa,futanari">Futa / futanari</label>
             </li>
-            
+            <li><input type="checkbox" id="fat" name="filter"><label for="fat">Fat</label></li>
+
             <!-- More Filters -->
         </ul>
+    </div>
     </div>
 
         <!-- Character Grid -->
@@ -430,6 +473,18 @@
     </script>
     
 <script>
+document.getElementById("minimizeBtn").addEventListener("click", function() {
+    const filterContainer = document.querySelector(".filter-container");
+    filterContainer.classList.toggle("minimized");
+    
+    // Change the button text to reflect the state
+    if (filterContainer.classList.contains("minimized")) {
+        document.getElementById("minimizeBtn").textContent = "+";
+    } else {
+        document.getElementById("minimizeBtn").textContent = "−";
+    }
+});
+
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {

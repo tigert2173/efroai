@@ -13,75 +13,92 @@ function isAdExempt(token) {
 
 let adExempt = false // Check if the user is Ad-Exempt
 
-// Function to load characters from the backend
-function loadCharacters() {
-    fetch(`${backendurl}/api/characters/all`) // Ensure correct string interpolation
-    .then(response => {
-        if (response.status === 429) {
-            // Show an alert message to the user
-            alert("We're sorry, but you've made too many requests in a short period of time. This is usually caused by refreshing the page too frequently or making repeated requests. Please wait 15 minutes and try again. Thank you for your patience!");
-        }
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(characters => {
-        const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
-        adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
-        displayCharacters(characters);
-    })
-    .catch(error => console.error('Error fetching characters:', error));
+let currentPage = 1;
+let totalCharacters = 0;
+const pageSize = 50;
+
+let filterTerms = [];
+// Function to filter characters based on search and filters
+function filterCharacters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
+
+    filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+
+    console.log('Selected Filters:', filterTerms);
+
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
+
+        // Ensure that both name and tags are checked correctly
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+        card.style.display = 'block';
+    });
 }
 
-function displayCharacters(characters) {
+
+// Array to store combinations of uploader name and character ID
+let receivedCharacterIdentifiers = [];
+
+// Function to load characters
+function loadCharacters() {
+    const sortBy = document.getElementById('sort-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+    // Collect selected filters
+    const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
+
+    // Send the list of received character identifiers as a comma-separated string
+    const received = receivedCharacterIdentifiers.join(',');
+
+    // Construct the URL with the filters and received character identifiers
+    const url = `${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${received}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery);
+
+            // Update the received character identifiers with the new ones
+            const newCharacterIdentifiers = data.characters.map(character => `${character.uploader}:${character.id}`);
+            receivedCharacterIdentifiers = [...receivedCharacterIdentifiers, ...newCharacterIdentifiers];  // Append the new identifiers
+
+            createLoadMoreButton();
+        })
+        .catch(error => console.error('Error fetching characters:', error));
+}
+
+
+function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-    characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+
+    if (currentPage === 1) {
+        characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+    }
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    const batchSize = 50; // Number of characters to display at once
 
-    function loadCharacters(startIndex) {
-        const endIndex = Math.min(startIndex + batchSize, characters.length);
-        for (let i = startIndex; i < endIndex; i++) {
-            const character = characters[i];
+    characters.forEach(character => {
+       // Simply check if the character name or description matches the search query
+       const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
             const card = document.createElement('div');
             card.className = 'character-card';
-
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
-            // Create image element
-            const imgElement = document.createElement('img');
-            imgElement.alt = `${character.name} image`;
-            imgElement.onerror = () => {
-                imgElement.src = 'noimage.jpg'; // Set default image on error
-            };
-
-            // Fetch the image
-            fetch(imageUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg'; // Fallback to default image
-                    return;
-                }
-                return response.blob();
-            }).then(imageBlob => {
-                if (imageBlob) {
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    imgElement.src = imageObjectURL;
-                }
-            }).catch(error => {
-                console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
-            });
-
-            // Add the inner HTML to the card
+            // Create the card content
             card.innerHTML = `
                 <div class="card-header">
                     <h3>${character.name}</h3>
@@ -106,42 +123,97 @@ function displayCharacters(characters) {
                 </div>
             `;
 
-            // Append the image element after setting the card innerHTML
-            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            // Create a loading spinner element
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
+            // Create image element with lazy loading
+            const imgElement = document.createElement('img');
+            imgElement.alt = `${character.name} image`;
+
+            // Use IntersectionObserver to lazy load the image when the card is visible
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const imageUrl = img.getAttribute('data-src'); // Get the image URL from the data-src attribute
+
+                        console.log(`Loading image from: ${imageUrl}`);
+
+                        // Fetch the image only when the card is in view
+                        fetch(imageUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                console.error(`Failed to fetch image: ${response.statusText}`);
+                                img.src = 'noimage.jpg'; // Fallback to default image
+                                return;
+                            }
+                            return response.blob();
+                        }).then(imageBlob => {
+                            if (imageBlob) {
+                                const imageObjectURL = URL.createObjectURL(imageBlob);
+                                img.src = imageObjectURL; // Set the image URL
+                            }
+                        }).catch(error => {
+                            console.error('Error fetching image:', error);
+                            img.src = 'noimage.jpg'; // Fallback to default image
+                        });
+
+                        // Once the image is loaded, remove the spinner
+                        img.onload = () => {
+                            spinner.remove();
+                        };
+
+                        img.onerror = () => {
+                            spinner.remove(); // Remove spinner if image fails to load
+                        };
+
+                        observer.unobserve(img); // Stop observing once the image is loaded
+                    }
+                });
+            }, { rootMargin: '200px' }); // Start loading the image when it's within 200px of the viewport
+
+            // Set the image URL in a data-src attribute (only lazy load)
+            imgElement.setAttribute('data-src', imageUrl);
+            
+            // Append the image element to the card (image will be loaded lazily)
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            
+            // Start observing the image element
+            observer.observe(imgElement);
+
+            // Append the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
-// Check if ads should be displayed
-if (!adExempt) {
-    // Check if it's time to insert an ad
-    let adLoading = false; // Track if an ad is currently loading
 
+          // Check if ads should be displayed
+if (!adExempt) {
+    let adLoading = false; // Track if an ad is currently loading
     if (cardCounter >= nextAdInterval && !adLoading) {
-        adLoading = true; // Set flag to prevent additional loads
+        adLoading = true;
 
         // Create an ad container
         const adContainer = document.createElement('div');
         adContainer.className = 'ad-container';
 
-        // Create the <ins> element for the ad
         const insElement = document.createElement('ins');
         insElement.className = 'eas6a97888e38 ins-animate';
         insElement.setAttribute('data-zoneid', '5461570');
         adContainer.appendChild(insElement);
 
-        const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-        insElement.setAttribute('data-keywords', keywords);
-
-        // Create the ad provider script and set up loading behavior
+        // Only load the script when it's time to show the ad
         const scriptElement = document.createElement('script');
         scriptElement.async = true;
         scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
 
-        // Only call push() when the script is fully loaded
-        scriptElement.onload = function() {
-            // Ensure the AdProvider object exists
+        scriptElement.onload = function () {
             if (window.AdProvider) {
-                window.AdProvider.push({"serve": {}});
+                window.AdProvider.push({ "serve": {} });
                 console.log("Ad loaded successfully");
             } else {
                 console.error("AdProvider object is not available");
@@ -149,44 +221,60 @@ if (!adExempt) {
             adLoading = false; // Reset flag after ad loads
         };
 
-        // Error handling to reset the flag if the script fails to load
-        scriptElement.onerror = function() {
+        scriptElement.onerror = function () {
             console.error("Failed to load ad-provider.js");
             adLoading = false; // Reset flag on load failure
         };
 
-        // Append the script to the ad container
+        // Append the ad script to the ad container
         adContainer.appendChild(scriptElement);
 
-        // Add the ad container to the grid
+        // Append the ad container to the character grid
         characterGrid.appendChild(adContainer);
 
-        // Update the interval for the next ad
+        // Update the next ad interval
         nextAdInterval = cardCounter + getRandomAdInterval();
     }
-
-            }
-        }
-
-        // Create a "Load More" button if there are more characters to load
-        if (endIndex < characters.length) {
-            const loadMoreButton = document.createElement('button');
-            loadMoreButton.textContent = 'Load More Characters';
-            loadMoreButton.className = 'load-more-btn';
-        
-            loadMoreButton.onclick = () => {
-                loadCharacters(endIndex); // Load the next batch of characters
-                loadMoreButton.remove(); // Remove the button after loading more
-            };
-        
-            // Append the button to the grid
-            characterGrid.appendChild(loadMoreButton);
-        }
-    }        
-
-    // Start by loading the first batch of characters
-    loadCharacters(0);
 }
+        }
+
+    });
+}
+
+
+function createLoadMoreButton() {
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.textContent = 'Load More Characters';
+    loadMoreButton.className = 'load-more-btn';
+
+    loadMoreButton.onclick = () => {
+        currentPage++;
+        loadCharacters(); // Load the next page of characters
+        loadMoreButton.remove(); // Remove the button after loading more
+    };
+
+    // If there are more characters, append the "Load More" button
+    if (currentPage * pageSize < totalCharacters) {
+        document.getElementById('character-grid').appendChild(loadMoreButton);
+    }
+}
+
+let typingTimer; 
+const doneTypingInterval = 500; // time in ms (0.5 seconds)
+
+document.getElementById('search-input').addEventListener('input', () => {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+        loadCharacters(); // Reload characters based on the search query
+        currentPage = 1; // Reset to the first page when searching
+    }, doneTypingInterval);
+});
+// Sorting functionality
+document.getElementById('sort-select').addEventListener('change', () => {
+    currentPage = 1; // Reset to the first page when sorting
+    loadCharacters(); // Reload characters based on the selected sorting option
+});
+
 
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
@@ -237,41 +325,21 @@ function openCharacterPage(characterId, uploader) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
-    if (document.getElementById('search-bar')) {
-        document.getElementById('search-bar').addEventListener('input', filterCharacters);
-    }
+    // if (document.getElementById('search-bar')) {
+    //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
+    // }
     if (document.getElementById('character-form')) {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
-
-    // Initialize filter event listeners
-    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', filterCharacters);
-    });
 });
 
-// Function to filter characters based on search and filters
-function filterCharacters() {
-    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-
-    // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
-
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
-
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
-        // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+// Initialize filter event listeners
+document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+    filter.addEventListener('change', () => {
+        filterCharacters();
+        loadCharacters(); // Reload characters after filter change
     });
-}
+});
 
 // Function to show upload character form
 function showUploadForm() {
@@ -288,3 +356,4 @@ function viewCharacter(characterId, uploader) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
+
