@@ -68,6 +68,8 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
+
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
