@@ -45,6 +45,11 @@ function filterCharacters() {
 }
 
 
+document.getElementById('search-type-select').addEventListener('change', () => {
+    // Reset the page when search mode is changed
+    currentPage = 1;
+    loadCharacters(); // Reload characters with the updated search mode
+});
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
