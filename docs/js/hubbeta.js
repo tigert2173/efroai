@@ -41,7 +41,7 @@ function loadCharacters() {
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
-    if (currentPage == 1) {
+    if (currentPage) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
