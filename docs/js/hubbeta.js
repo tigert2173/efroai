@@ -16,19 +16,13 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
-let activeFilters = []; // Store active filters globally
 
-// Updated loadCharacters function with filters passed in
 function loadCharacters() {
-    if (isLoading) return; // Prevent multiple requests while loading
-
-    isLoading = true; // Set loading flag to true while fetching
-
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query and active filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(activeFilters))}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -37,11 +31,10 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery, activeFilters); // Pass filters to display function
-            currentPage++; // Increment the page after loading characters
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
-        .catch(error => console.error('Error fetching characters:', error))
-        .finally(() => isLoading = false); // Reset loading flag after request completes
+        .catch(error => console.error('Error fetching characters:', error));
 }
 
 // Updated displayCharacters function to handle filtered results
