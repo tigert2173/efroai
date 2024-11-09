@@ -705,3 +705,9 @@ footer p {
 .filter-container.minimized #minimizeBtn {
     transform: rotate(180deg); /* Flip the button when minimized */
 }
+.search-hint {
+    color: #6e6e6e; /* Adjust color to fit the theme */
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
