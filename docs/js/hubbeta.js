@@ -13,7 +13,7 @@ function isAdExempt(token) {
 
 let adExempt = false // Check if the user is Ad-Exempt
 
-let currentPage = 0;
+let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
@@ -40,7 +40,7 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-    if (currentPaget == 0) {
+    if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
 
