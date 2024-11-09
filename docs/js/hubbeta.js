@@ -39,7 +39,7 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-
+    
     if (currentPage === 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
@@ -88,28 +88,25 @@ function displayCharacters(characters, searchQuery) {
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
             imgElement.setAttribute('data-src', imageUrl);  // Store the image URL in a data attribute
+            imgElement.setAttribute('loading', 'lazy'); // Enable native lazy loading as a fallback
 
-            // Lazy load the image when the card comes into view
+            // Function to load the image
             const loadImage = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src');
-                        console.log(`Loading image from: ${imageUrl}`); // Debug log
-
+                        console.log(`Image loading: ${imageUrl}`); // Debug log to check if lazy load triggers
                         img.src = imageUrl; // Load the image by setting the src attribute
-                        
                         img.onload = () => {
+                            console.log(`Image loaded: ${imageUrl}`); // Log when image is loaded
                             spinner.remove(); // Remove spinner once image is loaded
-                            console.log(`Image loaded successfully: ${imageUrl}`);
                         };
-
                         img.onerror = () => {
+                            console.error(`Failed to load image: ${imageUrl}`); // Log if image fails to load
                             spinner.remove(); // Remove spinner if image fails to load
                             img.alt = 'Image failed to load'; // Display an error message
-                            console.error(`Failed to load image: ${imageUrl}`);
                         };
-
                         observer.unobserve(img); // Stop observing the image once it is loaded
                     }
                 });
