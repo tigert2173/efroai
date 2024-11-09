@@ -39,10 +39,11 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-    if (currentPage == 1) {
+
+    if (currentPage === 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
-    
+
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
@@ -53,15 +54,9 @@ function displayCharacters(characters, searchQuery) {
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
 
-            // Create image element (with lazy loading attributes)
-            const imgElement = document.createElement('img');
-            imgElement.alt = `${character.name} image`;
-            imgElement.setAttribute('data-src', imageUrl); // Store the image URL in a custom attribute for lazy loading
-            imgElement.classList.add('lazy-load'); // Add a class for lazy loading
-
-            // Create and populate card content here as in your current implementation...
+            // Create the card content
             card.innerHTML = `
-                 <div class="card-header">
+                <div class="card-header">
                     <h3>${character.name}</h3>
                 </div>
                 <div class="card-body">
@@ -83,48 +78,93 @@ function displayCharacters(characters, searchQuery) {
                     </button>
                 </div>
             `;
-            
-            // Insert the card into the grid
+
+            // Create a loading spinner element
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+
+            // Create image element
+            const imgElement = document.createElement('img');
+            imgElement.alt = `${character.name} image`;
+
+            // Fetch and display the image
+            fetch(imageUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    console.error(`Failed to fetch image: ${response.statusText}`);
+                    imgElement.src = 'noimage.jpg'; // Fallback to default image
+                    return;
+                }
+                return response.blob();
+            }).then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    imgElement.src = imageObjectURL; // Set the image URL
+                }
+            }).catch(error => {
+                console.error('Error fetching image:', error);
+                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            });
+
+            // When the image is loaded, remove the spinner and insert the image into the card
+            imgElement.onload = () => {
+                spinner.remove(); // Remove spinner once image is loaded
+                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            };
+            imgElement.onerror = () => {
+                spinner.remove(); // Remove spinner if image fails to load
+            };
+
+            // Append the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
             // Check if ads should be displayed
             if (!adExempt) {
-                let adLoading = false;
+                let adLoading = false; // Track if an ad is currently loading
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true;
-                    // Create an ad container...
-                    // Ad logic remains the same...
+
+                    // Create an ad container and load the ad
+                    const adContainer = document.createElement('div');
+                    adContainer.className = 'ad-container';
+
+                    const insElement = document.createElement('ins');
+                    insElement.className = 'eas6a97888e38 ins-animate';
+                    insElement.setAttribute('data-zoneid', '5461570');
+                    adContainer.appendChild(insElement);
+
+                    const scriptElement = document.createElement('script');
+                    scriptElement.async = true;
+                    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+
+                    scriptElement.onload = function () {
+                        if (window.AdProvider) {
+                            window.AdProvider.push({ "serve": {} });
+                            console.log("Ad loaded successfully");
+                        } else {
+                            console.error("AdProvider object is not available");
+                        }
+                        adLoading = false; // Reset flag after ad loads
+                    };
+
+                    scriptElement.onerror = function () {
+                        console.error("Failed to load ad-provider.js");
+                        adLoading = false; // Reset flag on load failure
+                    };
+
+                    adContainer.appendChild(scriptElement);
+                    characterGrid.appendChild(adContainer);
+
+                    nextAdInterval = cardCounter + getRandomAdInterval();
                 }
             }
         }
-    });
-
-    // Initialize lazy loading for images
-    initLazyLoading();
-}
-
-function initLazyLoading() {
-    const lazyImages = document.querySelectorAll('.lazy-load'); // Get all images with lazy-load class
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const image = entry.target;
-                const imageUrl = image.getAttribute('data-src'); // Get the real image URL from the data-src attribute
-                image.src = imageUrl; // Set the real image URL as the src
-                image.onload = () => {
-                    image.classList.remove('lazy-load'); // Optionally remove lazy-load class once image is loaded
-                };
-                observer.unobserve(image); // Stop observing the image after it has been loaded
-            }
-        });
-    }, {
-        rootMargin: '100px 0px', // Load image when it is 100px before entering the viewport
-    });
-
-    // Observe each lazy-loaded image
-    lazyImages.forEach(image => {
-        observer.observe(image);
     });
 }
 
