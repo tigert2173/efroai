@@ -474,6 +474,17 @@
     </script>
     
 <script>
+document.getElementById("minimizeBtn").addEventListener("click", function() {
+    const filterContainer = document.querySelector(".filter-container");
+    filterContainer.classList.toggle("minimized");
+    
+    // Change the button text to reflect the state
+    if (filterContainer.classList.contains("minimized")) {
+        document.getElementById("minimizeBtn").textContent = "+";
+    } else {
+        document.getElementById("minimizeBtn").textContent = "−";
+    }
+});
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {
