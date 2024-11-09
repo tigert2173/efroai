@@ -42,7 +42,7 @@ console.log(filterTerms);
 }
 
 function loadCharacters() {
-     filterTerms = ['scat'];
+     filterTerms = 'scat';
 
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
