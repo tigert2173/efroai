@@ -592,55 +592,66 @@ footer p {
 /* Container for both columns */
 .sort-search-container {
     display: flex;
-    flex-wrap: wrap;  /* Allow the items to wrap onto new lines if necessary */
+    flex-direction: row; /* Align items in a row */
+    justify-content: space-between;  /* Space out the columns */
     gap: 16px;
     width: 100%;
-    max-width: 500px;  /* Prevent the container from stretching too wide */
-    margin: 0 auto;  /* Center the container horizontally */
-    display: flex;
-    justify-content: center;  /* Center horizontally */
-    align-items: center;      /* Center vertically */
-    margin-bottom: 20px;      /* Space below search section */
+    max-width: 600px;  /* Adjusted max-width for larger screens */
+    margin: 0 auto;  /* Center horizontally */
+    padding: 10px 20px;  /* Added padding for inner spacing */
+    margin-bottom: 30px; /* Increased space below the container */
+    box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+/* Responsive handling for mobile */
+@media (max-width: 768px) {
+    .sort-search-container {
+        flex-direction: column; /* Stack the columns on small screens */
+        gap: 12px;
+        max-width: 100%;  /* Full width on mobile */
+    }
 }
 
 /* Styling for each column */
 .column {
     display: flex;
+    flex-direction: column; /* Ensure elements stack vertically */
     justify-content: center;
-    align-items: center;
+    align-items: stretch; /* Stretch to full container width */
     width: 100%;
-    max-width: 250px;  /* Limit the width of each column */
+    max-width: 280px;  /* Adjusted width for more consistent spacing */
+    margin: 0; /* Remove any unnecessary margins */
 }
 
 /* Custom select styling */
 .custom-select {
-    padding: 10px 15px;
+    padding: 12px 18px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 8px; /* Slightly more rounded corners */
     border: 2px solid #33cc33;  /* Green border */
     background-color: #ff6600;  /* Orange background */
     color: white;
-    width: 100%;  /* Ensures it takes full width of its container */
-    transition: all 0.3s ease-in-out;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 .custom-select:hover, .custom-select:focus {
-    border-color: #ff6600;  /* Hover effect with orange */
-    background-color: #33cc33;  /* Hover effect with green */
+    border-color: #ff6600;  /* Orange border on hover/focus */
+    background-color: #33cc33;  /* Green background on hover/focus */
     color: black;
     outline: none;
 }
 
 /* Custom input styling */
 .custom-input {
-    padding: 10px 15px;
+    padding: 12px 18px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 8px; /* Slightly more rounded corners */
     border: 2px solid #33cc33;  /* Green border */
     background-color: #ff6600;  /* Orange background */
     color: white;
-    width: 100%;  /* Ensures it takes full width of its container */
-    transition: all 0.3s ease-in-out;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 .custom-input::placeholder {
@@ -648,8 +659,8 @@ footer p {
 }
 
 .custom-input:hover, .custom-input:focus {
-    border-color: #ff6600;  /* Hover effect with orange */
-    background-color: #33cc33;  /* Hover effect with green */
+    border-color: #ff6600;  /* Orange border on hover/focus */
+    background-color: #33cc33;  /* Green background on hover/focus */
     color: black;
     outline: none;
 }
