@@ -17,11 +17,15 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 10;
 
+let currentPage = 1;
+let totalCharacters = 0;
+const pageSize = 10;  // Adjust this value if needed
+
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Fetch characters from the backend with current page and page size
+    // Pass the search query to the backend
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
@@ -37,23 +41,6 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
-function createLoadMoreButton() {
-    // Create the "Load More" button only if more characters are available
-    if (currentPage * pageSize < totalCharacters) {
-        const loadMoreButton = document.createElement('button');
-        loadMoreButton.textContent = 'Load More Characters';
-        loadMoreButton.className = 'load-more-btn';
-
-        loadMoreButton.onclick = () => {
-            currentPage++; // Increment page number for the next set of characters
-            loadCharacters(); // Load the next page of characters
-        };
-
-        // Add the load more button to the character grid
-        document.getElementById('character-grid').appendChild(loadMoreButton);
-    }
-}
-
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -62,16 +49,17 @@ function displayCharacters(characters, searchQuery) {
     }
 
     characters.forEach(character => {
-        // Only display characters that match the search query
+        // Filter characters based on the search query
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
             card.className = 'character-card';
-
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
+
+            // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
 
-            // Set up card content (same as your existing implementation)
+            // Create and populate card content here as in your current implementation...
             card.innerHTML = `
                 <div class="card-header">
                     <h3>${character.name}</h3>
@@ -96,12 +84,26 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
 
-            // Add image loading and spinner code here (same as before)
-            // Insert spinner and fetch image
-
+            // Add the character card to the grid
             characterGrid.appendChild(card);
         }
     });
+}
+
+function createLoadMoreButton() {
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.textContent = 'Load More Characters';
+    loadMoreButton.className = 'load-more-btn';
+
+    loadMoreButton.onclick = () => {
+        currentPage++; // Increment the page number
+        loadCharacters(); // Load the next page of characters
+    };
+
+    // Only show the "Load More" button if there are more characters to load
+    if (currentPage * pageSize < totalCharacters) {
+        document.getElementById('character-grid').appendChild(loadMoreButton);
+    }
 }
 
 
