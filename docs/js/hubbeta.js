@@ -21,44 +21,26 @@ let filterTerms = [];
 // Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
-
-    // Get checked filters and map them to their ids
+    // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);  // Make sure filter.id is what you expect
+        .map(filter => filter.id);
 
-    // Update filterTerms with selected filters
     filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+    console.log('Selected Filters:', filterTerms);
 
-    console.log('Selected Filters:', filterTerms);  // Debugging log to ensure filters are being gathered
-
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
-
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-    });
+    // Update the fetch URL to include search and filters
+    loadCharacters();
 }
 
-
-document.getElementById('search-type-select').addEventListener('change', () => {
-    // Reset the page when search mode is changed
-    currentPage = 1;
-    loadCharacters(); // Reload characters with the updated search mode
-});
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    const searchMode = document.getElementById('search-type-select').value;  // Get the search type
+    const searchMode = document.getElementById('search-type-select').value;  // Get the search mode
 
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Construct the URL with the searchType included
+    // Construct the URL with search, filters, and searchMode included
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&searchMode=${searchMode}`)
         .then(response => {
             if (!response.ok) {
@@ -74,7 +56,18 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
+document.getElementById('search-input').addEventListener('input', () => {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+        filterCharacters(); // Call filterCharacters instead of directly calling loadCharacters
+        currentPage = 1; // Reset to the first page when searching
+    }, doneTypingInterval);
+});
 
+document.getElementById('sort-select').addEventListener('change', () => {
+    currentPage = 1; // Reset to the first page when sorting
+    loadCharacters(); // Reload characters based on the selected sorting option
+});
 
 
 function displayCharacters(characters, searchQuery) {
