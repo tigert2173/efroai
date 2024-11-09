@@ -194,6 +194,7 @@ document.getElementById('search-input').addEventListener('input', () => {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
         loadCharacters(); // Reload characters based on the search query
+        currentPage = 1; // Reset to the first page when sorting
     }, doneTypingInterval);
 });
 // Sorting functionality
