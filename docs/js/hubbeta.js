@@ -17,7 +17,7 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 let activeFilters = []; // Store active filters globally
-let isLoading = false;
+let isLoading = true;
 // Updated loadCharacters function with filters passed in
 function loadCharacters() {
     if (isLoading) return; // Prevent multiple requests while loading
@@ -27,8 +27,8 @@ function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query and active filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(activeFilters))}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -36,13 +36,36 @@ function loadCharacters() {
             return response.json();
         })
         .then(data => {
-            totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery, activeFilters); // Pass filters to display function
+            totalCharacters = data.total; // Ensure total is updated correctly
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
             currentPage++; // Increment the page after loading characters
+            createLoadMoreButton(); // Ensure the "Load More" button is added after loading
         })
         .catch(error => console.error('Error fetching characters:', error))
         .finally(() => isLoading = false); // Reset loading flag after request completes
 }
+
+// Modified createLoadMoreButton to work after fetching
+function createLoadMoreButton() {
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.textContent = 'Load More Characters';
+    loadMoreButton.className = 'load-more-btn';
+
+    loadMoreButton.onclick = () => {
+        currentPage++; // Increment the page number
+        loadCharacters(); // Load the next page of characters
+        loadMoreButton.remove(); // Remove the button after loading more
+    };
+
+    // Check if there are more characters to load, and only show the "Load More" button if needed
+    if (currentPage * pageSize < totalCharacters) {
+        const characterGrid = document.getElementById('character-grid');
+        if (!characterGrid.querySelector('.load-more-btn')) { // Ensure the button is not added again
+            characterGrid.appendChild(loadMoreButton);
+        }
+    }
+}
+
 
 // Updated displayCharacters function to handle filtered results
 function displayCharacters(characters, searchQuery, filters) {
@@ -213,24 +236,6 @@ function createAd() {
 }
 
 
-
-function createLoadMoreButton() {
-    const loadMoreButton = document.createElement('button');
-    loadMoreButton.textContent = 'Load More Characters';
-    loadMoreButton.className = 'load-more-btn';
-
-    loadMoreButton.onclick = () => {
-        currentPage++;
-        loadCharacters(); // Load the next page of characters
-        loadMoreButton.remove(); // Remove the button after loading more
-    };
-
-    // If there are more characters, append the "Load More" button
-    if (currentPage * pageSize < totalCharacters) {
-        document.getElementById('character-grid').appendChild(loadMoreButton);
-    }
-}
-
 let typingTimer; 
 const doneTypingInterval = 500; // time in ms (0.5 seconds)
 
@@ -312,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Updated filterCharacters function
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
@@ -323,6 +327,7 @@ function filterCharacters() {
     currentPage = 1; // Reset to the first page when applying filters
     loadCharacters(); // Reload characters based on the selected filter option
 }
+
 
 // Function to load filtered characters (with search query and selected filters)
 function loadFilteredCharacters(searchQuery, filters) {
