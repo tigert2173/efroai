@@ -45,201 +45,28 @@ function filterCharacters() {
 }
 
 
-const Fuse = require('fuse.js'); // Import Fuse.js
+function loadCharacters() {
+    const sortBy = document.getElementById('sort-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-app.get('/api/v2/characters/all', (req, res) => {
-    const { page, pageSize = 10, sortBy = 'date', searchQuery = '', filters = '' } = req.query;
+    // Collect selected filters
+    const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    console.log(`Received request: page=${page}, pageSize=${pageSize}, sortBy=${sortBy}, searchQuery=${searchQuery}, filters=${filters}`);
-
-    const approvedCharacters = []; // Clear approved characters before loading
-    const userDirs = fs.readdirSync(charactersDir); // Read the characters directory synchronously
-
-    // Function to parse filters into a list
-    const parseFilters = (filters) => {
-        console.log('Parsing filters:', filters);
-        try {
-            return filters ? JSON.parse(filters) : []; // Properly parse the JSON string from the query parameter
-        } catch (error) {
-            console.error('Error parsing filters:', error);
-            return [];
-        }
-    };
-
-    // Sorting function
-    const sortCharacters = (characters, sortBy) => {
-        console.log(`Sorting characters by: ${sortBy}`);
-        switch (sortBy) {
-            case 'likes':
-                return characters.sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0)); // Sort by likes
-            case 'match':
-                return characters.sort((a, b) => b.matchScore - a.matchScore); // Sort by match closeness (descending)
-            case 'date':
-            default:
-                return characters.sort((a, b) => new Date(b.dateUpdated || '1728509030') - new Date(a.dateUpdated || '1728509030')); // Sort by creation date with fallback
-        }
-    };
-
-    // Function to filter characters based on the search query and filters with fuzzy matching
-    const filterCharacters = (characters, searchQuery, filters) => {
-        console.log('Filtering characters with searchQuery:', searchQuery, 'and filters:', filters);
-        let filtered = characters;
-
-        // Fuzzy search options for character name and description
-        if (searchQuery) {
-            const fuseOptions = {
-                keys: ['name', 'chardescription'], // Search both name and description
-                threshold: 0.3, // Fuzzy matching threshold (lower is more strict)
-            };
-            const fuse = new Fuse(characters, fuseOptions);
-            filtered = fuse.search(searchQuery).map(result => result.item);
-        }
-
-        // Filter by additional filters (e.g., tags) with fuzzy matching
-        if (filters.length > 0) {
-            filtered = filtered.filter(character => {
-                // Use Fuse.js for fuzzy matching of tags
-                const fuseTags = new Fuse(character.tags || [], { threshold: 0.3 });
-                const matchedTagsCount = filters.filter(filter => {
-                    const result = fuseTags.search(filter);
-                    return result.length > 0;
-                }).length;
-                return matchedTagsCount > 0; // Only include characters with at least one matching tag
-            });
-
-            // Sort characters by the number of matching tags
-            filtered.sort((a, b) => {
-                const aMatchedCount = filters.filter(filter => {
-                    const result = new Fuse(a.tags || [], { threshold: 0.3 }).search(filter);
-                    return result.length > 0;
-                }).length;
-                const bMatchedCount = filters.filter(filter => {
-                    const result = new Fuse(b.tags || [], { threshold: 0.3 }).search(filter);
-                    return result.length > 0;
-                }).length;
-
-                return bMatchedCount - aMatchedCount; // Sort in descending order (more matching tags comes first)
-            });
-        }
-
-        // Calculate overall match score for sorting (search + filters)
-        filtered = filtered.map(character => {
-            const searchMatchScore = searchQuery ? new Fuse([character.name, character.chardescription], { threshold: 0.3 }).search(searchQuery).length : 0;
-            const tagMatchScore = filters.length > 0 ? filters.filter(filter => {
-                const fuseTags = new Fuse(character.tags || [], { threshold: 0.3 });
-                return fuseTags.search(filter).length > 0;
-            }).length : 0;
-            const overallMatchScore = searchMatchScore + tagMatchScore; // Total score combining search and filter matches
-
-            // Fuse.js for detailed match score calculation
-            const fuse = new Fuse([character.name, character.chardescription], { threshold: 0.3 });
-            const matchScore = fuse.search(searchQuery).length; // Number of matched terms
-            return { character, matchScore, overallMatchScore }; // Attach both match score and overall match score
-        });
-
-        // Sort by overall match score or match score for "match" sort type
-        filtered.sort((a, b) => b.matchScore - a.matchScore); // Default to sorting by "matchScore" for closeness
-
-        console.log(`Found ${filtered.length} characters after filtering and sorting by match score`);
-        return filtered.map(item => item.character); // Return the sorted characters, removing the match score
-    };
-
-    const characterPromises = userDirs.map(userDir => {
-        const userCharactersDir = path.join(charactersDir, userDir);
-
-        return new Promise((resolve, reject) => {
-            fs.readdir(userCharactersDir, (err, files) => {
-                if (err) {
-                    console.error(`Error reading directory ${userCharactersDir}:`, err);
-                    return reject('Error reading character files.');
-                }
-
-                // Process each character file
-                files.forEach(file => {
-                    const characterFilePath = path.join(userCharactersDir, file);
-
-                    // Check if the file is a JSON file and not a directory
-                    if (fs.statSync(characterFilePath).isFile() && path.extname(file) === '.json') {
-                        try {
-                            const characterData = JSON.parse(fs.readFileSync(characterFilePath));
-
-                            // Set a default date if dateUpdated is missing
-                            if (!characterData.dateUpdated) {
-                                characterData.dateUpdated = '1728509030'; // Default date
-                            }
-
-                            // Check if character status is approved
-                            if (characterData.status === 'approved' || characterData.status === 'automod_approved') {
-                                approvedCharacters.push(characterData);
-                            }
-                        } catch (parseError) {
-                            console.error(`Error parsing JSON from file ${file}:`, parseError.message);
-                        }
-                    }
-                });
-
-                resolve();
-            });
-        });
-    });
-
-    // Wait for all promises to resolve
-    Promise.all(characterPromises)
-        .then(() => {
-            // Parse filters from query string
-            const parsedFilters = filters ? parseFilters(filters) : [];
-            console.log('Parsed filters:', parsedFilters);
-
-            // Filter characters based on the search query and filters
-            let filteredCharacters = filterCharacters(approvedCharacters, searchQuery, parsedFilters);
-
-            // Sort filtered characters based on the query parameter
-            filteredCharacters = sortCharacters(filteredCharacters, sortBy);
-
-            // Keep trying to paginate until we have enough characters
-            let paginatedCharacters = [];
-            let startIndex = (page - 1) * pageSize;
-            let remainingCharacters = pageSize;
-
-            console.log(`Attempting to paginate. Start index: ${startIndex}, Remaining characters: ${remainingCharacters}`);
-
-            while (paginatedCharacters.length < pageSize && startIndex < filteredCharacters.length) {
-                const nextBatch = filteredCharacters.slice(startIndex, startIndex + remainingCharacters);
-                paginatedCharacters = [...paginatedCharacters, ...nextBatch];
-                startIndex += nextBatch.length;
-                remainingCharacters = pageSize - paginatedCharacters.length;
-
-                console.log(`Paginated ${nextBatch.length} characters, total so far: ${paginatedCharacters.length}`);
+    // Construct the URL with the filters
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-
-            console.log(`Total characters returned: ${paginatedCharacters.length}`);
-
-            // Map the characters to only include the required fields
-            const mappedCharacters = paginatedCharacters.map(character => ({
-                id: character.id,
-                name: character.name,
-                chardescription: character.chardescription, // Description
-                uploader: character.uploader,
-                likes: character.likes,
-                tags: character.tags || [], // Empty array if no tags are available
-                dateUpdated: character.dateUpdated,
-                dateUploaded: character.dateUploaded,
-            }));
-
-            // Respond with paginated characters and total count
-            res.json({
-                characters: mappedCharacters,
-                total: filteredCharacters.length, // Send total count for pagination
-            });
+            return response.json();
         })
-        .catch(error => {
-            console.error('Error processing the request:', error);
-            res.status(500).json({ message: 'Internal server error' });
-        });
-});
-
-
-
+        .then(data => {
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery);
+            createLoadMoreButton();
+        })
+        .catch(error => console.error('Error fetching characters:', error));
+}
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
