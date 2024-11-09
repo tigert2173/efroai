@@ -44,6 +44,8 @@ function filterCharacters() {
 
 
 
+let displayedCharacterIds = []; // Track already displayed character IDs
+
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -68,6 +70,8 @@ function loadCharacters() {
 }
 
 
+
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -79,6 +83,9 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
+        if (displayedCharacterIds.includes(character.id)) {
+            return; // Skip displaying this character
+        }
        // Simply check if the character name or description matches the search query
        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
             const card = document.createElement('div');
