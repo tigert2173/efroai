@@ -18,15 +18,11 @@ let totalCharacters = 0;
 const pageSize = 20;
 
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value;
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Gather selected filters as an array
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
-
-    // Send search and filter parameters to backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${JSON.stringify(filters)}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -35,8 +31,8 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery);
-            createLoadMoreButton();
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
@@ -50,8 +46,24 @@ function displayCharacters(characters, searchQuery) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
+    // Gather selected filters
+    const selectedFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
 
-    characters.forEach(character => {
+    // Filter characters based on search query and selected filters
+    const filteredCharacters = characters.filter(character => {
+        // Check if character matches search query
+        const matchesSearch = character.name.toLowerCase().includes(searchQuery) ||
+                              character.chardescription.toLowerCase().includes(searchQuery);
+        
+        // Check if character tags match any selected filter
+        const matchesFilter = selectedFilters.length === 0 || 
+                              selectedFilters.some(filter => character.tags.includes(filter));
+
+        return matchesSearch && matchesFilter;
+    });
+
+    filteredCharacters.forEach(character => {
         // Filter characters based on the search query
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
@@ -291,67 +303,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('character-form')) {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
-    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', () => {
-            currentPage = 1;
-            loadCharacters();
-        });
-    });
 
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
     });
 });
-const filterCharacters = (characters, searchQuery, tags, status, uploader) => {
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    const lowerCaseTags = tags.toLowerCase().split(',').filter(tag => tag);
-    const lowerCaseUploader = uploader.toLowerCase();
-
-    return characters.filter(character => {
-        const matchesSearchQuery =
-            character.name.toLowerCase().includes(lowerCaseQuery) ||
-            (character.chardescription && character.chardescription.toLowerCase().includes(lowerCaseQuery));
-        
-        const matchesTags = lowerCaseTags.length === 0 || (character.tags && lowerCaseTags.every(tag => character.tags.includes(tag)));
-        const matchesStatus = !status || character.status === status;
-        const matchesUploader = !uploader || (character.uploader && character.uploader.toLowerCase() === lowerCaseUploader);
-
-        // Log each check for debugging
-        console.log(`Character: ${character.name}`, {
-            matchesSearchQuery,
-            matchesTags,
-            matchesStatus,
-            matchesUploader
-        });
-
-        return matchesSearchQuery && matchesTags && matchesStatus && matchesUploader;
-    });
-};
-
 
 // Function to filter characters based on search and filters
-// function filterCharacters() {
-//     const searchQuery = document.getElementById('search-input').value.toLowerCase();
+function filterCharacters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-//     // Get checked filters
-//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-//         .map(filter => filter.id);
+    // Get checked filters
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
 
-//     const characterCards = document.querySelectorAll('.character-card');
-//     characterCards.forEach(card => {
-//         const name = card.querySelector('h3').textContent.toLowerCase();
-//         const tags = card.querySelector('.tags').textContent.toLowerCase();
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-//         // Split filters by comma and trim whitespace
-//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+        // Split filters by comma and trim whitespace
+        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
-//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-//     });
-// }
+        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+    });
+}
 
 // Function to show upload character form
 function showUploadForm() {
