@@ -84,41 +84,38 @@ function displayCharacters(characters, searchQuery) {
             spinner.className = 'loading-spinner';
             card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
-            // Create image element
+            // Create image element (with lazy loading)
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
+            imgElement.setAttribute('data-src', imageUrl);  // Store the image URL in a data attribute
 
-            // Fetch and display the image
-            fetch(imageUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg'; // Fallback to default image
-                    return;
-                }
-                return response.blob();
-            }).then(imageBlob => {
-                if (imageBlob) {
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    imgElement.src = imageObjectURL; // Set the image URL
-                }
-            }).catch(error => {
-                console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
+            // Lazy load the image when the card comes into view
+            const loadImage = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const imageUrl = img.getAttribute('data-src');
+                        img.src = imageUrl; // Load the image by setting the src attribute
+                        img.onload = () => {
+                            spinner.remove(); // Remove spinner once image is loaded
+                        };
+                        img.onerror = () => {
+                            spinner.remove(); // Remove spinner if image fails to load
+                        };
+                        observer.unobserve(img); // Stop observing the image once it is loaded
+                    }
+                });
+            };
+
+            // Intersection Observer setup
+            const observer = new IntersectionObserver(loadImage, {
+                rootMargin: '200px', // Start loading the image when it’s within 200px of the viewport
             });
 
-            // When the image is loaded, remove the spinner and insert the image into the card
-            imgElement.onload = () => {
-                spinner.remove(); // Remove spinner once image is loaded
-                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-            };
-            imgElement.onerror = () => {
-                spinner.remove(); // Remove spinner if image fails to load
-            };
+            observer.observe(imgElement); // Start observing the image element
+
+            // Append the image element to the card (image will be loaded lazily)
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
 
             // Append the character card to the grid
             characterGrid.appendChild(card);
