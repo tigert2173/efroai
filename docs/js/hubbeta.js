@@ -101,6 +101,7 @@ function displayCharacters(characters, searchQuery) {
                         };
                         img.onerror = () => {
                             spinner.remove(); // Remove spinner if image fails to load
+                            img.alt = 'Image failed to load'; // Display an error message
                         };
                         observer.unobserve(img); // Stop observing the image once it is loaded
                     }
