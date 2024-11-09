@@ -38,7 +38,6 @@ function loadCharacters() {
 }
 
 
-// Updated displayCharacters function to handle filtered results
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -154,6 +153,7 @@ function displayCharacters(characters, searchQuery) {
     });
 }
 
+
 // Function to check if character matches selected filters
 function matchesFilters(character, filters) {
     if (!filters || filters.length === 0) {
@@ -161,6 +161,7 @@ function matchesFilters(character, filters) {
     }
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
+
 
 // Ad creation function
 function createAd() {
@@ -204,6 +205,8 @@ function createAd() {
         document.getElementById('character-grid').appendChild(adContainer);
     }
 }
+
+
 
 function createLoadMoreButton() {
     const loadMoreButton = document.createElement('button');
