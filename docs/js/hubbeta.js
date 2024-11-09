@@ -303,6 +303,32 @@ document.addEventListener('DOMContentLoaded', () => {
         filter.addEventListener('change', filterCharacters);
     });
 });
+const filterCharacters = (characters, searchQuery, tags, status, uploader) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const lowerCaseTags = tags.toLowerCase().split(',').filter(tag => tag);
+    const lowerCaseUploader = uploader.toLowerCase();
+
+    return characters.filter(character => {
+        const matchesSearchQuery =
+            character.name.toLowerCase().includes(lowerCaseQuery) ||
+            (character.chardescription && character.chardescription.toLowerCase().includes(lowerCaseQuery));
+        
+        const matchesTags = lowerCaseTags.length === 0 || (character.tags && lowerCaseTags.every(tag => character.tags.includes(tag)));
+        const matchesStatus = !status || character.status === status;
+        const matchesUploader = !uploader || (character.uploader && character.uploader.toLowerCase() === lowerCaseUploader);
+
+        // Log each check for debugging
+        console.log(`Character: ${character.name}`, {
+            matchesSearchQuery,
+            matchesTags,
+            matchesStatus,
+            matchesUploader
+        });
+
+        return matchesSearchQuery && matchesTags && matchesStatus && matchesUploader;
+    });
+};
+
 
 // Function to filter characters based on search and filters
 // function filterCharacters() {
