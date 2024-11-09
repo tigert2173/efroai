@@ -17,7 +17,7 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
-const filterTerms = [];
+let filterTerms = [];
 // Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -42,7 +42,7 @@ console.log(filterTerms);
 }
 
 function loadCharacters() {
-    const filterTerms = ['scat'];
+     filterTerms = ['scat'];
 
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
