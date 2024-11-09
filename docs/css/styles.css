@@ -517,20 +517,49 @@ footer p {
     }
 }
 .loading-spinner {
-    border: 4px solid #f3f3f3; /* Light gray background */
-    border-top: 4px solid #34db39; /* Blue spinner */
+    border: 6px solid #333333; /* Dark gray background */
+    border-top: 6px solid #34db39; /* Green for the top of the spinner */
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
     margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
+.loading-spinner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: #FFA500; /* Orange dot for EFROAI branding */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.5;
+    }
+}
 /* Style the select dropdown */
 #sort-select {
     appearance: none; /* Remove default dropdown arrow */
@@ -570,3 +599,4 @@ footer p {
     border-color: #ff8f29; /* Orange border on focus */
     background-color: #258e61; /* Darker green background on focus */
 }
+
