@@ -37,7 +37,8 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
-function displayCharacters(characters, searchQuery) {
+// Updated displayCharacters function to handle filtered results
+function displayCharacters(characters, searchQuery, filters) {
     const characterGrid = document.getElementById('character-grid');
 
     if (currentPage === 1) {
@@ -48,8 +49,11 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        // Filter characters based on the search query
-        if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
+        // Filter characters based on the search query and selected filters
+        if (
+            (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) &&
+            matchesFilters(character, filters) // Check if character matches filters
+        ) {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -95,9 +99,6 @@ function displayCharacters(characters, searchQuery) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src'); // Get the image URL from the data-src attribute
 
-                        console.log(`Loading image from: ${imageUrl}`);
-
-                        // Fetch the image only when the card is in view
                         fetch(imageUrl, {
                             method: 'GET',
                             headers: {
@@ -105,7 +106,6 @@ function displayCharacters(characters, searchQuery) {
                             }
                         }).then(response => {
                             if (!response.ok) {
-                                console.error(`Failed to fetch image: ${response.statusText}`);
                                 img.src = 'noimage.jpg'; // Fallback to default image
                                 return;
                             }
@@ -116,7 +116,6 @@ function displayCharacters(characters, searchQuery) {
                                 img.src = imageObjectURL; // Set the image URL
                             }
                         }).catch(error => {
-                            console.error('Error fetching image:', error);
                             img.src = 'noimage.jpg'; // Fallback to default image
                         });
 
@@ -136,8 +135,6 @@ function displayCharacters(characters, searchQuery) {
 
             // Set the image URL in a data-src attribute (only lazy load)
             imgElement.setAttribute('data-src', imageUrl);
-            
-            // Append the image element to the card (image will be loaded lazily)
             card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
             
             // Start observing the image element
@@ -147,10 +144,24 @@ function displayCharacters(characters, searchQuery) {
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
-          // Check if ads should be displayed
-if (!adExempt) {
+            // Check if ads should be displayed
+            if (!adExempt && cardCounter >= nextAdInterval) {
+                createAd();
+                nextAdInterval = cardCounter + getRandomAdInterval(); // Update the next ad interval
+            }
+        }
+    });
+}
+
+// Function to check if character matches selected filters
+function matchesFilters(character, filters) {
+    return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
+}
+
+// Ad creation function
+function createAd() {
     let adLoading = false; // Track if an ad is currently loading
-    if (cardCounter >= nextAdInterval && !adLoading) {
+    if (!adLoading) {
         adLoading = true;
 
         // Create an ad container
@@ -186,15 +197,8 @@ if (!adExempt) {
         adContainer.appendChild(scriptElement);
 
         // Append the ad container to the character grid
-        characterGrid.appendChild(adContainer);
-
-        // Update the next ad interval
-        nextAdInterval = cardCounter + getRandomAdInterval();
+        document.getElementById('character-grid').appendChild(adContainer);
     }
-}
-        }
-
-    });
 }
 
 
@@ -296,7 +300,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// // Function to filter characters based on search and filters
+// Updated filterCharacters function
+function filterCharacters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+    // Get checked filters
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
+
+    // Reset pagination and load filtered characters
+    currentPage = 1;
+    loadFilteredCharacters(searchQuery, filters);
+}
+
+// Function to load filtered characters (with search query and selected filters)
+function loadFilteredCharacters(searchQuery, filters) {
+    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+
+    // Pass the search query and filters to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(filters))}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery, filters); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
+        })
+        .catch(error => console.error('Error fetching characters:', error));
+}
+
+// Function to filter characters based on search and filters
 // function filterCharacters() {
 //     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
