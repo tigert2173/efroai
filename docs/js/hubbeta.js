@@ -84,41 +84,64 @@ function displayCharacters(characters, searchQuery) {
             spinner.className = 'loading-spinner';
             card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
 
-            // Create image element
+            // Create image element with lazy loading
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
 
-            // Fetch and display the image
-            fetch(imageUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.error(`Failed to fetch image: ${response.statusText}`);
-                    imgElement.src = 'noimage.jpg'; // Fallback to default image
-                    return;
-                }
-                return response.blob();
-            }).then(imageBlob => {
-                if (imageBlob) {
-                    const imageObjectURL = URL.createObjectURL(imageBlob);
-                    imgElement.src = imageObjectURL; // Set the image URL
-                }
-            }).catch(error => {
-                console.error('Error fetching image:', error);
-                imgElement.src = 'noimage.jpg'; // Fallback to default image
-            });
+            // Use IntersectionObserver to lazy load the image when the card is visible
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const imageUrl = img.getAttribute('data-src'); // Get the image URL from the data-src attribute
 
-            // When the image is loaded, remove the spinner and insert the image into the card
-            imgElement.onload = () => {
-                spinner.remove(); // Remove spinner once image is loaded
-                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-            };
-            imgElement.onerror = () => {
-                spinner.remove(); // Remove spinner if image fails to load
-            };
+                        console.log(`Loading image from: ${imageUrl}`);
+
+                        // Fetch the image only when the card is in view
+                        fetch(imageUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                console.error(`Failed to fetch image: ${response.statusText}`);
+                                img.src = 'noimage.jpg'; // Fallback to default image
+                                return;
+                            }
+                            return response.blob();
+                        }).then(imageBlob => {
+                            if (imageBlob) {
+                                const imageObjectURL = URL.createObjectURL(imageBlob);
+                                img.src = imageObjectURL; // Set the image URL
+                            }
+                        }).catch(error => {
+                            console.error('Error fetching image:', error);
+                            img.src = 'noimage.jpg'; // Fallback to default image
+                        });
+
+                        // Once the image is loaded, remove the spinner
+                        img.onload = () => {
+                            spinner.remove();
+                        };
+
+                        img.onerror = () => {
+                            spinner.remove(); // Remove spinner if image fails to load
+                        };
+
+                        observer.unobserve(img); // Stop observing once the image is loaded
+                    }
+                });
+            }, { rootMargin: '200px' }); // Start loading the image when it's within 200px of the viewport
+
+            // Set the image URL in a data-src attribute (only lazy load)
+            imgElement.setAttribute('data-src', imageUrl);
+            
+            // Append the image element to the card (image will be loaded lazily)
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+            
+            // Start observing the image element
+            observer.observe(imgElement);
 
             // Append the character card to the grid
             characterGrid.appendChild(card);
