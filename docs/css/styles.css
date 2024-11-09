@@ -655,3 +655,30 @@ footer p {
     color: black;
     outline: none;
 }
+.minimize-btn {
+    background-color: #f1f1f1;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+}
+
+#filterList {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+#filterList li {
+    list-style-type: none;
+}
+
+.filter-container.minimized #filterList {
+    display: none;
+}
+
+.filter-container.minimized #minimizeBtn {
+    transform: rotate(180deg); /* Flip the button when minimized */
+}
