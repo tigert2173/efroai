@@ -71,6 +71,9 @@ function displayCharacters(characters, searchQuery) {
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
             `;
+            
+              // Add the character card to the grid
+              characterGrid.appendChild(card);
               // Insert a loading spinner while fetching the image
               const spinner = document.createElement('div');
               spinner.className = 'loading-spinner';
