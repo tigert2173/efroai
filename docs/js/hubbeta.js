@@ -43,6 +43,10 @@ function filterCharacters() {
 }
 
 
+// Array to store IDs of characters already received
+let receivedCharacterIds = [];
+
+// Function to load characters
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -50,11 +54,13 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Get the list of received character IDs (this will need to be tracked in your frontend)
-    const receivedIds = receivedCharacters.join(','); // Assume `receivedCharacters` is an array of IDs you already have
+    // Send the list of received characters as a comma-separated string
+    const received = receivedCharacterIds.join(',');
 
-    // Construct the URL with the filters and received parameter
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${receivedIds}`)
+    // Construct the URL with the filters and received character IDs
+    const url = `${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${received}`;
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -64,6 +70,11 @@ function loadCharacters() {
         .then(data => {
             totalCharacters = data.total;
             displayCharacters(data.characters, searchQuery);
+
+            // Update the received character IDs with the new ones
+            const newCharacterIds = data.characters.map(character => character.id);
+            receivedCharacterIds = [...receivedCharacterIds, ...newCharacterIds];  // Append the new IDs
+
             createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
