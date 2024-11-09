@@ -155,8 +155,12 @@ function displayCharacters(characters, searchQuery, filters) {
 
 // Function to check if character matches selected filters
 function matchesFilters(character, filters) {
+    if (!filters || filters.length === 0) {
+        return true; // If no filters are selected, return true (show all characters)
+    }
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
+
 
 // Ad creation function
 function createAd() {
@@ -304,9 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters
+    // Get checked filters (ensure filters is always an array, even if no checkboxes are checked)
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
+        .map(filter => filter.id) || [];  // Use an empty array if no checkboxes are selected
 
     // Reset pagination and load filtered characters
     currentPage = 1;
@@ -332,6 +336,7 @@ function loadFilteredCharacters(searchQuery, filters) {
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 // Function to filter characters based on search and filters
 // function filterCharacters() {
