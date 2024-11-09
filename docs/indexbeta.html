@@ -312,13 +312,18 @@
   <!-- Sidebar with Filters -->
     <div class="filters">
         <div class="sort-search-container">
-            <select id="sort-select" class="custom-select">
-                <option value="date">Sort by Date</option>
-                <option value="likes">Sort by Likes</option>
-            </select>            
+            <div class="sort-column">
+                <select id="sort-select" class="custom-select">
+                    <option value="date">Sort by Date</option>
+                    <option value="likes">Sort by Likes</option>
+                </select>            
+            </div>
             
-            <input type="text" id="search-input" class="custom-input" placeholder="Search Characters..." />
+            <div class="search-column">
+                <input type="text" id="search-input" class="custom-input" placeholder="Search Characters..." />
+            </div>
         </div>
+        
         
         
         <h2>Filters</h2>
