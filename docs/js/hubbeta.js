@@ -17,16 +17,14 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
-function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value;
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+function loadCharacters(reset = false) {
+    // If reset is true, clear current results and reset pagination
+    if (reset) {
+        currentPage = 1;
+        document.getElementById('character-grid').innerHTML = '';
+    }
 
-    // Gather selected filters as an array
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
-
-    // Send search and filter parameters to backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${JSON.stringify(filters)}`)
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${currentSortBy}&searchQuery=${encodeURIComponent(currentSearchQuery)}&filters=${JSON.stringify(currentFilters)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -35,12 +33,11 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery);
+            displayCharacters(data.characters);
             createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
-
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
@@ -236,11 +233,18 @@ document.getElementById('sort-select').addEventListener('change', () => {
     loadCharacters(); // Reload characters based on the selected sorting option
 });
 
+
 document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
     filter.addEventListener('change', () => {
-        currentPage = 1;
-        loadCharacters();
+        // Update currentFilters based on checked filters
+        currentFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+            .map(filter => filter.id);
+        loadCharacters(true); // Reset pagination and load new results
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadCharacters(true); // Initial load with reset
 });
 
 // Function to get a random ad interval between 5 and 10
@@ -290,20 +294,20 @@ function openCharacterPage(characterId, uploader) {
     window.location.href = '/chat.html';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadCharacters();
-    // if (document.getElementById('search-bar')) {
-    //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
-    // }
-    if (document.getElementById('character-form')) {
-        document.getElementById('character-form').addEventListener('submit', uploadCharacter);
-    }
+// document.addEventListener('DOMContentLoaded', () => {
+//     loadCharacters();
+//     // if (document.getElementById('search-bar')) {
+//     //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
+//     // }
+//     if (document.getElementById('character-form')) {
+//         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
+//     }
 
-    // Initialize filter event listeners
-    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', filterCharacters);
-    });
-});
+//     // Initialize filter event listeners
+//     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+//         filter.addEventListener('change', filterCharacters);
+//     });
+// });
 
 // Function to filter characters based on search and filters
 function filterCharacters() {
