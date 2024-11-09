@@ -16,7 +16,6 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
-let isLoading = false; // Flag to prevent multiple simultaneous requests
 
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
@@ -162,6 +161,10 @@ function matchesFilters(character, filters) {
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
 
+// Function to check if character matches selected filters
+function matchesFilters(character, filters) {
+    return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
+}
 
 // Ad creation function
 function createAd() {
@@ -205,7 +208,6 @@ function createAd() {
         document.getElementById('character-grid').appendChild(adContainer);
     }
 }
-
 
 
 function createLoadMoreButton() {
