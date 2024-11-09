@@ -16,45 +16,36 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
-const characterGrid = document.getElementById('character-grid');
+let activeFilters = []; // Store active filters globally
 
-let filters = []; // Store the selected filters globally
-
-// Get selected tags and send them as a comma-separated string
-function getSelectedFilters() {
-    const selectedTags = [];
-    document.querySelectorAll('.filter-checkbox:checked').forEach(checkbox => {
-        selectedTags.push(checkbox.value);
-    });
-    return selectedTags.join(',');  // Return tags as a comma-separated string
-}
-
-// Apply selected filters when loading characters
+// Updated loadCharacters function with filters passed in
 function loadCharacters() {
-    const selectedFilters = getSelectedFilters();
-    const searchQuery = document.getElementById('search-input').value;
-    const currentPage = 1;  // Change this to handle pagination properly
+    if (isLoading) return; // Prevent multiple requests while loading
 
-    const url = `/api/v2/characters/all?page=${currentPage}&tags=${selectedFilters.join(',')}&searchQuery=${searchQuery}`;
-    
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            // Process the filtered characters
-            displayCharacters(data.characters);
+    isLoading = true; // Set loading flag to true while fetching
+
+    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+
+    // Pass the search query and active filters to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(activeFilters))}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
         })
-        .catch(error => {
-            console.error('Error fetching characters:', error);
-        });
+        .then(data => {
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery, activeFilters); // Pass filters to display function
+            currentPage++; // Increment the page after loading characters
+        })
+        .catch(error => console.error('Error fetching characters:', error))
+        .finally(() => isLoading = false); // Reset loading flag after request completes
 }
 
-// Call loadCharacters when filters or search input change
-document.getElementById('search-input').addEventListener('input', loadCharacters);
-document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', loadCharacters);
-});
-
-function displayCharacters(characters, searchQuery) {
+// Updated displayCharacters function to handle filtered results
+function displayCharacters(characters, searchQuery, filters) {
     const characterGrid = document.getElementById('character-grid');
 
     if (currentPage === 1) {
@@ -169,16 +160,14 @@ function displayCharacters(characters, searchQuery) {
     });
 }
 
-
-// Function to check if character matches selected filters
 // Function to check if character matches selected filters
 function matchesFilters(character, filters) {
     if (!filters || filters.length === 0) {
         return true; // If no filters are selected, return true (show all characters)
     }
-    // Check if the character has tags that match the selected filters
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
+
 
 // Ad creation function
 function createAd() {
