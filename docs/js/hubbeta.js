@@ -38,7 +38,25 @@ function loadCharacters() {
 }
 
 
-// Function to display characters and handle lazy loading of images
+// Add this function to handle lazy loading for images
+function lazyLoadImage(imgElement) {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;  // Set the image src to the actual image URL
+                img.onload = () => {
+                    img.classList.add('loaded');  // Optional: Add a class for loaded state (for CSS animation)
+                };
+                observer.unobserve(img);  // Stop observing once the image has loaded
+            }
+        });
+    }, { rootMargin: '200px' }); // Load images slightly before they enter the viewport
+
+    observer.observe(imgElement); // Start observing the image element
+}
+
+// Modify the displayCharacters function to use lazy loading
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -59,11 +77,11 @@ function displayCharacters(characters, searchQuery) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-            imgElement.dataset.src = imageUrl; // Store the image URL in data-src attribute for lazy loading
+            imgElement.dataset.src = imageUrl;  // Set the image URL in the data-src attribute
 
             // Create and populate card content here as in your current implementation...
             card.innerHTML = `
-                <div class="card-header">
+                 <div class="card-header">
                     <h3>${character.name}</h3>
                 </div>
                 <div class="card-body">
@@ -90,51 +108,40 @@ function displayCharacters(characters, searchQuery) {
             const spinner = document.createElement('div');
             spinner.className = 'loading-spinner';
             card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+  
+            // Instead of immediately setting src, use the lazyLoadImage function
+            lazyLoadImage(imgElement);
 
             // Add the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
-            // Create the IntersectionObserver to load images when they come into view
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src; // Set the src attribute to load the image
-                        observer.unobserve(img); // Stop observing the image once it's loaded
-                    }
-                });
-            });
-
-            // Start observing the image element
-            observer.observe(imgElement);
-
             // Check if ads should be displayed
             if (!adExempt) {
                 // Check if it's time to insert an ad
                 let adLoading = false; // Track if an ad is currently loading
-
+  
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true; // Set flag to prevent additional loads
-
+  
                     // Create an ad container
                     const adContainer = document.createElement('div');
                     adContainer.className = 'ad-container';
-
+  
                     // Create the <ins> element for the ad
                     const insElement = document.createElement('ins');
                     insElement.className = 'eas6a97888e38 ins-animate';
                     insElement.setAttribute('data-zoneid', '5461570');
                     adContainer.appendChild(insElement);
-
+  
                     const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
                     insElement.setAttribute('data-keywords', keywords);
-
+  
                     // Create the ad provider script and set up loading behavior
                     const scriptElement = document.createElement('script');
                     scriptElement.async = true;
                     scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
-
+  
                     // Only call push() when the script is fully loaded
                     scriptElement.onload = function() {
                         // Ensure the AdProvider object exists
@@ -146,19 +153,19 @@ function displayCharacters(characters, searchQuery) {
                         }
                         adLoading = false; // Reset flag after ad loads
                     };
-
+  
                     // Error handling to reset the flag if the script fails to load
                     scriptElement.onerror = function() {
                         console.error("Failed to load ad-provider.js");
                         adLoading = false; // Reset flag on load failure
                     };
-
+  
                     // Append the script to the ad container
                     adContainer.appendChild(scriptElement);
-
+  
                     // Add the ad container to the grid
                     characterGrid.appendChild(adContainer);
-
+  
                     // Update the interval for the next ad
                     nextAdInterval = cardCounter + getRandomAdInterval();
                 }
