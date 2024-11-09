@@ -43,6 +43,7 @@ function displayCharacters(characters, searchQuery) {
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
+
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
@@ -58,20 +59,19 @@ function displayCharacters(characters, searchQuery) {
             imgElement.alt = `${character.name} image`;
             imgElement.setAttribute('data-src', imageUrl); // Set the image URL as a data attribute
             imgElement.classList.add('lazy'); // Add a class to apply lazy loading styles
-            imgElement.setAttribute('loading', 'lazy'); // Native lazy loading
 
-            // Create and populate card content here
+            // Create and populate card content here as in your current implementation...
             card.innerHTML = `
                 <div class="card-header">
-                    <h3>${character.name || 'Unnamed Character'}</h3>
+                    <h3>${character.name}</h3>
                 </div>
                 <div class="card-body">
-                    <p>${character.chardescription || 'Description is missing.'}</p>
+                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
                 </div>
                 <p class="tags">
-                    ${character.tags ? character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ') : 'No tags'}
+                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
                     <span class="full-tags-overlay">
-                        ${character.tags ? character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ') : ''}
+                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
                     </span>
                 </p>
                 <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
@@ -85,10 +85,9 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
 
-            // Insert a loading spinner while fetching the image
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+            // Add the character card to the grid
+            characterGrid.appendChild(card);
+            cardCounter++; // Increment the counter after adding a card
 
             // Lazy loading function using IntersectionObserver
             const loadImage = (entry, observer) => {
@@ -96,9 +95,11 @@ function displayCharacters(characters, searchQuery) {
                     // Once the image is in the viewport, load the image
                     const img = entry.target;
                     img.src = img.getAttribute('data-src'); // Set the image src from the data-src attribute
+
                     img.onload = () => {
-                        spinner.remove(); // Remove the spinner once image is loaded
+                        img.classList.remove('lazy'); // Optionally, remove the 'lazy' class after loading
                     };
+
                     observer.unobserve(entry.target); // Stop observing the image after it is loaded
                 }
             };
@@ -110,11 +111,6 @@ function displayCharacters(characters, searchQuery) {
 
             // Start observing the image
             observer.observe(imgElement);
-
-            // Add the character card to the grid
-            card.appendChild(imgElement); // Append the image element to the card
-            characterGrid.appendChild(card);
-            cardCounter++; // Increment the counter after adding a card
 
             // Check if ads should be displayed
             if (!adExempt) {
