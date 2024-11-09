@@ -22,7 +22,7 @@ function loadCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
     // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${filters}`)
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${filterTerms}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
