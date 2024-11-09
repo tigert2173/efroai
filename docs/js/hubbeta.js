@@ -16,20 +16,21 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
+const characterGrid = document.getElementById('character-grid');
+
 let filters = []; // Store the selected filters globally
 
+// Function to load characters from the backend with filters and search query
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query to the backend
+    // Get selected filters
+    filters = getSelectedFilters();
+
+    // Pass the search query and filters to the backend
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             totalCharacters = data.total;
             displayCharacters(data.characters, searchQuery); // Display the filtered characters
@@ -38,6 +39,14 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
+// Function to get the selected filters from the UI (checkboxes, dropdowns, etc.)
+function getSelectedFilters() {
+    const selectedFilters = [];
+    // Example: collect selected filters from checkboxes
+    const filterElements = document.querySelectorAll('.filter-checkbox:checked');
+    filterElements.forEach(filter => selectedFilters.push(filter.value));
+    return selectedFilters;
+}
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
@@ -156,10 +165,12 @@ function displayCharacters(characters, searchQuery) {
 
 
 // Function to check if character matches selected filters
+// Function to check if character matches selected filters
 function matchesFilters(character, filters) {
     if (!filters || filters.length === 0) {
         return true; // If no filters are selected, return true (show all characters)
     }
+    // Check if the character has tags that match the selected filters
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
 
