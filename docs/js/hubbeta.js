@@ -245,22 +245,19 @@ if (!adExempt) {
 
 
 function createLoadMoreButton() {
-    const loadMoreButton = document.createElement('button');
-    loadMoreButton.textContent = 'Load More Characters';
-    loadMoreButton.className = 'load-more-btn';
-
-    loadMoreButton.onclick = () => {
-        currentPage++;
-        loadCharacters(); // Load the next page of characters
-        loadMoreButton.remove(); // Remove the button after loading more
-    };
-
-    // If there are more characters, append the "Load More" button
-    if (currentPage * pageSize < totalCharacters) {
-        document.getElementById('character-grid').appendChild(loadMoreButton);
+    const loadMoreButton = document.getElementById('load-more-button');
+    
+    // Check if there are more characters to load based on total count and current page
+    if (displayedCharacterIds.length < totalCharacters) {
+        loadMoreButton.style.display = 'block';
+        loadMoreButton.onclick = () => {
+            currentPage++;  // Increase the page number
+            loadCharacters();  // Fetch the next page of characters
+        };
+    } else {
+        loadMoreButton.style.display = 'none';  // Hide the "Load More" button if no more characters
     }
 }
-
 let typingTimer; 
 const doneTypingInterval = 500; // time in ms (0.5 seconds)
 
