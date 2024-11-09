@@ -43,8 +43,8 @@ function filterCharacters() {
 }
 
 
-// Array to store IDs of characters already received
-let receivedCharacterIds = [];
+// Array to store combinations of uploader and character IDs
+let receivedCharacterIdentifiers = [];
 
 // Function to load characters
 function loadCharacters() {
@@ -54,10 +54,10 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Send the list of received characters as a comma-separated string
-    const received = receivedCharacterIds.join(',');
+    // Send the list of received characters as a comma-separated string of "uploader_name_character_id"
+    const received = receivedCharacterIdentifiers.join(',');
 
-    // Construct the URL with the filters and received character IDs
+    // Construct the URL with the filters and received character identifiers
     const url = `${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${received}`;
 
     fetch(url)
@@ -71,9 +71,13 @@ function loadCharacters() {
             totalCharacters = data.total;
             displayCharacters(data.characters, searchQuery);
 
-            // Update the received character IDs with the new ones
-            const newCharacterIds = data.characters.map(character => character.id);
-            receivedCharacterIds = [...receivedCharacterIds, ...newCharacterIds];  // Append the new IDs
+            // Update the received character identifiers with the new ones
+            const newCharacterIdentifiers = data.characters.map(character => {
+                return `${character.uploader}_${character.id}`;  // Combine uploader and character ID
+            });
+
+            // Append the new identifiers to the received list
+            receivedCharacterIdentifiers = [...receivedCharacterIdentifiers, ...newCharacterIdentifiers];
 
             createLoadMoreButton();
         })
