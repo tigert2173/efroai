@@ -42,8 +42,8 @@ function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
-        let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
     }
+    let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
         // Filter characters based on the search query
