@@ -17,12 +17,12 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
-// Function to load characters with filters
-function loadCharacters(searchQuery = '', filters = []) {
+function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(filters.join(','))}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -31,15 +31,13 @@ function loadCharacters(searchQuery = '', filters = []) {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery, filters); // Display the filtered characters
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
             createLoadMoreButton(); // Create the "Load More" button if needed
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
 
-
-// Updated displayCharacters function to handle filtered results
-function displayCharacters(characters, searchQuery, filters) {
+function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
     if (currentPage === 1) {
@@ -50,11 +48,8 @@ function displayCharacters(characters, searchQuery, filters) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        // Filter characters based on the search query and selected filters
-        if (
-            (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) &&
-            matchesFilters(character, filters) // Check if character matches filters
-        ) {
+        // Filter characters based on the search query
+        if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -100,6 +95,9 @@ function displayCharacters(characters, searchQuery, filters) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src'); // Get the image URL from the data-src attribute
 
+                        console.log(`Loading image from: ${imageUrl}`);
+
+                        // Fetch the image only when the card is in view
                         fetch(imageUrl, {
                             method: 'GET',
                             headers: {
@@ -107,6 +105,7 @@ function displayCharacters(characters, searchQuery, filters) {
                             }
                         }).then(response => {
                             if (!response.ok) {
+                                console.error(`Failed to fetch image: ${response.statusText}`);
                                 img.src = 'noimage.jpg'; // Fallback to default image
                                 return;
                             }
@@ -117,6 +116,7 @@ function displayCharacters(characters, searchQuery, filters) {
                                 img.src = imageObjectURL; // Set the image URL
                             }
                         }).catch(error => {
+                            console.error('Error fetching image:', error);
                             img.src = 'noimage.jpg'; // Fallback to default image
                         });
 
@@ -136,6 +136,8 @@ function displayCharacters(characters, searchQuery, filters) {
 
             // Set the image URL in a data-src attribute (only lazy load)
             imgElement.setAttribute('data-src', imageUrl);
+            
+            // Append the image element to the card (image will be loaded lazily)
             card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
             
             // Start observing the image element
@@ -145,28 +147,10 @@ function displayCharacters(characters, searchQuery, filters) {
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
-            // Check if ads should be displayed
-            if (!adExempt && cardCounter >= nextAdInterval) {
-                createAd();
-                nextAdInterval = cardCounter + getRandomAdInterval(); // Update the next ad interval
-            }
-        }
-    });
-}
-
-// Function to check if character matches selected filters
-// Function to check if character matches selected filters
-function matchesFilters(character, filters) {
-    if (!filters || filters.length === 0) {
-        return true; // If no filters are selected, return true (show all characters)
-    }
-    return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
-}
-
-// Ad creation function
-function createAd() {
+          // Check if ads should be displayed
+if (!adExempt) {
     let adLoading = false; // Track if an ad is currently loading
-    if (!adLoading) {
+    if (cardCounter >= nextAdInterval && !adLoading) {
         adLoading = true;
 
         // Create an ad container
@@ -202,10 +186,16 @@ function createAd() {
         adContainer.appendChild(scriptElement);
 
         // Append the ad container to the character grid
-        document.getElementById('character-grid').appendChild(adContainer);
+        characterGrid.appendChild(adContainer);
+
+        // Update the next ad interval
+        nextAdInterval = cardCounter + getRandomAdInterval();
     }
 }
+        }
 
+    });
+}
 
 
 function createLoadMoreButton() {
@@ -306,63 +296,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Updated filterCharacters function
+// Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters (ensure filters is always an array, even if no checkboxes are selected)
+    // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id) || [];  // Use an empty array if no checkboxes are selected
+        .map(filter => filter.id);
 
-    // Reset pagination and load filtered characters
-    currentPage = 1;
-    loadCharacters(searchQuery, filters);
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
+
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+
+        // Split filters by comma and trim whitespace
+        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+    });
 }
-
-
-// Function to load filtered characters (with search query and selected filters)
-function loadFilteredCharacters(searchQuery, filters) {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
-
-    // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(filters))}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery, filters); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
-        })
-        .catch(error => console.error('Error fetching characters:', error));
-}
-
-
-// Function to filter characters based on search and filters
-// function filterCharacters() {
-//     const searchQuery = document.getElementById('search-input').value.toLowerCase();
-
-//     // Get checked filters
-//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-//         .map(filter => filter.id);
-
-//     const characterCards = document.querySelectorAll('.character-card');
-//     characterCards.forEach(card => {
-//         const name = card.querySelector('h3').textContent.toLowerCase();
-//         const tags = card.querySelector('.tags').textContent.toLowerCase();
-
-//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
-//         // Split filters by comma and trim whitespace
-//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
-//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-//     });
-// }
 
 // Function to show upload character form
 function showUploadForm() {
