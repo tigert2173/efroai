@@ -18,6 +18,29 @@ let totalCharacters = 0;
 const pageSize = 20;
 
 function loadCharacters() {
+    // Function to filter characters based on search and filters
+function filterCharacters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+    // Get checked filters
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
+
+    const characterCards = document.querySelectorAll('.character-card');
+    characterCards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
+
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+
+        // Split filters by comma and trim whitespace
+        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+    });
+}
+
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
@@ -296,29 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadCharacters(); // Reload characters based on the selected filter option
     });
 });
-
-// Function to filter characters based on search and filters
-function filterCharacters() {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-
-    // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
-
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
-
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
-        // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
-
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-    });
-}
 
 // Function to show upload character form
 function showUploadForm() {
