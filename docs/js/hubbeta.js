@@ -16,33 +16,13 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
-let isLoading = false; // To avoid multiple requests being sent
-
-// Function to load more characters automatically when the user scrolls to the bottom
-function loadMoreOnScroll() {
-    const sentinel = document.getElementById('load-more-sentinel');
-
-    // Create an IntersectionObserver to detect when the sentinel is in view
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !isLoading) {
-                // If sentinel is in view and no request is already being made
-                isLoading = true;
-                currentPage++; // Increase the page number
-                loadCharacters(); // Load the next page of characters
-                loadMoreButton.remove(); // Remove the button after loading more
-            }
-        });
-    }, {
-        rootMargin: '200px', // Trigger the loading a bit before reaching the bottom
-        threshold: 0.1 // Trigger when 10% of the sentinel is in view
-    });
-
-    // Start observing the sentinel
-    observer.observe(sentinel);
-}
+let isLoading = false; // Flag to prevent multiple simultaneous requests
 
 function loadCharacters() {
+    if (isLoading) return; // Prevent multiple requests while loading
+
+    isLoading = true; // Set loading flag to true while fetching
+
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
@@ -57,9 +37,10 @@ function loadCharacters() {
         .then(data => {
             totalCharacters = data.total;
             displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
+            currentPage++; // Increment the page after loading characters
         })
-        .catch(error => console.error('Error fetching characters:', error));
+        .catch(error => console.error('Error fetching characters:', error))
+        .finally(() => isLoading = false); // Reset loading flag after request completes
 }
 
 // Updated displayCharacters function to handle filtered results
@@ -177,6 +158,17 @@ function displayCharacters(characters, searchQuery, filters) {
         }
     });
 }
+
+// Detect when user scrolls to the bottom of the page
+window.addEventListener('scroll', () => {
+    const scrollableHeight = document.documentElement.scrollHeight;
+    const scrollPosition = window.innerHeight + window.scrollY;
+
+    if (scrollPosition >= scrollableHeight - 100) { // Trigger when user is near the bottom
+        loadCharacters(); // Automatically load more characters
+    }
+});
+
 
 // Function to check if character matches selected filters
 function matchesFilters(character, filters) {
