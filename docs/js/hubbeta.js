@@ -101,7 +101,7 @@ function displayCharacters(characters, searchQuery) {
                         };
                         img.onerror = () => {
                             spinner.remove(); // Remove spinner if image fails to load
-                            img.src = 'path/to/default-image.jpg'; // Fallback image
+                            img.src = 'noimage.jpg'; // Fallback image
                             img.alt = 'Image failed to load'; // Show fallback alt text
                         };
                         observer.unobserve(img); // Stop observing the image once it is loaded
