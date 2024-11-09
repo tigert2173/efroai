@@ -181,6 +181,22 @@ function displayCharacters(characters, searchQuery) {
               }
         }
     });
+        // Set up IntersectionObserver to load images when they come into view
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.getAttribute('data-src'); // Set the actual image URL
+                    img.onload = () => img.classList.add('loaded'); // Add a 'loaded' class once image is loaded
+                    observer.unobserve(img); // Stop observing the image after it is loaded
+                }
+            });
+        }, { threshold: 0.1 }); // 10% of the image must be visible to trigger the callback
+    
+        // Observe all images with the 'lazy' class
+        document.querySelectorAll('.lazy').forEach(img => {
+            observer.observe(img);
+        });
 }
 
 function createLoadMoreButton() {
@@ -317,3 +333,4 @@ function viewCharacter(characterId, uploader) {
     // Logic to display character details (e.g., navigate to a new page or show a modal)
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
+
