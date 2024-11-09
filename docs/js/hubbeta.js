@@ -22,12 +22,14 @@ let filterTerms = [];
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters
+    // Get checked filters and map them to their ids
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
+        .map(filter => filter.id);  // Make sure filter.id is what you expect
 
     // Update filterTerms with selected filters
     filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+
+    console.log('Selected Filters:', filterTerms);  // Debugging log to ensure filters are being gathered
 
     const characterCards = document.querySelectorAll('.character-card');
     characterCards.forEach(card => {
@@ -48,7 +50,7 @@ function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Send filters and search query to the backend
+    // Pass the search query and filters to the backend
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${encodeURIComponent(JSON.stringify(filterTerms))}`)
         .then(response => {
             if (!response.ok) {
