@@ -38,25 +38,6 @@ function loadCharacters() {
 }
 
 
-// Add this function to handle lazy loading for images
-function lazyLoadImage(imgElement) {
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;  // Set the image src to the actual image URL
-                img.onload = () => {
-                    img.classList.add('loaded');  // Optional: Add a class for loaded state (for CSS animation)
-                };
-                observer.unobserve(img);  // Stop observing once the image has loaded
-            }
-        });
-    }, { rootMargin: '200px' }); // Load images slightly before they enter the viewport
-
-    observer.observe(imgElement); // Start observing the image element
-}
-
-// Modify the displayCharacters function to use lazy loading
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -77,9 +58,52 @@ function displayCharacters(characters, searchQuery) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-            imgElement.dataset.src = imageUrl;  // Set the image URL in the data-src attribute
 
-            // Create and populate card content here as in your current implementation...
+            // Add a placeholder image or loading spinner
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+
+            // Set a placeholder image initially
+            imgElement.src = 'loading-placeholder.jpg'; // This can be a low-res or placeholder image
+
+            // Use IntersectionObserver to load image when in viewport
+            const observer = new IntersectionObserver((entries, observerInstance) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Start loading the image once it is visible in the viewport
+                        fetch(imageUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                console.error(`Failed to fetch image: ${response.statusText}`);
+                                imgElement.src = 'noimage.jpg'; // Fallback to default image
+                                return;
+                            }
+                            return response.blob();
+                        }).then(imageBlob => {
+                            if (imageBlob) {
+                                const imageObjectURL = URL.createObjectURL(imageBlob);
+                                imgElement.src = imageObjectURL;
+                            }
+                        }).catch(error => {
+                            console.error('Error fetching image:', error);
+                            imgElement.src = 'noimage.jpg'; // Fallback to default image
+                        });
+
+                        // Stop observing after the image has been loaded
+                        observerInstance.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the image is visible
+
+            // Start observing the image element
+            observer.observe(imgElement);
+
+            // Populate the rest of the card content
             card.innerHTML = `
                  <div class="card-header">
                     <h3>${character.name}</h3>
@@ -104,15 +128,7 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
             
-            // Insert a loading spinner while fetching the image
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
-  
-            // Instead of immediately setting src, use the lazyLoadImage function
-            lazyLoadImage(imgElement);
-
-            // Add the character card to the grid
+            // Append the card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
@@ -134,9 +150,6 @@ function displayCharacters(characters, searchQuery) {
                     insElement.setAttribute('data-zoneid', '5461570');
                     adContainer.appendChild(insElement);
   
-                    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-                    insElement.setAttribute('data-keywords', keywords);
-  
                     // Create the ad provider script and set up loading behavior
                     const scriptElement = document.createElement('script');
                     scriptElement.async = true;
@@ -146,7 +159,7 @@ function displayCharacters(characters, searchQuery) {
                     scriptElement.onload = function() {
                         // Ensure the AdProvider object exists
                         if (window.AdProvider) {
-                            window.AdProvider.push({"serve": {}});
+                            window.AdProvider.push({"serve": {}}); 
                             console.log("Ad loaded successfully");
                         } else {
                             console.error("AdProvider object is not available");
