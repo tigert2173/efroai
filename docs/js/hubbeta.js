@@ -18,11 +18,15 @@ let totalCharacters = 0;
 const pageSize = 20;
 
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
-    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+    const sortBy = document.getElementById('sort-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Pass the search query to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    // Gather selected filters as an array
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
+
+    // Send search and filter parameters to backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${JSON.stringify(filters)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -31,8 +35,8 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
+            displayCharacters(data.characters, searchQuery);
+            createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
@@ -287,6 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('character-form')) {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
+    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+        filter.addEventListener('change', () => {
+            currentPage = 1;
+            loadCharacters();
+        });
+    });
 
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
@@ -295,27 +305,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to filter characters based on search and filters
-function filterCharacters() {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+// function filterCharacters() {
+//     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
+//     // Get checked filters
+//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+//         .map(filter => filter.id);
 
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
+//     const characterCards = document.querySelectorAll('.character-card');
+//     characterCards.forEach(card => {
+//         const name = card.querySelector('h3').textContent.toLowerCase();
+//         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-        // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+//         // Split filters by comma and trim whitespace
+//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-    });
-}
+//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+//     });
+// }
 
 // Function to show upload character form
 function showUploadForm() {
