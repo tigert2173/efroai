@@ -20,19 +20,9 @@ const pageSize = 20;
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
-   // Get checked filters
-   const filters2 = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-   .map(filter => filter.id);
-
-    // Get selected filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id); // Get the IDs of the checked filters
-
-    // Add filters as a query parameter (encode them to handle special characters)
-    const filtersParam = filters.length > 0 ? `&filters=${encodeURIComponent(filters.join(','))}` : '';
 
     // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${filters2}`)
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${filters}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
