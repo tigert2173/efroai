@@ -281,9 +281,9 @@ function openCharacterPage(characterId, uploader) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
-    if (document.getElementById('search-bar')) {
-        document.getElementById('search-bar').addEventListener('input', filterCharacters);
-    }
+    // if (document.getElementById('search-bar')) {
+    //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
+    // }
     if (document.getElementById('character-form')) {
         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
     }
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to filter characters based on search and filters
 function filterCharacters() {
-    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
     // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
