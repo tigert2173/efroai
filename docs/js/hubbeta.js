@@ -16,8 +16,9 @@ let adExempt = false // Check if the user is Ad-Exempt
 let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
-let isLoading = false; // Flag to prevent multiple simultaneous requests
+let activeFilters = []; // Store active filters globally
 
+// Updated loadCharacters function with filters passed in
 function loadCharacters() {
     if (isLoading) return; // Prevent multiple requests while loading
 
@@ -26,8 +27,8 @@ function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the search query to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    // Pass the search query and active filters to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(activeFilters))}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -36,7 +37,7 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            displayCharacters(data.characters, searchQuery, activeFilters); // Pass filters to display function
             currentPage++; // Increment the page after loading characters
         })
         .catch(error => console.error('Error fetching characters:', error))
@@ -316,12 +317,11 @@ function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
     // Get checked filters (ensure filters is always an array, even if no checkboxes are checked)
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id) || [];  // Use an empty array if no checkboxes are selected
+    activeFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id) || [];
 
-    // Reset pagination and load filtered characters
-    currentPage = 1;
-    loadFilteredCharacters(searchQuery, filters);
+    currentPage = 1; // Reset to the first page when applying filters
+    loadCharacters(); // Reload characters based on the selected filter option
 }
 
 // Function to load filtered characters (with search query and selected filters)
