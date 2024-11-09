@@ -397,3 +397,7 @@ function viewCharacter(characterId, uploader) {
     window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
 }
 
+// Call initInfiniteScroll on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initInfiniteScroll(); // Initialize infinite scroll functionality
+});
