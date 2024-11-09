@@ -42,6 +42,7 @@ function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
+        let cardCounter = 0; // Counter to keep track of the number of displayed cards
     }
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
@@ -120,13 +121,14 @@ function displayCharacters(characters, searchQuery) {
   
               // Add the character card to the grid
               characterGrid.appendChild(card);
-  
+              cardCounter++; // Increment the counter after adding a card
+
               // Check if ads should be displayed
               if (!adExempt) {
                   // Check if it's time to insert an ad
                   let adLoading = false; // Track if an ad is currently loading
   
-                  if (totalCharacters >= nextAdInterval && !adLoading) {
+                  if (cardCounter >= nextAdInterval && !adLoading) {
                       adLoading = true; // Set flag to prevent additional loads
   
                       // Create an ad container
@@ -172,7 +174,7 @@ function displayCharacters(characters, searchQuery) {
                       characterGrid.appendChild(adContainer);
   
                       // Update the interval for the next ad
-                      nextAdInterval = totalCharacters + getRandomAdInterval();
+                      nextAdInterval = cardCounter + getRandomAdInterval();
                   }
               }
         }
