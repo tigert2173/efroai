@@ -291,33 +291,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
+        currentPage = 1;
+        loadCharacters(); // Reload characters based on the selected filter option
     });
 });
 
-// Function to filter characters based on search and filters
-function filterCharacters() {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    currentPage = 1;
-    loadCharacters(); // Reload characters based on the selected filter option
-    
-    // Get checked filters
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
+// // Function to filter characters based on search and filters
+// function filterCharacters() {
+//     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    const characterCards = document.querySelectorAll('.character-card');
-    characterCards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        const tags = card.querySelector('.tags').textContent.toLowerCase();
+//     // Get checked filters
+//     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+//         .map(filter => filter.id);
 
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+//     const characterCards = document.querySelectorAll('.character-card');
+//     characterCards.forEach(card => {
+//         const name = card.querySelector('h3').textContent.toLowerCase();
+//         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
-        // Split filters by comma and trim whitespace
-        const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
-        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+//         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
 
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
-    });
-}
+//         // Split filters by comma and trim whitespace
+//         const filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
+//         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+
+//         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+//     });
+// }
 
 // Function to show upload character form
 function showUploadForm() {
