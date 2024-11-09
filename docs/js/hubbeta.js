@@ -40,7 +40,7 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
-    if (page !== 0) {
+    if (currentPage+1 !== 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
 
