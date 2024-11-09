@@ -15,7 +15,7 @@ let adExempt = false // Check if the user is Ad-Exempt
 
 let currentPage = 1;
 let totalCharacters = 0;
-const pageSize = 10;  // Adjust this value if needed
+const pageSize = 10;
 
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
@@ -37,12 +37,16 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
+    let cardCounter = 0; // Counter to keep track of the number of displayed cards
+
+    let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
         // Filter characters based on the search query
@@ -54,10 +58,10 @@ function displayCharacters(characters, searchQuery) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-
+            
             // Create and populate card content here as in your current implementation...
             card.innerHTML = `
-                <div class="card-header">
+                 <div class="card-header">
                     <h3>${character.name}</h3>
                 </div>
                 <div class="card-body">
@@ -79,9 +83,102 @@ function displayCharacters(characters, searchQuery) {
                     </button>
                 </div>
             `;
+            
+              // Insert a loading spinner while fetching the image
+              const spinner = document.createElement('div');
+              spinner.className = 'loading-spinner';
+              card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+  
+              // Fetch the image
+              fetch(imageUrl, {
+                  method: 'GET',
+                  headers: {
+                      'Accept': 'image/avif,image/webp,image/png,image/svg+xml,image/jpeg,image/*;q=0.8,*/*;q=0.5'
+                  }
+              }).then(response => {
+                  if (!response.ok) {
+                      console.error(`Failed to fetch image: ${response.statusText}`);
+                      imgElement.src = 'noimage.jpg'; // Fallback to default image
+                      return;
+                  }
+                  return response.blob();
+              }).then(imageBlob => {
+                  if (imageBlob) {
+                      const imageObjectURL = URL.createObjectURL(imageBlob);
+                      imgElement.src = imageObjectURL;
+                  }
+              }).catch(error => {
+                  console.error('Error fetching image:', error);
+                  imgElement.src = 'noimage.jpg'; // Fallback to default image
+              });
+  
+              // When the image is loaded or error occurs, remove the spinner and append the image
+              imgElement.onload = () => {
+                  spinner.remove(); // Remove spinner once image is loaded
+                  card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+              };
+              imgElement.onerror = () => {
+                  spinner.remove(); // Remove spinner if image fails to load
+              };
+  
+              // Add the character card to the grid
+              characterGrid.appendChild(card);
+              cardCounter++; // Increment the counter after adding a card
 
-            // Add the character card to the grid
-            characterGrid.appendChild(card);
+              // Check if ads should be displayed
+              if (!adExempt) {
+                  // Check if it's time to insert an ad
+                  let adLoading = false; // Track if an ad is currently loading
+  
+                  if (cardCounter >= nextAdInterval && !adLoading) {
+                      adLoading = true; // Set flag to prevent additional loads
+  
+                      // Create an ad container
+                      const adContainer = document.createElement('div');
+                      adContainer.className = 'ad-container';
+  
+                      // Create the <ins> element for the ad
+                      const insElement = document.createElement('ins');
+                      insElement.className = 'eas6a97888e38 ins-animate';
+                      insElement.setAttribute('data-zoneid', '5461570');
+                      adContainer.appendChild(insElement);
+  
+                      const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+                      insElement.setAttribute('data-keywords', keywords);
+  
+                      // Create the ad provider script and set up loading behavior
+                      const scriptElement = document.createElement('script');
+                      scriptElement.async = true;
+                      scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+  
+                      // Only call push() when the script is fully loaded
+                      scriptElement.onload = function() {
+                          // Ensure the AdProvider object exists
+                          if (window.AdProvider) {
+                              window.AdProvider.push({"serve": {}});
+                              console.log("Ad loaded successfully");
+                          } else {
+                              console.error("AdProvider object is not available");
+                          }
+                          adLoading = false; // Reset flag after ad loads
+                      };
+  
+                      // Error handling to reset the flag if the script fails to load
+                      scriptElement.onerror = function() {
+                          console.error("Failed to load ad-provider.js");
+                          adLoading = false; // Reset flag on load failure
+                      };
+  
+                      // Append the script to the ad container
+                      adContainer.appendChild(scriptElement);
+  
+                      // Add the ad container to the grid
+                      characterGrid.appendChild(adContainer);
+  
+                      // Update the interval for the next ad
+                      nextAdInterval = cardCounter + getRandomAdInterval();
+                  }
+              }
         }
     });
 }
@@ -92,16 +189,16 @@ function createLoadMoreButton() {
     loadMoreButton.className = 'load-more-btn';
 
     loadMoreButton.onclick = () => {
-        currentPage++; // Increment the page number
+        currentPage++;
         loadCharacters(); // Load the next page of characters
+        loadMoreButton.remove(); // Remove the button after loading more
     };
 
-    // Only show the "Load More" button if there are more characters to load
+    // If there are more characters, append the "Load More" button
     if (currentPage * pageSize < totalCharacters) {
         document.getElementById('character-grid').appendChild(loadMoreButton);
     }
 }
-
 
 let typingTimer; 
 const doneTypingInterval = 500; // time in ms (0.5 seconds)
