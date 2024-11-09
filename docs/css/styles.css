@@ -560,100 +560,74 @@ footer p {
         opacity: 0.5;
     }
 }
-/* General styles for the select dropdown */
+/* Container for the select and input fields */
+.search-sort-container {
+    display: flex;
+    gap: 20px; /* Space between the select and input */
+    justify-content: center; /* Center the elements */
+    align-items: center;
+    margin: 20px 0; /* Space above and below */
+}
+
+/* Style the select dropdown */
 #sort-select {
-    appearance: none; /* Remove default dropdown appearance */
+    appearance: none; /* Remove default arrow */
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: #2a9d8f; /* Rich green background */
-    color: #fff; /* White text */
-    border: 2px solid #e76f51; /* Orange border */
-    border-radius: 8px; /* Rounded corners for a modern feel */
-    font-size: 16px;
-    font-family: 'Helvetica Neue', sans-serif; /* Clean, modern font */
     padding: 12px 20px;
-    width: 220px; /* Set a reasonable width */
-    cursor: pointer;
-    transition: all 0.3s ease-in-out; /* Smooth transition for hover and focus */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
-}
-
-/* Add a custom arrow using the background image */
-#sort-select::-ms-expand {
-    display: none; /* Hide the default arrow in IE */
-}
-
-#sort-select::after {
-    content: '';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #fff; /* White arrow */
-    pointer-events: none; /* Disable pointer interaction */
-}
-
-/* Hover state */
-#sort-select:hover {
-    background-color: #21867a; /* Slightly darker green */
-    border-color: #f4a261; /* Lighter orange on hover */
-}
-
-/* Focus state */
-#sort-select:focus {
-    outline: none; /* Remove the default focus outline */
-    border-color: #f4a261; /* Focus border color */
-    background-color: #21867a; /* Darker green on focus */
-    box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Add soft orange glow effect */
-}
-/* General styles for the search bar */
-#search-bar {
-    width: 100%; /* Full width of its container */
-    max-width: 350px; /* Limit the maximum width */
-    padding: 12px 20px; /* Ample padding for better comfort */
-    font-size: 16px; /* Slightly larger text for readability */
-    font-family: 'Helvetica Neue', sans-serif; /* Modern, clean font */
     background-color: #2a9d8f; /* Green background */
     border: 2px solid #e76f51; /* Orange border */
-    border-radius: 50px; /* Rounded corners for a smooth look */
+    border-radius: 50px; /* Rounded corners */
     color: #fff; /* White text */
-    outline: none; /* Remove default focus outline */
-    transition: all 0.3s ease-in-out; /* Smooth transition for focus and hover */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    font-size: 16px;
+    font-family: 'Helvetica Neue', sans-serif; /* Modern font */
+    width: 180px; /* Set a fixed width */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
 }
 
-/* Focus state */
-#search-bar:focus {
-    border-color: #f4a261; /* Light orange border on focus */
-    background-color: #21867a; /* Darker green on focus */
-    box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Orange glow effect on focus */
+/* Style the search input */
+#search-input {
+    padding: 12px 20px;
+    background-color: #2a9d8f; /* Green background */
+    border: 2px solid #e76f51; /* Orange border */
+    border-radius: 50px; /* Rounded corners */
+    color: #fff; /* White text */
+    font-size: 16px;
+    font-family: 'Helvetica Neue', sans-serif;
+    width: 300px; /* Fixed width for consistency */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
 }
 
-/* Hover state */
-#search-bar:hover {
+/* Focus state for both select and input */
+#sort-select:focus,
+#search-input:focus {
+    outline: none;
+    border-color: #f4a261; /* Light orange on focus */
+    background-color: #21867a; /* Darker green */
+    box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Orange glow effect */
+}
+
+/* Hover state for both select and input */
+#sort-select:hover,
+#search-input:hover {
     background-color: #21867a; /* Darker green on hover */
-    border-color: #f4a261; /* Lighter orange on hover */
+    border-color: #f4a261; /* Light orange border on hover */
 }
 
 /* Placeholder text styling */
-#search-bar::placeholder {
+#search-input::placeholder {
     color: #fff; /* White placeholder text */
-    opacity: 0.8; /* Slightly dimmed placeholder text */
+    opacity: 0.7; /* Slightly dimmed placeholder text */
 }
 
-/* Add a custom search icon */
-#search-bar::before {
-    content: '\1F50D'; /* Unicode for magnifying glass */
-    font-size: 18px;
+/* Add custom arrows for the select */
+#sort-select::after {
+    content: '▼'; /* Custom arrow */
     position: absolute;
-    right: 15px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #fff; /* White icon */
     pointer-events: none;
+    color: #fff; /* White arrow */
 }
 
