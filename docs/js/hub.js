@@ -40,7 +40,7 @@ function displayCharacters(characters) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    const batchSize = 500; // Number of characters to display at once
+    const batchSize = 50; // Number of characters to display at once
 
     function loadCharacters(startIndex) {
         const endIndex = Math.min(startIndex + batchSize, characters.length);
@@ -54,36 +54,9 @@ function displayCharacters(characters) {
             // Create image element
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
-
-            // Add the card header, body, and buttons
-            card.innerHTML = `
-                <div class="card-header">
-                    <h3>${character.name}</h3>
-                </div>
-                <div class="card-body">
-                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
-                </div>
-                <p class="tags">
-                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    <span class="full-tags-overlay">
-                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
-                    </span>
-                </p>
-                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
-                <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
-                <div class="button-container">
-                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
-                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
-                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
-                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
-                    </button>
-                </div>
-            `;
-
-            // Insert a loading spinner while fetching the image
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            card.querySelector('.card-body').insertBefore(spinner, card.querySelector('.card-body p'));
+            imgElement.onerror = () => {
+                imgElement.src = 'noimage.jpg'; // Set default image on error
+            };
 
             // Fetch the image
             fetch(imageUrl, {
@@ -108,72 +81,90 @@ function displayCharacters(characters) {
                 imgElement.src = 'noimage.jpg'; // Fallback to default image
             });
 
-            // When the image is loaded or error occurs, remove the spinner and append the image
-            imgElement.onload = () => {
-                spinner.remove(); // Remove spinner once image is loaded
-                card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
-            };
-            imgElement.onerror = () => {
-                spinner.remove(); // Remove spinner if image fails to load
-            };
+            // Add the inner HTML to the card
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3>${character.name}</h3>
+                </div>
+                <div class="card-body">
+                    <p>${character.chardescription || 'Error: Description is missing.'}</p>
+                </div>
+                <p class="tags">
+                    ${character.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    <span class="full-tags-overlay">
+                        ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
+                    </span>
+                </p>
+                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+                <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
+                <div class="button-container">
+                    <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
+                    <button class="like-btn" onclick="likeCharacter('${character.id}', '${character.uploader}')" aria-label="Like ${character.name}">
+                        <span class="heart-icon" role="img" aria-hidden="true" style="font-size: 1.4em;">❤️</span>
+                        <span class="likes-count">${character.likes ? character.likes.length : 0}</span>
+                    </button>
+                </div>
+            `;
 
-            // Add the character card to the grid
+            // Append the image element after setting the card innerHTML
+            card.querySelector('.card-body').insertBefore(imgElement, card.querySelector('.card-body p'));
+
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
+// Check if ads should be displayed
+if (!adExempt) {
+    // Check if it's time to insert an ad
+    let adLoading = false; // Track if an ad is currently loading
 
-            // Check if ads should be displayed
-            if (!adExempt) {
-                // Check if it's time to insert an ad
-                let adLoading = false; // Track if an ad is currently loading
+    if (cardCounter >= nextAdInterval && !adLoading) {
+        adLoading = true; // Set flag to prevent additional loads
 
-                if (cardCounter >= nextAdInterval && !adLoading) {
-                    adLoading = true; // Set flag to prevent additional loads
+        // Create an ad container
+        const adContainer = document.createElement('div');
+        adContainer.className = 'ad-container';
 
-                    // Create an ad container
-                    const adContainer = document.createElement('div');
-                    adContainer.className = 'ad-container';
+        // Create the <ins> element for the ad
+        const insElement = document.createElement('ins');
+        insElement.className = 'eas6a97888e38 ins-animate';
+        insElement.setAttribute('data-zoneid', '5461570');
+        adContainer.appendChild(insElement);
 
-                    // Create the <ins> element for the ad
-                    const insElement = document.createElement('ins');
-                    insElement.className = 'eas6a97888e38 ins-animate';
-                    insElement.setAttribute('data-zoneid', '5461570');
-                    adContainer.appendChild(insElement);
+        const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
+        insElement.setAttribute('data-keywords', keywords);
 
-                    const keywords = 'AI chatbots,artificial intelligence,fart fetish,foot fetish,virtual companions,smart conversations,engaging chat experiences,chatbot interaction,AI conversations,creative writing,chatbot games,role-playing bots,interactive storytelling,AI humor,fictional characters,digital friends,AI personalization,online chat fun,fantasy worlds,imaginative conversations,AI art and creativity,user-centric design,gamified interactions,niche communities,whimsical chat,AI for fun,story-driven chat,dynamic dialogues,cultural conversations,quirky bots,customizable characters,AI engagement tools,character-driven narratives,interactive AI solutions,chatbot customization,playful AI,tech innovations,creative AI applications,virtual reality chat,AI writing assistance,cognitive experiences,adventurous chats,AI-driven fun,AI interaction design,charming chatbots,personalized gaming,social AI,AI in entertainment,engaging digital content,unique chat experiences,lighthearted conversations,imaginative AI characters';
-                    insElement.setAttribute('data-keywords', keywords);
+        // Create the ad provider script and set up loading behavior
+        const scriptElement = document.createElement('script');
+        scriptElement.async = true;
+        scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
 
-                    // Create the ad provider script and set up loading behavior
-                    const scriptElement = document.createElement('script');
-                    scriptElement.async = true;
-                    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+        // Only call push() when the script is fully loaded
+        scriptElement.onload = function() {
+            // Ensure the AdProvider object exists
+            if (window.AdProvider) {
+                window.AdProvider.push({"serve": {}});
+                console.log("Ad loaded successfully");
+            } else {
+                console.error("AdProvider object is not available");
+            }
+            adLoading = false; // Reset flag after ad loads
+        };
 
-                    // Only call push() when the script is fully loaded
-                    scriptElement.onload = function() {
-                        // Ensure the AdProvider object exists
-                        if (window.AdProvider) {
-                            window.AdProvider.push({"serve": {}});
-                            console.log("Ad loaded successfully");
-                        } else {
-                            console.error("AdProvider object is not available");
-                        }
-                        adLoading = false; // Reset flag after ad loads
-                    };
+        // Error handling to reset the flag if the script fails to load
+        scriptElement.onerror = function() {
+            console.error("Failed to load ad-provider.js");
+            adLoading = false; // Reset flag on load failure
+        };
 
-                    // Error handling to reset the flag if the script fails to load
-                    scriptElement.onerror = function() {
-                        console.error("Failed to load ad-provider.js");
-                        adLoading = false; // Reset flag on load failure
-                    };
+        // Append the script to the ad container
+        adContainer.appendChild(scriptElement);
 
-                    // Append the script to the ad container
-                    adContainer.appendChild(scriptElement);
+        // Add the ad container to the grid
+        characterGrid.appendChild(adContainer);
 
-                    // Add the ad container to the grid
-                    characterGrid.appendChild(adContainer);
+        // Update the interval for the next ad
+        nextAdInterval = cardCounter + getRandomAdInterval();
+    }
 
-                    // Update the interval for the next ad
-                    nextAdInterval = cardCounter + getRandomAdInterval();
-                }
             }
         }
 
@@ -191,7 +182,7 @@ function displayCharacters(characters) {
             // Append the button to the grid
             characterGrid.appendChild(loadMoreButton);
         }
-    }
+    }        
 
     // Start by loading the first batch of characters
     loadCharacters(0);
