@@ -117,6 +117,9 @@ function displayCharacters(characters, searchQuery) {
                 </div>
             `;
 
+            // Mark this character as displayed
+            displayedCharacterIds.push(character.id);
+            
             // Create a loading spinner element
             const spinner = document.createElement('div');
             spinner.className = 'loading-spinner';
