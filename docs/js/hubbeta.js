@@ -46,24 +46,25 @@ function displayCharacters(characters, searchQuery) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
-    // Gather selected filters
-    const selectedFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);
 
-    // Filter characters based on search query and selected filters
-    const filteredCharacters = characters.filter(character => {
-        // Check if character matches search query
-        const matchesSearch = character.name.toLowerCase().includes(searchQuery) ||
-                              character.chardescription.toLowerCase().includes(searchQuery);
-        
-        // Check if character tags match any selected filter
-        const matchesFilter = selectedFilters.length === 0 || 
-                              selectedFilters.some(filter => character.tags.includes(filter));
+ // Gather selected filters
+ const selectedFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+ .map(filter => filter.id);
 
-        return matchesSearch && matchesFilter;
-    });
+// Filter characters based on search query and selected filters
+const filteredCharacters = characters.filter(character => {
+ // Check if character matches search query
+ const matchesSearch = character.name.toLowerCase().includes(searchQuery) ||
+                       character.chardescription.toLowerCase().includes(searchQuery);
+ 
+ // Check if character tags match any selected filter
+ const matchesFilter = selectedFilters.length === 0 || 
+                       selectedFilters.some(filter => character.tags.includes(filter));
 
-    filteredCharacters.forEach(character => {
+ return matchesSearch && matchesFilter;
+});
+
+filteredCharacters.forEach(character => {
         // Filter characters based on the search query
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
@@ -306,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-        filter.addEventListener('change', displayCharacters);
+        filter.addEventListener('change', filterCharacters);
     });
 });
 
