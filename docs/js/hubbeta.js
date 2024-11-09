@@ -46,15 +46,19 @@ function filterCharacters() {
 
 let displayedCharacterIds = []; // Track already displayed character IDs
 
+// Function to load characters
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Collect selected filters
+    // Collect selected filters (if any)
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Construct the URL with the filters
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
+    // Prepare the list of already displayed character IDs for pagination
+    const lastPageIds = displayedCharacterIds.join(',');
+
+    // Construct the URL with query parameters, including the lastPageIds
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&lastPageIds=${lastPageIds}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -63,11 +67,21 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery);
-            createLoadMoreButton();
+            displayCharacters(data.characters, searchQuery);  // Function to display characters on the page
+
+            // Add newly displayed characters to the list of displayedCharacterIds
+            data.characters.forEach(character => {
+                if (!displayedCharacterIds.includes(character.id)) {
+                    displayedCharacterIds.push(character.id);
+                }
+            });
+
+            // Create load more button if necessary
+            createLoadMoreButton();  // Function to manage the "Load More" button and pagination
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
