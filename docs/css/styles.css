@@ -708,8 +708,8 @@ footer p {
 
 .search-hint {
     color: #6e6e6e; /* Theme color */
-    font-size: 0.45em;
-    margin-top: 0px;
+    font-size: 0.65em;
+    margin-top: -5px;
     display: block;
     text-align: center;
 }
