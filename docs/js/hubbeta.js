@@ -205,6 +205,26 @@ function createAd() {
     }
 }
 
+// Function to initialize the IntersectionObserver
+function initInfiniteScroll() {
+    // Select the sentinel element at the bottom of the character list
+    const sentinel = document.getElementById('load-more-sentinel');
+
+    // Create an IntersectionObserver to detect when the sentinel is visible
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // If the sentinel is visible, load more characters
+                currentPage++;
+                loadCharacters(); // Load the next page of characters
+                loadMoreButton.remove(); // Remove the button after loading more
+            }
+        });
+    }, { threshold: 1.0 }); // The observer will trigger when 100% of the sentinel is visible
+
+    // Start observing the sentinel element
+    observer.observe(sentinel);
+}
 
 function createLoadMoreButton() {
     const loadMoreButton = document.createElement('button');
