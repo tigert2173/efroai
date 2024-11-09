@@ -43,9 +43,6 @@ function filterCharacters() {
 }
 
 
-
-let displayedCharacterIds = []; // Track already displayed character IDs
-
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
