@@ -43,8 +43,8 @@ function displayCharacters(characters, searchQuery) {
 
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
-        let cardCounter = 0; // Counter to keep track of the number of displayed cards
     }
+    let cardCounter = 0; // Counter to keep track of the number of displayed cards
 
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
