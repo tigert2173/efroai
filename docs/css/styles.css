@@ -675,7 +675,7 @@ footer p {
 
 #filterList {
     margin-top: 10px;
-    padding-left: 20px;
+    padding-left: 0px;
     display: none; /* Hide by default */
 }
 
