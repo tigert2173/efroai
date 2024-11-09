@@ -44,6 +44,8 @@ function filterCharacters() {
 
 
 
+let displayedCharacterIds = []; // Track already displayed character IDs
+
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -67,6 +69,9 @@ function loadCharacters() {
         .catch(error => console.error('Error fetching characters:', error));
 }
 
+
+
+
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -78,8 +83,8 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        // Filter characters based on the search query
-        if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
+       // Simply check if the character name or description matches the search query
+       const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
