@@ -19,10 +19,6 @@ const pageSize = 20;
 let isLoading = false; // Flag to prevent multiple simultaneous requests
 
 function loadCharacters() {
-    if (isLoading) return; // Prevent multiple requests while loading
-
-    isLoading = true; // Set loading flag to true while fetching
-
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
@@ -37,10 +33,9 @@ function loadCharacters() {
         .then(data => {
             totalCharacters = data.total;
             displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            currentPage++; // Increment the page after loading characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
-        .catch(error => console.error('Error fetching characters:', error))
-        .finally(() => isLoading = false); // Reset loading flag after request completes
+        .catch(error => console.error('Error fetching characters:', error));
 }
 
 // Updated displayCharacters function to handle filtered results
