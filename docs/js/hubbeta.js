@@ -17,7 +17,7 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
-const filterTerms;
+const filterTerms = '';
 // Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
