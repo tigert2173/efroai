@@ -566,7 +566,9 @@ footer p {
     gap: 20px; /* Space between the select and input */
     justify-content: center; /* Center the elements */
     align-items: center;
-    margin: 20px 0; /* Space above and below */
+    width: 100%; /* Make it take up full width */
+    max-width: 800px; /* Max width for the container to prevent stretching */
+    margin: 20px auto; /* Space above and below, centered horizontally */
 }
 
 /* Style the select dropdown */
@@ -581,7 +583,7 @@ footer p {
     color: #fff; /* White text */
     font-size: 16px;
     font-family: 'Helvetica Neue', sans-serif; /* Modern font */
-    width: 180px; /* Set a fixed width */
+    width: 200px; /* Fixed width for better layout control */
     transition: all 0.3s ease-in-out; /* Smooth transition */
 }
 
