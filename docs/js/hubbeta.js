@@ -17,14 +17,12 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 10;
 
-let loadedCharacterIds = []; // Track already loaded character IDs
-
-function loadCharacters(page) {
+function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    // Pass the page, search query, and sort option to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${page}&pageSize=10&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -32,18 +30,9 @@ function loadCharacters(page) {
             return response.json();
         })
         .then(data => {
-            const newCharacters = data.characters;
-
-            // Append new characters to the list, ensuring no duplicates
-            newCharacters.forEach(character => {
-                if (!loadedCharacterIds.includes(character.id)) {
-                    loadedCharacterIds.push(character.id); // Mark this character as loaded
-                    displayCharacter(character); // Function to display the character on the screen
-                }
-            });
-
-            // Create the "Load More" button if needed
-            createLoadMoreButton(page, data.total);
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
