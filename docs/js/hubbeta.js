@@ -38,7 +38,7 @@ function filterCharacters() {
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
-        card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
+        card.style.display = 'block';
     });
 }
 
