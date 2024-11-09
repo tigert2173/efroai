@@ -563,20 +563,18 @@ footer p {
 /* Container for both columns */
 .sort-search-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;  /* Two equal-width columns */
+    grid-template-columns: repeat(2, 1fr);  /* Two equal columns */
     gap: 16px;
     justify-items: center;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-/* Column styling for the select element */
-.sort-column {
-    width: 100%;
-}
-
-/* Column styling for the search input */
-.search-column {
-    width: 100%;
+/* Styling for each column */
+.column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Custom select styling */
@@ -588,7 +586,6 @@ footer p {
     background-color: #ff6600;  /* Orange background */
     color: white;
     transition: all 0.3s ease-in-out;
-    width: 100%;
 }
 
 .custom-select:hover, .custom-select:focus {
@@ -606,7 +603,7 @@ footer p {
     border: 2px solid #33cc33;  /* Green border */
     background-color: #ff6600;  /* Orange background */
     color: white;
-    width: 100%;
+    width: 200px;
     transition: all 0.3s ease-in-out;
 }
 
