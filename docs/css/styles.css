@@ -68,67 +68,20 @@ main {
     display: flex; /* Use flexbox to position filters and main content side by side */
     padding: 40px 20px;
 }
+
 /* Filters Section */
 .filters {
-    flex: 0 0 200px; /* Fixed width for filters */
+    flex: 0 0 100px; /* Fixed width for filters */
     margin-right: 20px; /* Space between filters and character grid */
     background-color: rgb(30, 50, 50);
     border-radius: 10px;
     padding: 10px;
-    display: flex;
-    flex-direction: column; /* Stack elements vertically by default */
-    gap: 20px; /* Add space between elements */
 }
 
-/* Heading inside the filter box */
 .filters h2 {
     font-size: 24px;
-    text-align: center; /* Center the heading */
-    color: white;
 }
 
-/* Container for the search and sort dropdown */
-.filters .filter-top {
-    display: flex;
-    flex-direction: column; /* Stack elements vertically by default */
-    gap: 10px; /* Space between the search input and dropdown */
-    align-items: center; /* Center the content */
-}
-
-/* Responsive layout for larger screens */
-.filters .filter-top .filter-row {
-    display: flex;
-    flex-wrap: wrap; /* Allow elements to wrap if necessary */
-    justify-content: center; /* Center the items */
-    gap: 15px; /* Space between the dropdown and search input */
-}
-
-/* Style for search and dropdown */
-.filters .filter-top select,
-.filters .filter-top input {
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid #33cc33;  /* Green border */
-    background-color: #ff6600;  /* Orange background */
-    color: white;
-    width: 100%;  /* Ensures it takes full width of its container */
-    max-width: 250px;  /* Limit the width of both elements */
-    transition: all 0.3s ease-in-out;
-}
-
-/* Hover and focus effects for input and select */
-.filters .filter-top select:hover,
-.filters .filter-top input:hover,
-.filters .filter-top select:focus,
-.filters .filter-top input:focus {
-    border-color: #ff6600;
-    background-color: #33cc33;
-    color: black;
-    outline: none;
-}
-
-/* List of filter options */
 .filters ul {
     list-style: none;
     padding: 0;
@@ -138,15 +91,6 @@ main {
 .filters ul li {
     margin-bottom: 15px;
 }
-
-/* Media Query for smaller screens */
-@media (max-width: 550px) {
-    .filters .filter-top .filter-row {
-        flex-direction: column;  /* Stack items vertically on small screens */
-        align-items: center;
-    }
-}
-
 
 /* Character Grid */
 #characters {
