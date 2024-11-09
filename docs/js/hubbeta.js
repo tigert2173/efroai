@@ -147,47 +147,53 @@ function displayCharacters(characters, searchQuery) {
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
-            // Check if ads should be displayed
-            if (!adExempt) {
-                let adLoading = false; // Track if an ad is currently loading
-                if (cardCounter >= nextAdInterval && !adLoading) {
-                    adLoading = true;
+          // Check if ads should be displayed
+if (!adExempt) {
+    let adLoading = false; // Track if an ad is currently loading
+    if (cardCounter >= nextAdInterval && !adLoading) {
+        adLoading = true;
 
-                    // Create an ad container and load the ad
-                    const adContainer = document.createElement('div');
-                    adContainer.className = 'ad-container';
+        // Create an ad container
+        const adContainer = document.createElement('div');
+        adContainer.className = 'ad-container';
 
-                    const insElement = document.createElement('ins');
-                    insElement.className = 'eas6a97888e38 ins-animate';
-                    insElement.setAttribute('data-zoneid', '5461570');
-                    adContainer.appendChild(insElement);
+        const insElement = document.createElement('ins');
+        insElement.className = 'eas6a97888e38 ins-animate';
+        insElement.setAttribute('data-zoneid', '5461570');
+        adContainer.appendChild(insElement);
 
-                    const scriptElement = document.createElement('script');
-                    scriptElement.async = true;
-                    scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
+        // Only load the script when it's time to show the ad
+        const scriptElement = document.createElement('script');
+        scriptElement.async = true;
+        scriptElement.src = 'https://a.magsrv.com/ad-provider.js';
 
-                    scriptElement.onload = function () {
-                        if (window.AdProvider) {
-                            window.AdProvider.push({ "serve": {} });
-                            console.log("Ad loaded successfully");
-                        } else {
-                            console.error("AdProvider object is not available");
-                        }
-                        adLoading = false; // Reset flag after ad loads
-                    };
-
-                    scriptElement.onerror = function () {
-                        console.error("Failed to load ad-provider.js");
-                        adLoading = false; // Reset flag on load failure
-                    };
-
-                    adContainer.appendChild(scriptElement);
-                    characterGrid.appendChild(adContainer);
-
-                    nextAdInterval = cardCounter + getRandomAdInterval();
-                }
+        scriptElement.onload = function () {
+            if (window.AdProvider) {
+                window.AdProvider.push({ "serve": {} });
+                console.log("Ad loaded successfully");
+            } else {
+                console.error("AdProvider object is not available");
             }
+            adLoading = false; // Reset flag after ad loads
+        };
+
+        scriptElement.onerror = function () {
+            console.error("Failed to load ad-provider.js");
+            adLoading = false; // Reset flag on load failure
+        };
+
+        // Append the ad script to the ad container
+        adContainer.appendChild(scriptElement);
+
+        // Append the ad container to the character grid
+        characterGrid.appendChild(adContainer);
+
+        // Update the next ad interval
+        nextAdInterval = cardCounter + getRandomAdInterval();
+    }
+}
         }
+
     });
 }
 
