@@ -22,27 +22,26 @@ let filterTerms = [];
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Get checked filters and map them to their ids
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id);  // Make sure filter.id is what you expect
+        .map(filter => filter.id);
 
-    // Update filterTerms with selected filters
     filterTerms = filters.flatMap(filter => filter.split(',').map(term => term.trim()));
 
-    console.log('Selected Filters:', filterTerms);  // Debugging log to ensure filters are being gathered
+    console.log('Selected Filters:', filterTerms);
 
     const characterCards = document.querySelectorAll('.character-card');
     characterCards.forEach(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
         const tags = card.querySelector('.tags').textContent.toLowerCase();
 
+        // Ensure that both name and tags are checked correctly
         const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
         card.style.display = matchesSearch && matchesFilters ? 'block' : 'none';
     });
 }
+
 
 
 function loadCharacters() {
