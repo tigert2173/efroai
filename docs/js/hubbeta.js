@@ -15,7 +15,7 @@ let adExempt = false // Check if the user is Ad-Exempt
 
 let currentPage = 1;
 let totalCharacters = 0;
-const pageSize = 50;
+const pageSize = 100;
 
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
