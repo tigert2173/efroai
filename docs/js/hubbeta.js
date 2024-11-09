@@ -163,7 +163,6 @@ function matchesFilters(character, filters) {
     return filters.every(filter => character.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase())));
 }
 
-
 // Ad creation function
 function createAd() {
     let adLoading = false; // Track if an ad is currently loading
