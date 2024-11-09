@@ -633,27 +633,4 @@ footer p {
     outline: none;
 }
 
-/* Search and Search Order */
-.search-container {
-    display: flex;
-    justify-content: center; /* Centers the content horizontally */
-    align-items: center; /* Centers the content vertically */
-    gap: 20px; /* Space between search and order dropdown */
-    margin-top: 20px; /* Add spacing at the top */
-}
-
-/* Optional: Styling for individual search and order elements */
-.search-input, .order-select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-    font-size: 16px;
-}
-
-.search-input:focus, .order-select:focus {
-    outline: none;
-    border-color: #fbbc04; /* Focus effect with yellow color */
-}
 
