@@ -76,6 +76,7 @@ main {
     background-color: rgb(30, 50, 50);
     border-radius: 10px;
     padding: 10px;
+    max-width: 200px;
 }
 
 .filters h2 {
