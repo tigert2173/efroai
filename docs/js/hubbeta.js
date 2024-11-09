@@ -45,13 +45,15 @@ function filterCharacters() {
 }
 
 
-
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
-    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+    const sortBy = document.getElementById('sort-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Pass the search query and filters to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${encodeURIComponent(JSON.stringify(filterTerms))}`)
+    // Collect selected filters
+    const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
+
+    // Construct the URL with the filters
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -60,8 +62,8 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
+            displayCharacters(data.characters, searchQuery);
+            createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
