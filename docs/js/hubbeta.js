@@ -21,7 +21,8 @@ function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
     const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -30,11 +31,12 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery);
-            createLoadMoreButton();
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
