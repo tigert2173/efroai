@@ -53,13 +53,8 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Include the displayedCharacterIds to exclude already shown characters
-    const lastPageIds = displayedCharacterIds.join(',');
-
-    // Construct the URL with the filters and lastPageIds
-    const url = `${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&lastPageIds=${lastPageIds}`;
-
-    fetch(url)
+    // Construct the URL with the filters
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -67,22 +62,11 @@ function loadCharacters() {
             return response.json();
         })
         .then(data => {
-            totalCharacters = data.total; // Update total character count
-            displayCharacters(data.characters, searchQuery); // Display the fetched characters
-            updateDisplayedIds(data.characters); // Update the list of displayed character IDs
-            createLoadMoreButton(); // Add "load more" button if needed
+            totalCharacters = data.total;
+            displayCharacters(data.characters, searchQuery);
+            createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
-}
-
-// Function to update the list of displayed character IDs
-function updateDisplayedIds(characters) {
-    // Add the IDs of the newly displayed characters to the displayedCharacterIds array
-    characters.forEach(character => {
-        if (!displayedCharacterIds.includes(character.id)) {
-            displayedCharacterIds.push(character.id);
-        }
-    });
 }
 
 function displayCharacters(characters, searchQuery) {
