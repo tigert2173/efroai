@@ -560,3 +560,57 @@ footer p {
         opacity: 0.5;
     }
 }
+/* Basic reset for the select element */
+#sort-select {
+    padding: 10px 15px; /* Add some padding for better spacing */
+    font-size: 16px; /* Adjust font size for readability */
+    border: 2px solid #333; /* Default border color */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark text color for contrast */
+    cursor: pointer; /* Change cursor to pointer when hovering */
+    transition: all 0.3s ease; /* Smooth transition for hover and focus effects */
+    width: 200px; /* Set a fixed width */
+}
+
+/* Change background color on hover */
+#sort-select:hover {
+    background-color: #e6e6e6; /* Slightly darker gray on hover */
+    border-color: #00a859; /* Green border on hover */
+}
+
+/* Change background color when focused */
+#sort-select:focus {
+    background-color: #fff; /* White background on focus */
+    border-color: #00a859; /* Green border on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Style the option elements */
+#sort-select option {
+    padding: 10px; /* Add padding to options for a better look */
+    background-color: #fff; /* White background for options */
+    color: #333; /* Dark text color */
+}
+
+/* Apply custom green and orange colors */
+#sort-select option[value="date"] {
+    background-color: #00a859; /* Green background for "Sort by Date" */
+    color: white; /* White text */
+}
+
+#sort-select option[value="likes"] {
+    background-color: #ff6f00; /* Orange background for "Sort by Likes" */
+    color: white; /* White text */
+}
+
+/* Additional styling for the dropdown arrow */
+#sort-select {
+    -webkit-appearance: none; /* Remove default dropdown arrow for webkit browsers */
+    -moz-appearance: none; /* Remove default dropdown arrow for Firefox */
+    appearance: none; /* Remove default dropdown arrow for other browsers */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon points="5,7 10,12 15,7" fill="white"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the custom arrow */
+    background-size: 10px 5px; /* Adjust arrow size */
+}
