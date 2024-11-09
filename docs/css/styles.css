@@ -568,6 +568,7 @@ footer p {
     justify-items: start;  /* Align items to the start of the grid cell */
     align-items: center;
     width: 100%;
+    min-width: 150px;
     max-width: 500px;  /* Prevent the container from stretching too wide */
     margin: 0 auto;  /* Center the container horizontally */
 }
