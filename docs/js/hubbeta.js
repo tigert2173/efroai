@@ -84,7 +84,7 @@ function createLoadMoreButton() {
 }
 
 let typingTimer; 
-const doneTypingInterval = 5000; // time in ms (0.5 seconds)
+const doneTypingInterval = 500; // time in ms (0.5 seconds)
 
 document.getElementById('search-input').addEventListener('input', () => {
     clearTimeout(typingTimer);
