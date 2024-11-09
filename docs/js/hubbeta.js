@@ -39,6 +39,7 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
+
     if (currentPage === 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
     }
@@ -94,16 +95,21 @@ function displayCharacters(characters, searchQuery) {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src');
-                        console.log('Image URL:', imageUrl); // Debug the image URL
+                        console.log(`Loading image from: ${imageUrl}`); // Debug log
+
                         img.src = imageUrl; // Load the image by setting the src attribute
+                        
                         img.onload = () => {
                             spinner.remove(); // Remove spinner once image is loaded
+                            console.log(`Image loaded successfully: ${imageUrl}`);
                         };
+
                         img.onerror = () => {
                             spinner.remove(); // Remove spinner if image fails to load
-                            img.src = 'noimage.jpg'; // Fallback image
-                            img.alt = 'Image failed to load'; // Show fallback alt text
+                            img.alt = 'Image failed to load'; // Display an error message
+                            console.error(`Failed to load image: ${imageUrl}`);
                         };
+
                         observer.unobserve(img); // Stop observing the image once it is loaded
                     }
                 });
@@ -111,7 +117,7 @@ function displayCharacters(characters, searchQuery) {
 
             // Intersection Observer setup
             const observer = new IntersectionObserver(loadImage, {
-                rootMargin: '50px 0px', // Start loading the image when it’s within 50px of the viewport
+                rootMargin: '200px', // Start loading the image when it’s within 200px of the viewport
             });
 
             observer.observe(imgElement); // Start observing the image element
