@@ -40,11 +40,12 @@ function loadCharacters() {
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
+    let cardCounter; // Counter to keep track of the number of displayed cards
+
     if (currentPage == 1) {
         characterGrid.innerHTML = ''; // Clear the grid before adding new characters
         cardCounter = 0; // Counter to keep track of the number of displayed cards
     }
-    let cardCounter; // Counter to keep track of the number of displayed cards
 
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
