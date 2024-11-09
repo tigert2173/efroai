@@ -454,7 +454,7 @@ main {
 }
 
 /* Media Query for Small Screens */
-@media (max-width: 840px) {
+@media (max-width: 768px) {
     main {
         flex-direction: column; /* Stack layout on smaller screens */
     }
