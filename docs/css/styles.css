@@ -563,13 +563,20 @@ footer p {
 /* Container for both columns */
 .sort-search-container {
     display: grid;
-    grid-template-columns: auto auto;  /* Two columns, auto size based on content */
+    grid-template-columns: auto auto;  /* Two columns by default */
     gap: 16px;
     justify-items: start;  /* Align items to the start of the grid cell */
     align-items: center;
     max-width: 500px;  /* Set a maximum width to prevent stretching */
     width: 100%;
     margin: 0 auto;  /* Center the container horizontally */
+}
+
+/* Make the layout responsive for smaller screens */
+@media (max-width: 600px) {
+    .sort-search-container {
+        grid-template-columns: 1fr;  /* Stack into one column on small screens */
+    }
 }
 
 /* Styling for each column */
