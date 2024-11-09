@@ -291,15 +291,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
-        currentPage = 1;
-        loadCharacters(); // Reload characters based on the selected filter option
     });
 });
 
 // Function to filter characters based on search and filters
 function filterCharacters() {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
-
+    currentPage = 1;
+    loadCharacters(); // Reload characters based on the selected filter option
+    
     // Get checked filters
     const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
         .map(filter => filter.id);
