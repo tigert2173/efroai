@@ -15,7 +15,7 @@ let adExempt = false // Check if the user is Ad-Exempt
 
 let currentPage = 1;
 let totalCharacters = 0;
-const pageSize = 10;
+const pageSize = 20;
 
 let filterTerms = [];
 // Function to filter characters based on search and filters
