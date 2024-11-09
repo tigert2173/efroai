@@ -1,3 +1,5 @@
+const { load } = require("mime");
+
 const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
 
 // Function to decode JWT and check for the Ad-Exempt claim
@@ -291,8 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize filter event listeners
     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
         filter.addEventListener('change', filterCharacters);
-        characterGrid.innerHTML = ''; // Clear the grid before adding new characters
-
+        currentPage = 1; // Reset to the first page when searching
+        loadCharacters();
     });
 });
 
