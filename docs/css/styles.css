@@ -560,43 +560,54 @@ footer p {
         opacity: 0.5;
     }
 }
-/* Style the select dropdown */
+/* General styles for the select dropdown */
 #sort-select {
-    appearance: none; /* Remove default dropdown arrow */
-    -webkit-appearance: none; /* For Safari */
-    -moz-appearance: none; /* For Firefox */
-    padding: 10px 15px;
-    background-color: #2c6e4f; /* Green background */
+    appearance: none; /* Remove default dropdown appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #2a9d8f; /* Rich green background */
     color: #fff; /* White text */
-    border: 2px solid #f1a623; /* Orange border */
-    border-radius: 5px;
+    border: 2px solid #e76f51; /* Orange border */
+    border-radius: 8px; /* Rounded corners for a modern feel */
     font-size: 16px;
-    font-family: 'Arial', sans-serif;
-    transition: all 0.3s ease; /* Smooth transition for hover and focus states */
-    width: 200px; /* Set a fixed width */
+    font-family: 'Helvetica Neue', sans-serif; /* Clean, modern font */
+    padding: 12px 20px;
+    width: 220px; /* Set a reasonable width */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover and focus */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
 }
 
-/* Custom dropdown arrow */
+/* Add a custom arrow using the background image */
+#sort-select::-ms-expand {
+    display: none; /* Hide the default arrow in IE */
+}
+
 #sort-select::after {
-    content: '▼'; /* Custom arrow */
+    content: '';
     position: absolute;
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    pointer-events: none; /* Prevents interaction with the arrow */
-    color: #fff; /* White arrow */
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff; /* White arrow */
+    pointer-events: none; /* Disable pointer interaction */
 }
 
 /* Hover state */
 #sort-select:hover {
-    background-color: #258e61; /* Darker green on hover */
-    border-color: #ff8f29; /* Darker orange border on hover */
+    background-color: #21867a; /* Slightly darker green */
+    border-color: #f4a261; /* Lighter orange on hover */
 }
 
 /* Focus state */
 #sort-select:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: #ff8f29; /* Orange border on focus */
-    background-color: #258e61; /* Darker green background on focus */
+    outline: none; /* Remove the default focus outline */
+    border-color: #f4a261; /* Focus border color */
+    background-color: #21867a; /* Darker green on focus */
+    box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Add soft orange glow effect */
 }
 
