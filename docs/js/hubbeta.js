@@ -17,14 +17,12 @@ let currentPage = 1;
 let totalCharacters = 0;
 const pageSize = 20;
 
-function loadCharacters(reset = false) {
-    // If reset is true, clear current results and reset pagination
-    if (reset) {
-        currentPage = 1;
-        document.getElementById('character-grid').innerHTML = '';
-    }
+function loadCharacters() {
+    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
+    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
 
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${currentSortBy}&searchQuery=${encodeURIComponent(currentSearchQuery)}&filters=${JSON.stringify(currentFilters)}`)
+    // Pass the search query to the backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -33,8 +31,8 @@ function loadCharacters(reset = false) {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters);
-            createLoadMoreButton();
+            displayCharacters(data.characters, searchQuery); // Display the filtered characters
+            createLoadMoreButton(); // Create the "Load More" button if needed
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
@@ -234,19 +232,6 @@ document.getElementById('sort-select').addEventListener('change', () => {
 });
 
 
-document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-    filter.addEventListener('change', () => {
-        // Update currentFilters based on checked filters
-        currentFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-            .map(filter => filter.id);
-        loadCharacters(true); // Reset pagination and load new results
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadCharacters(true); // Initial load with reset
-});
-
 // Function to get a random ad interval between 5 and 10
 function getRandomAdInterval() {
     return Math.floor(Math.random() * (10 - 5 + 1)) + 5; // Returns a random number between 5 and 10
@@ -294,20 +279,20 @@ function openCharacterPage(characterId, uploader) {
     window.location.href = '/chat.html';
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     loadCharacters();
-//     // if (document.getElementById('search-bar')) {
-//     //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
-//     // }
-//     if (document.getElementById('character-form')) {
-//         document.getElementById('character-form').addEventListener('submit', uploadCharacter);
-//     }
+document.addEventListener('DOMContentLoaded', () => {
+    loadCharacters();
+    // if (document.getElementById('search-bar')) {
+    //     document.getElementById('search-bar').addEventListener('input', filterCharacters);
+    // }
+    if (document.getElementById('character-form')) {
+        document.getElementById('character-form').addEventListener('submit', uploadCharacter);
+    }
 
-//     // Initialize filter event listeners
-//     document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
-//         filter.addEventListener('change', filterCharacters);
-//     });
-// });
+    // Initialize filter event listeners
+    document.querySelectorAll('.filters input[type="checkbox"]').forEach(filter => {
+        filter.addEventListener('change', filterCharacters);
+    });
+});
 
 // Function to filter characters based on search and filters
 function filterCharacters() {
