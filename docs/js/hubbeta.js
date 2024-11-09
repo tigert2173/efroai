@@ -18,11 +18,15 @@ let totalCharacters = 0;
 const pageSize = 20;
 
 function loadCharacters() {
-    const sortBy = document.getElementById('sort-select').value; // Get sorting option from UI (likes or date)
-    const searchQuery = document.getElementById('search-input').value.toLowerCase(); // Get search query
+    const sortBy = document.getElementById('sort-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
 
-    // Pass the search query to the backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}`)
+    // Gather selected filters as an array
+    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
+        .map(filter => filter.id);
+
+    // Send search and filter parameters to backend
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${JSON.stringify(filters)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -31,11 +35,12 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery); // Display the filtered characters
-            createLoadMoreButton(); // Create the "Load More" button if needed
+            displayCharacters(data.characters, searchQuery);
+            createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
+
 
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
@@ -47,24 +52,7 @@ function displayCharacters(characters, searchQuery) {
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
- // Gather selected filters
- const selectedFilters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
- .map(filter => filter.id);
-
-// Filter characters based on search query and selected filters
-const filteredCharacters = characters.filter(character => {
- // Check if character matches search query
- const matchesSearch = character.name.toLowerCase().includes(searchQuery) ||
-                       character.chardescription.toLowerCase().includes(searchQuery);
- 
- // Check if character tags match any selected filter
- const matchesFilter = selectedFilters.length === 0 || 
-                       selectedFilters.some(filter => character.tags.includes(filter));
-
- return matchesSearch && matchesFilter;
-});
-
-filteredCharacters.forEach(character => {
+    characters.forEach(character => {
         // Filter characters based on the search query
         if (character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery)) {
             const card = document.createElement('div');
