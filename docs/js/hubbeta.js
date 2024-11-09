@@ -88,6 +88,7 @@ function displayCharacters(characters, searchQuery) {
             const imgElement = document.createElement('img');
             imgElement.alt = `${character.name} image`;
             imgElement.setAttribute('data-src', imageUrl);  // Store the image URL in a data attribute
+            console.log('Image URL:', imageUrl);
 
             // Lazy load the image when the card comes into view
             const loadImage = (entries, observer) => {
