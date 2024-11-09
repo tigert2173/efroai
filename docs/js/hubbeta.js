@@ -29,7 +29,8 @@ function loadMoreOnScroll() {
                 // If sentinel is in view and no request is already being made
                 isLoading = true;
                 currentPage++; // Increase the page number
-                loadMoreCharacters(); // Fetch and display more characters
+                loadCharacters(); // Load the next page of characters
+                loadMoreButton.remove(); // Remove the button after loading more
             }
         });
     }, {
@@ -229,27 +230,7 @@ function createAd() {
     }
 }
 
-function loadMoreCharacters() {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    const filters = Array.from(document.querySelectorAll('.filters input[type="checkbox"]:checked'))
-        .map(filter => filter.id) || [];
-    const sortBy = document.getElementById('sort-select').value;
 
-    // Call API to fetch more characters
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${encodeURIComponent(JSON.stringify(filters))}`)
-        .then(response => response.json())
-        .then(data => {
-            // Display new characters and stop loading state
-            displayCharacters(data.characters, searchQuery, filters);
-            isLoading = false; // Reset loading state
-        })
-        .catch(error => {
-            console.error('Error fetching more characters:', error);
-            isLoading = false; // Reset loading state on error
-        });
-}
-// Call this function on page load to start observing
-loadMoreOnScroll();
 
 function createLoadMoreButton() {
     const loadMoreButton = document.createElement('button');
