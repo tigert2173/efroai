@@ -73,34 +73,53 @@ main {
 /* Filters Section */
 .filters {
     flex: 0 0 200px; /* Fixed width for filters */
-    margin-right: 20px;
+    margin-right: 20px; /* Space between filters and character grid */
     background-color: rgb(30, 50, 50);
     border-radius: 10px;
     padding: 10px;
-    display: flex;
-    flex-wrap: wrap; /* Allow the filter items to wrap to the next line */
+    display: flex; /* Make filters section a flex container */
+    flex-direction: column; /* Stack filter categories vertically */
+    justify-content: flex-start; /* Align items to start (top of the container) */
 }
 
-/* Filter items inside the filters */
+/* Filter Container - Will allow 2 rows */
 .filters ul {
     list-style: none;
     padding: 0;
     margin-top: 20px;
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(2, 1fr); /* Split into 2 equal columns */
+    gap: 10px; /* Space between filter items */
+}
+
+/* Centering search and search order */
+.filter-search {
     display: flex;
-    flex-wrap: wrap; /* Wrap items */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-bottom: 20px; /* Space below search section */
 }
 
-.filters ul li {
-    margin-bottom: 15px;
-    flex-basis: calc(50% - 10px); /* Half width for each filter item, accounting for spacing */
-    margin-right: 10px; /* Space between items */
+.filter-search input,
+.filter-search select {
+    padding: 8px;
+    margin: 0 10px; /* Space between the search field and order dropdown */
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
-/* Adjust filter layout for smaller screens */
-@media (max-width: 768px) {
-    .filters ul li {
-        flex-basis: 100%; /* Stack filter items in single column on smaller screens */
-    }
+.filter-search button {
+    background-color: #ff9800; /* Orange button color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-search button:hover {
+    background-color: #fb8c00; /* Darker orange on hover */
 }
 
 /* Character Grid */
@@ -632,5 +651,4 @@ footer p {
     color: black;
     outline: none;
 }
-
 
