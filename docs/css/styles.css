@@ -610,4 +610,50 @@ footer p {
     background-color: #21867a; /* Darker green on focus */
     box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Add soft orange glow effect */
 }
+/* General styles for the search bar */
+#search-bar {
+    width: 100%; /* Full width of its container */
+    max-width: 350px; /* Limit the maximum width */
+    padding: 12px 20px; /* Ample padding for better comfort */
+    font-size: 16px; /* Slightly larger text for readability */
+    font-family: 'Helvetica Neue', sans-serif; /* Modern, clean font */
+    background-color: #2a9d8f; /* Green background */
+    border: 2px solid #e76f51; /* Orange border */
+    border-radius: 50px; /* Rounded corners for a smooth look */
+    color: #fff; /* White text */
+    outline: none; /* Remove default focus outline */
+    transition: all 0.3s ease-in-out; /* Smooth transition for focus and hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Focus state */
+#search-bar:focus {
+    border-color: #f4a261; /* Light orange border on focus */
+    background-color: #21867a; /* Darker green on focus */
+    box-shadow: 0 0 5px rgba(255, 165, 97, 0.8); /* Orange glow effect on focus */
+}
+
+/* Hover state */
+#search-bar:hover {
+    background-color: #21867a; /* Darker green on hover */
+    border-color: #f4a261; /* Lighter orange on hover */
+}
+
+/* Placeholder text styling */
+#search-bar::placeholder {
+    color: #fff; /* White placeholder text */
+    opacity: 0.8; /* Slightly dimmed placeholder text */
+}
+
+/* Add a custom search icon */
+#search-bar::before {
+    content: '\1F50D'; /* Unicode for magnifying glass */
+    font-size: 18px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff; /* White icon */
+    pointer-events: none;
+}
 
