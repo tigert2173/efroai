@@ -48,13 +48,13 @@ function filterCharacters() {
 function loadCharacters() {
     const sortBy = document.getElementById('sort-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    const searchType = document.getElementById('search-type-select').value;  // Get the search type
+    const searchMode = document.getElementById('search-type-select').value;  // Get the search type
 
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
     // Construct the URL with the searchType included
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&searchType=${searchType}`)
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&searchMode=${searchType}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
