@@ -51,20 +51,15 @@ function loadCharacters() {
     // Collect selected filters
     const filters = filterTerms.length > 0 ? encodeURIComponent(JSON.stringify(filterTerms)) : '';
 
-    // Construct the URL with the filters
     fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            totalCharacters = data.total;
-            displayCharacters(data.characters, searchQuery);
-            createLoadMoreButton();
-        })
-        .catch(error => console.error('Error fetching characters:', error));
+    .then(response => response.json())
+    .then(data => {
+        console.log('Data from backend:', data);  // Debugging backend data
+        totalCharacters = data.total;
+        displayCharacters(data.characters, searchQuery);
+        createLoadMoreButton();
+    })
+    .catch(error => console.error('Error fetching characters:', error));
 }
 
 function displayCharacters(characters, searchQuery) {
