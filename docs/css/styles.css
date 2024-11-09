@@ -70,26 +70,37 @@ main {
 }
 
 /* Filters Section */
+/* Filters Section */
 .filters {
     flex: 0 0 200px; /* Fixed width for filters */
-    margin-right: 20px; /* Space between filters and character grid */
+    margin-right: 20px;
     background-color: rgb(30, 50, 50);
     border-radius: 10px;
     padding: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Allow the filter items to wrap to the next line */
 }
 
-.filters h2 {
-    font-size: 24px;
-}
-
+/* Filter items inside the filters */
 .filters ul {
     list-style: none;
     padding: 0;
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Wrap items */
 }
 
 .filters ul li {
     margin-bottom: 15px;
+    flex-basis: calc(50% - 10px); /* Half width for each filter item, accounting for spacing */
+    margin-right: 10px; /* Space between items */
+}
+
+/* Adjust filter layout for smaller screens */
+@media (max-width: 768px) {
+    .filters ul li {
+        flex-basis: 100%; /* Stack filter items in single column on smaller screens */
+    }
 }
 
 /* Character Grid */
@@ -620,5 +631,29 @@ footer p {
     background-color: #33cc33;  /* Hover effect with green */
     color: black;
     outline: none;
+}
+
+/* Search and Search Order */
+.search-container {
+    display: flex;
+    justify-content: center; /* Centers the content horizontally */
+    align-items: center; /* Centers the content vertically */
+    gap: 20px; /* Space between search and order dropdown */
+    margin-top: 20px; /* Add spacing at the top */
+}
+
+/* Optional: Styling for individual search and order elements */
+.search-input, .order-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+.search-input:focus, .order-select:focus {
+    outline: none;
+    border-color: #fbbc04; /* Focus effect with yellow color */
 }
 
