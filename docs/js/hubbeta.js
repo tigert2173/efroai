@@ -26,7 +26,7 @@ function loadCharacters() {
         .map(filter => filter.id);
 
     // Send search and filter parameters to backend
-    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&tags=${JSON.stringify(filters)}`)
+    fetch(`${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${JSON.stringify(filters)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
