@@ -217,13 +217,13 @@
         </div>
         
         <label for="enter-send" class="send-on-enter-label">
-            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
             <span class="checkbox-text">Send on Enter</span>
         </label>
         
         <script>
         // Function to handle Enter key behavior
-        let sendOnEnter = false;
+        let sendOnEnter = true;
         
         function toggleEnterKey() {
             sendOnEnter = document.getElementById("enter-send").checked;
