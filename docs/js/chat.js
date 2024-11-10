@@ -192,11 +192,11 @@ function populateCharacterSettings() {
         // Populate each field with the character's data
         document.getElementById('user-name').value = userID || "{{user}}";
         // Uncomment the following lines to populate the rest of the fields
-        // document.getElementById('persona').value = characterData.persona;
-        // document.getElementById('context').value = characterData.context;
-        // document.getElementById('scenario').value = characterData.scenario;
-        // document.getElementById('greeting').value = characterData.greeting;
-        // document.getElementById('exampledialogue').value = characterData.exampledialogue;
+        document.getElementById('persona').value = characterData.persona;
+        document.getElementById('context').value = characterData.context;
+        document.getElementById('scenario').value = characterData.scenario;
+        document.getElementById('greeting').value = characterData.greeting;
+        document.getElementById('exampledialogue').value = characterData.exampledialogue;
 
         // Update settings
         settings.charname = characterData.charname;
