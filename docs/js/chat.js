@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     SettingsMaxTokensSlider.addEventListener('input', () => {
     SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
         // Here you can add code to handle the setting change
+        updateNegativePromptOptions(SettingsMaxTokensSlider.value);
+
         // For example, updating a global setting or sending it to a server
     });
 });
