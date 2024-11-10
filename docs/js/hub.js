@@ -69,12 +69,13 @@ function loadCharacters() {
         })
         .then(data => {
             totalCharacters = data.total;
+            adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
+            const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
             displayCharacters(data.characters, searchQuery);
 
             // Update the received character identifiers with the new ones
             const newCharacterIdentifiers = data.characters.map(character => `${character.uploader}:${character.id}`);
             receivedCharacterIdentifiers = [...receivedCharacterIdentifiers, ...newCharacterIdentifiers];  // Append the new identifiers
-
             createLoadMoreButton();
         })
         .catch(error => console.error('Error fetching characters:', error));
