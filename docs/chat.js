@@ -165,6 +165,7 @@ function populateCharacterSettings() {
 
         // Display the greeting as a bot message
         displayMessage(characterData.greeting, 'bot'); // Display greeting as bot message
+        loadCharacter();
     })
     .catch(error => {
         console.error('Error fetching character data:', error);
