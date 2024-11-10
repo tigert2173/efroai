@@ -192,6 +192,11 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
+            <div class="setting">
+                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
+                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
+                <span id="SettingsMaxTokensValue">256 Tokens</span>
+            </div>
 
 <!-- Negative Prompt dropdown menu -->
 <select id="negativePrompt">
@@ -226,12 +231,12 @@ tokenSlider.addEventListener("input", () => {
     updateNegativePromptOptions(maxTokens);
 });
 </script>
-            <label for="negativePrompt">Negative Prompt:</label>
+            <!-- <label for="negativePrompt">Negative Prompt:</label>
             <select id="negativePrompt">
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
                 <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-            </select>
+            </select> -->
 
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
@@ -301,11 +306,7 @@ tokenSlider.addEventListener("input", () => {
                 <label for="exampledialogue">Example Dialogue</label>
                 <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
             </div>
-            <div class="setting">
-                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
-                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
-                <span id="SettingsMaxTokensValue">256</span>
-            
+ 
                 <div class="setting">
                     <label for="model">Select Model</label>
                     <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
