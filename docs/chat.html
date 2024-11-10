@@ -222,11 +222,11 @@
     }
 
     // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 16);
+    updateNegativePromptOptions(tokenSlider.value - 32);
     
     // Event listener for the slider
     tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 16;
+        const maxTokens = tokenSlider.value - 32;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
         updateNegativePromptOptions(maxTokens);
     });
@@ -346,9 +346,11 @@
         <div id="expert-settings">
             <h3>Expert Settings</h3>
             <div class="setting">
-                <label for="appendNegativePrompt">Append Negative Prompt</label>
+                <label for="appendNegativePrompt">
+                    Append Negative Prompt (Makes it more aggressive)
+                </label>
                 <input type="checkbox" id="appendNegativePrompt">
-            </div>
+            </div>            
             
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
