@@ -31,7 +31,6 @@
     '::ffff:147.182.196.136' // /.env
 ]; 
 
-    // '69.174.135.234',
 
 // // Middleware to make URLs case-insensitive
 // app.use((req, res, next) => {
