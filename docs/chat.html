@@ -39,6 +39,54 @@
             .mobile-only-ad {
                 display: none;
             }
+            /* Custom checkbox styles */
+.checkbox-container {
+    margin-top: 15px;
+}
+
+.custom-checkbox-label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #333;
+}
+
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    background-color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-checkbox-label input[type="checkbox"]:checked + .custom-checkbox {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.custom-checkbox-label input[type="checkbox"]:checked + .custom-checkbox::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+/* Hover effects for checkbox */
+.custom-checkbox-label:hover .custom-checkbox {
+    border-color: #45a049;
+}
+
+.custom-checkbox-label:hover .custom-checkbox::before {
+    background-color: #45a049;
+}
           </style>
     </styles>
 </head>
@@ -152,14 +200,19 @@
 
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button onclick="regenerateMessage()">Regenerate Message</button>
+            <div class="button-container">
+                <button id="send-button" onclick="sendMessage()">Send</button>
+                <button onclick="regenerateMessage()">Regenerate Message</button>
+            </div>
+        
+            <div class="checkbox-container">
+                <label for="enter-send" class="custom-checkbox-label">
+                    <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" />
+                    <span class="custom-checkbox"></span> Send on Enter
+                </label>
+            </div>
         </div>
-        
-        <label for="enter-send">
-            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()"> Send on Enter
-        </label>
-        
+
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = false;
