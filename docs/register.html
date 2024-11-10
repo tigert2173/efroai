@@ -362,6 +362,16 @@
             return;
         }
 
+        if (username.includes("'")) {
+            errorMessage.textContent = 'Username cannot contain the "\'" symbol.';
+            return;
+        }
+
+        if (username.includes('"')) {
+            errorMessage.textContent = 'Username cannot contain the " symbol.';
+            return;
+        }
+
         // Ensure the username is not an email
         if (username.includes(' ')) {
             errorMessage.textContent = 'Username cannot contain spaces';
