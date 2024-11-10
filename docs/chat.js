@@ -253,6 +253,7 @@ function likeCharacter(characterId, uploader) {
 
 
 function loadCharacter(charName, listItem) {
+    const characterData = sessionStorage.getItem('chatbotCharacter_' + charName);
     if (characterData) {
         settings = JSON.parse(characterData);
         document.getElementById('persona').value = settings.persona;
@@ -299,7 +300,7 @@ function uploadCharacter() {
             }
         };
         reader.readAsText(file);
-        loadCharacter();
+      //  addNewCharacter();
     } else {
         alert('Please select a file to upload.');
     }
