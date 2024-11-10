@@ -223,13 +223,13 @@
 
     // Initial set-up
     updateNegativePromptOptions(tokenSlider.value - 16);
-
+    updateNegativePrompt();
     // Event listener for the slider
     tokenSlider.addEventListener("input", () => {
         const maxTokens = tokenSlider.value - 16;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
         updateNegativePromptOptions(maxTokens);
-        settings.negativePrompt = negativePromptSelect.value; // Update with current selected option
+        updateNegativePrompt();
     });
     </script>
                 <!-- <label for="negativePrompt">Negative Prompt:</label>
