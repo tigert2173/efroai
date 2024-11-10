@@ -173,22 +173,27 @@
     }
 </script>
 <script>
-    // Function to check for ad blocker
-    function detectAdBlocker() {
-        // Create a test image element
-        var img = new Image();
-        img.src = 'https://pagead2.googlesyndication.com/pagead/imgad?id=CAAQy5Z5y1cYwGoJ6gM1GQgPShTqlNTRx4WEJ8IY'; // A test image URL that is typically blocked
-        img.onload = function() {
-            // If the image loads, no ad blocker is detected
-            console.log('No ad blocker detected.');
-        };
-        img.onerror = function() {
-            // If the image fails to load, an ad blocker is likely active
-            document.getElementById('adBlockMessage').style.display = 'block';
-        };
-        // Append the image to the body (hidden)
-      //  document.body.appendChild(img);
-    }
+  // Function to check for ad blocker using an external script
+function detectAdBlocker() {
+    // Create a script element
+    var script = document.createElement('script');
+    script.src = 'https://a.magsrv.com/ad-provider.js'; // Use the URL of the ad-serving script
+    
+    // Event listener for when the script loads successfully
+    script.onload = function() {
+        // If the script loads, no ad blocker is detected
+        console.log('No ad blocker detected.');
+    };
+
+    // Event listener for when the script fails to load
+    script.onerror = function() {
+        // If the script fails to load, an ad blocker is likely active
+        document.getElementById('adBlockMessage').style.display = 'block';
+    };
+
+    // Append the script to the body (or head) of the document
+    document.body.appendChild(script);
+}
 
     // Run the detection function
     detectAdBlocker();
