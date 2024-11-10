@@ -27,7 +27,8 @@
     '85.31.47.61', //port scanning
     '::ffff:78.153.140.224', //crm/.env /cron/.env /cronlab/.env /css/.env /custom/.env /docker.env
     '::ffff:78.153.140.223', // /.env
-    '204.110.223.51' // SchoScure
+    '204.110.223.51', // SchoScure
+    '::ffff:147.182.196.136' // /.env
 ]; 
 
     // '69.174.135.234',
