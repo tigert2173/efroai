@@ -583,10 +583,10 @@ async function sendMessage() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
     }, 8000); // 8-second delay
-    
+
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
     const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
+    // const message = userInput.value.trim();
    // if (!message) return;
     if (!isResend) {
        // processMessageDataImportance();
