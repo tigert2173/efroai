@@ -40,25 +40,25 @@
                 display: none;
             }
             .send-options {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-            }
+    display: block;
+    margin-top: 10px;
+    padding-top: 10px;
+}
 
-            .checkbox-label {
-                font-size: 14px;
-                display: flex;
-                align-items: center;
-            }
+.checkbox-label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
 
-            .checkbox-label input {
-                margin-right: 8px;
-            }
+.checkbox-label input {
+    margin-right: 8px;
+}
 
-            .checkbox-label span {
-                color: #333;
-                font-weight: 400;
-            }
+.checkbox-label span {
+    color: #333;
+    font-weight: 400;
+}
           </style>
     </styles>
 </head>
@@ -176,6 +176,7 @@
                 <button id="send-button" onclick="sendMessage()">Send</button>
                 <button onclick="regenerateMessage()">Regenerate Message</button>
             </div>
+            <!-- Moved Send on Enter checkbox to the next line -->
             <div class="send-options">
                 <label for="enter-send" class="checkbox-label">
                     <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" />
@@ -183,7 +184,7 @@
                 </label>
             </div>
         </div>
-
+        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = false;
