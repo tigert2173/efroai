@@ -200,19 +200,14 @@
 
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <div class="button-container">
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
-        
-            <div class="checkbox-container">
-                <label for="enter-send" class="custom-checkbox-label">
-                    <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" />
-                    <span class="custom-checkbox"></span> Send on Enter
-                </label>
-            </div>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
         </div>
-
+        
+        <label for="enter-send">
+            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()"> Send on Enter
+        </label>
+        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = false;
