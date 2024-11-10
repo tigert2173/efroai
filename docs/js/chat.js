@@ -649,9 +649,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     return requestData;
 }
 
-// Example usage:
-const negativePromptText = "Do not talk about sexual topics or explicit content."; // Or dynamically retrieve this from settings
-const requestData = constructRequestData(messages, settings, negativePromptText);
+const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
