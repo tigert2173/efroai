@@ -570,8 +570,9 @@ const isFirstMessage = true;
 let isResend = false;
 async function sendMessage() {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
+    const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (message.trim() === "") return;
+    if (message.trim() === "") return;  // Don't send empty messages
 
     // Add logic to send the message
     console.log("Sending message:", message);
@@ -583,9 +584,9 @@ async function sendMessage() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
     }, 8000); // 8-second delay
-    
+
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
-    const userInput = document.getElementById('user-input');
+
    // if (!message) return;
     if (!isResend) {
        // processMessageDataImportance();
