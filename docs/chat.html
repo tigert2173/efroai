@@ -152,9 +152,34 @@
 
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button onclick="sendMessage()">Send</button>
+            <button id="send-button" onclick="sendMessage()" disabled>Send</button>
             <button onclick="regenerateMessage()">Regenerate Message</button>
+            <label for="enter-send">
+                <input type="checkbox" id="enter-send" onchange="toggleEnterKey()"> Send on Enter
+            </label>
         </div>
+        
+        <script>
+        // Function to handle Enter key behavior
+        let sendOnEnter = false;
+        
+        function toggleEnterKey() {
+            sendOnEnter = document.getElementById("enter-send").checked;
+        }
+        
+        // Listen for the Enter key to send the message if enabled
+        document.getElementById("user-input").addEventListener("keydown", function(event) {
+            if (sendOnEnter && event.key === "Enter") {
+                event.preventDefault(); // Prevent default behavior (new line)
+                sendMessage();
+            }
+        });
+        
+        // Function to simulate sending the message
+        let sendButtonDisabled = false;
+    
+        </script>
+        
            <!-- For ads mobile -->
           <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
             <ins class="eas6a97888e38" data-zoneid="5461560"></ins> 
