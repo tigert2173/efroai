@@ -203,6 +203,7 @@
         <option id="optionV3" selected>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV2">[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+        <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
     </select>
 
     <script>
@@ -211,14 +212,21 @@
     const negativePrompt = document.getElementById("negativePrompt");
     const optionV3 = document.getElementById("optionV3");
     const optionV2 = document.getElementById("optionV2");
+    const explicitEncourage = document.getElementById("explicitEncourage");
 
     // Function to update the options' values and text
     function updateNegativePromptOptions(maxTokens) {
         optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
         optionV3.textContent = `[Beta] Negative Prompt V3 (Token Limit: ${maxTokens})`;
 
+        
         optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
         optionV2.textContent = `[Beta] Negative Prompt V2 (Token Limit: ${maxTokens})`;
+        // New option to allow sexual content with token limits and natural endings
+   
+        explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
+        explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
+
     }
 
     // Initial set-up
