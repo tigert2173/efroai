@@ -477,7 +477,7 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #chat-container {
-        height: 300px; /* Adjust height for mobile */
+        height: 400px; /* Adjust height for mobile */
         padding: 15px; /* Adjust padding */
     }
 
