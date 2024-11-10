@@ -358,16 +358,16 @@
         
         <!-- Expert Settings Section -->
         <div id="expert-settings">
-            <h3>Expert Settings</h3>
+            <h3>Expert Settings</h3>            
+            <button id="toggleSettings">Toggle Character Information</button>
+            <!-- Expert settings go here -->
             <div class="setting">
                 <label for="appendNegativePrompt">
                     Append Negative Prompt (Makes it more aggressive)
                 </label>
                 <input type="checkbox" id="appendNegativePrompt">
-            </div>            
+            </div>     
             
-            <button id="toggleSettings">Toggle Character Information</button>
-            <!-- Expert settings go here -->
             <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
             <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
             <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span>
