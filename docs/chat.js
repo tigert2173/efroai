@@ -863,6 +863,7 @@ function displayMessage(content, sender, isFinal = false) {
         if (isFinal) {
             botMessages.push(currentBotMessageElement.innerHTML);
             currentBotMessageIndex = botMessages.length - 1;
+            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
         }
 
         // Update arrow states
@@ -873,8 +874,6 @@ function displayMessage(content, sender, isFinal = false) {
         messageElement.innerHTML = sanitizedContent;
         chatContainer.appendChild(messageElement);
     }
-
-    // chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
     //document.getElementById('advanced-debugging').value = chatContainer.textContent;
 
     //messagedataimportance.messagehistory = chatContainer.textContent;
