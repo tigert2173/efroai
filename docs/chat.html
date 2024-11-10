@@ -39,54 +39,66 @@
             .mobile-only-ad {
                 display: none;
             }
-            /* Custom checkbox styles */
-.checkbox-container {
-    margin-top: 15px;
-}
-
-.custom-checkbox-label {
-    font-size: 14px;
+            /* Style the label to align items in a modern way */
+.send-on-enter-label {
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #00FF80; /* Neon green for your site color */
+    transition: color 0.3s ease;
 }
 
-.custom-checkbox {
+/* Style the checkbox itself */
+.send-on-enter-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #4CAF50;
-    border-radius: 4px;
-    margin-right: 10px;
+    background-color: #1a1a1a; /* Dark background */
+    border-radius: 5px;
+    border: 2px solid #00FF80; /* Neon green border */
     position: relative;
-    background-color: #fff;
-    transition: background-color 0.3s, border-color 0.3s;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
 }
 
-.custom-checkbox-label input[type="checkbox"]:checked + .custom-checkbox {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+/* Add a modern checkmark */
+.send-on-enter-checkbox:checked {
+    background-color: #00FF80; /* Green background when checked */
+    border-color: #00FF80;
 }
 
-.custom-checkbox-label input[type="checkbox"]:checked + .custom-checkbox::before {
-    content: "";
+.send-on-enter-checkbox:checked::before {
+    content: '';
     position: absolute;
     left: 5px;
-    top: 5px;
-    width: 10px;
-    height: 10px;
-    background-color: #fff;
-    border-radius: 2px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
 }
 
-/* Hover effects for checkbox */
-.custom-checkbox-label:hover .custom-checkbox {
-    border-color: #45a049;
+/* Style the text next to the checkbox */
+.checkbox-text {
+    margin-left: 8px;
+    color: #00FF80; /* Match text with checkbox border */
+    transition: color 0.3s ease;
 }
 
-.custom-checkbox-label:hover .custom-checkbox::before {
-    background-color: #45a049;
+/* Hover effect for the label */
+.send-on-enter-label:hover .checkbox-text {
+    color: #FF9800; /* Orange on hover */
 }
+
+/* Hover effect for the checkbox */
+.send-on-enter-checkbox:hover {
+    border-color: #FF9800; /* Change border color on hover */
+}
+
           </style>
     </styles>
 </head>
@@ -204,8 +216,9 @@
             <button onclick="regenerateMessage()">Regenerate Message</button>
         </div>
         
-        <label for="enter-send">
-            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()"> Send on Enter
+        <label for="enter-send" class="send-on-enter-label">
+            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+            <span class="checkbox-text">Send on Enter</span>
         </label>
         
         <script>
