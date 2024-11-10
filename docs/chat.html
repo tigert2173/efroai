@@ -39,76 +39,6 @@
             .mobile-only-ad {
                 display: none;
             }
-            #input-container {
-    width: 80%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#user-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 15px;
-    resize: none;
-    background-color: #fff;
-}
-
-.button-container {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-    background-color: #45a049;
-}
-
-.send-options {
-    display: block;
-    margin-top: 10px;
-    padding-top: 10px;
-}
-
-.checkbox-label {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-}
-
-.checkbox-label input {
-    margin-right: 8px;
-}
-
-.checkbox-label span {
-    color: #333;
-    font-weight: 400;
-}
-
           </style>
     </styles>
 </head>
@@ -222,18 +152,13 @@ button:hover:not(:disabled) {
 
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <div class="button-container">
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
-            <!-- Moved Send on Enter checkbox to the next line -->
-            <div class="send-options">
-                <label for="enter-send" class="checkbox-label">
-                    <input type="checkbox" id="enter-send" onchange="toggleEnterKey()" />
-                    <span>Send on Enter</span>
-                </label>
-            </div>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
         </div>
+        
+        <label for="enter-send">
+            <input type="checkbox" id="enter-send" onchange="toggleEnterKey()"> Send on Enter
+        </label>
         
         <script>
         // Function to handle Enter key behavior
