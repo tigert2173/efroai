@@ -535,6 +535,7 @@ function updateNegativePrompt() {
     console.log("Here's the systemPrompt:", settings.systemPrompt); // Optional: for debugging
 }
 
+updateNegativePrompt();
 // // Set the initial value for systemPrompt
 // document.getElementById('systemPrompt').value = settings.systemPrompt;
 
