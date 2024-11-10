@@ -192,8 +192,8 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
-
             <label for="negativePrompt">Negative Prompt:</label>
+
             <!-- Negative Prompt dropdown menu -->
             <select id="negativePrompt">
                 <option value="">[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
@@ -202,6 +202,8 @@
             </select>
 
             <script>
+            const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+            const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
             const negativePrompt = document.getElementById("negativePrompt");
 
             // Function to update token-dependent options in the dropdown
