@@ -222,7 +222,7 @@ function updateNegativePromptOptions(maxTokens) {
 }
 
 // Initial set-up
-updateNegativePromptOptions(tokenSlider.value);
+updateNegativePromptOptions(tokenSlider.value - 16);
 
 // Event listener for the slider
 tokenSlider.addEventListener("input", () => {
