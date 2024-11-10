@@ -198,40 +198,40 @@
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
             </div>
 
-<!-- Negative Prompt dropdown menu -->
-<select id="negativePrompt">
-    <option id="optionV3">[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-    <option id="optionV2">[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
-    <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-</select>
+    <!-- Negative Prompt dropdown menu -->
+    <select id="negativePrompt">
+        <option id="optionV3" selected>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV2">[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+        <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+    </select>
 
-<script>
-const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
-const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
-const negativePrompt = document.getElementById("negativePrompt");
-const optionV3 = document.getElementById("optionV3");
-const optionV2 = document.getElementById("optionV2");
+    <script>
+    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
+    const negativePrompt = document.getElementById("negativePrompt");
+    const optionV3 = document.getElementById("optionV3");
+    const optionV2 = document.getElementById("optionV2");
 
-// Function to update the options' values and text
-function updateNegativePromptOptions(maxTokens) {
-    optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-    optionV3.textContent = `[Beta] Negative Prompt V3 (Token Limit: ${maxTokens})`;
+    // Function to update the options' values and text
+    function updateNegativePromptOptions(maxTokens) {
+        optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV3.textContent = `[Beta] Negative Prompt V3 (Token Limit: ${maxTokens})`;
 
-    optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
-    optionV2.textContent = `[Beta] Negative Prompt V2 (Token Limit: ${maxTokens})`;
-}
+        optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        optionV2.textContent = `[Beta] Negative Prompt V2 (Token Limit: ${maxTokens})`;
+    }
 
-// Initial set-up
-updateNegativePromptOptions(tokenSlider.value - 16);
+    // Initial set-up
+    updateNegativePromptOptions(tokenSlider.value - 16);
 
-// Event listener for the slider
-tokenSlider.addEventListener("input", () => {
-    const maxTokens = tokenSlider.value - 16;
-    tokenDisplay.textContent = `${maxTokens} Tokens`;
-    updateNegativePromptOptions(maxTokens);
-});
-</script>
-            <!-- <label for="negativePrompt">Negative Prompt:</label>
+    // Event listener for the slider
+    tokenSlider.addEventListener("input", () => {
+        const maxTokens = tokenSlider.value - 16;
+        tokenDisplay.textContent = `${maxTokens} Tokens`;
+        updateNegativePromptOptions(maxTokens);
+    });
+    </script>
+                <!-- <label for="negativePrompt">Negative Prompt:</label>
             <select id="negativePrompt">
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
