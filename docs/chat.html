@@ -203,6 +203,7 @@
         <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+        <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
         <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
     </select>
 
@@ -213,6 +214,7 @@
     const optionV3 = document.getElementById("optionV3");
     const optionV2 = document.getElementById("optionV2");
     const explicitEncourage = document.getElementById("explicitEncourage");
+    const skunkAnatomyFix = document.getElementById("skunkAnatomyFix");
 
     // Function to update the options' values and text
     function updateNegativePromptOptions(maxTokens) {
@@ -224,6 +226,10 @@
         optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
         // New option to allow sexual content with token limits and natural endings
    
+        // New option for skunk anatomy correction with humor
+        skunkAnatomyFix.value = `Ensure skunks' anatomy is accurate: spray comes from anal glands, and farts come from the anus. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        skunkAnatomyFix.textContent = `[Beta] Skunk Anatomy Fix (For Accuracy)`;
+
         explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
         explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
 
