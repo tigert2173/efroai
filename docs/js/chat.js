@@ -149,7 +149,6 @@ let settings = {
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.07,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
-    negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
     useExampleDialogue: true, // Set to true to enable, false to disable
