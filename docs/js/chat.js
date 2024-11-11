@@ -632,10 +632,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
 const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-// Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
-    // Console log for debugging
-    console.log("Messages: " + JSON.stringify(messages));
+// // Function to construct requestData with optional negative prompt
+// function constructRequestData(messages, settings, negativePromptText) {
+//     // Console log for debugging
+//     console.log("Messages: " + JSON.stringify(messages));
 
 //     // Construct the base requestData object
 //     const requestData = {
@@ -699,6 +699,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     return requestData;
 }
+
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
