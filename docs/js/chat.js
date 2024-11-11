@@ -631,50 +631,6 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
 const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-// Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
-    // Console log for debugging
-    console.log("Messages: " + JSON.stringify(messages));
-
-    // Check if the negative prompt should be appended to the last user message
-    if (appendNegativePrompt.checked) {
-        // Ensure negativePromptText is treated as a string
-        const negativePromptString = String(negativePromptText);
-
-        // Find the last user message
-        const lastUserMessage = messages.slice().reverse().find(msg => msg.role === "user");
-        if (lastUserMessage) {
-            // If lastUserMessage.content is an array, join it into a single string
-            if (Array.isArray(lastUserMessage.content)) {
-                lastUserMessage.content = lastUserMessage.content.join(" ");
-            }
-
-            // Append the negative prompt string to lastUserMessage.content
-            lastUserMessage.content += ` ${negativePromptString}`;
-        }
-    }
-
-    // Construct the base requestData object
-    const requestData = {
-        model: "nephra_v1.0.Q4_K_M.gguf",
-        n_predict: parseInt(settings.maxTokens, 10),
-        messages: [systemPrompt, ...messages],
-        stream: true,
-        temperature: settings.temperature,
-        prescence_penalty: settings.prescence_penalty,
-        frequency_penalty: settings.frequency_penalty,
-        repeat_penalty: settings.repeat_penalty,
-        min_p: settings.min_p,
-        top_k: settings.top_k,
-        top_p: settings.top_p,
-        t_max_predict_ms: 300000, // timeout after 5 minutes
-    };
-
-    // Debug output to verify requestData construction
-    console.log("Constructed requestData:", JSON.stringify(requestData));
-
-    return requestData;
-}
 
 // // Function to construct requestData with optional negative prompt
 // function constructRequestData(messages, settings, negativePromptText) {
@@ -707,32 +663,10 @@ function constructRequestData(messages, settings, negativePromptText) {
 
 //     return requestData;
 // }
-
-// Function to construct requestData with optional negative prompt
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
-
-    // Ensure negativePromptText is a string before appending it
-    const negativePromptString = negativePromptText ? String(negativePromptText) : "";
-
-    // Find the last user message
-    const lastUserMessage = messages.slice().reverse().find(msg => msg.role === "user");
-    if (lastUserMessage) {
-        // If lastUserMessage.content is an array, join it into a single string
-        if (Array.isArray(lastUserMessage.content)) {
-            lastUserMessage.content = lastUserMessage.content.join(" ");
-        }
-        
-        // If content is still not a string, convert it
-        if (typeof lastUserMessage.content !== 'string') {
-            lastUserMessage.content = String(lastUserMessage.content);
-        }
-
-        // Append the negative prompt string to lastUserMessage.content
-        lastUserMessage.textContent += ` ${negativePromptString}`;
-    }
 
     // Construct the base requestData object
     const requestData = {
@@ -750,12 +684,19 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Debug output to verify requestData construction
-    console.log("Constructed requestData:", JSON.stringify(requestData));
+    // Add the negative prompt to the last user message if the setting is enabled
+    if (appendNegativePrompt.checked && negativePromptText) {
+        // Find the last user message
+        const lastUserMessageIndex = messages.reverse().findIndex(message => message.role === "user");
+        
+        if (lastUserMessageIndex !== -1) {
+            // Append the negative prompt to the last user message
+            messages[messages.length - 1 - lastUserMessageIndex].content += ` ${negativePromptText}`;
+        }
+    }
 
     return requestData;
 }
-
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
