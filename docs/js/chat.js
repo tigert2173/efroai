@@ -655,13 +655,18 @@ async function sendMessage() {
         
             // Append the negative prompt to the last user's message if the setting is enabled
             if (appendNegativePrompt.checked && negativePromptText) {
-                // Find the last user message
-                const lastUserMessageIndex = messages.reverse().findIndex(message => message.role === "user");
-                
+                // Find the last user message (not assistant's message)
+                let lastUserMessageIndex = -1;
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    if (messages[i].role === "user") {
+                        lastUserMessageIndex = i;
+                        break;
+                    }
+                }
+        
                 if (lastUserMessageIndex !== -1) {
                     // Append the negative prompt text directly to the last user's message content
-                    const lastUserMessage = messages[messages.length - 1 - lastUserMessageIndex];
-                    lastUserMessage.content[0].text += ` ${negativePromptText}`;
+                    messages[lastUserMessageIndex].content[0].text += ` ${negativePromptText}`;
                 }
             }
         
