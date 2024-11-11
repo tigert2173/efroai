@@ -688,10 +688,16 @@ function constructRequestData(messages, settings, negativePromptText) {
     if (appendNegativePrompt.checked && negativePromptText) {
         // Find the last user message
         const lastUserMessageIndex = messages.reverse().findIndex(message => message.role === "user");
-        
+
         if (lastUserMessageIndex !== -1) {
-            // Append the negative prompt to the last user message
-            messages[messages.length - 1 - lastUserMessageIndex].content += ` ${negativePromptText}`;
+            // Append the negative prompt text to the content of the last user message
+            const userMessage = messages[messages.length - 1 - lastUserMessageIndex];
+            
+            if (typeof userMessage.content === 'string') {
+                userMessage.content += ` ${negativePromptText}`;
+            } else {
+                console.error("User message content is not a string:", userMessage);
+            }
         }
     }
 
