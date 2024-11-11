@@ -665,12 +665,13 @@ const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 // }
 
 // Function to construct requestData with optional negative prompt
+// Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
 
     // Check if the negative prompt should be appended to the last user message
-    if (appendNegativePrompt.checked && negativePromptText) {
+    if (appendNegativePrompt.checked && typeof negativePromptText === 'string') {
         // Find the last user message and append the negative prompt text to it
         const lastUserMessage = messages.slice().reverse().find(msg => msg.role === "user");
         if (lastUserMessage) {
@@ -699,6 +700,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     return requestData;
 }
+
 
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
