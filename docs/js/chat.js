@@ -632,42 +632,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
 const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-// // Function to construct requestData with optional negative prompt
-// function constructRequestData(messages, settings, negativePromptText) {
-//     // Console log for debugging
-//     console.log("Messages: " + JSON.stringify(messages));
-
-//     // Construct the base requestData object
-//     const requestData = {
-//         model: "nephra_v1.0.Q4_K_M.gguf",
-//         n_predict: parseInt(settings.maxTokens, 10),
-//         messages: [systemPrompt, ...messages],
-//         stream: true,
-//         temperature: settings.temperature,
-//         prescence_penalty: settings.prescence_penalty,
-//         frequency_penalty: settings.frequency_penalty,
-//         repeat_penalty: settings.repeat_penalty,
-//         min_p: settings.min_p,
-//         top_k: settings.top_k,
-//         top_p: settings.top_p,
-//         t_max_predict_ms: 300000, // timeout after 5 minutes
-//     };
-
-//     // Append the negative prompt if the setting is enabled
-//     if (appendNegativePrompt.checked && negativePromptText) {
-//         requestData.messages.push({
-//             role: "system",
-//             content: negativePromptText
-//         });
-//     }
-
-//     return requestData;
-// }
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
-    console.log("Negative Prompt Text: " + negativePromptText);
 
     // Construct the base requestData object
     const requestData = {
@@ -685,14 +653,14 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Check if negativePromptText is a valid string and append it to the last user message
-    if (appendNegativePrompt.checked && typeof negativePromptText === 'string' && negativePromptText.trim()) {
+    // Append the negative prompt to the last user's message if the setting is enabled
+    if (appendNegativePrompt.checked && negativePromptText) {
         // Find the last user message
         const lastUserMessageIndex = messages.reverse().findIndex(message => message.role === "user");
         
         if (lastUserMessageIndex !== -1) {
-            // Ensure the last user message is a string before appending the negative prompt
-            messages[messages.length - lastUserMessageIndex].content += ` ${negativePromptText}`;
+            // Append the negative prompt to the last user's message content
+            messages[messages.length - 1 - lastUserMessageIndex].text += ` ${negativePromptText}`;
         }
     }
 
