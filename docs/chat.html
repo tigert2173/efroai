@@ -622,78 +622,78 @@ function hideTooltip() {
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    // document.addEventListener('DOMContentLoaded', () => {
 
-    const hideNotification = getCookie('hideNotification');
+    // const hideNotification = getCookie('hideNotification');
 
-    // Get user device specifications and show notification if not hidden
-    if (!hideNotification) {
-        const userAgent = navigator.userAgent;
-        const screenWidth = screen.width;
-        const screenHeight = screen.height;
-        const colorDepth = screen.colorDepth;
-        const deviceMemory = navigator.deviceMemory || 'Unknown';
-        const cpuCores = navigator.hardwareConcurrency || 'Unknown';
+    // // Get user device specifications and show notification if not hidden
+    // if (!hideNotification) {
+    //     const userAgent = navigator.userAgent;
+    //     const screenWidth = screen.width;
+    //     const screenHeight = screen.height;
+    //     const colorDepth = screen.colorDepth;
+    //     const deviceMemory = navigator.deviceMemory || 'Unknown';
+    //     const cpuCores = navigator.hardwareConcurrency || 'Unknown';
 
-        console.log(`User Agent: ${userAgent}`);
-        console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
-        console.log(`Device Memory: ${deviceMemory} GB`);
-        console.log(`CPU Cores: ${cpuCores}`);
+    //     console.log(`User Agent: ${userAgent}`);
+    //     console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
+    //     console.log(`Device Memory: ${deviceMemory} GB`);
+    //     console.log(`CPU Cores: ${cpuCores}`);
 
-        // Example decision-making based on device specs
-        if (deviceMemory < 6) {
-            console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
-        } else {
-            console.log("Your device seems capable! Enjoy exploring our content.");
-        }
+    //     // Example decision-making based on device specs
+    //     if (deviceMemory < 6) {
+    //         console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
+    //     } else {
+    //         console.log("Your device seems capable! Enjoy exploring our content.");
+    //     }
 
-        // Check for dedicated GPU
-        checkGPU(cpuCores, deviceMemory);
-        }
-    });
+    //     // Check for dedicated GPU
+    //     checkGPU(cpuCores, deviceMemory);
+    //     }
+    // });
 
-    // Function to check for dedicated GPU and suggest local hosting
-    function checkGPU(cpuCores, deviceMemory) {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    // // Function to check for dedicated GPU and suggest local hosting
+    // function checkGPU(cpuCores, deviceMemory) {
+    //     const canvas = document.createElement('canvas');
+    //     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-        if (!gl) {
-            console.log('WebGL not supported');
-            return;
-        }
+    //     if (!gl) {
+    //         console.log('WebGL not supported');
+    //         return;
+    //     }
 
-        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
+    //     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    //     const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
 
-        console.log(`GPU Renderer: ${gpuRenderer}`);
+    //     console.log(`GPU Renderer: ${gpuRenderer}`);
 
-        // Check for specific keywords that may indicate a dedicated GPU
-        const dedicatedGPUKeywords = [
-            'nvidia', 'amd',
-            'geforce', 'tesla',
-        ];
+    //     // Check for specific keywords that may indicate a dedicated GPU
+    //     const dedicatedGPUKeywords = [
+    //         'nvidia', 'amd',
+    //         'geforce', 'tesla',
+    //     ];
 
-        const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
-        const hasHighCores = cpuCores > 10;
-        const hasEnoughMemory = deviceMemory >= 6;
+    //     const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
+    //     const hasHighCores = cpuCores > 10;
+    //     const hasEnoughMemory = deviceMemory >= 6;
 
-        if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show'); // Add class to show notification
+    //     if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
+    //         const notification = document.getElementById('notification');
+    //         notification.classList.add('show'); // Add class to show notification
             
-            // Optional: Automatically hide the notification after a few seconds
-            setTimeout(() => {
-                notification.classList.add('fade-out'); // Add fade-out class
-            }, 30500); // Start fade out after 5 seconds
+    //         // Optional: Automatically hide the notification after a few seconds
+    //         setTimeout(() => {
+    //             notification.classList.add('fade-out'); // Add fade-out class
+    //         }, 30500); // Start fade out after 5 seconds
 
-            // Hide it completely after the fade-out animation
-            setTimeout(() => {
-                notification.style.display = 'none'; // Hide it after fading out
-            }, 30500); // Adjust timing to match the fade-out duration
-        } else {
-            console.log('User does not meet the criteria for local hosting suggestion.');
-        }
-    }
+    //         // Hide it completely after the fade-out animation
+    //         setTimeout(() => {
+    //             notification.style.display = 'none'; // Hide it after fading out
+    //         }, 30500); // Adjust timing to match the fade-out duration
+    //     } else {
+    //         console.log('User does not meet the criteria for local hosting suggestion.');
+    //     }
+    // }
 
     // Close button functionality
     document.getElementById('closeButton').addEventListener('click', () => {
