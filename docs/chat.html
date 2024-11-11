@@ -291,12 +291,14 @@
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
         <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
         <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
+        <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
     </select>
 
     <script>
     const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
     const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
     const negativePrompt = document.getElementById("negativePrompt");
+    const optionV4 = document.getElementById("optionV4");
     const optionV3 = document.getElementById("optionV3");
     const optionV2 = document.getElementById("optionV2");
     const explicitEncourage = document.getElementById("explicitEncourage");
@@ -319,14 +321,18 @@
         explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
         explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
 
+        optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. Ensure the response ends in a natural way without cut-off, even when reaching the token limit. Never repeat the last generation.`;
+        optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
+
+
     }
 
     // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 32);
+    updateNegativePromptOptions(tokenSlider.value - 48);
     
     // Event listener for the slider
     tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 32;
+        const maxTokens = tokenSlider.value - 48;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
         updateNegativePromptOptions(maxTokens);
     });
