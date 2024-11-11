@@ -718,7 +718,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Find the last user message and append the negative prompt text to it
         const lastUserMessage = messages.slice().reverse().find(msg => msg.role === "user");
         if (lastUserMessage) {
-            lastUserMessage.content += ` ${negativePromptText}`;
+            lastUserMessage += ` ${negativePromptText}`;
         }
     }
 
