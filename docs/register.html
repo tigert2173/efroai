@@ -428,6 +428,7 @@
 
             if (response.status === 201) {
                 alert(result.message); // Registration successful
+                window.location.href = 'login.html'; // Redirect to timeout page
                 document.getElementById('registerForm').reset();
             } else {
                 // Handle different error scenarios based on backend response
