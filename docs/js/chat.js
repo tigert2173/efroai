@@ -731,7 +731,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         }
 
         // Append the negative prompt string to lastUserMessage.content
-        lastUserMessage.content += ` ${negativePromptString}`;
+        lastUserMessage.textContent += ` ${negativePromptString}`;
     }
 
     // Construct the base requestData object
