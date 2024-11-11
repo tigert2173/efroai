@@ -667,6 +667,7 @@ const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 function constructRequestData(messages, settings, negativePromptText) {
     // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
+    console.log("Negative Prompt Text: " + negativePromptText);
 
     // Construct the base requestData object
     const requestData = {
@@ -684,14 +685,14 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Add the negative prompt to the last user message if the setting is enabled
-    if (appendNegativePrompt.checked && negativePromptText) {
+    // Check if negativePromptText is a valid string and append it to the last user message
+    if (appendNegativePrompt.checked && typeof negativePromptText === 'string' && negativePromptText.trim()) {
         // Find the last user message
         const lastUserMessageIndex = messages.reverse().findIndex(message => message.role === "user");
         
         if (lastUserMessageIndex !== -1) {
-            // Append the negative prompt to the last user message
-            messages[messages.length - 1 - lastUserMessageIndex].content += ` ${negativePromptText}`;
+            // Ensure the last user message is a string before appending the negative prompt
+            messages[messages.length - lastUserMessageIndex].content += ` ${negativePromptText}`;
         }
     }
 
