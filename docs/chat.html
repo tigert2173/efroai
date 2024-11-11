@@ -328,11 +328,11 @@
     }
 
     // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 48);
+    updateNegativePromptOptions(tokenSlider.value - 32);
     
     // Event listener for the slider
     tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 48;
+        const maxTokens = tokenSlider.value - 32;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
         updateNegativePromptOptions(maxTokens);
     });
