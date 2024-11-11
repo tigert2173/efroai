@@ -637,11 +637,20 @@ function constructRequestData(messages, settings, negativePromptText) {
     console.log("Messages: " + JSON.stringify(messages));
 
     // Check if the negative prompt should be appended to the last user message
-    if (appendNegativePrompt.checked && typeof negativePromptText === "string") {
-        // Find the last user message and append the negative prompt text to it
+    if (appendNegativePrompt.checked) {
+        // Ensure negativePromptText is treated as a string
+        const negativePromptString = String(negativePromptText);
+
+        // Find the last user message
         const lastUserMessage = messages.slice().reverse().find(msg => msg.role === "user");
         if (lastUserMessage) {
-            lastUserMessage.content += ` ${negativePromptText}`;
+            // If lastUserMessage.content is an array, join it into a single string
+            if (Array.isArray(lastUserMessage.content)) {
+                lastUserMessage.content = lastUserMessage.content.join(" ");
+            }
+
+            // Append the negative prompt string to lastUserMessage.content
+            lastUserMessage.content += ` ${negativePromptString}`;
         }
     }
 
