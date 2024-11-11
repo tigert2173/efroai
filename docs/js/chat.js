@@ -665,8 +665,13 @@ async function sendMessage() {
                 }
         
                 if (lastUserMessageIndex !== -1) {
-                    // Append the negative prompt text directly to the last user's message content
-                    messages[lastUserMessageIndex].content[0].text += ` ${negativePromptText}`;
+                    const lastUserMessage = messages[lastUserMessageIndex];
+        
+                    // Check if the negative prompt is already in the message
+                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                        // Append the negative prompt text directly to the last user's message content
+                        lastUserMessage.content[0].text += ` ${negativePromptText}`;
+                    }
                 }
             }
         
