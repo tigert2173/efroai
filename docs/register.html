@@ -384,11 +384,13 @@
             return;
         }
 
-        // Password requirements: at least 8 characters, one uppercase, one lowercase, one number, one special character, and max 32 characters
-        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{10,32}$/;
+        // // Password requirements: at least 8 characters, one uppercase, one lowercase, one number, one special character, and max 32 characters
+        // const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{10,32}$/;
+        // Password requirements: exactly 10 characters, allowing uppercase, lowercase, digits, and specific special characters
+        const passwordRequirements = /^[A-Za-z\d@$!%*?&._\-\+]{10}$/;
 
         // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -)
-        const allowedCharacters = /^[A-Za-z\d@$!%*?&._-]+$/;
+        const allowedCharacters = /^[A-Za-z\d@$!%*?&._\-\+]+$/;
         // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -, +)
 
         const colorArray = ['#ff9933', '#33cc33', '#3399ff', '#9933ff', '#ff33cc']; // Array of colors
