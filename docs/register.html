@@ -405,11 +405,11 @@
             return;
         }
 
-        // Check if the password meets the requirements
-        if (!passwordRequirements.test(password)) {
-            errorMessage.textContent = 'Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
-            return;
-        }
+        // // Check if the password meets the requirements
+        // if (!passwordRequirements.test(password)) {
+        //     errorMessage.textContent = 'Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
+        //     return;
+        // }
 
         // If all checks pass, you can proceed to register the user.
         console.log("Registering user:", username, role);
