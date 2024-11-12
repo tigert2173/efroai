@@ -388,10 +388,8 @@
         const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{10,32}$/;
 
         // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -)
-       // const allowedCharacters = /^[A-Za-z\d@$!%*?&._-]+$/;
-        // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -, +)// Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -, +)
-        const allowedCharacters = /^[A-Za-z\d@$!%*?&._\-\+]+$/;
-
+        const allowedCharacters = /^[A-Za-z\d@$!%*?&._-]+$/;
+        // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -, +)
 
         const colorArray = ['#ff9933', '#33cc33', '#3399ff', '#9933ff', '#ff33cc']; // Array of colors
 
