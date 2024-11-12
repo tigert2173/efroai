@@ -385,7 +385,7 @@
         }
 
         // Password requirements: at least 8 characters, one uppercase, one lowercase, one number, one special character, and max 32 characters
-        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,32}$/;
+        const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{10,32}$/;
 
         // Allowed characters: uppercase, lowercase, digits, and specific special characters (@, $, !, %, *, ?, &, ., _, -)
         const allowedCharacters = /^[A-Za-z\d@$!%*?&._-]+$/;
@@ -407,7 +407,7 @@
 
         // Check if the password meets the requirements
         if (!passwordRequirements.test(password)) {
-            errorMessage.textContent = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
+            errorMessage.textContent = 'Password must be at least 10 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
             return;
         }
 
