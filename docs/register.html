@@ -476,7 +476,7 @@ function updatePasswordStrength(password) {
     const strengthBar = document.getElementById('strength-bar');
     
     let strength = 0;
-    let minLengthValid = password.length >= 8;
+    let minLengthValid = password.length >= 10;
     let maxLengthValid = password.length <= 32;
     let hasLowercase = /[a-z]/.test(password);
     let hasUppercase = /[A-Z]/.test(password);
