@@ -685,14 +685,14 @@ console.log("RequestData: ", requestData);
        // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
-        const response = await fetch("https://api.botbridge.net/api/send", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
-            },
-            body: JSON.stringify(requestData)
-        });
+        // const response = await fetch("https://api.botbridge.net/api/send", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
         
         const response = await fetch("https://epa-atlanta-samoa-postal.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
