@@ -639,9 +639,9 @@ async function sendMessage() {
         
             // Construct the base requestData object
             const requestData = {
-                n_predict: parseInt(settings.maxTokens, 10),
+              //  n_predict: parseInt(settings.maxTokens, 10),
                 messages: [systemPrompt, ...messages],
-                max_tokens: 512,
+                max_completion_tokens: 10,
                 stream: true,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
