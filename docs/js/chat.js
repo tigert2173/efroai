@@ -639,7 +639,7 @@ async function sendMessage() {
         
             // Construct the base requestData object
             const requestData = {
-               // n_predict: parseInt(settings.maxTokens, 10),
+                n_predict: parseInt(settings.maxTokens, 10),
                 messages: [systemPrompt, ...messages],
               //  max_tokens: parseInt(settings.maxTokens, 10),
                 stream: true,
@@ -694,14 +694,14 @@ console.log("RequestData: ", requestData);
             body: JSON.stringify(requestData)
         });
         
-        // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         // Add any other headers that were in axios
-        //     },
-        //     body: JSON.stringify(requestData)
-        // });
+        const response = await fetch("https://epa-atlanta-samoa-postal.trycloudflare.com/v1/chat/completions", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers that were in axios
+            },
+            body: JSON.stringify(requestData)
+        });
         
         // const response = await fetch("https://bathroom-audit-symphony-que.trycloudflare.com/v1/chat/completions", {
         //     method: 'POST',
