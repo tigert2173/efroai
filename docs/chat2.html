@@ -10,9 +10,97 @@
       </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat - BotBridge.AI</title>
-    <link rel="stylesheet" href="css/chat2.css">
-    <link rel="stylesheet" href="css/menu2.02.css">
+    <title>Chat - EFRO.AI</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/menu2.0.css">
+
+    <styles>
+        <style>
+            /* Hide ad on screens smaller than 1119px */
+            .desktop-only-ad {
+                display: none;
+            }
+          
+             /* Show ad only on larger screens */
+             @media (min-width: 1120px) {
+              .desktop-only-ad {
+                 display: block;
+              }
+            }
+
+            /* Show ad only on smaller screens */
+            @media (max-width: 1119px) {
+              .mobile-only-ad {
+                 display: block;
+              }
+            }
+
+                /* Hide ad on screens larger than 1119px */
+            .mobile-only-ad {
+                display: none;
+            }
+            /* Style the label to align items in a modern way */
+.send-on-enter-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #00FF80; /* Neon green for your site color */
+    transition: color 0.3s ease;
+}
+
+/* Style the checkbox itself */
+.send-on-enter-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #1a1a1a; /* Dark background */
+    border-radius: 5px;
+    border: 2px solid #00FF80; /* Neon green border */
+    position: relative;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Add a modern checkmark */
+.send-on-enter-checkbox:checked {
+    background-color: #00b71c; /* Green background when checked */
+    border-color: #00b71c;
+}
+
+.send-on-enter-checkbox:checked::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Style the text next to the checkbox */
+.checkbox-text {
+    margin-left: 8px;
+    color: #00b71c; /* Match text with checkbox border */
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for the label */
+.send-on-enter-label:hover .checkbox-text {
+    color: #FF9800; /* Orange on hover */
+}
+
+/* Hover effect for the checkbox */
+.send-on-enter-checkbox:hover {
+    border-color: #FF9800; /* Change border color on hover */
+}
+
+          </style>
+    </styles>
 </head>
 <body>
 
@@ -22,19 +110,21 @@
 <header>
     <nav class="navbar">
         <div class="left-content">
-        
+            <a href="/" class="logo"> <!-- Make the logo clickable -->
+            <div class="logo">
+                <img src="logo.png" alt=" ">
+            </div>
+        </a>
         <a href="/" class="text">
-           <div class="text">
-                    <span class="letter letter-1">B</span>
-                    <span class="letter letter-2">o</span>
-                    <span class="letter letter-3">t</span>
-                    <span class="letter letter-4">B</span>
-                    <span class="letter letter-5">r</span>
-                    <span class="letter letter-6">i</span>
-                    <span class="letter letter-7">d</span>
-                    <span class="letter letter-8">g</span>
-                    <span class="letter letter-9">e</span>
-                </div>
+            <div class="text">
+                <span class="letter letter-1">E</span>
+                <span class="letter letter-2">F</span>
+                <span class="letter letter-3">R</span>
+                <span class="letter letter-4">O</span>
+                <span class="letter letter-5">.</span>
+                <span class="letter letter-6">A</span>
+                <span class="letter letter-7">I</span>
+            </div>
         </a>
         </div>
 <div class="right-content">
@@ -54,8 +144,9 @@
             <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
             <div class="dropdown-content">
                 <a href="rules.html">Rules</a>
-                <a href="join-our-team.html">Get Involved in the AI Scene</a>
-                <a href="/BotBridgeTales/">Old Stories Page</a>
+                <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                <a href="/EFROTales/">Old Stories Page</a>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
             </div>
         </li>
 
@@ -79,10 +170,6 @@
             </div>
         </li>
 
-        <!-- Contribute Button -->
-        <li>
-            <a href="contribute.html" class="nav-btn">Contribute</a>
-        </li>
     </ul>     
 
         <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
@@ -103,6 +190,7 @@
     </div>  
     </div>
 </div>
+
 </nav>
     </header>
     <div id="main-content">
@@ -110,11 +198,54 @@
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
+        <div class="desktop-only-ad">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+        <ins class="eas6a97888e17" data-zoneid="5461572"></ins> 
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        </div>
+
+        <div class="desktop-only-ad">
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+        <ins class="eas6a97888e17" data-zoneid="5461574"></ins> 
+        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        </div>
+
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button onclick="sendMessage()">Send</button>
+            <button id="send-button" onclick="sendMessage()">Send</button>
             <button onclick="regenerateMessage()">Regenerate Message</button>
         </div>
+        
+        <label for="enter-send" class="send-on-enter-label">
+            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+            <span class="checkbox-text">Send on Enter</span>
+        </label>
+        
+        <script>
+        // Function to handle Enter key behavior
+        let sendOnEnter = true;
+        
+        function toggleEnterKey() {
+            sendOnEnter = document.getElementById("enter-send").checked;
+        }
+        
+        // Listen for the Enter key to send the message if enabled
+        document.getElementById("user-input").addEventListener("keydown", function(event) {
+            if (sendOnEnter && event.key === "Enter") {
+                event.preventDefault(); // Prevent default behavior (new line)
+                sendMessage();
+            }
+        });
+        
+        // Function to simulate sending the message
+        let sendButtonDisabled = false;
+        </script>
+        
+           <!-- For ads mobile -->
+          <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+            <ins class="eas6a97888e38" data-zoneid="5461560"></ins> 
+            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+
             <div class="status">
                 <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
             </div>
@@ -141,14 +272,90 @@
         <div id="popup-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black; z-index: 1000;">
             <!-- The delete button will be dynamically added here -->
         </div>
-    
+        
         <div id="settings-container">
             <div class="setting">
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
+            <div class="setting">
+                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
+                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
+                <span id="SettingsMaxTokensValue">256 Tokens</span>
+            </div>
+
+    <!-- Negative Prompt dropdown menu -->
+    <select id="negativePrompt">
+        <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+        <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+        <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
+        <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
+        <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+    </select>
+
+    <script>
+    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
+    const negativePrompt = document.getElementById("negativePrompt");
+    const optionV4 = document.getElementById("optionV4");
+    const optionV3 = document.getElementById("optionV3");
+    const optionV2 = document.getElementById("optionV2");
+    const explicitEncourage = document.getElementById("explicitEncourage");
+    const skunkAnatomyFix = document.getElementById("skunkAnatomyFix");
+
+    // Function to update the options' values and text
+    function updateNegativePromptOptions(maxTokens) {
+        optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
+
+        
+        optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
+        // New option to allow sexual content with token limits and natural endings
+   
+        // New option for skunk anatomy correction with humor
+        skunkAnatomyFix.value = `Ensure skunks' anatomy is accurate: spray comes from anal glands, and farts come from the anus. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        skunkAnatomyFix.textContent = `[Beta] Skunk Anatomy Fix (For Accuracy)`;
+
+        explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
+        explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
+
+        optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. Ensure the response ends in a natural way without cut-off, even when reaching the token limit. Never repeat the last generation.`;
+        optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
+
+
+    }
+
+    // Initial set-up
+    updateNegativePromptOptions(tokenSlider.value - 32);
+    
+    // Event listener for the slider
+    tokenSlider.addEventListener("input", () => {
+        const maxTokens = tokenSlider.value - 32;
+        tokenDisplay.textContent = `${maxTokens} Tokens`;
+        updateNegativePromptOptions(maxTokens);
+    });
+    </script>
+                <!-- <label for="negativePrompt">Negative Prompt:</label>
+            <select id="negativePrompt">
+                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+                <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+            </select> -->
+
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details...">Spicy Roleplay v2</option>
+                <option value="Write {{char}} next response...">Default v2</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}...">Descriptive v2</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction...">Humor v2</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact...">Knowledge Sharing v2</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle...">Emotional Support v2</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about...">Educational v2</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}...">Advice v2</option>
+
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
                 <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
                 <option value="Write {{char}} next response.">Default</option>
@@ -182,6 +389,9 @@
             </select>
             <br>
             <br>
+            <label for="use-example-dialogue">
+                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta)
+            </label>            
             <div class="setting hidden">
                 <label for="persona">Character Persona</label>
                 <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
@@ -202,15 +412,11 @@
                 <label for="exampledialogue">Example Dialogue</label>
                 <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
             </div>
-            <div class="setting">
-                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
-                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
-                <span id="SettingsMaxTokensValue">256 Tokens</span>
-            
+ 
                 <div class="setting">
                     <label for="model">Select Model</label>
                     <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
-                        <option value="gastronova" data-description="BotBridgeAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
+                        <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
                         <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
                         <!-- Other options will be populated here -->
                     </select>
@@ -244,9 +450,17 @@
         
         <!-- Expert Settings Section -->
         <div id="expert-settings">
-            <h3>Expert Settings</h3>
+            <h3>Expert Settings</h3>   
+            <label for="appendNegativePrompt">
+                Append Negative Prompt (Makes it more aggressive)
+            </label>
+            <input type="checkbox" id="appendNegativePrompt"> 
+            <br>        
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
+
+        
+        
             <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
             <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
             <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span>
@@ -408,78 +622,78 @@ function hideTooltip() {
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    // document.addEventListener('DOMContentLoaded', () => {
 
-    const hideNotification = getCookie('hideNotification');
+    // const hideNotification = getCookie('hideNotification');
 
-    // Get user device specifications and show notification if not hidden
-    if (!hideNotification) {
-        const userAgent = navigator.userAgent;
-        const screenWidth = screen.width;
-        const screenHeight = screen.height;
-        const colorDepth = screen.colorDepth;
-        const deviceMemory = navigator.deviceMemory || 'Unknown';
-        const cpuCores = navigator.hardwareConcurrency || 'Unknown';
+    // // Get user device specifications and show notification if not hidden
+    // if (!hideNotification) {
+    //     const userAgent = navigator.userAgent;
+    //     const screenWidth = screen.width;
+    //     const screenHeight = screen.height;
+    //     const colorDepth = screen.colorDepth;
+    //     const deviceMemory = navigator.deviceMemory || 'Unknown';
+    //     const cpuCores = navigator.hardwareConcurrency || 'Unknown';
 
-        console.log(`User Agent: ${userAgent}`);
-        console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
-        console.log(`Device Memory: ${deviceMemory} GB`);
-        console.log(`CPU Cores: ${cpuCores}`);
+    //     console.log(`User Agent: ${userAgent}`);
+    //     console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
+    //     console.log(`Device Memory: ${deviceMemory} GB`);
+    //     console.log(`CPU Cores: ${cpuCores}`);
 
-        // Example decision-making based on device specs
-        if (deviceMemory < 6) {
-            console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
-        } else {
-            console.log("Your device seems capable! Enjoy exploring our content.");
-        }
+    //     // Example decision-making based on device specs
+    //     if (deviceMemory < 6) {
+    //         console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
+    //     } else {
+    //         console.log("Your device seems capable! Enjoy exploring our content.");
+    //     }
 
-        // Check for dedicated GPU
-        checkGPU(cpuCores, deviceMemory);
-        }
-    });
+    //     // Check for dedicated GPU
+    //     checkGPU(cpuCores, deviceMemory);
+    //     }
+    // });
 
-    // Function to check for dedicated GPU and suggest local hosting
-    function checkGPU(cpuCores, deviceMemory) {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    // // Function to check for dedicated GPU and suggest local hosting
+    // function checkGPU(cpuCores, deviceMemory) {
+    //     const canvas = document.createElement('canvas');
+    //     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-        if (!gl) {
-            console.log('WebGL not supported');
-            return;
-        }
+    //     if (!gl) {
+    //         console.log('WebGL not supported');
+    //         return;
+    //     }
 
-        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
+    //     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    //     const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
 
-        console.log(`GPU Renderer: ${gpuRenderer}`);
+    //     console.log(`GPU Renderer: ${gpuRenderer}`);
 
-        // Check for specific keywords that may indicate a dedicated GPU
-        const dedicatedGPUKeywords = [
-            'nvidia', 'amd',
-            'geforce', 'tesla',
-        ];
+    //     // Check for specific keywords that may indicate a dedicated GPU
+    //     const dedicatedGPUKeywords = [
+    //         'nvidia', 'amd',
+    //         'geforce', 'tesla',
+    //     ];
 
-        const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
-        const hasHighCores = cpuCores > 10;
-        const hasEnoughMemory = deviceMemory >= 6;
+    //     const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
+    //     const hasHighCores = cpuCores > 10;
+    //     const hasEnoughMemory = deviceMemory >= 6;
 
-        if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show'); // Add class to show notification
+    //     if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
+    //         const notification = document.getElementById('notification');
+    //         notification.classList.add('show'); // Add class to show notification
             
-            // Optional: Automatically hide the notification after a few seconds
-            setTimeout(() => {
-                notification.classList.add('fade-out'); // Add fade-out class
-            }, 30500); // Start fade out after 5 seconds
+    //         // Optional: Automatically hide the notification after a few seconds
+    //         setTimeout(() => {
+    //             notification.classList.add('fade-out'); // Add fade-out class
+    //         }, 30500); // Start fade out after 5 seconds
 
-            // Hide it completely after the fade-out animation
-            setTimeout(() => {
-                notification.style.display = 'none'; // Hide it after fading out
-            }, 30500); // Adjust timing to match the fade-out duration
-        } else {
-            console.log('User does not meet the criteria for local hosting suggestion.');
-        }
-    }
+    //         // Hide it completely after the fade-out animation
+    //         setTimeout(() => {
+    //             notification.style.display = 'none'; // Hide it after fading out
+    //         }, 30500); // Adjust timing to match the fade-out duration
+    //     } else {
+    //         console.log('User does not meet the criteria for local hosting suggestion.');
+    //     }
+    // }
 
     // Close button functionality
     document.getElementById('closeButton').addEventListener('click', () => {
@@ -522,7 +736,7 @@ function hideTooltip() {
 
 </script>
 <script>
-    const socket = new WebSocket('wss://BotBridgeai.net'); // Update with your domain
+    const socket = new WebSocket('wss://efroai.net'); // Update with your domain
 
     // Connection opened
     socket.addEventListener('open', (event) => {
