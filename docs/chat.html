@@ -253,7 +253,16 @@
                 <div id="speed-indicator" class="speed-indicator"></div>
             </div>
             <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
-           
+       
+            <!-- New button for 13B model page -->
+            <button id="model13B-button" onclick="goToModel13B()">Try Our 13B Model (may be slower)</button>
+
+            <script>
+                function goToModel13B() {
+                    window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
+                }
+            </script>
+
             <button id="save-button">Save Chat</button>
 
         <button id="download-button">Download Chat as JSON</button>
