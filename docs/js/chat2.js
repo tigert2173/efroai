@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     SettingsMaxTokensSlider.addEventListener('input', () => {
     SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
         // Here you can add code to handle the setting change
+        
         // For example, updating a global setting or sending it to a server
     });
 });
@@ -72,14 +73,17 @@ async function checkAPIStatus() {
 
         console.log(`Total Servers: ${totalServers}, Operational Servers: ${operationalServers}`);
 
-        const operationalPercentage = (operationalServers / totalServers) * 100;
+        const operationalPercentage = (operationalServers / totalServers) * 140;
         const speedIndicator = document.getElementById('speed-indicator');
         speedIndicator.style.width = `${operationalPercentage}%`;
 
         if (totalServers === 0) {
             statusTextElement.textContent = 'No Servers Listed';
             statusTextElement.className = 'status-code';
-        } else if (operationalPercentage === 100) {
+        } else if (operationalPercentage > 100) {
+            statusTextElement.textContent = 'All Systems Operational';
+            statusTextElement.className = 'status-operational';
+        } else if (operationalPercentage == 100) {
             statusTextElement.textContent = 'All Systems Operational';
             statusTextElement.className = 'status-operational';
         } else if (operationalPercentage >= 90) {
@@ -145,9 +149,9 @@ let settings = {
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.07,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
-    negativePrompt: "Do not talk about sexual topics or explicit content.",
     context: "",
     enablePreload: false, // Default to false if not provided
+    useExampleDialogue: true, // Set to true to enable, false to disable
     sessionId: 1,
 };
 
@@ -188,11 +192,11 @@ function populateCharacterSettings() {
         // Populate each field with the character's data
         document.getElementById('user-name').value = userID || "{{user}}";
         // Uncomment the following lines to populate the rest of the fields
-        // document.getElementById('persona').value = characterData.persona;
-        // document.getElementById('context').value = characterData.context;
-        // document.getElementById('scenario').value = characterData.scenario;
-        // document.getElementById('greeting').value = characterData.greeting;
-        // document.getElementById('exampledialogue').value = characterData.exampledialogue;
+        document.getElementById('persona').value = characterData.persona;
+        document.getElementById('context').value = characterData.context;
+        document.getElementById('scenario').value = characterData.scenario;
+        document.getElementById('greeting').value = characterData.greeting;
+        document.getElementById('exampledialogue').value = characterData.exampledialogue;
 
         // Update settings
         settings.charname = characterData.charname;
@@ -204,6 +208,7 @@ function populateCharacterSettings() {
 
         // Display the greeting as a bot message
         displayMessage(characterData.greeting, 'assistant', true); // Display greeting as bot message
+
     })
     .catch(error => {
         console.error('Error fetching character data:', error);
@@ -230,6 +235,11 @@ function updateSettings() {
 let lastBotMessage = ''; // Variable to store the last bot message
 let lastUserMessage = ''; // Variable to store the last user message
 
+// Function to toggle example dialogue
+function toggleExampleDialogue() {
+    settings.useExampleDialogue = !settings.useExampleDialogue;
+    console.log("Example Dialogue Feature Enabled:", settings.useExampleDialogue);
+}
 
 // Function to clear the content of the current bot message element
 function clearCurrentBotMessage() {
@@ -498,6 +508,10 @@ function getAllMessagesExceptLast() {
                 console.log("No matching config found.");
                 break;
         }
+
+        // Update the temperature input element based on the selected preset
+        document.getElementById('temperature').value = settings.temperature;
+
         console.log('Updated settings:', settings);
     }
 
@@ -514,11 +528,21 @@ function updateSystemPrompt() {
     console.log("Updated systemPrompt:", settings.systemPrompt); // Optional: for debugging
 }
 
+function updateNegativePrompt() {
+    const selectElement = document.getElementById('negativePrompt');
+    settings.negativePrompt = selectElement.value;
+    console.log("Updated negativePrompt:", settings.negativePrompt); // Optional: for debugging
+    console.log("Here's the systemPrompt:", settings.systemPrompt); // Optional: for debugging
+}
+
+updateNegativePrompt();
 // // Set the initial value for systemPrompt
 // document.getElementById('systemPrompt').value = settings.systemPrompt;
 
 // Add event listener for change events on the select element
 document.getElementById('systemPrompt').addEventListener('change', updateSystemPrompt);
+document.getElementById('negativePrompt').addEventListener('change', updateNegativePrompt);
+
 // let settings = {
 //     persona: '',
 //     context: '',
@@ -545,9 +569,24 @@ document.getElementById('systemPrompt').addEventListener('change', updateSystemP
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
-    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
+    if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
+    if (message.trim() === "") return;  // Don't send empty messages
+
+    // Add logic to send the message
+    console.log("Sending message:", message);
+
+    // Disable button and add delay
+    sendButtonDisabled = true;
+    document.getElementById("send-button").disabled = true;
+    setTimeout(function() {
+        sendButtonDisabled = false;
+        document.getElementById("send-button").disabled = false;
+    }, 8000); // 8-second delay
+
+    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
+
    // if (!message) return;
     if (!isResend) {
        // processMessageDataImportance();
@@ -570,7 +609,10 @@ async function sendMessage() {
         Persona: ${settings.persona}
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
-        ${settings.negativePrompt ? `Negative Prompt: ${settings.negativePrompt}` : ''}
+            ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
+            ? `Example Dialogue:\n${settings.exampledialogue}` 
+            : ''}
+        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
         `,
     };
     
@@ -587,19 +629,21 @@ async function sendMessage() {
 
         // Create the full prompt for the bot
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
-        console.log("Messages: " + JSON.stringify(messages));
-        const requestData = {
+        // Retrieve the negative prompt setting
+        const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+
+        // Function to construct requestData with optional negative prompt
+        function constructRequestData(messages, settings, negativePromptText) {
+            // Console log for debugging
+            console.log("Messages: " + JSON.stringify(messages));
+        
+            // Construct the base requestData object
+            const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
+                max_completion_tokens: 64,
                 messages: [systemPrompt, ...messages],
-                stream: true, // Enables streaming responses
-            
-
-                // The combined prompt for the AI
-               // prompt: `User: ${message} \nAssistant: ${messagedataimportance.messagehistorytrimmed} ${lastBotMsg}`,
-            
-                // AI parameters
-               // max_tokens: settings.maxTokens,
+                stream: true,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
                 frequency_penalty: settings.frequency_penalty,
@@ -607,9 +651,37 @@ async function sendMessage() {
                 min_p: settings.min_p,
                 top_k: settings.top_k,
                 top_p: settings.top_p,
-                t_max_predict_ms: 300000, //timeout after 5 minutes
-            };            
+                t_max_predict_ms: 300000, // timeout after 5 minutes
+            };
         
+            // Append the negative prompt to the last user's message if the setting is enabled
+            if (appendNegativePrompt.checked && negativePromptText) {
+                // Find the last user message (not assistant's message)
+                let lastUserMessageIndex = -1;
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    if (messages[i].role === "user") {
+                        lastUserMessageIndex = i;
+                        break;
+                    }
+                }
+        
+                if (lastUserMessageIndex !== -1) {
+                    const lastUserMessage = messages[lastUserMessageIndex];
+        
+                    // Check if the negative prompt is already in the message
+                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                        // Append the negative prompt text directly to the last user's message content
+                        lastUserMessage.content[0].text += `\n\nMessage Generation Guidelines: ${negativePromptText}`;
+                    }
+                }
+            }
+        
+            return requestData;
+        }
+        
+const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+console.log("RequestData: ", requestData);
+
        // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
@@ -1008,6 +1080,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             currentBotMessageElement.innerHTML =  `
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1015,7 +1088,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            
+            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
+
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
@@ -1041,6 +1115,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         messageElement.innerHTML = `
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         chatContainer.appendChild(messageElement);
     }
@@ -1053,6 +1128,39 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function deleteMessage(index) {
+    // Ask for user confirmation before deleting
+    const userConfirmed = confirm('Are you sure you want to delete this message?');
+    if (!userConfirmed) {
+        return; // Exit if the user cancels
+    }
+
+    // Remove the message from the messages array
+    messages.splice(index, 1);
+
+    // Remove the corresponding message element from the UI
+    const messageElements = document.querySelectorAll('.message');
+    messageElements[index].remove();
+
+    // Update the botMessages array if the message was from the assistant
+    if (messages[index]?.role === 'assistant') {
+        botMessages.splice(index, 1);
+    }
+
+    // Re-index the remaining messages and update the display
+    updateMessageIndexes();
+    console.log('Updated messages array after deletion:', messages);
+}
+
+function updateMessageIndexes() {
+    // Update the message indexes after deletion
+    const messageElements = document.querySelectorAll('.message');
+    messageElements.forEach((element, index) => {
+        element.querySelector('.edit-btn').onclick = function() { enableEditMode(this, index); };
+        element.querySelector('.delete-btn').onclick = function() { deleteMessage(index); };
+    });
 }
 
 function navigateBotMessages(direction) {
@@ -1135,6 +1243,7 @@ function editMessage(index) {
         messageElement.innerHTML = `
             ${newContent.replace(/\\n/g, '<br>').replace(/\n/g, '<br>')}
             <button class="edit-btn" onclick="editMessage(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         `;
         console.log('Updated message:', messages);
     }
@@ -1172,3 +1281,172 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAPIStatus();
     populateCharacterSettings();
 });
+
+
+const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+
+// Assuming you have the following variables available:
+const selectedCharacterId = sessionStorage.getItem('selectedCharacterId'); // Correct assignment
+const characterUploader = sessionStorage.getItem('characterUploader'); // Fetch the character uploader name from sessionStorage
+const characterName = 'Character Name'; // Replace with actual character name
+
+// Get the settings container
+const settingsContainer = document.getElementById('settings-container');
+
+// Create the button container
+const buttonContainer = document.createElement('div');
+buttonContainer.classList.add('button-container');
+
+// Create the View Character button
+const viewBtn = document.createElement('button');
+viewBtn.classList.add('view-btn');
+viewBtn.textContent = 'View Character';
+viewBtn.setAttribute('onclick', `viewCharacter('${selectedCharacterId}', '${characterUploader}')`);
+
+// Create the Like button
+const likeBtn = document.createElement('button');
+likeBtn.classList.add('like-btn');
+likeBtn.setAttribute('aria-label', `Like ${characterName}`);
+likeBtn.setAttribute('onclick', `likeCharacter('${selectedCharacterId}', '${characterUploader}')`);
+
+// Create the heart icon inside the like button
+const heartIcon = document.createElement('span');
+heartIcon.classList.add('heart-icon');
+heartIcon.setAttribute('role', 'img');
+heartIcon.setAttribute('aria-hidden', 'true');
+heartIcon.style.fontSize = '1.4em';
+heartIcon.textContent = '❤️';
+
+// Create the likes count span
+const likesCount = document.createElement('span');
+likesCount.classList.add('likes-count');
+likesCount.id = `likes-count-${selectedCharacterId}`; // Dynamic ID for likes count
+
+// Append the heart icon and likes count to the like button
+likeBtn.appendChild(heartIcon);
+likeBtn.appendChild(likesCount);
+
+// Function to update the like button appearance based on whether the character is liked
+async function updateLikeButton() {
+    const liked = await checkIfLiked(selectedCharacterId); // Await the result of checkIfLiked
+
+    if (liked) {
+        // If liked, change the heart icon and background color
+        heartIcon.textContent = '❤️'; // Filled heart for liked state
+        likeBtn.style.backgroundColor = '#ff5a5f'; // Example: Red for liked state
+    } else {
+        // If not liked, use an empty heart and default background color
+        heartIcon.textContent = '🤍'; // Empty heart for not liked state
+        likeBtn.style.backgroundColor = ''; // Reset to default background
+    }
+}
+
+async function fetchCharacterLikes(characterId, characterUploader) {
+    const token = localStorage.getItem('token'); // Retrieve the token
+    const userID = sessionStorage.getItem('userID'); // Get the current user's ID
+
+    try {
+        // Fetch the character data from the backend
+        const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Check for a successful response
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const character = await response.json();
+        console.log('Character Data:', character); // Log the full character data
+
+        const likedUsers = character.likes || [];
+        console.log('Liked Users:', likedUsers); // Log the likes array
+
+        return { likedUsers };
+    } catch (error) {
+        console.error('Error fetching character likes:', error);
+    }
+}
+
+
+// Check if the character is liked (based on the "likes" array)
+// Function to check if the character is liked by the current user
+async function checkIfLiked(selectedCharacterId) {
+    const characterData = await fetchCharacterLikes(selectedCharacterId, characterUploader); // Await the async function to get data
+
+    if (!characterData) {
+        console.error('No character data available');
+        return false;
+    }
+
+    const likedUsers = characterData.likedUsers || []; // Safely access the likedUsers array
+
+    // Check if the current user ID exists in the liked users array
+    const isLiked = likedUsers.includes(userID); // Returns true if the user has liked the character
+
+    return isLiked; // Return the like status
+}
+
+
+
+// Calling the function to check if the character is liked
+const isLiked = checkIfLiked(selectedCharacterId);
+console.log(`Is character ${selectedCharacterId} liked by user ${userID}? ${isLiked}`);
+
+// Function to handle like action
+function likeCharacter(characterId, uploader) {
+    const token = localStorage.getItem('token'); // Adjust the key based on your implementation
+
+    fetch(`${backendurl}/api/characters/${uploader}/${characterId}/like`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `${token}`
+        },
+        body: JSON.stringify({ characterId: characterId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to like character');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);
+        alert(data.message); // Success message
+
+        // Update the local storage to reflect the like status (example logic)
+        let likedCharacters = JSON.parse(localStorage.getItem('likedCharacters')) || [];
+        if (!likedCharacters.includes(characterId)) {
+            likedCharacters.push(characterId);
+            localStorage.setItem('likedCharacters', JSON.stringify(likedCharacters));
+        }
+
+        updateLikeButton(); // Update button appearance
+    })
+    .catch(error => {
+        console.error('Error liking character:', error);
+        alert('Failed to like character. Please try again.');
+    });
+}
+
+// Function to view character details
+function viewCharacter(characterId, uploader) {
+    window.location.href = `/view-character.html?uploader=${encodeURIComponent(uploader)}&characterId=${encodeURIComponent(characterId)}`;
+}
+
+// Initially update the like button appearance
+updateLikeButton();
+
+// Append the buttons to the button container
+buttonContainer.appendChild(viewBtn);
+buttonContainer.appendChild(likeBtn);
+
+// Prepend the button container to the settings container
+settingsContainer.insertBefore(buttonContainer, settingsContainer.firstChild);
