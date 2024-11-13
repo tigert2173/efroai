@@ -254,7 +254,14 @@
             </div> -->
             <p>Give me alot of time...</p>
             <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
-           
+            <!-- New button for 8B model page -->
+            <button id="model8B-button" onclick="goToModel8B()">We Recommend Our 8B Model (faster)</button>
+
+            <script>
+                function goToModel8B() {
+                    window.location.href = 'chat.html'; // replace with the actual URL for the 13B model page
+                }
+            </script>
             <button id="save-button">Save Chat</button>
 
         <button id="download-button">Download Chat as JSON</button>
