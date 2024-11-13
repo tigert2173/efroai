@@ -651,7 +651,7 @@ async function sendMessage() {
                 top_k: settings.top_k,
                 top_p: settings.top_p,
                 cache_prompt: true,
-                t_max_predict_ms: 300000, // timeout after 5 minutes
+                t_max_predict_ms: 900000, // timeout after 15 minutes
             };
         
             // Append the negative prompt to the last user's message if the setting is enabled
