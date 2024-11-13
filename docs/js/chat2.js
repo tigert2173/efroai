@@ -640,7 +640,7 @@ async function sendMessage() {
             // Construct the base requestData object
             const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
-                n_predict: parseInt(settings.maxTokens, 10),
+              //  n_predict: parseInt(settings.maxTokens, 10),
                 messages: [systemPrompt, ...messages],
                 max_tokens: 512,
                 stream: true,
