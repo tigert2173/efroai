@@ -642,7 +642,7 @@ async function sendMessage() {
                 model: "nephra_v1.0.Q4_K_M.gguf",
               //  n_predict: parseInt(settings.maxTokens, 10),
                 messages: [systemPrompt, ...messages],
-                max_tokens: 16,
+                max_completion_tokens: 16,
                 stream: true,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
