@@ -583,7 +583,7 @@ async function sendMessage() {
     setTimeout(function() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
-    }, 8000); // 8-second delay
+    }, 10000); // 10-second delay
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
