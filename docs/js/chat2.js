@@ -694,7 +694,7 @@ console.log("RequestData: ", requestData);
         //     body: JSON.stringify(requestData)
         // });
         
-        const response = await fetch("http:/localhost:8000/v1/chat/completions", {
+        const response = await fetch("https://dow-anchor-calculations-diana.trycloudflare.com/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
