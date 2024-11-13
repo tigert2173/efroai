@@ -641,7 +641,7 @@ async function sendMessage() {
             const requestData = {
                 model: "nephra_v1.0.Q4_K_M.gguf",
                 n_predict: parseInt(settings.maxTokens, 10),
-                max_completion_tokens: 64,
+                max_tokens: 16,
                 messages: [systemPrompt, ...messages],
                 stream: true,
                 temperature: settings.temperature,
