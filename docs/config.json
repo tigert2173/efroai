@@ -1,5 +1,5 @@
 {
     "maintenanceMode": false,
     "maintenanceUpcoming": true,
-    "maintenanceMessage": "We are currently running at a reduced capacity due to a performance issue affecting one of our servers. As part of our efforts to resolve this, we’re also overhauling our queue logic, which may cause generation behavior to be somewhat inconsistent. You may experience slower response times or limited functionality while we work to restore full service as quickly as possible. Thank you for your patience and understanding!"
+    "maintenanceMessage": "We are currently running at reduced capacity due to a recent performance issue affecting one of our servers, which is now partially resolved with a temporary patch. To fully optimize this, we have scheduled maintenance for November 20th, during which service may be limited for most of the day. Thank you for your patience as we work to ensure a smoother experience going forward!"
 }
