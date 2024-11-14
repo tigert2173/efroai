@@ -20,17 +20,24 @@
             border-radius: 10px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
         }
         audio {
             width: 100%;
             margin-top: 20px;
+        }
+        .preview-message {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #555;
         }
     </style>
 </head>
 <body>
 
 <div class="audio-container">
-    <h1>Listen to this audio</h1>
+    <p class="preview-message">This is a preview of what our AI Text-to-Voice Premium feature may sound like.</p>
     <audio controls>
         <source src="audio/4thofJuly.wav" type="audio/wav">
         Your browser does not support the audio element.
