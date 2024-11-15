@@ -30,6 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+document.getElementById('login-status').addEventListener('click', function () {
+    if (this.classList.contains('logged-out')) {
+        window.location.href = '/login.html'; // Redirect to the login page
+    }
+});
+
   // Check login status and display username
   document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token'); // Retrieve the JWT from session storage
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = getUsernameFromToken(token);
 
     if (isTokenExpired(token)) {
-        loginStatusElement.textContent = 'You are not logged in.';
+        loginStatusElement.textContent = 'Click to login.';
         loginStatusElement.className = 'login-status logged-out'; // Add logged-out styling
         loginPopup.style.display = 'flex'; // Show the login popup
     } else {
