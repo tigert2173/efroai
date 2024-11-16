@@ -1011,7 +1011,7 @@ function playSantaVoice() {
 function speakMessage(messageindex) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    message = messages[messageindex].text;
+    message = messages[messageindex].textContent;
     const lines = [
         { text: message, speaker: 'Daisy Studious' }
     ];
