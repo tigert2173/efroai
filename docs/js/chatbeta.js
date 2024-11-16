@@ -1009,7 +1009,7 @@ function playSantaVoice() {
 
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
-function speakMessage(index) {
+function speakMessage(message) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
     // Find the specific message from the messages array
@@ -1026,9 +1026,34 @@ function speakMessage(index) {
     while ((match = sentenceRegex.exec(textContent)) !== null) {
         sentences.push(match[0].trim());
     }
+
+    // Now we merge short sentences (less than 5 words) with the next sentence
+    let mergedSentences = [];
+    let currentSentence = '';
     
-    // Build the lines array from the split sentences
-    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+    sentences.forEach((sentence, index) => {
+        const wordCount = sentence.split(' ').length;
+        
+        // If sentence has less than 5 words, merge it with the next one
+        if (wordCount < 5 && index < sentences.length - 1) {
+            currentSentence += sentence + ' ' + sentences[index + 1];
+            sentences[index + 1] = ''; // Clear next sentence after merging
+        } else if (currentSentence) {
+            mergedSentences.push(currentSentence.trim());
+            currentSentence = ''; // Reset current sentence
+            mergedSentences.push(sentence); // Add the sentence as is
+        } else {
+            mergedSentences.push(sentence); // Add sentence directly if no merge
+        }
+    });
+
+    // Handle any remaining sentence in currentSentence
+    if (currentSentence) {
+        mergedSentences.push(currentSentence.trim());
+    }
+
+    // Build the lines array from the merged sentences
+    const lines = mergedSentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
 
     // Log lines for debugging
     console.log('Lines to speak:', lines);
@@ -1042,9 +1067,13 @@ function speakMessage(index) {
             lines.push({ text, speaker });
         }
     });
-    
-        // Final lines array for use
-        console.log('Final lines:', lines);
+
+    // Final lines array for use
+    console.log('Final lines:', lines);
+
+
+    // Check if lines are populated properly
+    console.log(lines);  // This will show the data you are sending
 
     if (lines.length > 0) {
         // Build query parameters
