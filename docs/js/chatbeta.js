@@ -1012,7 +1012,7 @@ function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
     const lines = [
-        { text: 'Test', speaker: 'Claribel Dervla' }
+        { text: content, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
