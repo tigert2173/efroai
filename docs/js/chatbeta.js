@@ -1020,7 +1020,6 @@ function speakMessage(message) {
         { text: content, speaker: 'Daisy Studious' }
     ];
     
-console.log(message);
     const lineGroups = document.querySelectorAll('.line-group');
     
     lineGroups.forEach(group => {
