@@ -1011,10 +1011,8 @@ function playSantaVoice() {
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    cleanedcontent = content.replace(/['"]/g, '');
-
     const lines = [
-        { text: cleanedcontent, speaker: 'Daisy Studious' }
+        { text: "I'm", speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
@@ -1216,7 +1214,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+             <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
 
             <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
 
