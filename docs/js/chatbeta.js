@@ -1139,7 +1139,7 @@ function speakMessage(content) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ lines: [{ text: content }] }),
+        body: JSON.stringify({ lines: [{ text: "hi" }] }),
     })
     .then(response => response.json())
     .then(data => {
