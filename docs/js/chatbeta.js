@@ -1011,75 +1011,62 @@ function playSantaVoice() {
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 function speakMessage(index) {
     // Send the message content to the backend to generate the speech
-    // const lines = [];
-
+        // const lines = [];
         // Find the specific message from the messages array
-        const messageContent = messages[index];
-        const textContent = messageContent.content[0].text; // Extract content from the message object
-        console.log('Speaking message:', textContent);
-    
-        // Regex for detecting dialogue followed by descriptors like "she says", "he exclaims", etc.
-        const dialogueWithDescriptorRegex = /"(.*?)" (\w+\s*\w*)/g;
-        let sentences = [];
-        let match;
-        let currentSentence = "";
-    
-        // Extract and merge dialogue with descriptors
-        while ((match = dialogueWithDescriptorRegex.exec(textContent)) !== null) {
-            const dialogue = match[1].trim(); // Extract dialogue part
-            const descriptor = match[2].trim(); // Extract the descriptor part
-            
-            // Combine dialogue and descriptor into one sentence
-            currentSentence = `"${dialogue}" ${descriptor}`;
-            
-            sentences.push(currentSentence);
-            currentSentence = "";  // Reset for next sentence
-        }
-    
-        // Now handle any remaining text that wasn't part of the dialogue
-        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-        while ((match = sentenceRegex.exec(textContent)) !== null) {
-            const sentence = match[0].trim();
-    
-            if (sentence.split(' ').length < 5) {
-                // If the sentence has less than 5 words, merge it with the next one
-                if (currentSentence) {
-                    currentSentence += " " + sentence;
-                } else {
-                    currentSentence = sentence;
-                }
+    const messageContent = messages[index];
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
+
+    // Split the content into sentences based on punctuation marks (.!?), but only if followed by a space or end of string.
+    // Also, merge short sentences (less than 8 words) with the next one
+    const sentenceRegex = /([^.!?]*[.!?])(?=\s|$)/g;
+    let sentences = [];
+    let match;
+    let currentSentence = "";
+
+    // Extract all sentences, handling the merge condition
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        const sentence = match[0].trim();
+
+        if (sentence.split(' ').length < 8) {
+            // If the sentence has less than 8 words, merge it with the next one
+            if (currentSentence) {
+                currentSentence += " " + sentence;
             } else {
-                if (currentSentence) {
-                    sentences.push(currentSentence);  // Push the accumulated sentence
-                    currentSentence = "";
-                }
-                sentences.push(sentence);  // Push the current sentence
+                currentSentence = sentence;
             }
-        }
-        
-        // If there is any remaining sentence after the loop
-        if (currentSentence) {
-            sentences.push(currentSentence);
-        }
-    
-        // Build the lines array from the split sentences
-        const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
-    
-        // Log lines for debugging
-        console.log('Lines to speak:', lines);
-    
-        // Collecting any additional lines from the line groups
-        const lineGroups = document.querySelectorAll('.line-group');
-        lineGroups.forEach(group => {
-            const text = group.querySelector('.textInput').value;
-            const speaker = group.querySelector('.speakerSelect').value;
-            if (text && speaker) {
-                lines.push({ text, speaker });
+        } else {
+            if (currentSentence) {
+                sentences.push(currentSentence);  // Push the accumulated sentence
+                currentSentence = "";
             }
-        });
-    
-        // Final lines array for use
-        console.log('Final lines:', lines);
+            sentences.push(sentence);  // Push the current sentence
+        }
+    }
+
+    // If there is any remaining sentence after the loop
+    if (currentSentence) {
+        sentences.push(currentSentence);
+    }
+
+    // Build the lines array from the split sentences
+    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+
+    // Log lines for debugging
+    console.log('Lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Final lines array for use
+    console.log('Final lines:', lines);
 
     if (lines.length > 0) {
         // Build query parameters
