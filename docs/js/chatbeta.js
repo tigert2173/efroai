@@ -1130,11 +1130,13 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
-}function speakMessage(content) {
+}
+
+function speakMessage(content) {
     const audio = new Audio();
     
     // Send a POST request to Flask backend to generate speech
-    fetch('/generate_voice', {
+    fetch('http://127:0.0.1:5000/generate_voice', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
