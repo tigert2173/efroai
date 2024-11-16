@@ -1011,63 +1011,62 @@ function playSantaVoice() {
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 function speakMessage(index) {
     // Send the message content to the backend to generate the speech
-        // Find the specific message from the messages array
-            const messageContent = messages[index];
-            const textContent = messageContent.content[0].text; // Extract content from the message object
-            console.log('Speaking message:', textContent);
-        
-            // Regex for splitting sentences based on punctuation marks (.!?), ensuring it doesn't skip sentences
-            const sentenceRegex = /([^.!?]*[.!?])(?=\s|$)/g;
-            let sentences = [];
-            let match;
-            let currentSentence = "";
-        
-            // Extract all sentences, handling the merge condition
-            while ((match = sentenceRegex.exec(textContent)) !== null) {
-                const sentence = match[0].trim();
-        
-                if (sentence.split(' ').length < 5) {
-                    // If the sentence has less than 5 words, merge it with the next one
-                    if (currentSentence) {
-                        currentSentence += " " + sentence;
-                    } else {
-                        currentSentence = sentence;
-                    }
-                } else {
-                    if (currentSentence) {
-                        sentences.push(currentSentence);  // Push the accumulated sentence
-                        currentSentence = "";
-                    }
-                    sentences.push(sentence);  // Push the current sentence
-                }
-            }
-        
-            // If there is any remaining sentence after the loop
+    const messageContent = messages[index];
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
+
+    // Define the regex to split the text into sentences while handling punctuation (.!?)
+    const sentenceRegex = /([^.!?]+[.!?])\s*/g; // This regex splits by punctuation followed by space or end of string
+    let sentences = [];
+    let match;
+    let currentSentence = "";
+
+    // Process the sentences using regex
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        const sentence = match[0].trim();  // Get the matched sentence
+
+        // Merge short sentences (< 5 words) with the next one
+        if (sentence.split(' ').length < 5) {
             if (currentSentence) {
-                sentences.push(currentSentence);
+                currentSentence += " " + sentence;  // Merge with the current sentence
+            } else {
+                currentSentence = sentence;  // Start a new sentence
             }
-        
-            // Log sentences to make sure nothing is skipped
-            console.log('Sentences to speak:', sentences);
-        
-            // Build the lines array from the sentences
-            const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
-        
-            // Log lines for debugging
-            console.log('Lines to speak:', lines);
-        
-            // Collecting any additional lines from the line groups
-            const lineGroups = document.querySelectorAll('.line-group');
-            lineGroups.forEach(group => {
-                const text = group.querySelector('.textInput').value;
-                const speaker = group.querySelector('.speakerSelect').value;
-                if (text && speaker) {
-                    lines.push({ text, speaker });
-                }
-            });
-        
-            // Final lines array for use
-            console.log('Final lines:', lines);
+        } else {
+            if (currentSentence) {
+                sentences.push(currentSentence);  // Push the merged sentence if it exists
+                currentSentence = "";  // Reset the current sentence accumulator
+            }
+            sentences.push(sentence);  // Push the long sentence
+        }
+    }
+
+    // If there is any remaining short sentence left unpushed, add it
+    if (currentSentence) {
+        sentences.push(currentSentence);
+    }
+
+    // Log sentences to check the results
+    console.log('Sentences to speak:', sentences);
+
+    // Build the lines array from the sentences
+    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+
+    // Log lines for debugging
+    console.log('Lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Final lines array for use
+    console.log('Final lines:', lines);
     
     if (lines.length > 0) {
         // Build query parameters
