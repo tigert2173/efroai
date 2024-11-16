@@ -1011,8 +1011,17 @@ function playSantaVoice() {
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
+    // Check if the content is an HTML element or raw text
+    let rawText = content;
+
+    // If the content is HTML, strip out the HTML tags and get raw text
+    if (content instanceof HTMLElement) {
+        rawText = content.textContent || content.innerText;
+    }
+
+
     const lines = [
-        { text: content, speaker: 'Daisy Studious' }
+        { text: rawText, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
