@@ -1013,7 +1013,7 @@ function speakMessage(content) {
     // const lines = [];
     console.log(content);
     const lines = [
-        { text: content, speaker: 'Daisy Studious' }
+        { text: `${content}`, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
