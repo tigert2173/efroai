@@ -1032,7 +1032,7 @@ function speakMessage(content) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
         console.log("Query Params:", queryParams);  // Log query params to verify
-        const eventSource = new EventSource(`/generate_voice_stream?${queryParams}`);
+        const eventSource = new EventSource(`http://127.0.0.1:5000/generate_voice_stream?${queryParams}`);
 
         let audioQueue = [];  // Queue to store audio sources
         let isPlaying = false; // Flag to check if audio is playing
