@@ -1213,6 +1213,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+                   <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+
             `;
 
             // Append message header to the chat container
