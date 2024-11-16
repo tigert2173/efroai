@@ -1019,10 +1019,9 @@ let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
-function speakMessage(currentBotMessageElement) {
+function speakMessage(message) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    message = currentBotMessageElement.textContent;
     const lines = [
         { text: message, speaker: 'Daisy Studious' }
     ];
