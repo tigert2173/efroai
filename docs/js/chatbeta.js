@@ -1011,17 +1011,9 @@ function playSantaVoice() {
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    // Check if the content is an HTML element or raw text
-    let rawText = content;
-
-    // If the content is HTML, strip out the HTML tags and get raw text
-    if (content instanceof HTMLElement) {
-        rawText = content.textContent || content.innerText;
-    }
-
 
     const lines = [
-        { text: rawText, speaker: 'Daisy Studious' }
+        { text: content, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
@@ -1200,7 +1192,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage('${content.textContent}')">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1223,7 +1215,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-            <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+            <button class="audio-btn" onclick="speakMessage('${content.textContent}')">Send to Audio</button>
             `;
 
             // Append message header to the chat container
@@ -1238,7 +1230,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage('${content.textContent}')">Send to Audio</button>
         `;
         chatContainer.appendChild(messageElement);
     }
