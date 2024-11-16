@@ -1016,7 +1016,7 @@ function speakMessage(index) {
         console.log('Speaking message:', textContent);
     
         // Define the regex for splitting sentences based on specific punctuation marks (".", "!", "?")
-        const sentenceRegex = /([A-Za-z0-9,;'\-“”!?\.\s]+[\.!?])(\s|$)/g;
+        const sentenceRegex = /([A-Za-z0-9;'\-“”!?\s]+[\.!?])(\s|\n)?/g;
         let sentences = [];
         let match;
         let currentSentence = "";
