@@ -1026,30 +1026,40 @@ let currentSentence = "";
 // Extract all sentences, handling the merge condition
 while ((match = sentenceRegex.exec(textContent)) !== null) {
     const sentence = match[0].trim();
+    console.log('Found sentence:', sentence);
 
     // If the sentence has less than 8 words, merge it with the next one
     if (sentence.split(' ').length < 8) {
         if (currentSentence) {
             currentSentence += " " + sentence; // Append to the existing sentence
+            console.log('Merged sentence:', currentSentence);
         } else {
             currentSentence = sentence; // Start with the current sentence
+            console.log('Starting new merged sentence:', currentSentence);
         }
     } else {
         if (currentSentence) {
             sentences.push(currentSentence);  // Push the merged sentence
+            console.log('Pushed merged sentence:', currentSentence);
             currentSentence = ""; // Reset for next sentence
         }
         sentences.push(sentence);  // Push the current sentence
+        console.log('Pushed sentence:', sentence);
     }
 }
 
 // If there is any remaining sentence after the loop (if currentSentence was not pushed)
 if (currentSentence) {
     sentences.push(currentSentence);
+    console.log('Pushed final merged sentence:', currentSentence);
 }
 
 // Build the lines array from the split sentences
-const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+const lines = sentences.map(sentence => {
+    const line = { text: sentence, speaker: 'Daisy Studious' };
+    console.log('Line to speak:', line);  // Log the line being added
+    return line;
+});
 
 // Log lines for debugging
 console.log('Lines to speak:', lines);
@@ -1061,6 +1071,7 @@ lineGroups.forEach(group => {
     const speaker = group.querySelector('.speakerSelect').value;
     if (text && speaker) {
         lines.push({ text, speaker });
+        console.log('Added additional line:', { text, speaker });
     }
 });
 
