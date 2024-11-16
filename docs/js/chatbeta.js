@@ -1012,12 +1012,12 @@ function playSantaVoice() {
 function speakMessage(message) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    const message = messages[index];
-    const content = message.content[0].text; // Extract content from the message object
-    console.log('Speaking message:', content);
+    const messagecontent = messages[index];
+    const textcontent = messagecontent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textcontent);
 
     const lines = [
-        { text: content, speaker: 'Daisy Studious' }
+        { text: textcontent, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
