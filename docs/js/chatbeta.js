@@ -1171,7 +1171,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
  // Prepare message object in the desired format
     const messageObject = {
         role: sender,
-        content: [{ type: 'text', text: content }]
+        content: [{ type: "text", "text": content }]
     };
 
     if (isLoading) {
