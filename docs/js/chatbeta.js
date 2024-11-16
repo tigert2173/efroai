@@ -1213,7 +1213,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-                   <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+            <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
 
             `;
 
