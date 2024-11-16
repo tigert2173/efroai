@@ -1194,7 +1194,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${currentBotMessageElement})">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${sanitizedContent})">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1219,7 +1219,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
              <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
 
-            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(${currentBotMessageElement}))">Send to Audio</button>
+            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(${sanitizedContent}))">Send to Audio</button>
 
             `;
 
