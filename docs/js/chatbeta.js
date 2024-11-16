@@ -1012,88 +1012,83 @@ function playSantaVoice() {
 function speakMessage(index) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-   // Find the specific message from the messages array
-   const messageContent = messages[index];
-   const textContent = messageContent.content[0].text; // Extract content from the message object
-   console.log('Speaking message:', textContent);
+    const messageContent = messages[index];
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
 
-   // Regular expression to match dialogue and the description that follows it
-   const dialogueRegex = /"([^"]+)"\s*(\w+)\s*(.*?)(?=\s*["\s]|$)/g;
+    const dialogueRegex = /"([^"]+)"\s*(\w+)\s*(.*?)(?=\s*["\s]|$)/g;
+    let sentences = [];
+    let match;
+    let currentSentence = "";
 
-   let sentences = [];
-   let match;
-   let currentSentence = "";
+    // Process the content for dialogue with descriptions
+    while ((match = dialogueRegex.exec(textContent)) !== null) {
+        const dialogue = match[1].trim(); // Dialogue part
+        const speaker = match[2].trim();  // Speaker (e.g., "she")
+        const description = match[3].trim(); // Description after the dialogue (e.g., "says in excitement")
 
-   // Process the content for dialogue with descriptions
-   while ((match = dialogueRegex.exec(textContent)) !== null) {
-       const dialogue = match[1].trim(); // Dialogue part
-       const speaker = match[2].trim();  // Speaker (e.g., "she")
-       const description = match[3].trim(); // Description after the dialogue (e.g., "says in excitement")
+        // Combine dialogue and description into one sentence
+        let fullSentence = `"${dialogue}" ${speaker} ${description}`;
+        console.log('Full sentence from dialogue:', fullSentence); // Debugging log
 
-       // Combine dialogue and description into one sentence
-       let fullSentence = `"${dialogue}" ${speaker} ${description}`;
+        // If the sentence is short (less than 5 words), merge it with the next
+        if (fullSentence.split(' ').length < 5) {
+            currentSentence += " " + fullSentence;
+        } else {
+            if (currentSentence) {
+                sentences.push(currentSentence);
+                currentSentence = "";
+            }
+            sentences.push(fullSentence);
+        }
+    }
 
-       // If the sentence is short (less than 5 words), merge it with the next
-       if (fullSentence.split(' ').length < 5) {
-           currentSentence += " " + fullSentence;
-       } else {
-           if (currentSentence) {
-               sentences.push(currentSentence);
-               currentSentence = "";
-           }
-           sentences.push(fullSentence);
-       }
-   }
+    // Now handle any remaining sentences that weren't captured in the above loop
+    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        const sentence = match[0].trim();
+        console.log('Captured sentence:', sentence); // Debugging log
 
-   // If any remaining sentence
-   if (currentSentence) {
-       sentences.push(currentSentence);
-   }
+        if (sentence.split(' ').length < 5) {
+            // If it's a short sentence, merge it with the previous one
+            if (currentSentence) {
+                currentSentence += " " + sentence;
+            } else {
+                currentSentence = sentence;
+            }
+        } else {
+            if (currentSentence) {
+                sentences.push(currentSentence);
+                currentSentence = "";
+            }
+            sentences.push(sentence);
+        }
+    }
 
-   // Now process the remaining parts of the text that aren't dialogues
-   const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-   while ((match = sentenceRegex.exec(textContent)) !== null) {
-       const sentence = match[0].trim();
-       
-       if (sentence.split(' ').length < 5) {
-           // If it's a short sentence, merge it with the previous one
-           if (currentSentence) {
-               currentSentence += " " + sentence;
-           } else {
-               currentSentence = sentence;
-           }
-       } else {
-           if (currentSentence) {
-               sentences.push(currentSentence);
-               currentSentence = "";
-           }
-           sentences.push(sentence);
-       }
-   }
+    // If any remaining sentence
+    if (currentSentence) {
+        sentences.push(currentSentence);
+    }
 
-   // If any remaining sentence
-   if (currentSentence) {
-       sentences.push(currentSentence);
-   }
+    // Log the sentences to check for skipped content
+    console.log('All sentences after processing:', sentences);
 
-   // Build the lines array from the sentences
-   const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+    // Build the lines array from the sentences
+    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
 
-   // Log lines for debugging
-   console.log('Lines to speak:', lines);
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
 
-   // Collecting any additional lines from the line groups
-   const lineGroups = document.querySelectorAll('.line-group');
-   lineGroups.forEach(group => {
-       const text = group.querySelector('.textInput').value;
-       const speaker = group.querySelector('.speakerSelect').value;
-       if (text && speaker) {
-           lines.push({ text, speaker });
-       }
-   });
+    // Log final lines for debugging
+    console.log('Final lines:', lines);
 
-   // Final lines array for use
-   console.log('Final lines:', lines);
 
     // Check if lines are populated properly
     console.log(lines);  // This will show the data you are sending
