@@ -1012,8 +1012,12 @@ function playSantaVoice() {
 function speakMessage(message) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
+    const message = messages[index];
+    const content = message.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', content);
+
     const lines = [
-        { text: message, speaker: 'Daisy Studious' }
+        { text: content, speaker: 'Daisy Studious' }
     ];
     
 console.log(message);
@@ -1193,7 +1197,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-    <button class="audio-btn" onclick="speakMessage('${escapeQuotes(currentBotMessageElement)}')">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1229,7 +1233,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-    <button class="audio-btn" onclick="speakMessage('${escapeQuotes(content)}')">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
         `;
         chatContainer.appendChild(messageElement);
     }
