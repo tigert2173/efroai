@@ -301,6 +301,8 @@
         <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
         <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
         <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
+
     </select>
 
     <script>
@@ -312,6 +314,7 @@
     const optionV2 = document.getElementById("optionV2");
     const explicitEncourage = document.getElementById("explicitEncourage");
     const skunkAnatomyFix = document.getElementById("skunkAnatomyFix");
+    const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
 
     // Function to update the options' values and text
     function updateNegativePromptOptions(maxTokens) {
@@ -333,6 +336,9 @@
         optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. Ensure the response ends in a natural way without cut-off, even when reaching the token limit. Never repeat the last generation.`;
         optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
 
+        // Add the speaker identifier prompt to the dropdown
+        speakerIdentifierOption.value = "Please write the response with each sentence clearly labeled with a speaker identifier, like this: Speaker 1: [sentence] Speaker 2: [sentence]... Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.";
+        speakerIdentifierOption.textContent = `Speaker Identifier Request (Write each sentence with a speaker identifier)`;
 
     }
 
