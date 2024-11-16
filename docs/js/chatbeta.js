@@ -1012,86 +1012,74 @@ function playSantaVoice() {
 function speakMessage(index) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    const messageContent = messages[index];
-    const textContent = messageContent.content[0].text; // Extract content from the message object
-    console.log('Speaking message:', textContent);
 
-    const dialogueRegex = /"([^"]+)"\s*(\w+)\s*(.*?)(?=\s*["\s]|$)/g;
-    let sentences = [];
-    let match;
-    let currentSentence = "";
-
-    // Process the content for dialogue with descriptions
-    while ((match = dialogueRegex.exec(textContent)) !== null) {
-        const dialogue = match[1].trim(); // Dialogue part
-        const speaker = match[2].trim();  // Speaker (e.g., "she")
-        const description = match[3].trim(); // Description after the dialogue (e.g., "says in excitement")
-
-        // Combine dialogue and description into one sentence
-        let fullSentence = `"${dialogue}" ${speaker} ${description}`;
-        console.log('Full sentence from dialogue:', fullSentence); // Debugging log
-
-        // If the sentence is short (less than 5 words), merge it with the next
-        if (fullSentence.split(' ').length < 5) {
-            currentSentence += " " + fullSentence;
-        } else {
-            if (currentSentence) {
-                sentences.push(currentSentence);
-                currentSentence = "";
-            }
-            sentences.push(fullSentence);
+        // Find the specific message from the messages array
+        const messageContent = messages[index];
+        const textContent = messageContent.content[0].text; // Extract content from the message object
+        console.log('Speaking message:', textContent);
+    
+        // Regex for detecting dialogue followed by descriptors like "she says", "he exclaims", etc.
+        const dialogueWithDescriptorRegex = /"(.*?)" (\w+\s*\w*)/g;
+        let sentences = [];
+        let match;
+        let currentSentence = "";
+    
+        // Extract and merge dialogue with descriptors
+        while ((match = dialogueWithDescriptorRegex.exec(textContent)) !== null) {
+            const dialogue = match[1].trim(); // Extract dialogue part
+            const descriptor = match[2].trim(); // Extract the descriptor part
+            
+            // Combine dialogue and descriptor into one sentence
+            currentSentence = `"${dialogue}" ${descriptor}`;
+            
+            sentences.push(currentSentence);
+            currentSentence = "";  // Reset for next sentence
         }
-    }
-
-    // Now handle any remaining sentences that weren't captured in the above loop
-    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-    while ((match = sentenceRegex.exec(textContent)) !== null) {
-        const sentence = match[0].trim();
-        console.log('Captured sentence:', sentence); // Debugging log
-
-        if (sentence.split(' ').length < 5) {
-            // If it's a short sentence, merge it with the previous one
-            if (currentSentence) {
-                currentSentence += " " + sentence;
+    
+        // Now handle any remaining text that wasn't part of the dialogue
+        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+        while ((match = sentenceRegex.exec(textContent)) !== null) {
+            const sentence = match[0].trim();
+    
+            if (sentence.split(' ').length < 5) {
+                // If the sentence has less than 5 words, merge it with the next one
+                if (currentSentence) {
+                    currentSentence += " " + sentence;
+                } else {
+                    currentSentence = sentence;
+                }
             } else {
-                currentSentence = sentence;
+                if (currentSentence) {
+                    sentences.push(currentSentence);  // Push the accumulated sentence
+                    currentSentence = "";
+                }
+                sentences.push(sentence);  // Push the current sentence
             }
-        } else {
-            if (currentSentence) {
-                sentences.push(currentSentence);
-                currentSentence = "";
+        }
+        
+        // If there is any remaining sentence after the loop
+        if (currentSentence) {
+            sentences.push(currentSentence);
+        }
+    
+        // Build the lines array from the split sentences
+        const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+    
+        // Log lines for debugging
+        console.log('Lines to speak:', lines);
+    
+        // Collecting any additional lines from the line groups
+        const lineGroups = document.querySelectorAll('.line-group');
+        lineGroups.forEach(group => {
+            const text = group.querySelector('.textInput').value;
+            const speaker = group.querySelector('.speakerSelect').value;
+            if (text && speaker) {
+                lines.push({ text, speaker });
             }
-            sentences.push(sentence);
-        }
-    }
-
-    // If any remaining sentence
-    if (currentSentence) {
-        sentences.push(currentSentence);
-    }
-
-    // Log the sentences to check for skipped content
-    console.log('All sentences after processing:', sentences);
-
-    // Build the lines array from the sentences
-    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
-
-    // Collecting any additional lines from the line groups
-    const lineGroups = document.querySelectorAll('.line-group');
-    lineGroups.forEach(group => {
-        const text = group.querySelector('.textInput').value;
-        const speaker = group.querySelector('.speakerSelect').value;
-        if (text && speaker) {
-            lines.push({ text, speaker });
-        }
-    });
-
-    // Log final lines for debugging
-    console.log('Final lines:', lines);
-
-
-    // Check if lines are populated properly
-    console.log(lines);  // This will show the data you are sending
+        });
+    
+        // Final lines array for use
+        console.log('Final lines:', lines);
 
     if (lines.length > 0) {
         // Build query parameters
