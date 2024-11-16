@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client-Side NLP with TensorFlow.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script> <!-- Toxicity model for demo -->
+</head>
+<body>
+  <h1>Client-Side NLP Demo (Toxicity Classifier)</h1>
+  <textarea id="inputText" rows="4" cols="50" placeholder="Type something here..."></textarea><br><br>
+  <button onclick="classifyText()">Classify Text</button><br><br>
+  <div id="result"></div>
+
+  <script>
+    // Load the toxicity model (this is a pre-trained model from TensorFlow.js)
+    let model;
+
+    async function loadModel() {
+      model = await toxicity.load();
+      console.log("Model loaded!");
+    }
+
+    // Function to classify the text from the input box
+    async function classifyText() {
+      const inputText = document.getElementById("inputText").value;
+
+      if (model) {
+        const predictions = await model.classify([inputText]);
+
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = ''; // Clear previous results
+
+        predictions.forEach(prediction => {
+          const resultText = `${prediction.label}: ${prediction.results[0].match}`;
+          const resultElement = document.createElement("p");
+          resultElement.textContent = resultText;
+          resultDiv.appendChild(resultElement);
+        });
+      } else {
+        alert("Model is still loading. Please wait.");
+      }
+    }
+
+    // Call loadModel to initialize the model when the page loads
+    loadModel();
+  </script>
+</body>
+</html>
