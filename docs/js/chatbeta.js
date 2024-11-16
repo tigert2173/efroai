@@ -1046,9 +1046,6 @@ function speakMessage(index) {
         // Final lines array for use
         console.log('Final lines:', lines);
 
-    // Check if lines are populated properly
-    console.log(lines);  // This will show the data you are sending
-
     if (lines.length > 0) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
