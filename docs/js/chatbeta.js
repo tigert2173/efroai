@@ -1192,7 +1192,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${content})">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1215,9 +1215,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-             <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+             <button class="delete-btn" onclick="deleteMessage(${content})">Delete</button>
 
-            <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
+            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(content))">Send to Audio</button>
 
             `;
 
