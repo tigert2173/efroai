@@ -1011,8 +1011,9 @@ function playSantaVoice() {
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
+    console.log(content);
     const lines = [
-        { text: "I'm", speaker: 'Daisy Studious' }
+        { text: content, speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
