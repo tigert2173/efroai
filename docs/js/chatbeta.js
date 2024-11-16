@@ -1008,6 +1008,35 @@ function playSantaVoice() {
 }
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
+function speakMessage(content) {
+    // Send the message content to the backend to generate the speech
+    fetch('http://127.0.0.1:5000/generate_voice', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lines: [{ text: content }] }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.audioFile) {
+            const audio = new Audio(data.audioFile);
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
+        } else {
+            console.error('Error generating audio:', data.error || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 
 let userName = '{{user}}';
@@ -1081,7 +1110,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="speak-btn" onclick="speakMessage('${sanitizedContent}')">Speak</button>
+        <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1117,7 +1146,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="speak-btn" onclick="speakMessage('${sanitizedContent}')">Speak</button>
+        <button class="audio-btn" onclick="speakMessage('${content}')">Send to Audio</button>
         `;
         chatContainer.appendChild(messageElement);
     }
@@ -1130,29 +1159,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function speakMessage(content) {
-    // Send the message content to the backend to generate the speech
-    fetch('http://127.0.0.1:5000/generate_voice', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ lines: [{ text: "hi" }] }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.audioFile) {
-            const audio = new Audio(data.audioFile);
-            audio.play();
-        } else {
-            console.error('Error generating audio:', data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
 }
 
 function deleteMessage(index) {
