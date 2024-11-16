@@ -1010,35 +1010,20 @@ function playSantaVoice() {
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 function speakMessage(index) {
-    // Send the message content to the backend to generate the speech
-        // Find the specific message from the messages array
         const messageContent = messages[index];
         const textContent = messageContent.content[0].text; // Extract content from the message object
         console.log('Speaking message:', textContent);
     
-        // Regex for detecting dialogue followed by descriptors like "she says", "he exclaims", etc.
-        const dialogueWithDescriptorRegex = /"(.*?)" (\w+\s*\w*)/g;
+        // Split the content into sentences based on punctuation marks (.!?), but merge short sentences (less than 5 words) with the next one
+        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
         let sentences = [];
         let match;
         let currentSentence = "";
     
-        // Extract and merge dialogue with descriptors
-        while ((match = dialogueWithDescriptorRegex.exec(textContent)) !== null) {
-            const dialogue = match[1].trim(); // Extract dialogue part
-            const descriptor = match[2].trim(); // Extract the descriptor part
-            
-            // Combine dialogue and descriptor into one sentence
-            currentSentence = `"${dialogue}" ${descriptor}`;
-            
-            sentences.push(currentSentence);
-            currentSentence = "";  // Reset for next sentence
-        }
-    
-        // Now handle any remaining text that wasn't part of the dialogue
-        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+        // Extract all sentences, handling the merge condition
         while ((match = sentenceRegex.exec(textContent)) !== null) {
             const sentence = match[0].trim();
-    
+            
             if (sentence.split(' ').length < 5) {
                 // If the sentence has less than 5 words, merge it with the next one
                 if (currentSentence) {
@@ -1079,7 +1064,7 @@ function speakMessage(index) {
         // Final lines array for use
         console.log('Final lines:', lines);
     
-    
+
     if (lines.length > 0) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
