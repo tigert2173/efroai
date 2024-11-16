@@ -1010,32 +1010,109 @@ function playSantaVoice() {
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
-    fetch('http://127.0.0.1:5000/generate_voice', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ lines: [{ text: content }] }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    const lines = [];
+    const lineGroups = document.querySelectorAll('.line-group');
+    
+    lineGroups.forEach(group => {
+        const text = "hi";//group.querySelector('.textInput').value;
+        const speaker = "Daisy Studious";//group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
         }
-        return response.json();
-    })
-    .then(data => {
-        if (data.audioFile) {
-            const audio = new Audio(data.audioFile);
-            audio.play().catch(error => {
-                console.error('Error playing audio:', error);
-            });
-        } else {
-            console.error('Error generating audio:', data.error || 'Unknown error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
     });
+
+    // Check if lines are populated properly
+    console.log(lines);  // This will show the data you are sending
+
+    if (lines.length > 0) {
+        // Build query parameters
+        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+        console.log("Query Params:", queryParams);  // Log query params to verify
+        const eventSource = new EventSource(`/generate_voice_stream?${queryParams}`);
+
+        let audioQueue = [];  // Queue to store audio sources
+        let isPlaying = false; // Flag to check if audio is playing
+        let retryCount = 0;   // Retry counter
+
+        const MAX_RETRIES = 5; // Max number of retries before giving up
+        const RETRY_DELAY = 2000; // Delay between retries in ms
+        const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
+
+        // Create a single audio element to play clips one after the other
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        document.getElementById('audioPlayersContainer').appendChild(audioElement);
+
+        // Function to play next audio in the queue with a pause in between
+        function playNextAudio() {
+            if (audioQueue.length > 0 && !isPlaying) {
+                const nextAudioSrc = audioQueue.shift();  // Get next audio source from the queue
+                audioElement.src = nextAudioSrc;  // Set the new audio source
+                isPlaying = true;
+                audioElement.play();  // Play the audio
+            }
+        }
+
+        eventSource.onmessage = function(event) {
+            try {
+                const data = JSON.parse(event.data); // Parse the JSON response
+
+                if (data.audio) {
+                    // Add the new audio source to the queue
+                    audioQueue.push(data.audio);
+
+                    // If no audio is playing, start playing the first one
+                    playNextAudio();
+
+                    // Reset retry counter once the audio is successfully received
+                    retryCount = 0;
+                } else if (data.error) {
+                    document.getElementById('generateMessage').innerText = data.error;
+                } else if (data.end) {
+                    console.log("Audio generation complete.");
+                    eventSource.close();  // Close the EventSource connection when done
+                }
+            } catch (e) {
+                console.error('Error parsing event data:', e);
+                document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
+
+                // Retry logic if error occurs
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
+                    setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+                } else {
+                    document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                    eventSource.close();
+                }
+            }
+        };
+
+        eventSource.onerror = function(error) {
+            console.error('Error in SSE:', error);
+            document.getElementById('generateMessage').innerText = 'Error generating voice';
+
+            // Retry logic on error
+            if (retryCount < MAX_RETRIES) {
+                retryCount++;
+                console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
+                setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+            } else {
+                document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                eventSource.close();
+            }
+        };
+
+        // When audio finishes playing, check if there's another one in the queue
+        audioElement.onended = function() {
+            isPlaying = false;
+
+            // Add a pause before playing the next audio clip
+            setTimeout(function() {
+                playNextAudio();  // Play the next audio clip in the queue after the pause
+            }, PAUSE_DURATION);
+        };
+    }
 }
 
 
