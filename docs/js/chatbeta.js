@@ -1011,35 +1011,31 @@ function playSantaVoice() {
 function speakMessage(content) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-       // Encode the content to handle special characters like ' and "
-       const encodedContent = encodeURIComponent(content);
+    cleanedcontent = content.replace(/['"]/g, '');
 
-       const lines = [
-           { text: content, speaker: 'Daisy Studious' }
-       ];
-   
-       const lineGroups = document.querySelectorAll('.line-group');
-   
-       lineGroups.forEach(group => {
-           const text = "hi"; // group.querySelector('.textInput').value;
-           const speaker = "Daisy Studious"; // group.querySelector('.speakerSelect').value;
-           if (text && speaker) {
-               lines.push({ text, speaker });
-           }
-       });
-   
-       // Check if lines are populated properly
-       console.log(lines); // This will show the data you are sending
-   
-       if (lines.length > 0) {
-           // Build query parameters with proper encoding
-           const queryParams = lines.map(line => 
-               `lines[]=${encodeURIComponent(JSON.stringify(line))}`
-           ).join('&');
-   
-           console.log("Query Params:", queryParams); // Log query params to verify
-           const eventSource = new EventSource(`http://127.0.0.1:5000/generate_voice_stream?${queryParams}`);
-   
+    const lines = [
+        { text: cleanedcontent, speaker: 'Daisy Studious' }
+    ];
+    
+    const lineGroups = document.querySelectorAll('.line-group');
+    
+    lineGroups.forEach(group => {
+        const text = "hi";//group.querySelector('.textInput').value;
+        const speaker = "Daisy Studious";//group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Check if lines are populated properly
+    console.log(lines);  // This will show the data you are sending
+
+    if (lines.length > 0) {
+        // Build query parameters
+        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+        console.log("Query Params:", queryParams);  // Log query params to verify
+        const eventSource = new EventSource(`http://127.0.0.1:5000/generate_voice_stream?${queryParams}`);
+
         let audioQueue = [];  // Queue to store audio sources
         let isPlaying = false; // Flag to check if audio is playing
         let retryCount = 0;   // Retry counter
