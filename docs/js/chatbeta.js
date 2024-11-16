@@ -1015,17 +1015,17 @@ function speakMessage(index) {
         const textContent = messageContent.content[0].text; // Extract content from the message object
         console.log('Speaking message:', textContent);
     
-        // Regex to split text by punctuation marks (.!?), but check if the sentence should be merged with the next
-        const sentenceRegex = /([^\s]+(?:[^\s.!?]+(?:[.!?][^ ]*)?)?)(?=\s*(?=\S))/g;  // Modified regex
+        // Define the regex for splitting by punctuation (.!?), but avoid splitting where we don't need to
+        const sentenceRegex = /([A-Za-z0-9,;'\-“”!?\.\s]+(?:[.!?]["“”’]?\s*)?)/g;
         let sentences = [];
         let match;
         let currentSentence = "";
     
         // Process the sentences using regex
         while ((match = sentenceRegex.exec(textContent)) !== null) {
-            const sentence = match[0].trim(); // Extract the matched sentence
+            let sentence = match[0].trim(); // Get each sentence
     
-            // If this sentence is short (< 5 words), merge it with the next one
+            // If the sentence has less than 5 words, merge it with the next sentence
             if (sentence.split(' ').length < 5) {
                 if (currentSentence) {
                     currentSentence += " " + sentence; // Merge with the previous short sentence
@@ -1033,21 +1033,21 @@ function speakMessage(index) {
                     currentSentence = sentence; // Start a new sentence
                 }
             } else {
-                // If sentence length is >= 5 words, push any accumulated short sentence first
+                // If sentence length is >= 5 words, push any accumulated sentence first
                 if (currentSentence) {
                     sentences.push(currentSentence);
                     currentSentence = ""; // Reset
                 }
-                sentences.push(sentence); // Add the current long sentence
+                sentences.push(sentence); // Add the current sentence
             }
         }
     
-        // If any sentence is left over after the loop
+        // If any remaining sentence is left after the loop
         if (currentSentence) {
             sentences.push(currentSentence);
         }
     
-        // Log sentences to check the results
+        // Log sentences for debugging
         console.log('Sentences to speak:', sentences);
     
         // Build the lines array from the sentences
