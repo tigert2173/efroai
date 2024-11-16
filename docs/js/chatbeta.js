@@ -1008,16 +1008,6 @@ function playSantaVoice() {
 }
 
 
-let userName = '{{user}}';
-let charName = '{{char}}';
-let lastBotMsg = null;
-
-let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot messages
-let currentBotMessageElement = null;
-let currentBotMessageIndex = -1; // Index for tracking the current bot message
-
-
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 function speakMessage(message) {
     // Send the message content to the backend to generate the speech
@@ -1131,6 +1121,16 @@ console.log(message);
     }
 }
 
+let userName = '{{user}}';
+let charName = '{{char}}';
+let lastBotMsg = null;
+
+let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
+let currentBotMessageElement = null;
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
+
+
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
     let charName = settings.charname || "{{char}}";
@@ -1172,7 +1172,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
  // Prepare message object in the desired format
     const messageObject = {
         role: sender,
-        content: [{ type: "text", "text": content }]
+        content: [{ type: "text", "text": sanitizedContent }]
     };
 
     if (isLoading) {
