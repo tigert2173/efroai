@@ -1009,7 +1009,7 @@ function playSantaVoice() {
 
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
-function speakMessage(message) {
+function speakMessage(index) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
     // Find the specific message from the messages array
