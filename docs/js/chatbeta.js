@@ -1008,12 +1008,12 @@ function playSantaVoice() {
 }
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
-function speakMessage(content) {
+function speakMessage(messageindex) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    console.log(content);
+
     const lines = [
-        { text: `${content}`, speaker: 'Daisy Studious' }
+        { text: messages[messageindex], speaker: 'Daisy Studious' }
     ];
     
     const lineGroups = document.querySelectorAll('.line-group');
@@ -1192,7 +1192,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage("${encodeURIComponent(content)}")">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${currentBotMessageIndex})">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1217,7 +1217,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
              <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
 
-            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(content))">Send to Audio</button>
+            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(${currentBotMessageIndex}))">Send to Audio</button>
 
             `;
 
@@ -1233,7 +1233,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${content})">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${currentBotMessageIndex})">Send to Audio</button>
         `;
         chatContainer.appendChild(messageElement);
     }
