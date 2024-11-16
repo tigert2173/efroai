@@ -1007,11 +1007,22 @@ function playSantaVoice() {
     document.getElementById('santa-voice').play();
 }
 
+
+let userName = '{{user}}';
+let charName = '{{char}}';
+let lastBotMsg = null;
+
+let messages = []; // Array to store messages
+let botMessages = []; // Array to store bot messages
+let currentBotMessageElement = null;
+let currentBotMessageIndex = -1; // Index for tracking the current bot message
+
+
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
-function speakMessage(messageindex) {
+function speakMessage(currentBotMessageElement) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    message = messages[messageindex].textContent;
+    message = currentBotMessageElement.textContent;
     const lines = [
         { text: message, speaker: 'Daisy Studious' }
     ];
@@ -1121,16 +1132,6 @@ console.log(message);
     }
 }
 
-
-let userName = '{{user}}';
-let charName = '{{char}}';
-let lastBotMsg = null;
-
-let messages = []; // Array to store messages
-let botMessages = []; // Array to store bot messages
-let currentBotMessageElement = null;
-let currentBotMessageIndex = -1; // Index for tracking the current bot message
-
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
     let charName = settings.charname || "{{char}}";
@@ -1193,7 +1194,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         <span class="message-content">${sanitizedContent}</span>
         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${currentBotMessageIndex})">Send to Audio</button>
+        <button class="audio-btn" onclick="speakMessage(${currentBotMessageElement})">Send to Audio</button>
         `;
         }
         // If the message is final, update the navigation header
@@ -1218,7 +1219,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
              <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
 
-            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(${currentBotMessageIndex}))">Send to Audio</button>
+            <button class="audio-btn" onclick="speakMessage(encodeURIComponent(${currentBotMessageElement}))">Send to Audio</button>
 
             `;
 
