@@ -1133,32 +1133,27 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
 }
 
 function speakMessage(content) {
-    const audio = new Audio();
-    
-    // Send a POST request to Flask backend to generate speech
-    fetch('http://127:0.0.1:5000/generate_voice', {
+    // Send the message content to the backend to generate the speech
+    fetch('http://127.0.0.1:5000/generate_voice', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            lines: [{ text: content, speaker: 'Daisy Studious' }]
-        })
+        body: JSON.stringify({ lines: [{ text: content }] }),
     })
     .then(response => response.json())
     .then(data => {
         if (data.audioFile) {
-            audio.src = data.audioFile;
-            audio.play();  // Play the generated speech
+            const audio = new Audio(data.audioFile);
+            audio.play();
         } else {
-            console.error('Error generating speech:', data.error);
+            console.error('Error generating audio:', data.error);
         }
     })
     .catch(error => {
-        console.error('Error with speech request:', error);
+        console.error('Error:', error);
     });
 }
-
 
 function deleteMessage(index) {
     // Ask for user confirmation before deleting
