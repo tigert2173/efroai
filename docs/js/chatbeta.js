@@ -1012,23 +1012,39 @@ function playSantaVoice() {
 function speakMessage(index) {
     // Send the message content to the backend to generate the speech
     // const lines = [];
-    const messagecontent = messages[index];
-    const textcontent = messagecontent.content[0].text; // Extract content from the message object
-    console.log('Speaking message:', textcontent);
+    // Find the specific message from the messages array
+    const messageContent = messages[index]; 
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
 
-    const lines = [
-        { text: textcontent, speaker: 'Daisy Studious' }
-    ];
+    // Split the content into sentences based on punctuation marks (.!?)
+    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    let sentences = [];
+    let match;
     
+    // Extract all sentences
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        sentences.push(match[0].trim());
+    }
+    
+    // Build the lines array from the split sentences
+    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+
+    // Log lines for debugging
+    console.log('Lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
     const lineGroups = document.querySelectorAll('.line-group');
-    
     lineGroups.forEach(group => {
-        const text = "hi";//group.querySelector('.textInput').value;
-        const speaker = "Daisy Studious";//group.querySelector('.speakerSelect').value;
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
         if (text && speaker) {
             lines.push({ text, speaker });
         }
     });
+    
+        // Final lines array for use
+        console.log('Final lines:', lines);
 
     // Check if lines are populated properly
     console.log(lines);  // This will show the data you are sending
