@@ -1030,6 +1030,7 @@ let match;
 
 // Extract all sentences
 while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
+    console.log('Matched sentence:', match[0].trim()); // Debugging output
     sentences.push(match[0].trim());
 }
 
