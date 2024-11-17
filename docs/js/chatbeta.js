@@ -1024,7 +1024,8 @@ const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
 // Updated regex to properly capture punctuation within sentences
-const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+["']?|,)?)/g;
+// This regex ensures that the sentence ends with a punctuation mark, including commas or quotes correctly
+const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+['"]?|,)?)/g;
 let sentences = [];
 let match;
 
@@ -1044,6 +1045,7 @@ console.log('Sentences:', sentences);
 const lines = [];
 let tempSentence = '';
 
+// Iterate through all extracted sentences
 sentences.forEach((sentence, index) => {
     // Check if sentence is short enough to be combined with the previous one
     if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
