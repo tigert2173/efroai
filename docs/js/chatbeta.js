@@ -1008,7 +1008,7 @@ function playSantaVoice() {
 }
 
 
-function speakMessage(message) {
+function speakMessage(index) {
     const messageContent = messages[index];
     const textContent = messageContent.content[0].text; // Extract content from the message object
     console.log('Speaking message:', textContent);
