@@ -1045,13 +1045,15 @@ const lines = [];
 let tempSentence = '';
 
 sentences.forEach((sentence, index) => {
-    if (sentence.endsWith('...') && index < sentences.length - 1) {
-        // If sentence ends with ellipses, don't push it yet, wait for the next part
-        tempSentence += sentence + ' ';
+    // Check if sentence is short enough to be combined with the previous one
+    if (sentence.length < 72 && tempSentence.length < 72) {
+        tempSentence += ' ' + sentence; // Combine sentence with previous one
     } else {
         // If it's a valid sentence or we're at the end of content, push it
-        lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
-        tempSentence = ''; // Reset temporary sentence after adding
+        if (tempSentence.trim().length > 0) {
+            lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+        }
+        tempSentence = sentence; // Start a new sentence
     }
 });
 
