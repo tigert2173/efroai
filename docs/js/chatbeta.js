@@ -1028,7 +1028,7 @@ while ((match = sentenceRegex.exec(textContent)) !== null) {
     sentences.push(match[0].trim());
 }
 
-// If there’s any leftover text (not ending with punctuation), add it as the last sentence
+// Handle leftover text that doesn't end with punctuation
 const remainingText = textContent.trim();
 if (remainingText && !remainingText.endsWith('.') && !remainingText.endsWith('?') && !remainingText.endsWith('!') && !sentences.includes(remainingText)) {
     sentences.push(remainingText);
