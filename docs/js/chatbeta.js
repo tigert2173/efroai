@@ -1009,46 +1009,22 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-        const messageContent = messages[index];
+        // Find the specific message from the messages array
+        const messageContent = messages[index]; 
         const textContent = messageContent.content[0].text; // Extract content from the message object
         console.log('Speaking message:', textContent);
     
-        // Define the regex for splitting sentences at `.`, `!`, `?` only when followed by a space or new line
-        const sentenceRegex = /([A-Za-z0-9,;'\-“”!?\.\s]+[\.!?])(\s|$)/g;
+        // Split the content into sentences based on punctuation marks (.!?)
+        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
         let sentences = [];
         let match;
-        let currentSentence = "";
-    
-        // Process the sentences using regex
+        
+        // Extract all sentences
         while ((match = sentenceRegex.exec(textContent)) !== null) {
-            let sentence = match[0].trim(); // Get each sentence
-    
-            // If the sentence has less than 5 words, merge it with the next sentence
-            if (sentence.split(' ').length < 5) {
-                if (currentSentence) {
-                    currentSentence += " " + sentence; // Merge with the previous short sentence
-                } else {
-                    currentSentence = sentence; // Start a new sentence
-                }
-            } else {
-                // If sentence length is >= 5 words, push any accumulated sentence first
-                if (currentSentence) {
-                    sentences.push(currentSentence);
-                    currentSentence = ""; // Reset
-                }
-                sentences.push(sentence); // Add the current sentence
-            }
+            sentences.push(match[0].trim());
         }
-    
-        // If any remaining sentence is left after the loop
-        if (currentSentence) {
-            sentences.push(currentSentence);
-        }
-    
-        // Log sentences for debugging
-        console.log('Sentences to speak:', sentences);
-    
-        // Build the lines array from the sentences
+        
+        // Build the lines array from the split sentences
         const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
     
         // Log lines for debugging
@@ -1066,7 +1042,7 @@ function speakMessage(index) {
     
         // Final lines array for use
         console.log('Final lines:', lines);
-   
+        
         
     if (lines.length > 0) {
         // Build query parameters
