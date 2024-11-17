@@ -1025,7 +1025,7 @@ console.log('Cleaned content:', cleanedTextContent);
 
 // Regex that will properly capture full sentences, including punctuation at the end
 //const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:['A-Za-z0-9]*[.!?~]+['"]?)?)(?=\s|$)/g;
-const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:['A-Za-z0-9]*[.!?]+[]?)?)(?=\s|$)/g;
+const sentenceRegex = /([A-Za-z0-9,;!?\s]+(?:[A-Za-z0-9]*[.!?]+[]?)?)(?=\s|$)/g;
 
 let sentences = [];
 let match;
