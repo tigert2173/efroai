@@ -1035,19 +1035,30 @@ while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
     sentences.push(match[0].trim());
 }
 
-// In case no sentences are found (e.g., no punctuation in the text), treat the entire text as one sentence
-if (sentences.length === 0) {
-    sentences = [cleanedTextContent.trim()];
-}
+// Check for specific sentence and capture everything after it
+const targetSentence = "I'm Kyrie - remember that name as you choke!";
+let captureAfterTarget = false;
+let capturedText = [];
 
-console.log('Captured Sentences:', sentences);
+// Capture all sentences after the target sentence
+sentences.forEach(sentence => {
+    if (captureAfterTarget) {
+        capturedText.push(sentence); // Add sentences after the target
+    }
+
+    if (sentence.includes(targetSentence)) {
+        captureAfterTarget = true; // Start capturing after the target sentence
+    }
+});
+
+console.log('Captured text after target sentence:', capturedText);
 
 // Create the lines array for dialogue processing
 const lines = [];
 let tempSentence = '';
 
 // Iterate through all the sentences to construct the final dialogue or narrative lines
-sentences.forEach((sentence, index) => {
+capturedText.forEach((sentence, index) => {
     // If the sentence is short enough, try to combine it with the previous one
     if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
         tempSentence += ' ' + sentence.trim();
