@@ -1023,7 +1023,7 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Regex that will properly capture full sentences, including punctuation at the end and dialogue
+// Regex to capture full sentences, including punctuation at the end
 const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$)|"[^"]*"[.!?])+/g;
 let sentences = [];
 let match;
