@@ -1067,28 +1067,6 @@ if (tempSentence.trim().length > 0) {
 // Log lines for debugging
 console.log('Final lines to speak:', lines);
 
-// Collecting any additional lines from the line groups
-const lineGroups = document.querySelectorAll('.line-group');
-lineGroups.forEach(group => {
-    const text = group.querySelector('.textInput').value;
-    const speaker = group.querySelector('.speakerSelect').value;
-    if (text && speaker) {
-        lines.push({ text, speaker });
-    }
-});
-
-// Final lines array for use
-console.log('Final lines with additional inputs:', lines);
-
-// Check if lines array is populated and ready to be sent
-if (lines.length > 0) {
-    // Send the final lines array to the backend for speech synthesis
-    console.log("Sending to speech backend:", lines);
-    // Example: sendToSpeechBackend(lines);
-} else {
-    console.log("No lines to send.");
-}
-
     if (lines.length > 0) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
