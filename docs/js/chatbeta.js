@@ -1009,75 +1009,84 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-    const messageContent = messages[index];
-const textContent = messageContent.content[0].text; // Extract content from the message object
-console.log('Speaking message:', textContent);
+    const messageContent = messages[index];  // Extracting the message at the current index
+const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
-// Ensure that we aren't sending the same message over and over again
-if (!messageContent || !messageContent.content || messageContent.content.length === 0) {
+console.log('Full message content:', textContent);
+
+// Check if content exists
+if (!textContent || textContent.length === 0) {
     console.log("No content found.");
-    return; // Exit early if there's no content
+    return;  // Early exit if no content
 }
 
-// Remove HTML tags if any
+// Clean text of any HTML tags if present
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Improved regex to capture sentences fully, including quotes, and avoid cutting off dialogue
-const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$))|(".*?[.!?])|([^.!?]+[.!?](?=\s|$))/g;
+// Define the target sentence
+const targetSentence = "I'm Kyrie - remember that name as you choke!";
 
+// Split the content into individual sentences
+const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
 let sentences = [];
 let match;
 
-// Extract all sentences using the regex pattern
 while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
-    // Push the matched sentence to the sentences array
     sentences.push(match[0].trim());
 }
 
-// Check for specific sentence and capture everything after it
-const targetSentence = "I'm Kyrie - remember that name as you choke!";
+console.log('All sentences:', sentences);
+
+// Now, we will capture the sentences starting after the target sentence
 let captureAfterTarget = false;
-let capturedText = [];
+let capturedSentences = [];
 
-// Capture all sentences after the target sentence
-sentences.forEach(sentence => {
+// Loop through all sentences to find the target and capture the rest
+sentences.forEach((sentence) => {
     if (captureAfterTarget) {
-        capturedText.push(sentence); // Add sentences after the target
+        capturedSentences.push(sentence);
     }
-
+    
     if (sentence.includes(targetSentence)) {
-        captureAfterTarget = true; // Start capturing after the target sentence
+        captureAfterTarget = true;  // Start capturing sentences after the target
     }
 });
 
-console.log('Captured text after target sentence:', capturedText);
+console.log('Captured sentences after the target:', capturedSentences);
 
-// Create the lines array for dialogue processing
-const lines = [];
+// If no sentences were captured, return early
+if (capturedSentences.length === 0) {
+    console.log('No sentences after target found.');
+    return;
+}
+
+// Prepare the output lines for sending
+let lines = [];
 let tempSentence = '';
 
-// Iterate through all the sentences to construct the final dialogue or narrative lines
-capturedText.forEach((sentence, index) => {
-    // If the sentence is short enough, try to combine it with the previous one
-    if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
+// Build the lines based on captured sentences
+capturedSentences.forEach((sentence) => {
+    if (tempSentence.length + sentence.length < 72) {
+        // Combine sentences if they fit within the limit
         tempSentence += ' ' + sentence.trim();
     } else {
-        // Push the previous sentence to the lines array and start a new one
+        // Push the current sentence to the lines array
         if (tempSentence.trim().length > 0) {
             lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
         }
-        tempSentence = sentence.trim(); // Start a new sentence
+        tempSentence = sentence.trim();  // Start a new sentence
     }
 });
 
-// In case there's any leftover sentence, push it to the lines array
+// Ensure the last sentence is added
 if (tempSentence.trim().length > 0) {
     lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
 }
 
-// Log final lines for debugging
 console.log('Final lines to speak:', lines);
+
+// Now, you can send the `lines` array
 
     if (lines.length > 0) {
         // Build query parameters
