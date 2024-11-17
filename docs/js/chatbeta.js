@@ -1014,7 +1014,7 @@ function speakMessage(index) {
         console.log('Speaking message:', textContent);
     
         // Define the regex to split text at punctuation marks !, . , ? followed by a space or newline
-        const sentenceRegex = /([A-Za-z0-9;'\-“”!?\s]+[\.!?])(\s|\n|$)?/g;
+        const sentenceRegex = /[^.!?]+[.!?](?:\s|\n|$)/g;
         let sentences = [];
         let match;
         let currentSentence = "";
