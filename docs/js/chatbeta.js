@@ -1010,80 +1010,76 @@ function playSantaVoice() {
 
 function speakMessage(index) {
     const messageContent = messages[index]; 
-const textContent = messageContent.content[0].text; // Extract content from the message object
-console.log('Speaking message:', textContent);
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
+      // Ensure that we aren't sending the same message over and over again
+      if (!messageContent || !messageContent.content || messageContent.content.length === 0) {
+        console.log("No content found.");
+        return; // Exit early if there's no content
+    }
 
-// Ensure that we aren't sending the same message over and over again
-if (!messageContent || !messageContent.content || messageContent.content.length === 0) {
-    console.log("No content found.");
-    return; // Exit early if there's no content
-}
 
-const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-let sentences = [];
-let match;
+    // Split the content into sentences based on punctuation marks (.!?)
+    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    let sentences = [];
+    let match;
 
-// Extract all sentences
-while ((match = sentenceRegex.exec(textContent)) !== null) {
-    sentences.push(match[0].trim());
-}
+    // Extract all sentences
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        sentences.push(match[0].trim());
+    }
 
-// Handle leftover text that doesn't end with punctuation
-const remainingText = textContent.trim();
-if (remainingText && !remainingText.endsWith('.') && !remainingText.endsWith('?') && !remainingText.endsWith('!') && !sentences.includes(remainingText)) {
-    sentences.push(remainingText);  // Add the last part without punctuation if it's not already added
-}
+    // If no sentences are found (e.g., text without punctuation), push the entire text as one sentence
+    if (sentences.length === 0) {
+        sentences = [textContent.trim()];
+    }
 
-// Remove any unwanted . . part
-if (sentences[0] === '. .') {
-    sentences.shift();
-}
+    console.log('Sentences:', sentences);
 
-// Create the lines array
-const lines = [];
-let tempSentence = '';
+    // Create the lines array
+    const lines = [];
+    let tempSentence = '';
 
-// Merge short sentences or handle incomplete sentences at the end
-sentences.forEach((sentence, index) => {
-    if (sentence.length < 72 && index < sentences.length - 1) {
-        // Merge short sentence with the next one if it's not the last sentence
-        tempSentence += sentence + ' ';
+    sentences.forEach((sentence, index) => {
+        if (sentence.length < 0 && index < sentences.length - 1) {
+            // Merge short sentence with the next sentence if it's not the last one
+            tempSentence += sentence + ' ';
+        } else {
+            // If it's a valid sentence or we're at the end of content, push it
+            lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
+            tempSentence = ''; // Reset temporary sentence after adding
+        }
+    });
+
+    // In case there is any remaining short sentence that hasn't been added
+    if (tempSentence.trim().length > 0) {
+        lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+    }
+
+    // Log lines for debugging
+    console.log('Final lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Final lines array for use
+    console.log('Final lines with additional inputs:', lines);
+    
+    // Check if lines array is populated and ready to be sent
+    if (lines.length > 0) {
+        // Send the final lines array to the backend for speech synthesis
+        console.log("Sending to speech backend:", lines);
+        // Example: sendToSpeechBackend(lines);
     } else {
-        // If it's a valid sentence or we're at the end of content, push it
-        lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
-        tempSentence = ''; // Reset temporary sentence after adding
+        console.log("No lines to send.");
     }
-});
-
-// In case there is any remaining short sentence that hasn't been added, push it as well
-if (tempSentence.trim().length > 0) {
-    lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
-}
-
-// Log the final lines for debugging
-console.log('Final lines to speak:', lines);
-
-// Collecting any additional lines from the line groups
-const lineGroups = document.querySelectorAll('.line-group');
-lineGroups.forEach(group => {
-    const text = group.querySelector('.textInput').value;
-    const speaker = group.querySelector('.speakerSelect').value;
-    if (text && speaker) {
-        lines.push({ text, speaker });
-    }
-});
-
-// Final lines array for use
-console.log('Final lines with additional inputs:', lines);
-
-// Check if lines array is populated and ready to be sent
-if (lines.length > 0) {
-    // Send the final lines array to the backend for speech synthesis
-    console.log("Sending to speech backend:", lines);
-    // Example: sendToSpeechBackend(lines);
-} else {
-    console.log("No lines to send.");
-}
         
     if (lines.length > 0) {
         // Build query parameters
