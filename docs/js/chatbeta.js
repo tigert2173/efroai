@@ -1042,7 +1042,7 @@ function speakMessage(index) {
     
     // Merge short sentences or handle incomplete sentences at the end
     sentences.forEach((sentence, index) => {
-        if (sentence.length < 40 && index < sentences.length - 1) {
+        if (sentence.length < 72 && index < sentences.length - 1) {
             // Merge short sentence with the next one if it's not the last sentence
             tempSentence += sentence + ' ';
         } else {
