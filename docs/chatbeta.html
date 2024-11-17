@@ -258,10 +258,14 @@
        
             <!-- New button for 13B model page -->
             <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
+            <button id="model8B-button" onclick="goToModel8B()">Back to Text Only</button>
 
             <script>
                 function goToModel13B() {
                     window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
+                }
+                function goToModel8B() {
+                    window.location.href = 'chat.html'; // replace with the actual URL for the 13B model page
                 }
             </script>
 
