@@ -1023,8 +1023,8 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Split the content into sentences based on punctuation marks (.!?), handling cases with trailing ellipses
-const sentenceRegex = /([^.!?]*[.!?]+(?:\s*~?))\s*/g;
+// Split the content into sentences based on punctuation marks (.!?), handling cases with trailing ellipses and tilde (~)
+const sentenceRegex = /([^.!?~]*[.!?~]+(?:\s*~?)?)/g;
 let sentences = [];
 let match;
 
