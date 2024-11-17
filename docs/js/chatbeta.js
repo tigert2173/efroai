@@ -1009,62 +1009,65 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
- 
+   // Ensure that we aren't sending the same message over and over again
+   if (!index || !index.content || index.content.length === 0) {
+    return; // Exit early if there's no content
+}
 
-    const messageContent = message.content[0];
-       // Ensure that we aren't sending the same message over and over again
-       if (!message || !message.content || message.content.length === 0) {
-        return; // Exit early if there's no content
+const messageContent = index.content[0]; 
+const textContent = messageContent.text; // Extract content from the message object
+console.log('Speaking message:', textContent);
+
+// Split the content into sentences based on punctuation marks (.!?)
+const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+let sentences = [];
+let match;
+
+// Extract all sentences
+while ((match = sentenceRegex.exec(textContent)) !== null) {
+    sentences.push(match[0].trim());
+}
+
+// Create the lines array
+const lines = [];
+let tempSentence = '';
+
+sentences.forEach((sentence, index) => {
+    if (sentence.length < 72 && index < sentences.length - 1) {
+        // Merge short sentence with the next sentence if it's not the last one
+        tempSentence += sentence + ' ';
+    } else {
+        // If it's a valid sentence or we're at the end of content, push it
+        lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
+        tempSentence = ''; // Reset temporary sentence after adding
     }
-    const textContent = messageContent.text; // Extract content from the message object
-    
-    console.log('Speaking message:', textContent);
+});
 
-    // Split the content into sentences based on punctuation marks (.!?)
-    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-    let sentences = [];
-    let match;
+// In case there is any remaining short sentence that hasn't been added
+if (tempSentence.trim().length > 0) {
+    lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+}
 
-    // Extract all sentences
-    while ((match = sentenceRegex.exec(textContent)) !== null) {
-        sentences.push(match[0].trim());
+// If there are no more sentences, just count any remaining text as one final line
+if (sentences.length === 0 || textContent.trim().length > 0) {
+    lines.push({ text: textContent.trim(), speaker: 'Daisy Studious' });
+}
+
+// Log lines for debugging
+console.log('Final lines to speak:', lines);
+
+// Collecting any additional lines from the line groups
+const lineGroups = document.querySelectorAll('.line-group');
+lineGroups.forEach(group => {
+    const text = group.querySelector('.textInput').value;
+    const speaker = group.querySelector('.speakerSelect').value;
+    if (text && speaker) {
+        lines.push({ text, speaker });
     }
+});
 
-    // Create the lines array
-    const lines = [];
-    let tempSentence = '';
-
-    sentences.forEach((sentence, index) => {
-        if (sentence.length < 72 && index < sentences.length - 1) {
-            // Merge short sentence with the next sentence if it's not the last one
-            tempSentence += sentence + ' ';
-        } else {
-            // If it's a valid sentence or we're at the end of content, push it
-            lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
-            tempSentence = ''; // Reset temporary sentence after adding
-        }
-    });
-
-    // If there are any remaining short words or content after all sentences are processed
-    if (tempSentence.trim().length > 0 || sentences.length === 0) {
-        lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
-    }
-
-    // Log lines for debugging
-    console.log('Final lines to speak:', lines);
-
-    // Collecting any additional lines from the line groups
-    const lineGroups = document.querySelectorAll('.line-group');
-    lineGroups.forEach(group => {
-        const text = group.querySelector('.textInput').value;
-        const speaker = group.querySelector('.speakerSelect').value;
-        if (text && speaker) {
-            lines.push({ text, speaker });
-        }
-    });
-
-    // Final lines array for use
-    console.log('Final lines:', lines);
+// Final lines array for use
+console.log('Final lines:', lines);
     
     if (lines.length > 0) {
         // Build query parameters
