@@ -1023,35 +1023,36 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Regex to capture sentences properly, considering punctuation, quotes, and sentence structure
-const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$)|"[^"]*"[.!?])/g;
+// Refined regex to capture full sentences, keeping quotes and punctuation intact
+const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$)|"[^"]*"[.!?])|[^.!?]*[.!?](?=\s|$)/g;
+
 let sentences = [];
 let match;
 
-// Extract all sentences
+// Extract all sentences using the regex pattern
 while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
+    // Push the matched sentence to the sentences array
     sentences.push(match[0].trim());
 }
 
-// If no sentences are found (e.g., text without punctuation), push the entire text as one sentence
+// In case no sentences are found (e.g., no punctuation in the text), treat the entire text as one sentence
 if (sentences.length === 0) {
     sentences = [cleanedTextContent.trim()];
 }
 
-console.log('Sentences:', sentences);
+console.log('Captured Sentences:', sentences);
 
-// Create the lines array
+// Create the lines array for dialogue processing
 const lines = [];
 let tempSentence = '';
 
-// Iterate through all extracted sentences
+// Iterate through all the sentences to construct the final dialogue or narrative lines
 sentences.forEach((sentence, index) => {
-    // Check if sentence is short enough to be combined with the previous one
+    // If the sentence is short enough, try to combine it with the previous one
     if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
-        // Combine sentence with previous one while ensuring punctuation is at the end
         tempSentence += ' ' + sentence.trim();
     } else {
-        // If the sentence is long enough or we're at the end of content, push the combined sentence
+        // Push the previous sentence to the lines array and start a new one
         if (tempSentence.trim().length > 0) {
             lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
         }
@@ -1059,12 +1060,12 @@ sentences.forEach((sentence, index) => {
     }
 });
 
-// In case there is any remaining short sentence that hasn't been added
+// In case there's any leftover sentence, push it to the lines array
 if (tempSentence.trim().length > 0) {
     lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
 }
 
-// Log lines for debugging
+// Log final lines for debugging
 console.log('Final lines to speak:', lines);
 
     if (lines.length > 0) {
