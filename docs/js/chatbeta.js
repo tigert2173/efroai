@@ -1023,8 +1023,8 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Split the content into sentences based on punctuation marks, but ensure punctuation stays attached to the sentence
-const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+["'])?)/g;
+// Updated regex to properly capture punctuation within sentences
+const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+["']?|,)?)/g;
 let sentences = [];
 let match;
 
