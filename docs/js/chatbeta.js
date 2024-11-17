@@ -1024,8 +1024,8 @@ const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 
 console.log('Cleaned content:', cleanedTextContent);
 
-// Split the content into sentences based on punctuation marks (.!?)
-const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+// Split the content into sentences based on punctuation marks (.!?), taking care of edge cases
+const sentenceRegex = /([^.!?]+[.!?])\s*/g;
 let sentences = [];
 let match;
 
