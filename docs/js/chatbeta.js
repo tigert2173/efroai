@@ -1009,7 +1009,7 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-    const messageContent = messages[index];
+    const messageContent = messages[index]; 
 const textContent = messageContent.content[0].text; // Extract content from the message object
 console.log('Speaking message:', textContent);
 
@@ -1040,8 +1040,8 @@ let tempSentence = '';
 
 // Merge short sentences or handle incomplete sentences at the end
 sentences.forEach((sentence, index) => {
-    // If sentence is short, we merge it with the next one (unless it's the last sentence)
     if (sentence.length < 72 && index < sentences.length - 1) {
+        // Merge short sentence with the next one if it's not the last sentence
         tempSentence += sentence + ' ';
     } else {
         // If it's a valid sentence or we're at the end of content, push it
