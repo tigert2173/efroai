@@ -1031,7 +1031,12 @@ while ((match = sentenceRegex.exec(textContent)) !== null) {
 // Handle leftover text that doesn't end with punctuation
 const remainingText = textContent.trim();
 if (remainingText && !remainingText.endsWith('.') && !remainingText.endsWith('?') && !remainingText.endsWith('!') && !sentences.includes(remainingText)) {
-    sentences.push(remainingText);
+    sentences.push(remainingText);  // Add the last part without punctuation if it's not already added
+}
+
+// Remove any unwanted . . part
+if (sentences[0] === '. .') {
+    sentences.shift();
 }
 
 // Create the lines array
