@@ -1023,12 +1023,12 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Split the content into sentences, making sure punctuation stays attached
-const sentenceRegex = /([^.!?~]+[.!?~]+(?:\s*~?)(?:\s*[^.!?~]*)?)/g;
+// Split the content into sentences based on punctuation marks, but ensure punctuation stays attached to the sentence
+const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+["'])?)/g;
 let sentences = [];
 let match;
 
-// Extract all sentences while keeping punctuation attached to the sentence
+// Extract all sentences
 while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
     sentences.push(match[0].trim());
 }
@@ -1047,7 +1047,7 @@ let tempSentence = '';
 sentences.forEach((sentence, index) => {
     // Check if sentence is short enough to be combined with the previous one
     if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
-        // Combine sentence with previous one without breaking punctuation
+        // Combine sentence with previous one while ensuring punctuation is at the end
         tempSentence += ' ' + sentence.trim();
     } else {
         // If the sentence is long enough or we're at the end of content, push the combined sentence
