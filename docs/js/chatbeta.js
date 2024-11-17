@@ -1021,10 +1021,9 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 
 // Remove HTML tags if any
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
-
 console.log('Cleaned content:', cleanedTextContent);
 
-// Split the content into sentences based on punctuation marks (.!?), taking care of ellipses and edge cases
+// Split the content into sentences based on punctuation marks (.!?), handling cases with trailing ellipses
 const sentenceRegex = /([^.!?]*[.!?]+(?:\s*~?))\s*/g;
 let sentences = [];
 let match;
@@ -1046,8 +1045,8 @@ const lines = [];
 let tempSentence = '';
 
 sentences.forEach((sentence, index) => {
-    if (sentence.length < 0 && index < sentences.length - 1) {
-        // Merge short sentence with the next sentence if it's not the last one
+    if (sentence.endsWith('...') && index < sentences.length - 1) {
+        // If sentence ends with ellipses, don't push it yet, wait for the next part
         tempSentence += sentence + ' ';
     } else {
         // If it's a valid sentence or we're at the end of content, push it
