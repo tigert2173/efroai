@@ -1009,40 +1009,60 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-        // Find the specific message from the messages array
-        const messageContent = messages[index]; 
-        const textContent = messageContent.content[0].text; // Extract content from the message object
-        console.log('Speaking message:', textContent);
+    // Find the specific message from the messages array
+    const messageContent = messages[index]; 
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
+
+    // Split the content into sentences based on punctuation marks (.!?)
+    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    let sentences = [];
+    let match;
     
-        // Split the content into sentences based on punctuation marks (.!?)
-        const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-        let sentences = [];
-        let match;
-        
-        // Extract all sentences
-        while ((match = sentenceRegex.exec(textContent)) !== null) {
-            sentences.push(match[0].trim());
-        }
-        
-        // Build the lines array from the split sentences
-        const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
-    
-        // Log lines for debugging
-        console.log('Lines to speak:', lines);
-    
-        // Collecting any additional lines from the line groups
-        const lineGroups = document.querySelectorAll('.line-group');
-        lineGroups.forEach(group => {
-            const text = group.querySelector('.textInput').value;
-            const speaker = group.querySelector('.speakerSelect').value;
-            if (text && speaker) {
-                lines.push({ text, speaker });
+    // Extract all sentences using punctuation-based splitting
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        sentences.push(match[0].trim());
+    }
+
+    // If no punctuation-based sentences are found, merge words into sentences with more than 8 characters
+    if (sentences.length === 0) {
+        const words = textContent.split(/\s+/); // Split by spaces to get individual words
+        let currentSentence = '';
+
+        words.forEach(word => {
+            currentSentence += (currentSentence ? ' ' : '') + word; // Add word to the current sentence
+
+            // If the current sentence exceeds 8 characters, push it to sentences and start a new one
+            if (currentSentence.length > 8) {
+                sentences.push(currentSentence.trim());
+                currentSentence = ''; // Reset for the next sentence
             }
         });
-    
-        // Final lines array for use
-        console.log('Final lines:', lines);
-        
+
+        // If there's any leftover text in currentSentence, add it as the last sentence
+        if (currentSentence.length > 0) {
+            sentences.push(currentSentence.trim());
+        }
+    }
+
+    // Build the lines array from the split sentences
+    const lines = sentences.map(sentence => ({ text: sentence, speaker: 'Daisy Studious' }));
+
+    // Log lines for debugging
+    console.log('Lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Final lines array for use
+    console.log('Final lines:', lines)
         
     if (lines.length > 0) {
         // Build query parameters
