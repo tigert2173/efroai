@@ -1035,7 +1035,7 @@ function speakMessage(index) {
      let tempSentence = '';
  
      sentences.forEach((sentence, index) => {
-         if (sentence.length < 8 && index < sentences.length - 1) {
+         if (sentence.length < 14 && index < sentences.length - 1) {
              // Merge short sentence with the next sentence
              tempSentence += sentence + ' ';
          } else {
@@ -1065,7 +1065,7 @@ function speakMessage(index) {
  
      // Final lines array for use
      console.log('Final lines:', lines);
-         
+
     if (lines.length > 0) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
