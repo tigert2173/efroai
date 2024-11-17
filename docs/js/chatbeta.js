@@ -1020,7 +1020,7 @@ function speakMessage(index) {
     }
     
     // Split the content into sentences based on punctuation marks (.!?)
-    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    const sentenceRegex = /([^.!?]*[.!?]+)\s*/g;
     let sentences = [];
     let match;
     
