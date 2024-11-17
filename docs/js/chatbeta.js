@@ -1041,7 +1041,7 @@ function speakMessage(index) {
     let tempSentence = '';
 
     sentences.forEach((sentence, index) => {
-        if (sentence.length < 0 && index < sentences.length - 1) {
+        if (sentence.length < 0 && index < sentences.length) {
             // Merge short sentence with the next sentence if it's not the last one
             tempSentence += sentence + ' ';
         } else {
