@@ -1023,13 +1023,12 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
 const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
-// Updated regex to properly capture sentences including punctuation at the end
-// The regex now correctly keeps punctuation attached to the sentence
-const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+(?:['"]?)?))/g;
+// Regex that will properly capture full sentences, including punctuation at the end
+const sentenceRegex = /([A-Za-z0-9,;!?~\s]+(?:[.!?~]+['"]?)?)/g;
 let sentences = [];
 let match;
 
-// Extract all sentences correctly
+// Extract all sentences
 while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
     sentences.push(match[0].trim());
 }
@@ -1049,7 +1048,7 @@ let tempSentence = '';
 sentences.forEach((sentence, index) => {
     // Check if sentence is short enough to be combined with the previous one
     if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
-        // Combine sentence with previous one while ensuring punctuation stays at the end
+        // Combine sentence with previous one while ensuring punctuation is at the end
         tempSentence += ' ' + sentence.trim();
     } else {
         // If the sentence is long enough or we're at the end of content, push the combined sentence
