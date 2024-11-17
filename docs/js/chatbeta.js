@@ -1046,14 +1046,15 @@ let tempSentence = '';
 
 sentences.forEach((sentence, index) => {
     // Check if sentence is short enough to be combined with the previous one
-    if (sentence.length < 72 && tempSentence.length < 72) {
-        tempSentence += ' ' + sentence; // Combine sentence with previous one
+    if (sentence.length < 72 && tempSentence.length + sentence.length < 72) {
+        // Remove any leading whitespace from the next sentence and add to tempSentence
+        tempSentence += ' ' + sentence.trim(); // Combine sentence with previous one
     } else {
-        // If it's a valid sentence or we're at the end of content, push it
+        // If the sentence is long enough or we're at the end of content, push the combined sentence
         if (tempSentence.trim().length > 0) {
             lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
         }
-        tempSentence = sentence; // Start a new sentence
+        tempSentence = sentence.trim(); // Start a new sentence
     }
 });
 
