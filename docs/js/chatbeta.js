@@ -1024,7 +1024,7 @@ const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
 console.log('Cleaned content:', cleanedTextContent);
 
 // Refined regex to capture full sentences, keeping quotes and punctuation intact
-const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$)|"[^"]*"[.!?])|[^.!?]*[.!?](?=\s|$)/g;
+const sentenceRegex = /([A-Za-z0-9,;!?~'\s]+[.!?](?=\s|$))|(".*?"[.!?])|([^.!?]+[.!?](?=\s|$))/g;
 
 let sentences = [];
 let match;
