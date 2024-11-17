@@ -1019,7 +1019,7 @@ function speakMessage(index) {
         return; // Exit early if there's no content
     }
     
-    // Split the content into sentences based on punctuation marks (.!?), but handle the last sentence more carefully
+    // Split the content into sentences based on punctuation marks (.!?), handling potential incomplete sentences
     const sentenceRegex = /([^.!?]*[.!?])\s*/g;
     let sentences = [];
     let match;
@@ -1040,21 +1040,21 @@ function speakMessage(index) {
     const lines = [];
     let tempSentence = '';
     
-    // Merge short sentences or handle incomplete sentences at the end
+    // Handle sentence merging and ensure the last sentence is processed
     sentences.forEach((sentence, index) => {
         if (sentence.length < 72 && index < sentences.length - 1) {
             // Merge short sentence with the next one if it's not the last sentence
             tempSentence += sentence + ' ';
         } else {
             // Add the valid sentence to the lines, even if it's the last one or incomplete
-            lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
+            lines.push({ text: tempSentence + sentence, speaker: 'Kyrie' }); // Changed speaker to Kyrie as per your context
             tempSentence = ''; // Reset temporary sentence after adding
         }
     });
     
     // In case there is any remaining short sentence that hasn't been added
     if (tempSentence.trim().length > 0) {
-        lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+        lines.push({ text: tempSentence, speaker: 'Kyrie' });
     }
     
     // Log the final lines for debugging
@@ -1069,7 +1069,6 @@ function speakMessage(index) {
             lines.push({ text, speaker });
         }
     });
-    
 
     // Final lines array for use
     console.log('Final lines with additional inputs:', lines);
