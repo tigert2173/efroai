@@ -1019,19 +1019,24 @@ if (!messageContent || !messageContent.content || messageContent.content.length 
     return; // Exit early if there's no content
 }
 
+// Remove HTML tags if any
+const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
+
+console.log('Cleaned content:', cleanedTextContent);
+
 // Split the content into sentences based on punctuation marks (.!?)
 const sentenceRegex = /([^.!?]*[.!?])\s*/g;
 let sentences = [];
 let match;
 
 // Extract all sentences
-while ((match = sentenceRegex.exec(textContent)) !== null) {
+while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
     sentences.push(match[0].trim());
 }
 
 // If no sentences are found (e.g., text without punctuation), push the entire text as one sentence
 if (sentences.length === 0) {
-    sentences = [textContent.trim()];
+    sentences = [cleanedTextContent.trim()];
 }
 
 console.log('Sentences:', sentences);
