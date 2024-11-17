@@ -1038,28 +1038,16 @@ while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
 
 console.log('All sentences:', sentences);
 
-// Now, we will capture the sentences starting after the target sentence
+// Capture all sentences from the start, and include the ones after the target phrase
 let captureAfterTarget = false;
 let capturedSentences = [];
 
-// Loop through all sentences to find the target and capture the rest
+// Loop through all sentences to capture both before and after the target sentence
 sentences.forEach((sentence) => {
-    if (captureAfterTarget) {
-        capturedSentences.push(sentence);
-    }
-    
-    if (sentence.includes(targetSentence)) {
-        captureAfterTarget = true;  // Start capturing sentences after the target
-    }
+    capturedSentences.push(sentence);  // Capture all sentences, before and after the target
 });
 
-console.log('Captured sentences after the target:', capturedSentences);
-
-// If no sentences were captured, return early
-if (capturedSentences.length === 0) {
-    console.log('No sentences after target found.');
-    return;
-}
+console.log('Captured sentences:', capturedSentences);
 
 // Prepare the output lines for sending
 let lines = [];
