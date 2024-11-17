@@ -1013,8 +1013,8 @@ function speakMessage(index) {
         const textContent = messageContent.content[0].text; // Extract content from the message object
         console.log('Speaking message:', textContent);
     
-        // Define the regex to split text at punctuation marks !, . , ? followed by a space or newline
-        const sentenceRegex = /[^.!?]+[.!?](?:\s|\n|$)/g;
+        // Define the regex to split at punctuation marks: ., ?, !
+        const sentenceRegex = /([A-Za-z0-9,;'\-“”!?\.\s]+[\.!?])(\s|$)/g;
         let sentences = [];
         let match;
         let currentSentence = "";
@@ -1040,9 +1040,9 @@ function speakMessage(index) {
             }
         }
     
-        // Handle the case where there is leftover text without punctuation at the end
+        // If any remaining sentence is left after the loop
         if (currentSentence) {
-            sentences.push(currentSentence); // Push the last accumulated sentence
+            sentences.push(currentSentence);
         }
     
         // Log sentences for debugging
@@ -1066,7 +1066,6 @@ function speakMessage(index) {
     
         // Final lines array for use
         console.log('Final lines:', lines);
-
         
     if (lines.length > 0) {
         // Build query parameters
