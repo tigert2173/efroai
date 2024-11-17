@@ -1009,63 +1009,56 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-     // Find the specific message from the messages array
-     const messageContent = messages[index]; 
-     const textContent = messageContent.content[0].text; // Extract content from the message object
-     console.log('Speaking message:', textContent);
- 
-     // Split the content into sentences based on punctuation marks (.!?)
-     const sentenceRegex = /([^.!?]*[.!?])\s*/g;
-     let sentences = [];
-     let match;
-     
-     // Extract all sentences using regex
-     while ((match = sentenceRegex.exec(textContent)) !== null) {
-         sentences.push(match[0].trim());
-     }
- 
-     // Check if there's any remaining content after the regex split
-     const remainingText = textContent.slice(sentenceRegex.lastIndex).trim();
-     if (remainingText) {
-         sentences.push(remainingText); // Add any remaining text as the last sentence
-     }
- 
-     // Merge sentences if they are shorter than 8 characters
-     const lines = [];
-     let tempSentence = '';
- 
-     sentences.forEach((sentence, index) => {
-         if (sentence.length < 72 && index < sentences.length - 1) {
-             // Merge short sentence with the next sentence
-             tempSentence += sentence + ' ';
-         } else {
-             // If we have a valid sentence (over 8 chars or end of content), push it
-             lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
-             tempSentence = ''; // Reset temporary sentence after adding
-         }
-     });
- 
-     // If there's still any leftover text in tempSentence, push it
-     if (tempSentence) {
-         lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
-     }
- 
-     // Log lines for debugging
-     console.log('Lines to speak:', lines);
- 
-     // Collecting any additional lines from the line groups
-     const lineGroups = document.querySelectorAll('.line-group');
-     lineGroups.forEach(group => {
-         const text = group.querySelector('.textInput').value;
-         const speaker = group.querySelector('.speakerSelect').value;
-         if (text && speaker) {
-             lines.push({ text, speaker });
-         }
-     });
- 
-     // Final lines array for use
-     console.log('Final lines:', lines);
+    const messageContent = messages[index]; 
+    const textContent = messageContent.content[0].text; // Extract content from the message object
+    console.log('Speaking message:', textContent);
 
+    // Split the content into sentences based on punctuation marks (.!?)
+    const sentenceRegex = /([^.!?]*[.!?])\s*/g;
+    let sentences = [];
+    let match;
+
+    // Extract all sentences
+    while ((match = sentenceRegex.exec(textContent)) !== null) {
+        sentences.push(match[0].trim());
+    }
+
+    // Create the lines array
+    const lines = [];
+    let tempSentence = '';
+
+    sentences.forEach((sentence, index) => {
+        if (sentence.length < 72 && index < sentences.length - 1) {
+            // Merge short sentence with the next sentence if it's not the last one
+            tempSentence += sentence + ' ';
+        } else {
+            // If it's a valid sentence or we're at the end of content, push it
+            lines.push({ text: tempSentence + sentence, speaker: 'Daisy Studious' });
+            tempSentence = ''; // Reset temporary sentence after adding
+        }
+    });
+
+    // In case there is any remaining short sentence that hasn't been added
+    if (tempSentence.trim().length > 0) {
+        lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+    }
+
+    // Log lines for debugging
+    console.log('Final lines to speak:', lines);
+
+    // Collecting any additional lines from the line groups
+    const lineGroups = document.querySelectorAll('.line-group');
+    lineGroups.forEach(group => {
+        const text = group.querySelector('.textInput').value;
+        const speaker = group.querySelector('.speakerSelect').value;
+        if (text && speaker) {
+            lines.push({ text, speaker });
+        }
+    });
+
+    // Final lines array for use
+    console.log('Final lines:', lines);
+    
     if (lines.length > 0) {
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
