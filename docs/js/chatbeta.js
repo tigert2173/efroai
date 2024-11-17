@@ -1009,13 +1009,15 @@ function playSantaVoice() {
 
 
 function speakMessage(index) {
-    // Ensure that we aren't sending the same message over and over again
-    if (!message || !message.content || message.content.length === 0) {
-        return; // Exit early if there's no content
-    }
+ 
 
     const messageContent = message.content[0];
+       // Ensure that we aren't sending the same message over and over again
+       if (!message || !message.content || message.content.length === 0) {
+        return; // Exit early if there's no content
+    }
     const textContent = messageContent.text; // Extract content from the message object
+    
     console.log('Speaking message:', textContent);
 
     // Split the content into sentences based on punctuation marks (.!?)
