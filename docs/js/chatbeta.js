@@ -1025,15 +1025,24 @@ function speakMessage(index) {
     let match;
     
     // Extract all sentences
-    while ((match = sentenceRegex.exec(textContent)) !== null) {
-        sentences.push(match[0].trim());
+while ((match = sentenceRegex.exec(textContent)) !== null) {
+    let sentence = match[0].trim();
+    if (sentence.length > 0) {
+        sentences.push(sentence);
     }
-    
-    // If no sentences are found (e.g., text without punctuation), push the entire text as one sentence
-    if (sentences.length === 0) {
-        sentences = [textContent.trim()];
-    }
-    
+}
+
+// Add remaining text (without punctuation) if it exists
+const remainingText = textContent.trim();
+if (remainingText && !remainingText.endsWith('.') && !remainingText.endsWith('?') && !remainingText.endsWith('!')) {
+    sentences.push(remainingText);
+}
+
+// If no sentences are found (e.g., text without punctuation), push the entire text as one sentence
+if (sentences.length === 0) {
+    sentences = [textContent.trim()];
+}
+
     console.log('Sentences:', sentences);
     
     // Create the lines array
