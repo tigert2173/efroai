@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans & Donations</title>
+    <link rel="stylesheet" href="css/menu2.0.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background for futuristic look */
+            color: #fff; /* Light text color for contrast */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            font-size: 40px;
+            color: #00FFAB; /* Neon green color for AI feel */
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 18px;
+            color: #aaa; /* Lighter text for description */
+        }
+        .plan-section, .donation-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            background-color: #1E1E1E; /* Dark background for cards */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            padding: 30px;
+            transition: all 0.3s ease-in-out;
+        }
+        .plan-section:hover, .donation-section:hover {
+            box-shadow: 0 6px 10px rgba(0, 255, 255, 0.3); /* Neon glow effect */
+        }
+        .section-title {
+            color: #00FFAB;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+        }
+        .plan-item, .donation-item {
+            background-color: #333333;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .plan-item:hover, .donation-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 255, 255, 0.3); /* Neon hover effect */
+        }
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF5722; /* Neon orange color */
+            margin-bottom: 10px;
+        }
+        .description {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .benefits ul {
+            padding-left: 20px;
+            list-style: none;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background-color: #FF5722;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #e64a19;
+        }
+        .benefits h3 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .benefits p {
+            color: #ccc;
+            font-size: 14px;
+        }
+        .disclaimer {
+            background-color: #121212;
+            color: #ccc;
+            font-size: 14px;
+            padding: 20px;
+            border-top: 2px solid #444;
+            text-align: center;
+        }
+        .disclaimer a {
+            color: #00FFAB;
+            text-decoration: underline;
+        }
+        .resource-section {
+    margin-top: 40px;
+    background-color: #1E1E1E;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.resource-tier-card {
+    background-color: #333333;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resource-tier-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 255, 255, 0.3);
+}
+
+.tier-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #00FFAB;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.tier-benefits ul {
+    padding-left: 20px;
+    color: #aaa;
+}
+
+.tier-benefits li {
+    margin-bottom: 8px;
+}
+
+/* Styling for the Estimator Form */
+.estimator-form {
+    background-color: #333333;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+}
+
+.estimator-form label {
+    display: block;
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.estimator-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #222;
+}
+
+.estimator-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #FF5722;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.estimator-form button:hover {
+    background-color: #e64a19;
+}
+
+.estimator-result {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    color: #00FFAB;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.estimator-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #222;
+}
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="left-content">
+            <a href="/" class="logo"> <!-- Make the logo clickable -->
+            <div class="logo">
+                <img src="logo.png" alt=" ">
+            </div>
+        </a>
+        <a href="/" class="text">
+            <div class="text">
+                <span class="letter letter-1">E</span>
+                <span class="letter letter-2">F</span>
+                <span class="letter letter-3">R</span>
+                <span class="letter letter-4">O</span>
+                <span class="letter letter-5">.</span>
+                <span class="letter letter-6">A</span>
+                <span class="letter letter-7">I</span>
+            </div>
+        </a>
+        </div>
+<div class="right-content">
+    <ul class="nav-links">
+        <!-- Characters with dropdown -->
+        <li class="dropdown">
+            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+            <div class="dropdown-content">
+                <a href="index.html">Characters Hub</a>
+                <a href="editor.html">Upload Character</a>
+                <a href="mycharacters.html">My Characters</a>
+            </div>
+        </li>
+
+        <!-- Community with dropdown -->
+        <li class="dropdown">
+            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+            <div class="dropdown-content">
+                <a href="rules.html">Rules</a>
+                <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                <a href="/EFROTales/">Old Stories Page</a>
+            </div>
+        </li>
+
+        <!-- Account with dropdown -->
+        <li class="dropdown">
+            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+            <div class="dropdown-content">
+                <a href="myaccount.html">Account</a>
+                <a href="mylikes.html">My Likes</a>
+                <a href="login.html">Login</a>
+            </div>
+        </li>
+
+        <!-- Help with dropdown -->
+        <li class="dropdown">
+            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+            <div class="dropdown-content">
+                <a href="documentation.html">Documentation</a>
+                <a href="updates.html">Updates & Features</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </li>
+
+        <!-- Contribute Button -->
+        <li>
+            <a href="contribute.html" class="nav-btn">Contribute</a>
+        </li>
+    </ul>     
+
+    <!-- Search bar -->
+    <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
+    <div id="login-status" class="login-status"></div>
+
+    <!-- Hamburger menu for mobile view -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>  
+</div>
+</nav>
+</header>
+<div class="container">
+    <div class="header">
+        <h1>Choose Your Plan & Support Us</h1>
+        <p>Pick a plan that best fits your needs or donate to enhance your experience and help us grow! Your support makes all the difference.</p>
+    </div>
+
+    <!-- Plans Section -->
+    <div class="plan-section">
+        <h2 class="section-title">Our Premium Plans</h2>
+
+        <div class="plan-item">
+            <div class="price">$6/month</div>
+            <div class="description">
+                Perfect for users who want to enjoy a richer, ad-free experience with audio features. This plan unlocks the Text-to-Voice feature with sound effects for a more immersive interaction with our platform.
+            </div>
+            <div class="benefits">
+                <h3>Benefits:</h3>
+                <ul>
+                    <li>Text-to-voice feature with realistic sound effects</li>
+                    <li>Completely ad-free experience</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Subscribe Now</a>
+        </div>
+
+        <div class="plan-item">
+            <div class="price">$14/month</div>
+            <div class="description">
+                For the power user who demands the latest AI technology. Unlock the cutting-edge 13B AI model for faster, smarter responses and experience an ad-free environment.
+            </div>
+            <div class="benefits">
+                <h3>Benefits:</h3>
+                <ul>
+                    <li>Access to the advanced 13B AI model</li>
+                    <li>Completely ad-free experience</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Subscribe Now</a>
+        </div>
+
+        <div class="plan-item">
+            <div class="price">$18/month</div>
+            <div class="description">
+                The ultimate plan for users who want it all. Enjoy both the powerful 13B model and the immersive Text-to-Voice feature, all while enjoying an uninterrupted ad-free experience.
+            </div>
+            <div class="benefits">
+                <h3>Benefits:</h3>
+                <ul>
+                    <li>Access to the cutting-edge 13B AI model</li>
+                    <li>Text-to-voice with sound effects</li>
+                    <li>100% ad-free experience</li>
+                    <li>All the premium features at a discounted price</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Subscribe Now</a>
+        </div>
+    </div>
+
+    <!-- Donations Section -->
+    <div class="donation-section">
+        <h2 class="section-title">Support Us with Donations</h2>
+
+        <div class="donation-item">
+            <div class="price">$4 one-time</div>
+            <div class="description">
+                Help us maintain the platform with a one-time donation. This contribution will remove ads permanently, giving you an uninterrupted experience every time you visit.
+            </div>
+            <div class="benefits">
+                <h3>Benefits:</h3>
+                <ul>
+                    <li>Ad-free experience for life</li>
+                    <li>Support the growth of the platform</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+
+        <div class="donation-item">
+            <div class="price">$10 one-time</div>
+            <div class="description">
+                Become an exclusive supporter by donating $10! Enjoy an ad-free experience, priority support, and get a custom character designed just for you.
+            </div>
+            <div class="benefits">
+                <h3>Exclusive Benefits:</h3>
+                <ul>
+                    <li>Permanent ad-free experience</li>
+                    <li>Priority support for your questions</li>
+                    <li>Exclusive Donor Badge on your profile</li>
+                    <li>A custom character created for you</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+
+        <div class="donation-item">
+            <div class="price">$15 one-time</div>
+            <div class="description">
+                Make a meaningful difference with your donation and enjoy a 20% faster queue jump (around 8 seconds) for the free model, plus ad removal for the duration of your donation.
+            </div>
+            <div class="benefits">
+                <h3>Additional Benefits:</h3>
+                <ul>
+                    <li>20% faster queue jump for quicker access</li>
+                    <li>Ad-free experience during your donation period</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+
+        <div class="donation-item">
+            <div class="price">$30 one-time</div>
+            <div class="description">
+                Make a meaningful difference with your donation and enjoy a 40% faster queue jump (around 8 seconds) for the free model, plus ad removal for the duration of your donation.
+            </div>
+            <div class="benefits">
+                <h3>Additional Benefits:</h3>
+                <ul>
+                    <li>40% faster queue jump for quicker access</li>
+                    <li>Ad-free experience during your donation period</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+        <div class="donation-item">
+            <div class="price">$50 one-time</div>
+            <div class="description">
+                Make a meaningful difference with your donation and enjoy a 60% faster queue jump (around 8 seconds) for the free model, plus ad removal for the duration of your donation.
+            </div>
+            <div class="benefits">
+                <h3>Additional Benefits:</h3>
+                <ul>
+                    <li>60% faster queue jump for quicker access</li>
+                    <li>Ad-free experience during your donation period</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+    </div>
+<!-- Non-Monetary Donation Section -->
+<div class="resource-section">
+    <h2 class="section-title">Non-Monetary Donations</h2>
+
+    <div class="resource-item">
+        <div class="description">
+            Contribute by hosting servers and computing resources! You’ll help us reduce queue times and make the service faster for all users. Based on the amount of resources you provide, you’ll be assigned a contribution tier with exclusive benefits. Here’s how your hardware type impacts your contribution:
+        </div>
+
+        <!-- Contribution Tiers -->
+        <div class="resource-tier-card">
+            <div class="tier-title">Tier 1: CPU Only Contributor</div>
+            <div class="tier-benefits">
+                <ul>
+                    <li>Queue time reduction: 20% (likely to fall in this section with CPU-only resources)</li>
+                    <li>Access to standard features</li>
+                    <li>Community recognition with a flair badge</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Join Tier 1</a>
+        </div>
+
+        <!-- Low-End GPU Contributor Card -->
+        <div class="resource-tier-card">
+            <div class="tier-title">Tier 2: Low-End GPU Contributor</div>
+            <div class="tier-benefits">
+                <ul>
+                    <li>Queue time reduction: 40%</li>
+                    <li>Examples: NVIDIA GTX 1650, GTX 1050 Ti, AMD RX 570</li>
+                    <li>Access to early feature releases</li>
+                    <li>Unique character card colors</li>
+                    <li>Priority beta access</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Join Tier 2</a>
+        </div>
+
+        <!-- Mid-Range GPU Contributor Card -->
+        <div class="resource-tier-card">
+            <div class="tier-title">Tier 3: Mid-Range GPU Contributor</div>
+            <div class="tier-benefits">
+                <ul>
+                    <li>Queue time reduction: 60%</li>
+                    <li>Examples: NVIDIA RTX 3060, 3070,NVIDIA GTX 1660, GTX 1660 Ti, AMD RX 580, RX 590</li>
+                    <li>Access to advanced features and early access to updates</li>
+                    <li>Custom flair badge and profile recognition</li>
+                    <li>Priority beta access and feedback</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Join Tier 3</a>
+        </div>
+
+        <!-- High-End GPU Contributor Card -->
+        <div class="resource-tier-card">
+            <div class="tier-title">Tier 4: High-End GPU Contributor</div>
+            <div class="tier-benefits">
+                <ul>
+                    <li>Queue time reduction: 80%</li>
+                    <li>Examples: NVIDIA RTX 4090, 4080, 3090, 3080, AMD RX 6800, RX 6900 XT</li>
+                    <li>Full access to all features, including upcoming AI models</li>
+                    <li>Exclusive server host perks and recognition</li>
+                    <li>Priority support and development feedback integration</li>
+                    <li>Private access to new AI model versions during development</li>
+                </ul>
+            </div>
+            <a href="#" class="btn">Join Tier 4</a>
+        </div>
+    </div>
+</div>
+
+<!-- PC Contribution Estimator -->
+<div class="resource-section">
+    <h2 class="section-title">PC Contribution Estimator</h2>
+
+    <div class="resource-item">
+        <div class="description">
+            Use the calculator below to estimate which tier your PC falls into based on your CPU, GPU, and RAM. Select your specifications to get an estimated contribution tier.
+        </div>
+
+       <!-- Estimator Form -->
+<form id="estimator-form" class="estimator-form">
+    <label for="cpu">CPU Cores:</label>
+    <input id="cpu" name="cpu" type="number" min="1" max="64" step="1" required placeholder="Enter number of cores">
+
+    <label for="gpu">GPU VRAM (GB):</label>
+    <input id="gpu" name="gpu" type="number" min="0" max="128" step="1" required placeholder="Enter VRAM in GB">
+
+    <label for="ram">RAM (GB):</label>
+    <input id="ram" name="ram" type="number" min="4" max="256" step="4" required placeholder="Enter RAM in GB">
+    
+    <button type="submit">Calculate Tier</button>
+</form>
+
+            <button type="submit" class="btn">Estimate Tier</button>
+        </form>
+
+        <div id="result" class="estimator-result"></div>
+    </div>
+</div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <p>If you experience any downtime while using your plan, please don't hesitate to reach out to us! For every day that you experience more than 15 minutes of downtime, we'll add an additional day to your subscription at no extra charge.</p>
+    </div>
+</div>
+<script src="js/menu.js"></script>
+
+<script>
+    
+// Define tiers based on performance
+const tierRanges = [
+    { minScore: 0, maxScore: 30, tier: "Tier 1: Basic Contributor - Suitable for simple inference tasks or light processing." },
+    { minScore: 31, maxScore: 60, tier: "Tier 2: Low-End GPU Contributor - Suitable for small AI models and light inference tasks." },
+    { minScore: 61, maxScore: 80, tier: "Tier 3: Mid-Range Contributor - Suitable for moderately complex inference tasks or model fine-tuning." },
+    { minScore: 81, maxScore: 120, tier: "Tier 4: High-End Contributor - Suitable for AI model training, large-scale inference, and deep learning tasks." },
+    { minScore: 121, maxScore: Infinity, tier: "Enterprise Tier: Reach out to us for a tailored plan with additional incentives." }
+];
+
+// Function to calculate total score and determine the contribution tier
+function getContributionTier(cpuCores, gpuVRAM, ram) {
+    // CPU score: 2 points per core
+    let cpuScore = cpuCores * 2;
+
+    // GPU score: 3 points per GB of VRAM
+    let gpuScore = gpuVRAM * 3;
+    if (gpuVRAM < 4) {
+        gpuScore = gpuVRAM * 1;
+    }
+
+    // RAM score: Boosted if no GPU is available
+    if (gpuVRAM == 0) {
+        ramMultiplier = 1.5; // Boost multiplier when CPU-only
+    } else {
+        ramMultiplier = 1; 
+    }
+    let ramScore = Math.floor(ram / 4) * ramMultiplier;
+
+    // Total score
+    let totalScore = cpuScore + gpuScore + ramScore;
+
+    // Determine the tier based on the score
+    for (let tier of tierRanges) {
+        if (totalScore >= tier.minScore && totalScore <= tier.maxScore) {
+            return `${tier.tier} (Total Score: ${totalScore})`;
+        }
+    }
+
+    return "Unable to determine tier. Please check your inputs.";
+}
+
+// Example usage
+console.log(getContributionTier(8, 6, 16)); // Example: 8-core CPU, 6 GB VRAM, 16 GB RAM
+console.log(getContributionTier(8, 0, 16)); // Example: 8-core CPU, CPU-only, 16 GB RAM
+
+
+// Event listener for form submission
+document.getElementById("estimator-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const cpu = document.getElementById("cpu").value.trim();
+    const gpu = document.getElementById("gpu").value.trim();
+    const ram = parseInt(document.getElementById("ram").value.trim(), 10);
+    
+    const result = getContributionTier(cpu, gpu, ram);
+
+    document.getElementById("result").innerHTML = result;
+});
+
+</script>
+</body>
+</html>
