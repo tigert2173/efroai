@@ -1053,23 +1053,28 @@ console.log('Captured sentences:', capturedSentences);
 let lines = [];
 let tempSentence = '';
 
-// Build the lines based on captured sentences
+// Get the dropdown element
+const speakerSelect = document.getElementById('speakerSelect');
+
+// Function to build lines based on captured sentences
 capturedSentences.forEach((sentence) => {
+    const selectedSpeaker = speakerSelect.value; // Get the selected speaker
     if (tempSentence.length + sentence.length < 72) {
         // Combine sentences if they fit within the limit
         tempSentence += ' ' + sentence.trim();
     } else {
         // Push the current sentence to the lines array
         if (tempSentence.trim().length > 0) {
-            lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+            lines.push({ text: tempSentence, speaker: selectedSpeaker });
         }
-        tempSentence = sentence.trim();  // Start a new sentence
+        tempSentence = sentence.trim(); // Start a new sentence
     }
 });
 
 // Ensure the last sentence is added
 if (tempSentence.trim().length > 0) {
-    lines.push({ text: tempSentence, speaker: 'Daisy Studious' });
+    const selectedSpeaker = speakerSelect.value; // Get the selected speaker
+    lines.push({ text: tempSentence, speaker: selectedSpeaker });
 }
 
 console.log('Final lines to speak:', lines);
