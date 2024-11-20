@@ -208,14 +208,15 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
+    align-items: flex-start; /* Aligns the chat content to the top */
+    flex-direction: column; /* Stack elements vertically */
+    height: 100vh; /* Full viewport height */
 }
 
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -229,6 +230,7 @@ code {
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
 }
+
 
 #left-image-container,
 #right-image-container {
