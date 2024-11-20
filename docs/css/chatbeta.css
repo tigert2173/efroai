@@ -159,6 +159,7 @@ a:active {
     position: relative; /* Position relative for pseudo-elements */
 }
 
+/* Styling for Navigation Arrows */
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
@@ -172,41 +173,39 @@ a:active {
     cursor: not-allowed;
 }
 
+/* Main content container */
 #main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    width: 100%; /* Take full width */
+    width: 100%; /* Full width */
     max-width: 700px; /* Limit max width */
 }
-/* Style for block code */
+
+/* Code Block Styling */
 .code-block {
     background-color: #303030;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     font-family: "Courier New", Courier, monospace;
-    overflow-x: auto; /* For long lines of code */
+    overflow-x: auto;
 }
 
-/* Style for inline code */
-codelight {
-    /* background-color: #2e2e2e; */
-    border-radius: 3px;
-    padding: 2px 5px;
-    font-family: "Courier New", Courier, monospace;
-}
-/* Style for inline code */
-code {
+/* Inline code block styling */
+code, codelight {
     background-color: #2e2e2e;
     border-radius: 3px;
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
+
+/* Chat container layout */
 #chat-container {
     display: flex;
+    flex-direction: row; /* Ensure horizontal layout */
     position: relative;
     width: 100%;
     height: 500px;
@@ -216,14 +215,13 @@ code {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    justify-content: flex-start; /* Default to left alignment */
 }
 
 #chat-image, #chat-image-inside {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 40%; /* 40% width for the image */
+    width: 40%; /* Image takes 40% width */
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -239,11 +237,12 @@ code {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 50px; /* Default margin to allow space for the image */
+    margin-left: 50px; /* Space for image if it's on the left */
     justify-content: flex-start;
     overflow-y: auto;
 }
 
+/* Styling individual messages */
 .message {
     background-color: #444;
     color: white;
@@ -252,32 +251,26 @@ code {
     border-radius: 5px;
 }
 
+/* Left Image: Adjust message container margin */
 .left-image #chat-content {
-    margin-left: 0; /* No margin when image is on the left */
+    margin-left: 0; /* No space when image is on the left */
 }
 
 .right-image #chat-content {
-    margin-right: 0; /* No margin when image is on the right */
+    margin-right: 0; /* No space when image is on the right */
 }
 
 /* Class for positioning image to the left */
 .left-image {
-    flex-direction: row-reverse;
+    flex-direction: row-reverse; /* Swap order of image and messages */
 }
 
 /* Class for positioning image to the right */
 .right-image {
-    flex-direction: row;
+    flex-direction: row; /* Keep default order of image and messages */
 }
 
-
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #353b48; /* Dark grey */
-}
-
+/* Styling for bot, user, and system messages */
 .assistant {
     text-align: left;
     background-color: #124429; /* Orange background for bot */
@@ -290,7 +283,7 @@ code {
 
 .system {
     text-align: left;
-    background-color: brown; /* Orange background for bot */
+    background-color: brown; /* Brown background for system */
 }
 
 #input-container {
