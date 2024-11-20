@@ -362,7 +362,7 @@ code {
     white-space: wrap;
     overflow: hidden;
     border-right: 3px solid black; /* Simulated cursor */
-    animation: typing 600s steps(10, end) 0s forwards, blink-caret 0.75s step-end infinite;
+    animation: typing 600s steps(60, end) 10s forwards, blink-caret 0.75s step-end infinite;
 }
 
 /* Typing effect */
