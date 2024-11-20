@@ -345,60 +345,32 @@ code {
     border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
 }
 
-/* Container for message typing */
+/* Container for the typing animation */
 .message-content {
-    display: block;
-    overflow: hidden; /* Ensures rows beyond the height are hidden */
-    max-height: 0; /* Initially hides all rows */
-    line-height: 1.5em; /* Row height matching font size */
-    animation: reveal-rows 3s steps(3, end) forwards; /* Row-by-row reveal */
-}
-
-/* Typing animation for each character */
-.message-content span {
-    opacity: 0; /* Initially hide each character */
-    display: inline-block; /* Ensures animation applies to each character */
-    animation: typing-char 0.05s forwards; /* Typing animation per char */
-    animation-delay: calc(var(--char-index) * 0.05s); /* Staggered timing */
-}
-
-/* Animation to reveal rows one by one */
-@keyframes reveal-rows {
-    from {
-        max-height: 0;
-    }
-    to {
-        max-height: 4.5em; /* Adjust for the number of rows */
-    }
-}
-
-/* Animation for character reveal */
-@keyframes typing-char {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Optional blinking caret */
-.message-content::after {
-    content: "";
     display: inline-block;
-    width: 2px;
-    height: 1em;
-    background-color: black;
-    margin-left: 2px;
-    animation: blink-caret 0.5s step-end infinite;
+    white-space: nowrap;
+    overflow: hidden; /* Hide the text that is not yet visible */
+    border-right: 2px solid black; /* Simulate the typing cursor */
+    animation: typing 5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
+/* Typing effect: Animate the text character by character */
+@keyframes typing {
+    from {
+        width: 0; /* Start with no visible text */
+    }
+    to {
+        width: 100%; /* Make all text visible at the end */
+    }
+}
+
+/* Blinking cursor effect */
 @keyframes blink-caret {
     from, to {
-        background-color: transparent;
+        border-color: transparent;
     }
     50% {
-        background-color: black;
+        border-color: black;
     }
 }
 
