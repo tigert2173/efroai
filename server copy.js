@@ -5,7 +5,6 @@
   const path = require('path');
   const WebSocket = require('ws'); // Import WebSocket library
   const compression = require('compression'); // Import compression middleware
-  const s3Routes = require('./s3Routes'); // Import the S3 routes module
 
   const app = express();
   // Use CORS middleware
@@ -224,9 +223,6 @@ app.use(express.static(path.join(__dirname, 'docs'), {
       key: fs.readFileSync('certs/private.key.pem'),
       cert: fs.readFileSync('certs/domain.cert.pem'),
   };
-
-// Use S3 routes
-app.use('/s3', s3Routes); // Mount the S3 routes under the '/s3' path
 
   // Start the HTTPS server
   const server = https.createServer(options, app).listen(443, () => {
