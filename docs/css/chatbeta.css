@@ -205,7 +205,6 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-
 #chat-wrapper {
     position: relative;
     width: 100%;
@@ -214,16 +213,6 @@ code {
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
 }
-
-#input-wrapper {
-    position: relative;
-    width: 100%;
-    /* background-color: #00FF00; */
-    display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
-}
-
 
 #chat-container {
     width: 100%; /* Adjust width as needed */
@@ -280,16 +269,22 @@ code {
     border-radius: inherit; /* Match the border radius */
 }
 
-/* If the left image is shown, push everything to the right */
-#chat-wrapper.has-left-image,
-#input-container.has-left-image {
-    margin-left: 320px; /* Shift both chat and input containers to the right */
+/* If the left or right images are shown, shift chat-container accordingly */
+#chat-wrapper.has-left-image #chat-container {
+    margin-left: 320px; /* Push the chat container to the right */
 }
 
-/* If the right image is shown, push everything to the left */
-#chat-wrapper.has-right-image,
-#input-container.has-right-image {
-    margin-right: 320px; /* Shift both chat and input containers to the left */
+#chat-wrapper.has-right-image #chat-container {
+    margin-right: 320px; /* Push the chat container to the left */
+}
+
+/* If the left or right images are shown, shift chat-wrapper accordingly */
+#chat-wrapper.has-left-image {
+    margin-left: 320px; /* Push the entire wrapper to the right */
+}
+
+#chat-wrapper.has-right-image {
+    margin-right: 320px; /* Push the entire wrapper to the left */
 }
 
 /* Ensures the input container shifts with the chat-wrapper */
