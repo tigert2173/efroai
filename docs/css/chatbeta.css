@@ -215,7 +215,7 @@ code {
 }
 
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -250,23 +250,6 @@ code {
 
 #right-image-container {
     right: -10px; /* Place on the right side of the chat container */
-}
-
-#chat-container {
-    width: 60%; /* Adjust width as needed */
-    z-index: 500;
-    background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    height: 500px;
-    margin-bottom: 20px;
-    position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 /* If the left or right images are shown, shift chat-container accordingly */
