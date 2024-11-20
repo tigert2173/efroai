@@ -239,6 +239,12 @@
         </div>
         
         
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+        </div>
+        
     </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
@@ -254,12 +260,6 @@
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
 
-        <div id="input-container">
-            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button onclick="regenerateMessage()">Regenerate Message</button>
-        </div>
-        
         <label for="enter-send" class="send-on-enter-label">
             <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
             <span class="checkbox-text">Send on Enter</span>
