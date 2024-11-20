@@ -207,7 +207,7 @@ code {
 }
 
 #chat-wrapper {
-    position: absolute;
+    position: relative;
     width: 100%;
     /* background-color: #00FF00; */
     display: flex;
@@ -298,17 +298,7 @@ code {
     margin-right: 320px; /* Push the chat container to the left */
 }
 
-/* If the left image is shown, push everything to the right */
-#chat-wrapper.has-left-image,
-#input-container.has-left-image {
-    margin-left: 320px; /* Shift both chat and input containers to the right */
-}
 
-/* If the right image is shown, push everything to the left */
-#chat-wrapper.has-right-image,
-#input-container.has-right-image {
-    margin-right: 320px; /* Shift both chat and input containers to the left */
-}
 
 /* Ensures the input container shifts with the chat-wrapper */
 #input-container {
