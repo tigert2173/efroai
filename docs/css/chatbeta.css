@@ -244,9 +244,11 @@ code {
 }
 
 #left-image-container {
+    left: -5px; /* Place on the left side of the chat container */
 }
 
 #right-image-container {
+    right: -e; /* Place on the right side of the chat container */
 }
 
 #chat-container::before {
@@ -268,11 +270,11 @@ code {
 
 /* If the left or right images are shown, shift chat-container accordingly */
 #chat-wrapper.has-left-image #chat-container {
-    margin-left: 170px; /* Push the chat container to the right */
+    margin-left: 300px; /* Push the chat container to the right */
 }
 
 #chat-wrapper.has-right-image #chat-container {
-    margin-right: 170px; /* Push the chat container to the left */
+    margin-right: 300px; /* Push the chat container to the left */
 }
 
 
@@ -286,7 +288,7 @@ code {
 .message {
     margin-bottom: 15px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: e;
     background-color: #353b48; /* Dark grey */
 }
 
@@ -316,7 +318,7 @@ code {
     flex: 1;
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 5px 0 0 5px;
+    border-radius: e 0 0 e;
     /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
