@@ -248,17 +248,6 @@
             <span class="checkbox-text">Send on Enter</span>
         </label>
 
-        <form id="fetchImageForm">
-            <input type="text" id="bucketName" placeholder="Bucket Name" required>
-            <input type="text" id="objectKey" placeholder="Object Key" required>
-            <button type="submit">Set Background</button>
-        </form>
-        
-        <div id="opacity-control">
-            <label for="opacity-slider">Background Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
-        </div>
-        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = true;
@@ -595,20 +584,10 @@
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-    <h1>Embed Image from IDrive e2 Storage</h1>
-
-    <!-- Input Section -->
-    <form id="fetchImageForm">
-        <input type="text" id="bucketName" placeholder="Enter bucket name" required>
-        <input type="text" id="objectKey" placeholder="Enter object key (image name)" required>
-        <button type="submit">Show Image</button>
-    </form>
-
-    <!-- Display Image -->
-    <div id="image-container"></div>
 
     <script>
-     document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+    // Handle form submission to fetch and set the background image
+document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
@@ -627,7 +606,7 @@
 
         const { url } = await response.json();
 
-        // Set the background image on the ::before pseudo-element
+        // Update the CSS variable for the background image
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
     } catch (error) {
         console.error(error);
@@ -640,9 +619,10 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
 
-    // Apply opacity to the pseudo-element
-    chatContainer.querySelector('::before').style.opacity = opacityValue / 100;
+    // Update the CSS variable for opacity
+    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
 });
+
 
     </script>
 
