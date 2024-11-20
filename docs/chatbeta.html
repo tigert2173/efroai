@@ -212,15 +212,25 @@
         </div>
         
         <form id="fetchImageForm">
-            <input type="text" id="bucketName" placeholder="Bucket Name" required>
-            <input type="text" id="objectKey" placeholder="Object Key" required>
-            <button type="submit">Set Background</button>
+            <label for="bucketName">Bucket Name:</label>
+            <input type="text" id="bucketName" required><br>
+        
+            <label for="objectKey">Object Key:</label>
+            <input type="text" id="objectKey" required><br>
+        
+            <label for="image-position-left">
+                <input type="radio" name="image-position" id="image-position-left" value="left"> Left
+            </label>
+            <label for="image-position-right">
+                <input type="radio" name="image-position" id="image-position-right" value="right"> Right
+            </label><br>
+        
+            <button type="submit">Fetch Image</button>
         </form>
         
-        <div id="opacity-control">
-            <label for="opacity-slider">Background Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
-        </div>
+        <!-- Opacity slider -->
+        <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        
 
     </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
@@ -584,9 +594,9 @@
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-
+    
     <script>
-    // Handle form submission to fetch and set the background image
+    // Handle form submission to fetch and set the background or inline image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -608,6 +618,19 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         // Update the CSS variable for the background image
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
+        
+        // If you want to display the image inline, do it here:
+        const imgElement = document.createElement('img');
+        imgElement.src = url;
+        chatContainer.appendChild(imgElement);
+
+        // Set image position: left or right
+        const position = document.querySelector('input[name="image-position"]:checked')?.value;
+        if (position) {
+            chatContainer.setAttribute('data-image-position', position);
+        } else {
+            chatContainer.removeAttribute('data-image-position');
+        }
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);

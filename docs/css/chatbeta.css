@@ -219,6 +219,7 @@ code {
     position: relative; /* Ensure positioning for pseudo-element */
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
+    --image-position: none; /* Default image position */
 }
 
 #chat-container::before {
@@ -236,6 +237,25 @@ code {
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
+}
+
+#chat-container img {
+    position: absolute;
+    top: 20px;
+    z-index: 1; /* Ensure the image stays on top of content */
+    max-width: 40%; /* Adjust size as needed */
+    max-height: 100%;
+    border-radius: 8px; /* Match the container border radius */
+    transition: opacity 0.3s ease; /* Smooth opacity change */
+}
+
+/* Position the image to the left or right based on the `--image-position` value */
+#chat-container[data-image-position="left"] img {
+    left: 20px;
+}
+
+#chat-container[data-image-position="right"] img {
+    right: 20px;
 }
 
 
