@@ -261,6 +261,15 @@ code {
     margin-right: 320px; /* Push the chat container to the left */
 }
 
+/* Apply the same shift to input container */
+#chat-wrapper.has-left-image #input-container {
+    margin-left: 320px; /* Shift input-container to the right */
+}
+
+#chat-wrapper.has-right-image #input-container {
+    margin-right: 320px; /* Shift input-container to the left */
+}
+
 #opacity-control {
     margin-top: 10px;
 }
@@ -294,6 +303,7 @@ code {
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
 }
 
 #input-container input {
