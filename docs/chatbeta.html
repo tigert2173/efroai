@@ -210,22 +210,22 @@
      <form id="fetchImageForm">
         <label for="bucketName">Bucket Name:</label>
         <input type="text" id="bucketName" required>
-    
+        
         <label for="objectKey">Object Key:</label>
         <input type="text" id="objectKey" required>
-    
+        
         <label for="image-placement">Image Placement:</label>
         <select id="image-placement">
             <option value="inside">Inside</option>
             <option value="outside">Outside</option>
         </select>
-    
+        
         <label for="image-position">Image Position:</label>
         <select id="image-position">
             <option value="left">Left</option>
             <option value="right">Right</option>
         </select>
-    
+        
         <label for="opacity-slider">Opacity:</label>
         <input type="range" id="opacity-slider" min="0" max="100" value="100">
         
@@ -233,14 +233,11 @@
     </form>
     
     <div id="chat-container">
-        <div id="chat-image"></div>
-        <div id="chat-image-inside"></div>  <!-- Image will be placed here if inside -->
+        <div id="chat-image"></div> 
         <div id="chat-content">
-            <div class="message">User message</div>
-            <div class="message">Bot message</div>
+            <!-- Chat messages here -->
         </div>
     </div>
-    
     
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
