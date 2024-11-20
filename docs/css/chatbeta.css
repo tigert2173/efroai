@@ -215,7 +215,7 @@ code {
 }
 
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 80%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
