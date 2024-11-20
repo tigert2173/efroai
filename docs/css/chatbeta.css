@@ -292,16 +292,16 @@ code {
     margin-right: 320px; /* Shift both chat and input containers to the left */
 }
 
-/* Input container that shifts with chat-wrapper */
+/* Ensures the input container shifts with the chat-wrapper */
 #input-container {
     display: flex;
-    flex-direction: column; /* Stack input elements vertically */
     position: relative;
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
 }
+
 
 #opacity-control {
     margin-top: 10px;
