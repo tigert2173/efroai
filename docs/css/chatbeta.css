@@ -172,15 +172,7 @@ a:active {
     cursor: not-allowed;
 }
 
-#main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    width: 100%; /* Take full width */
-    max-width: 1200px; /* Limit max width */
-}
+
 /* Style for block code */
 .code-block {
     background-color: #303030;
@@ -205,17 +197,24 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
+#main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 #chat-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: #00FF00; */
     display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
+    justify-content: center; /* Center chat and images */
+    align-items: flex-start; /* Align images and chat container at the top */
+    height: auto;
 }
 
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -228,53 +227,65 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 #left-image-container,
 #right-image-container {
     position: absolute;
-    top: 20px; /* Offset from the top */
-    height: 100%; /* Set a fixed width for the side image */
+    top: 0;
+    height: 100%;
     max-width: 300px;
-    height: auto;
-    padding: 10px;
-    z-index: 500; /* Place behind the content */
+    z-index: 0;
     opacity: var(--bg-opacity); /* Opacity control */
     transition: opacity 0.3s ease; /* Smooth opacity change */
 }
 
 #left-image-container {
-    left: -10px; /* Place on the left side of the chat container */
+    left: -300px; /* Shift left image outside */
+    width: 300px;
 }
 
 #right-image-container {
-    right: -10px; /* Place on the right side of the chat container */
+    right: -300px; /* Shift right image outside */
+    width: 300px;
 }
 
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
-}
-
-/* If the left or right images are shown, shift chat-container accordingly */
+/* Classes to shift chat and input container when images are shown */
 #chat-wrapper.has-left-image #chat-container {
-    margin-left: 320px; /* Push the chat container to the right */
+    margin-left: 320px; /* Space for left image */
 }
 
 #chat-wrapper.has-right-image #chat-container {
-    margin-right: 320px; /* Push the chat container to the left */
+    margin-right: 320px; /* Space for right image */
+}
+
+#chat-wrapper.has-left-image #input-container,
+#chat-wrapper.has-right-image #input-container {
+    margin-left: 320px; /* Move input container along with the chat container */
+}
+
+#input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+#user-input {
+    width: 75%;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#send-button, #regenerate-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #32CD32; /* Green */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 
