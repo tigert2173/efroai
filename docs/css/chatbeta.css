@@ -252,21 +252,21 @@ code {
     right: -10px; /* Place on the right side of the chat container */
 }
 
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
+#chat-container {
+    width: 60%; /* Adjust width as needed */
+    z-index: 500;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    height: 500px;
+    margin-bottom: 20px;
+    position: relative;
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 /* If the left or right images are shown, shift chat-container accordingly */
