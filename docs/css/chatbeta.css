@@ -298,16 +298,16 @@ code {
     margin-right: 320px; /* Push the entire wrapper to the left */
 }
 
-/* Ensures the input container shifts with the chat-wrapper */
+/* Input container that shifts with chat-wrapper */
 #input-container {
     display: flex;
-    position: absolute;
+    flex-direction: column; /* Stack input elements vertically */
+    position: relative;
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
 }
-
 
 #opacity-control {
     margin-top: 10px;
