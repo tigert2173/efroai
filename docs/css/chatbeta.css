@@ -282,7 +282,7 @@ code {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    justify-content: flex-start; /* Default to left alignment */
+    justify-content: flex-start;
 }
 
 #chat-image, #chat-image-inside {
@@ -308,6 +308,7 @@ code {
     margin-left: 50px; /* Default margin for image on left */
     justify-content: flex-start;
     overflow-y: auto;
+    position: relative; /* Prevents content from overlapping */
 }
 
 .message {
@@ -323,7 +324,20 @@ code {
 }
 
 .right-image #chat-content {
-    margin-right: 0; /* No 
+    margin-right: 0; /* No margin when image is on the right */
+}
+
+.left-image {
+    flex-direction: row-reverse; /* Swap positions of content and image */
+}
+
+.right-image {
+    flex-direction: row; /* Image and content on right */
+}
+
+#chat-image, #chat-image-inside {
+    z-index: -1; /* Ensure image stays behind the chat content */
+}
 
 
 .assistant {
