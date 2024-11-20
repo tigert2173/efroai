@@ -230,6 +230,31 @@ code {
     --background-image: none; /* Default background image */
 }
 
+#chat-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centers the chat container horizontally */
+    align-items: center; /* Vertically aligns the chat container */
+    height: 100vh; /* Full viewport height */
+}
+
+#chat-container {
+    width: 60%; /* Adjust width as needed */
+    z-index: 500;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    height: 500px;
+    margin-bottom: 20px;
+    position: relative;
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
+}
+
 #left-image-container,
 #right-image-container {
     position: absolute;
@@ -243,14 +268,13 @@ code {
 }
 
 #left-image-container {
-    left: -160px; /* Position the left image outside the container */
+    left: -160px; /* Position the left image inside the wrapper, outside of the chat container */
 }
 
 #right-image-container {
-    right: -160px; /* Position the right image outside the container */
+    right: -160px; /* Position the right image inside the wrapper, outside of the chat container */
 }
 
-/* Ensure the #chat-wrapper adjusts accordingly when side images are shown */
 #chat-wrapper.has-left-image #chat-container {
     margin-left: 160px; /* Shift chat container to the right when left image is present */
 }
