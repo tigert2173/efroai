@@ -613,27 +613,20 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
 const rightImageContainer = document.getElementById('right-image-container');
+const chatWrapper = document.getElementById('chat-wrapper');
 
-// Example function to toggle the left image
-function toggleLeftImage(show) {
-    if (show) {
-        leftImageContainer.style.opacity = 1; // Show left image
-        chatContainer.classList.add('left-image'); // Adjust chat container position
-    } else {
-        leftImageContainer.style.opacity = 0; // Hide left image
-        chatContainer.classList.remove('left-image'); // Reset chat container position
-    }
+// Add class if the left image exists
+if (leftImageContainer && leftImageContainer.style.opacity > 0) {
+    chatWrapper.classList.add('has-left-image');
+} else {
+    chatWrapper.classList.remove('has-left-image');
 }
 
-// Example function to toggle the right image
-function toggleRightImage(show) {
-    if (show) {
-        rightImageContainer.style.opacity = 1; // Show right image
-        chatContainer.classList.add('right-image'); // Adjust chat container position
-    } else {
-        rightImageContainer.style.opacity = 0; // Hide right image
-        chatContainer.classList.remove('right-image'); // Reset chat container position
-    }
+// Add class if the right image exists
+if (rightImageContainer && rightImageContainer.style.opacity > 0) {
+    chatWrapper.classList.add('has-right-image');
+} else {
+    chatWrapper.classList.remove('has-right-image');
 }
 
 
