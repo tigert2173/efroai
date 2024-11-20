@@ -238,7 +238,7 @@ code {
     max-width: 300px;
     height: auto;
     padding: 10px;
-    z-index: -1; /* Place behind the content */
+    z-index: 500; /* Place behind the content */
     opacity: var(--bg-opacity); /* Opacity control */
     transition: opacity 0.3s ease; /* Smooth opacity change */
 }
