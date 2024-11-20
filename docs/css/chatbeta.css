@@ -259,6 +259,7 @@ code {
 
 #chat-wrapper.has-right-image #chat-container, #input-container{
     margin-right: 320px; /* Push the chat container to the left */
+    left: 100px;
 }
 
 #opacity-control {
