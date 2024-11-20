@@ -1185,9 +1185,7 @@ let currentBotMessageIndex = -1; // Index for tracking the current bot message
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
     let userName = document.getElementById('user-name').value.trim();
     let charName = settings.charname || "{{char}}";
-    if (!userName) {
-        userName = "{{user}}";
-    }
+    if (!userName) { userName = "{{user}}"; }
 
     const sanitizedContent = content
         .replace(/\\n/g, '<br>')
@@ -1198,47 +1196,79 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         .replace(/```([\s\S]*?)```/g, '<code>$1</code>')
         .replace(/`([^`]+)`/g, '<codelight>$1</codelight>')
         .replace(/{{user}}|{user}/g, userName)
-        .replace(/{{char}}|{char}/g, charName);
+        .replace(/{{char}}|{char}/g, charName)
+        .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
+            return `<span style="color:${color};">${text}</span>`;
+        });
 
-    const messageElement = document.createElement('div');
-    messageElement.className = `message ${sender}`;
-    const contentElement = document.createElement('span');
-    contentElement.className = 'message-content';
-    messageElement.appendChild(contentElement);
-    chatContainer.appendChild(messageElement);
-
-    let charIndex = 0;
-
-    function typeCharacter() {
-        if (charIndex < sanitizedContent.length) {
-            const currentChar = sanitizedContent[charIndex];
-            contentElement.innerHTML += currentChar === '<' ? '&lt;' : currentChar;
-            charIndex++;
-            setTimeout(typeCharacter, 50); // Typing speed (50ms per character)
-        } else {
-            // Add action buttons after typing is complete
-            messageElement.innerHTML += `
-                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
-            `;
-
-            if (isFinal) {
-                messages.push({
-                    role: sender,
-                    content: [{ type: "text", text: sanitizedContent }]
-                });
-                if (sender === 'assistant') {
-                    botMessages.push(sanitizedContent);
-                    currentBotMessageIndex = botMessages.length - 1;
-                    updateArrowStates();
-                }
-                chatContainer.scrollTop = chatContainer.scrollHeight; // Ensure scroll to bottom
-            }
-        }
+    if (isLoading) {
+        currentBotMessageElement = '';
     }
 
-    typeCharacter();
+    if (sender === 'assistant') {
+        if (!currentBotMessageElement) {
+            currentBotMessageElement = document.createElement('div');
+            currentBotMessageElement.className = `message ${sender}`;
+            chatContainer.appendChild(currentBotMessageElement);
+        }
+
+        // Typing animation logic
+        let charIndex = 0;
+        currentBotMessageElement.innerHTML = '<span class="message-content"></span>';
+        const messageContentElement = currentBotMessageElement.querySelector('.message-content');
+
+        function typeCharacter() {
+            if (charIndex < sanitizedContent.length) {
+                messageContentElement.innerHTML += sanitizedContent[charIndex];
+                charIndex++;
+                setTimeout(typeCharacter, 30); // Adjust speed (30ms per character)
+            } else if (isFinal) {
+                finalizeMessage(sanitizedContent);
+            }
+        }
+
+        typeCharacter();
+    } else {
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${sender}`;
+        messageElement.innerHTML = `
+            <span class="message-content">${sanitizedContent}</span>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        `;
+        chatContainer.appendChild(messageElement);
+    }
+
+    if (isFinal || sender === 'user') {
+        const messageObject = {
+            role: sender,
+            content: [{ type: "text", text: sanitizedContent }],
+        };
+        messages.push(messageObject);
+        console.log('Messages array:', messages);
+    }
+}
+
+// Helper function for finalizing the bot message
+function finalizeMessage(content) {
+    botMessages.push(content);
+    currentBotMessageIndex = botMessages.length - 1;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    const previousHeader = document.querySelector('.message-header');
+    if (previousHeader) {
+        previousHeader.remove();
+    }
+
+    const messageHeader = document.createElement('div');
+    messageHeader.className = 'message-header';
+    messageHeader.innerHTML = `
+        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+    `;
+    chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+    updateArrowStates();
 }
 
 function escapeQuotes(str) {
