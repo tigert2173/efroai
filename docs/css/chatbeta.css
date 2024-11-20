@@ -230,36 +230,10 @@ code {
     --background-image: none; /* Default background image */
 }
 
-#chat-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
-    height: 100vh; /* Full viewport height */
-}
-
-#chat-container {
-    width: 60%; /* Adjust width as needed */
-    z-index: 500;
-    background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    height: 500px;
-    margin-bottom: 20px;
-    position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-}
-
 #left-image-container,
 #right-image-container {
-    position: absolute;
-    top: 50%; /* Vertically center the images */
-    transform: translateY(-50%); /* Adjust to ensure proper centering */
+    position: relative;
+    top: 20px; /* Offset from the top */
     width: 150px; /* Set a fixed width for the side image */
     height: auto;
     z-index: -1; /* Place behind the content */
@@ -268,21 +242,12 @@ code {
 }
 
 #left-image-container {
-    left: -160px; /* Position the left image inside the wrapper, outside of the chat container */
+    left: -20px; /* Place on the left side of the chat container */
 }
 
 #right-image-container {
-    right: -160px; /* Position the right image inside the wrapper, outside of the chat container */
+    right: -170px; /* Place on the right side of the chat container */
 }
-
-#chat-wrapper.has-left-image #chat-container {
-    margin-left: 160px; /* Shift chat container to the right when left image is present */
-}
-
-#chat-wrapper.has-right-image #chat-container {
-    margin-right: 160px; /* Shift chat container to the left when right image is present */
-}
-
 
 #chat-container::before {
     content: '';
