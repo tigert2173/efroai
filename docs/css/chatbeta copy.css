@@ -313,48 +313,27 @@ code {
 }
 
 
-/* General message styling */
 .message {
     margin-bottom: 15px;
     padding: 10px;
-    border-radius: 8px; /* Fixed typo: added proper border-radius */
+    border-radius: e;
     background-color: #353b48; /* Dark grey */
-    opacity: 0; /* Start invisible for animation */
-    transform: translateY(20px); /* Start slightly below its final position */
-    animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
 }
 
-/* Specific message types */
 .assistant {
     text-align: left;
-    background-color: #124429; /* Dark green background for bot */
-    border: 1px solid #1abc9c; /* Optional: Add a soft green border for style */
+    background-color: #124429; /* Orange background for bot */
 }
 
 .user {
     text-align: right;
     background-color: #1b663e; /* Softer neon green background for user */
-    border: 1px solid #2ecc71; /* Optional: Add a soft green border for style */
 }
 
 .system {
     text-align: left;
-    background-color: brown; /* Brown background for system */
-    border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
+    background-color: brown; /* Orange background for bot */
 }
-
-/* Fade-in and slide-up animation */
-@keyframes slideFadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px); /* Initial position */
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0); /* Final position */
-    }
-}
-
 
 #input-container input {
     flex: 1;
