@@ -214,8 +214,17 @@ code {
     align-items: center; /* Vertically aligns the chat container */
 }
 
+#chat-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centers the chat container horizontally */
+    align-items: center; /* Vertically aligns the chat container */
+    height: 100vh; /* Full viewport height */
+}
+
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -233,23 +242,33 @@ code {
 #left-image-container,
 #right-image-container {
     position: absolute;
-    top: 20px; /* Offset from the top */
-    height: 100%; /* Set a fixed width for the side image */
-    max-width: 300px;
-    height: auto;
-    padding: 10px;
-    z-index: 500; /* Place behind the content */
+    top: 0; /* Align images at the top of the chat wrapper */
+    height: 100%; /* Set the height to cover the wrapper */
+    max-width: 300px; /* Max width for the side images */
+    z-index: 0; /* Keep them behind the chat container */
     opacity: var(--bg-opacity); /* Opacity control */
     transition: opacity 0.3s ease; /* Smooth opacity change */
 }
 
 #left-image-container {
-    left: -0px; /* Place on the left side of the chat container */
+    left: -300px; /* Shift the left image outside the chat container */
+    width: 300px; /* Fixed width for the left image */
 }
 
 #right-image-container {
-    right: -0px; /* Place on the right side of the chat container */
+    right: -300px; /* Shift the right image outside the chat container */
+    width: 300px; /* Fixed width for the right image */
 }
+
+/* Adjust the chat container if images are present */
+#chat-wrapper.has-left-image #chat-container {
+    margin-left: 320px; /* Shift the chat container to the right when left image is visible */
+}
+
+#chat-wrapper.has-right-image #chat-container {
+    margin-right: 320px; /* Shift the chat container to the left when right image is visible */
+}
+
 
 #chat-container::before {
     content: '';
