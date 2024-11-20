@@ -232,7 +232,7 @@ code {
 
 #left-image-container,
 #right-image-container {
-    position: absolute;
+    position: relative;
     top: 20px; /* Offset from the top */
     width: 150px; /* Set a fixed width for the side image */
     height: auto;
