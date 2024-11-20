@@ -205,7 +205,7 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-/* Style for image outside the container */
+/* Image container outside the chat */
 #chat-image {
     position: absolute;
     top: 0;
@@ -215,12 +215,12 @@ code {
     background-size: cover;
     background-position: center;
     opacity: 1;
-    z-index: -1;
-    display: none;  /* Hidden initially */
-    background-color: rgba(255, 0, 0, 0.2);  /* Add a red tint to make it visible */
+    z-index: -1; /* Put the image behind the chat */
+    display: none;
+    background-color: rgba(255, 0, 0, 0.2); /* Add background color for visibility during debugging */
 }
 
-/* Style for image inside the container */
+/* Image container inside the chat */
 #chat-image-inside {
     position: absolute;
     top: 0;
@@ -231,8 +231,8 @@ code {
     background-position: center;
     opacity: 1;
     z-index: -1;
-    display: none;  /* Hidden initially */
-    background-color: rgba(0, 0, 255, 0.2);  /* Add a blue tint to make it visible */
+    display: none;
+    background-color: rgba(0, 0, 255, 0.2); /* Add background color for visibility during debugging */
 }
 
 /* Chat container styles */
@@ -249,7 +249,7 @@ code {
     margin-bottom: 20px;
 }
 
-/* Chat content styles */
+/* Chat content inside the container */
 #chat-content {
     position: relative;
     z-index: 1;
