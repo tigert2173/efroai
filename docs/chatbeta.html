@@ -658,6 +658,9 @@
             chatImage.style.backgroundImage = `url('${url}')`;
             chatImage.style.display = 'block';  // Display image outside
             chatImageInside.style.display = 'none';  // Hide inside image
+            chatImage.style.opacity = 1; // Ensure opacity is full
+            chatImageInside.style.opacity = 1;
+            
             if (imagePosition === 'left') {
                 chatContainer.classList.remove('right-image');
                 chatContainer.classList.add('left-image');
@@ -669,6 +672,7 @@
             chatImageInside.style.backgroundImage = `url('${url}')`;
             chatImageInside.style.display = 'block';  // Display image inside
             chatImage.style.display = 'none';  // Hide outside image
+            chatImageInside.style.opacity = 1; // Ensure opacity is full
             chatContainer.classList.remove('left-image', 'right-image');
         }
 

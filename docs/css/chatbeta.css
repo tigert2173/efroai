@@ -205,13 +205,12 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-/* Chat Container */
 #chat-container {
     position: relative;
     width: 100%;
     height: 500px;
-    background-color: #2f3640; /* Dark gray background */
-    border: 1px solid #32CD32; /* Neon green border */
+    background-color: #2f3640; 
+    border: 1px solid #32CD32;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -227,13 +226,14 @@ code {
 #chat-image {
     position: absolute;
     top: 0;
-    width: 300px; /* Fixed width for the image */
+    left: 0;
+    width: 300px; 
     height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
     z-index: -1;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 /* Inside Image */
@@ -247,10 +247,19 @@ code {
     background-position: center;
     opacity: 1;
     z-index: -1;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
-/* Chat content (messages) */
+/* Adjust content when image is on left */
+#chat-container.left-image #chat-content {
+    margin-left: 300px;
+}
+
+/* Adjust content when image is on right */
+#chat-container.right-image #chat-content {
+    margin-right: 300px;
+}
+
 #chat-content {
     position: relative;
     z-index: 1;
@@ -259,16 +268,6 @@ code {
     flex-direction: column;
     gap: 10px;
     transition: margin-left 0.3s, margin-right 0.3s;
-}
-
-/* Adjust layout for left image position */
-#chat-container.left-image #chat-content {
-    margin-left: 300px; /* Adjust to make space for image */
-}
-
-/* Adjust layout for right image position */
-#chat-container.right-image #chat-content {
-    margin-right: 300px; /* Adjust to make space for image */
 }
 
 
