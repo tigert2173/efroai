@@ -232,7 +232,16 @@
             <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
             <span class="checkbox-text">Send on Enter</span>
         </label>
+        <form id="fetchImageForm">
+            <input type="text" id="bucketName" placeholder="Bucket Name" required>
+            <input type="text" id="objectKey" placeholder="Object Key" required>
+            <button type="submit">Set Background</button>
+        </form>
         
+        <div id="opacity-control">
+            <label for="opacity-slider">Background Opacity:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        </div>
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = true;
@@ -609,6 +618,15 @@
         console.error(error);
         alert('Failed to set background image: ' + error.message);
     }
+});
+
+// Handle opacity slider
+document.getElementById('opacity-slider').addEventListener('input', (e) => {
+    const opacityValue = e.target.value;
+    const chatContainer = document.getElementById('chat-container');
+
+    // Apply opacity to the container
+    chatContainer.style.opacity = opacityValue / 100; // Convert 0-100 range to 0-1
 });
     </script>
 
