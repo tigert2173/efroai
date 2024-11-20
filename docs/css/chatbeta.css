@@ -208,6 +208,7 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
+    background-color: #00FF00;
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
