@@ -99,16 +99,6 @@
     border-color: #FF9800; /* Change border color on hover */
 }
 
-
-#image-container {
-            margin-top: 20px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
           </style>
     </styles>
 </head>
@@ -569,47 +559,6 @@
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-    <h1>Embed Image from IDrive e2 Storage</h1>
-
-    <!-- Input Section -->
-    <form id="fetchImageForm">
-        <input type="text" id="bucketName" placeholder="Enter bucket name" required>
-        <input type="text" id="objectKey" placeholder="Enter object key (image name)" required>
-        <button type="submit">Show Image</button>
-    </form>
-
-    <!-- Display Image -->
-    <div id="image-container"></div>
-
-    <script>
-        // Handle form submission to fetch and display the image
-        document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const bucketName = document.getElementById('bucketName').value.trim();
-            const objectKey = document.getElementById('objectKey').value.trim();
-            const imageContainer = document.getElementById('image-container');
-
-            if (!bucketName || !objectKey) {
-                alert('Please enter both bucket name and object key.');
-                return;
-            }
-
-            try {
-                // Fetch the pre-signed URL for the image
-                const response = await fetch(`/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
-                if (!response.ok) throw new Error('Error generating URL.');
-
-                const { url } = await response.json();
-
-                // Display the image
-                imageContainer.innerHTML = `<img src="${url}" alt="Embedded Image">`;
-            } catch (error) {
-                imageContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-                console.error(error);
-            }
-        });
-    </script>
 
     <script>
           document.getElementById('toggleSettings').addEventListener('click', function() {
