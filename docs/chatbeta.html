@@ -624,14 +624,14 @@
     <div id="image-container"></div>
 
     <script>
-  document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+     // Handle form submission to fetch and set the background image
+document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
     const objectKey = document.getElementById('objectKey').value.trim();
-    const chatImage = document.getElementById('chat-image');
-    const chatImageInside = document.getElementById('chat-image-inside');
     const chatContainer = document.getElementById('chat-container');
+    const chatImage = document.getElementById('chat-image');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -644,41 +644,37 @@
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
-        console.log("Fetched Image URL:", url); // Log URL for debugging
 
-        // Get placement (inside or outside) and position (left or right) from dropdown
-        const imagePlacement = document.getElementById('image-placement').value;
-        const imagePosition = document.getElementById('image-position').value;
-
-        // Set background image and adjust positioning
-        if (imagePlacement === 'outside') {
-            chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';  // Display image outside
-            chatImageInside.style.display = 'none';  // Hide inside image
-            if (imagePosition === 'left') {
-                chatContainer.classList.remove('right-image');
-                chatContainer.classList.add('left-image');
-            } else {
-                chatContainer.classList.remove('left-image');
-                chatContainer.classList.add('right-image');
-            }
-        } else {
-            chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';  // Display image inside
-            chatImage.style.display = 'none';  // Hide outside image
-            chatContainer.classList.remove('left-image', 'right-image');
-        }
-
-        // Handle opacity control slider
-        document.getElementById('opacity-slider').addEventListener('input', (e) => {
-            const opacityValue = e.target.value / 100;
-            chatImage.style.opacity = opacityValue;
-            chatImageInside.style.opacity = opacityValue;
-        });
-
+        // Update the CSS variable for the background image
+        chatContainer.style.setProperty('--background-image', `url('${url}')`);
+        chatImage.style.backgroundImage = `url('${url}')`; // Set image on the side
     } catch (error) {
-        alert('Error fetching image: ' + error.message);
         console.error(error);
+        alert('Failed to set background image: ' + error.message);
+    }
+});
+
+// Handle opacity slider
+document.getElementById('opacity-slider').addEventListener('input', (e) => {
+    const opacityValue = e.target.value;
+    const chatContainer = document.getElementById('chat-container');
+    const chatImage = document.getElementById('chat-image');
+
+    // Update the CSS variable for opacity
+    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
+    chatImage.style.opacity = opacityValue / 100;
+});
+
+// Handle image position change
+document.getElementById('image-position').addEventListener('change', (e) => {
+    const chatContainer = document.getElementById('chat-container');
+    const imagePosition = e.target.value;
+
+    // Change the flex-direction based on the selected position
+    if (imagePosition === 'left') {
+        chatContainer.style.flexDirection = 'row'; // Image on the left
+    } else if (imagePosition === 'right') {
+        chatContainer.style.flexDirection = 'row-reverse'; // Image on the right
     }
 });
 
