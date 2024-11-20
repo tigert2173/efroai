@@ -647,28 +647,31 @@
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
+        console.log("Fetched Image URL:", url); // Log URL for debugging
 
-        // Get image placement and position
+        // Get placement (inside or outside) and position (left or right) from dropdown
         const imagePlacement = document.getElementById('image-placement').value;
         const imagePosition = document.getElementById('image-position').value;
 
-        // Set background image based on placement
+        // Set background image and adjust positioning
         if (imagePlacement === 'outside') {
             chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';
-            chatImageInside.style.display = 'none';
-            chatContainer.classList.remove('left-image', 'right-image');
+            chatImage.style.display = 'block';  // Show image outside
+            chatImageInside.style.display = 'none';  // Hide inside image
+            chatImageInside.style.opacity = 1;
+            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
 
             if (imagePosition === 'left') {
-                chatContainer.classList.add('left-image');
+                chatContainer.classList.add('left-image'); // Move chat content right
             } else {
-                chatContainer.classList.add('right-image');
+                chatContainer.classList.add('right-image'); // Move chat content left
             }
         } else {
             chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';
-            chatImage.style.display = 'none';
-            chatContainer.classList.remove('left-image', 'right-image');
+            chatImageInside.style.display = 'block';  // Show image inside
+            chatImage.style.display = 'none';  // Hide outside image
+            chatImageInside.style.opacity = 1;
+            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
         }
 
         // Handle opacity control slider
@@ -683,6 +686,7 @@
         console.error(error);
     }
 });
+
 
 
     </script>
