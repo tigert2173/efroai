@@ -345,26 +345,44 @@ code {
     border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
 }
 
-/* Container for typing effect */
+/* Container for message typing */
 .message-content {
     display: block;
-    overflow: hidden; /* Ensures only visible rows are shown */
+    overflow: hidden; /* Ensures rows beyond the height are hidden */
     max-height: 0; /* Initially hides all rows */
-    animation: reveal-rows 3s steps(3, end) forwards; /* Controls row reveal */
-    line-height: 1.5em; /* Adjust based on font size for accurate row height */
+    line-height: 1.5em; /* Row height matching font size */
+    animation: reveal-rows 3s steps(3, end) forwards; /* Row-by-row reveal */
+}
+
+/* Typing animation for each character */
+.message-content span {
+    opacity: 0; /* Initially hide each character */
+    display: inline-block; /* Ensures animation applies to each character */
+    animation: typing-char 0.05s forwards; /* Typing animation per char */
+    animation-delay: calc(var(--char-index) * 0.05s); /* Staggered timing */
 }
 
 /* Animation to reveal rows one by one */
 @keyframes reveal-rows {
     from {
-        max-height: 0; /* Start with no rows visible */
+        max-height: 0;
     }
     to {
-        max-height: 4.5em; /* Adjust based on the number of rows to reveal */
+        max-height: 4.5em; /* Adjust for the number of rows */
     }
 }
 
-/* Optional blinking caret for typing effect */
+/* Animation for character reveal */
+@keyframes typing-char {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Optional blinking caret */
 .message-content::after {
     content: "";
     display: inline-block;
@@ -375,7 +393,6 @@ code {
     animation: blink-caret 0.5s step-end infinite;
 }
 
-/* Blinking caret animation */
 @keyframes blink-caret {
     from, to {
         background-color: transparent;
@@ -383,11 +400,6 @@ code {
     50% {
         background-color: black;
     }
-}
-
-
-.message-content.finished {
-    border-right: none;
 }
 
 
