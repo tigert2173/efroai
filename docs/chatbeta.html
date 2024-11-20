@@ -205,41 +205,42 @@
     </header>
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
-        <form id="fetchImageForm">
-            <label for="bucketName">Bucket Name:</label>
-            <input type="text" id="bucketName" name="bucketName" required>
-            <br>
-            <label for="objectKey">Object Key:</label>
-            <input type="text" id="objectKey" name="objectKey" required>
-            <br>
-            <label for="image-position">Image Position:</label>
-            <select id="image-position">
-                <option value="left">Left</option>
-                <option value="right">Right</option>
-            </select>
-            <br>
-            <label for="image-placement">Image Placement:</label>
-            <select id="image-placement">
-                <option value="inside">Inside Chat</option>
-                <option value="outside">Outside Chat</option>
-            </select>
-            <br>
-            <label for="opacity-slider">Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
-            <br>
-            <button type="submit">Fetch Image</button>
-        </form>
-        
-        <!-- Chat container -->
-        <div id="chat-container">
-            <!-- Background image inside or outside the chat container -->
-            <div id="chat-image"></div>
-            <div id="chat-content">
-                <p>User's messages and bot's replies will appear here.</p>
-            </div>
-        </div>
-        
+    <div id="main-content">
+<!-- Form to fetch image URL -->
+<form id="fetchImageForm">
+    <label for="bucketName">Bucket Name:</label>
+    <input type="text" id="bucketName" name="bucketName" required><br>
 
+    <label for="objectKey">Object Key:</label>
+    <input type="text" id="objectKey" name="objectKey" required><br>
+
+    <label for="image-position">Image Position:</label>
+    <select id="image-position">
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+    </select><br>
+
+    <label for="image-placement">Image Placement:</label>
+    <select id="image-placement">
+        <option value="inside">Inside</option>
+        <option value="outside">Outside</option>
+    </select><br>
+
+    <button type="submit">Fetch Image</button>
+</form>
+
+<!-- Opacity Control -->
+<label for="opacity-slider">Opacity:</label>
+<input type="range" id="opacity-slider" min="0" max="100" value="100"><br>
+
+<!-- Chat Container -->
+<div id="chat-container">
+    <div id="chat-image"></div>  <!-- Image Outside -->
+    <div id="chat-image-inside"></div>  <!-- Image Inside -->
+    <div id="chat-content">
+        <!-- Your chat messages go here -->
+    </div>
+</div>
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
@@ -626,79 +627,70 @@
     <div id="image-container"></div>
 
     <script>
- document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+  document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const bucketName = document.getElementById('bucketName').value.trim();
-        const objectKey = document.getElementById('objectKey').value.trim();
-        const imagePosition = document.getElementById('image-position').value;
+    const bucketName = document.getElementById('bucketName').value.trim();
+    const objectKey = document.getElementById('objectKey').value.trim();
+    const chatImage = document.getElementById('chat-image');
+    const chatImageInside = document.getElementById('chat-image-inside');
+
+    if (!bucketName || !objectKey) {
+        alert('Please enter both bucket name and object key.');
+        return;
+    }
+
+    try {
+        // Fetch the pre-signed URL for the image
+        const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+        if (!response.ok) throw new Error('Error generating URL.');
+
+        const { url } = await response.json();
+        console.log('Fetched Image URL:', url); // Debugging line
+
+        // Apply the image as background based on placement (inside or outside)
         const imagePlacement = document.getElementById('image-placement').value;
-        const opacitySlider = document.getElementById('opacity-slider');
 
-        const chatImage = document.getElementById('chat-image');
-        const chatImageInside = document.getElementById('chat-image-inside');
-
-        if (!bucketName || !objectKey) {
-            alert('Please enter both bucket name and object key.');
-            return;
+        if (imagePlacement === 'outside') {
+            chatImage.style.backgroundImage = `url('${url}')`;
+            chatImage.style.display = 'block';  // Ensure the image is displayed outside
+            chatImageInside.style.display = 'none';  // Hide the inside image container
+        } else {
+            chatImageInside.style.backgroundImage = `url('${url}')`;
+            chatImageInside.style.display = 'block';  // Ensure the image is displayed inside
+            chatImage.style.display = 'none';  // Hide the outside image container
         }
 
-        try {
-            // Fetch the pre-signed URL for the image
-            const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
-            if (!response.ok) throw new Error('Error generating URL.');
+        // Set position (left or right)
+        const imagePosition = document.getElementById('image-position').value;
 
-            const { url } = await response.json();
-
-            // Set the background image based on placement (inside or outside)
-            if (imagePlacement === 'outside') {
-                chatImage.style.backgroundImage = `url('${url}')`;
-                chatImage.style.display = 'block'; // Display the image outside
-                chatImageInside.style.display = 'none'; // Hide the inside image container
-            } else {
-                chatImageInside.style.backgroundImage = `url('${url}')`;
-                chatImageInside.style.display = 'block'; // Display the image inside
-                chatImage.style.display = 'none'; // Hide the outside image container
-            }
-
-            // Set image position (left or right)
-            if (imagePosition === 'left') {
-                chatImage.style.left = '0';
-                chatImage.style.right = 'auto';
-                chatImage.style.top = '0';
-                chatImage.style.bottom = '0';
-                chatImageInside.style.left = '0';
-                chatImageInside.style.right = 'auto';
-                chatImageInside.style.top = '0';
-                chatImageInside.style.bottom = '0';
-            } else {
-                chatImage.style.right = '0';
-                chatImage.style.left = 'auto';
-                chatImage.style.top = '0';
-                chatImage.style.bottom = '0';
-                chatImageInside.style.right = '0';
-                chatImageInside.style.left = 'auto';
-                chatImageInside.style.top = '0';
-                chatImageInside.style.bottom = '0';
-            }
-
-        } catch (error) {
-            alert('Error fetching image: ' + error.message);
-            console.error(error); // Log the error
+        if (imagePosition === 'left') {
+            chatImage.style.left = '0';
+            chatImage.style.right = 'auto';
+            chatImageInside.style.left = '0';
+            chatImageInside.style.right = 'auto';
+        } else if (imagePosition === 'right') {
+            chatImage.style.right = '0';
+            chatImage.style.left = 'auto';
+            chatImageInside.style.right = '0';
+            chatImageInside.style.left = 'auto';
         }
-    });
 
-    // Handle opacity control slider
-    document.getElementById('opacity-slider').addEventListener('input', (e) => {
-        const opacityValue = e.target.value / 100;
-        const chatImage = document.getElementById('chat-image');
-        const chatImageInside = document.getElementById('chat-image-inside');
+    } catch (error) {
+        alert('Error fetching image: ' + error.message);
+        console.error(error); // Log the error
+    }
+});
 
-        // Update opacity for the image
-        chatImage.style.opacity = opacityValue;
-        chatImageInside.style.opacity = opacityValue;
-    });
+// Handle opacity control slider
+document.getElementById('opacity-slider').addEventListener('input', (e) => {
+    const opacityValue = e.target.value / 100;
+    const chatImage = document.getElementById('chat-image');
+    const chatImageInside = document.getElementById('chat-image-inside');
+
+    // Update opacity for the image
+    chatImage.style.opacity = opacityValue;
+    chatImageInside.style.opacity = opacityValue;
 });
 
 
