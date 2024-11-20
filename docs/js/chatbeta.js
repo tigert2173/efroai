@@ -1238,34 +1238,22 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             chatContainer.appendChild(currentBotMessageElement);
         }
 
-        // Typing animation
+        // Update the content of the existing bot message element
         if (currentBotMessageElement) {
-            let charIndex = 0;
-            const span = document.createElement('span');
-            span.className = 'message-content';
-            currentBotMessageElement.appendChild(span);
-
-            function typeNextCharacter() {
-                if (charIndex < sanitizedContent.length) {
-                    span.innerHTML += sanitizedContent[charIndex]; // Append next character
-                    charIndex++;
-                    setTimeout(typeNextCharacter, 20); // Adjust speed as needed
-                } else if (isFinal) {
-                    span.innerHTML += `
-                        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>`;
-                    botMessages.push(sanitizedContent); // Add to botMessages array
-                    currentBotMessageIndex = botMessages.length - 1;
-                    updateArrowStates();
-                }
-            }
-
-            typeNextCharacter(); // Start typing animation
+            currentBotMessageElement.innerHTML =  `
+        <span class="message-content">${sanitizedContent}</span>
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        `;
         }
-
         // If the message is final, update the navigation header
         if (isFinal) {
+            // Store bot message in the botMessages array
+            botMessages.push(sanitizedContent);
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
+
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
