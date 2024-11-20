@@ -206,7 +206,7 @@ code {
     font-family: "Courier New", Courier, monospace;
 }
 #chat-wrapper {
-    position: absolute;
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
@@ -228,6 +228,7 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth transition for when the image appears */
 }
 
 #left-image-container,
@@ -249,6 +250,15 @@ code {
     right: -170px; /* Place on the right side of the chat container */
 }
 
+/* Adjust the chat container when the left or right image is visible */
+#chat-container.left-image-visible {
+    margin-left: 170px; /* Push chat container to the right when left image is present */
+}
+
+#chat-container.right-image-visible {
+    margin-right: 170px; /* Push chat container to the left when right image is present */
+}
+
 #chat-container::before {
     content: '';
     position: absolute;
@@ -265,6 +275,7 @@ code {
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
+
 
 
 

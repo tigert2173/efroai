@@ -611,8 +611,24 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const bucketName = document.getElementById('bucketName').value.trim();
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
-    const leftImageContainer = document.getElementById('left-image-container');
-    const rightImageContainer = document.getElementById('right-image-container');
+    // Check if the left image or right image container has an image
+const leftImageContainer = document.getElementById('left-image-container');
+const rightImageContainer = document.getElementById('right-image-container');
+
+// Check if left image is visible
+if (leftImageContainer.querySelector('img')) {
+    chatContainer.classList.add('left-image-visible');
+} else {
+    chatContainer.classList.remove('left-image-visible');
+}
+
+// Check if right image is visible
+if (rightImageContainer.querySelector('img')) {
+    chatContainer.classList.add('right-image-visible');
+} else {
+    chatContainer.classList.remove('right-image-visible');
+}
+
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
