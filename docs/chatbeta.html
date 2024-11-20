@@ -205,16 +205,23 @@
     </header>
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
-    <div id="main-content">
+   
         <div id="chat-container">
             <div id="chat-image"></div> <!-- Image outside the chat container -->
+            <div id="chat-image-inside"></div> <!-- Image inside the chat container -->
             <div id="chat-content">
                 <!-- Chat content goes here (messages, input fields, etc.) -->
             </div>
         </div>
         
-        <!-- Controls to adjust the position of the image and opacity -->
+        <!-- Controls to adjust the image position and opacity -->
         <div>
+            <label for="image-placement">Image Placement: </label>
+            <select id="image-placement">
+                <option value="outside">Outside</option>
+                <option value="inside">Inside</option>
+            </select>
+        
             <label for="image-position">Image Position: </label>
             <select id="image-position">
                 <option value="left">Left</option>
@@ -224,6 +231,13 @@
             <label for="opacity-slider">Image Opacity: </label>
             <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
+        
+        <form id="fetchImageForm">
+            <input type="text" id="bucketName" placeholder="Bucket Name">
+            <input type="text" id="objectKey" placeholder="Object Key">
+            <button type="submit">Set Background Image</button>
+        </form>
+
         
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
@@ -619,6 +633,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
     const chatImage = document.getElementById('chat-image');
+    const chatImageInside = document.getElementById('chat-image-inside');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -632,8 +647,21 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         const { url } = await response.json();
 
-        // Update the CSS background image for the chat image
-        chatImage.style.backgroundImage = `url('${url}')`; 
+        // Set the background image for the selected option (inside or outside)
+        const imagePosition = document.getElementById('image-position').value;
+        const imagePlacement = document.getElementById('image-placement').value;
+
+        if (imagePlacement === 'outside') {
+            // Outside the container: Apply the image as a background for chat-image
+            chatImage.style.backgroundImage = `url('${url}')`;
+            chatImage.style.display = 'block'; // Show image outside
+            chatImageInside.style.display = 'none'; // Hide inside image
+        } else {
+            // Inside the container: Apply the image to chat-image-inside
+            chatImageInside.style.backgroundImage = `url('${url}')`;
+            chatImageInside.style.display = 'block'; // Show image inside
+            chatImage.style.display = 'none'; // Hide outside image
+        }
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);
@@ -644,18 +672,18 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatImage = document.getElementById('chat-image');
+    const chatImageInside = document.getElementById('chat-image-inside');
 
     // Update opacity for the image
     chatImage.style.opacity = opacityValue / 100;
+    chatImageInside.style.opacity = opacityValue / 100;
 });
 
 // Handle image position change (left or right)
 document.getElementById('image-position').addEventListener('change', (e) => {
-    const chatContainer = document.getElementById('chat-container');
     const chatImage = document.getElementById('chat-image');
     const imagePosition = e.target.value;
 
-    // Update the position of the image
     if (imagePosition === 'left') {
         chatImage.style.left = '0'; // Position image on the left side
         chatImage.style.right = 'auto'; // Remove any right positioning
