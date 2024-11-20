@@ -614,6 +614,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
+    const inputContainer = document.getElementById('input-container');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -647,6 +648,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
             // Add class to shift chat container for left image
             chatWrapper.classList.add('has-left-image');
+            inputContainer.classList.add('has-left-image');
         } else if (imagePosition === 'right') {
             // Set the right side image
             chatContainer.style.setProperty('--background-image', 'none');

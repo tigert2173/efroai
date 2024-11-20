@@ -261,18 +261,6 @@ code {
     margin-right: 320px; /* Push the chat container to the left */
 }
 
-/* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #input-container {
-    left: 320px; /* Push the chat container to the right */
-}
-
-#chat-wrapper.has-right-image #input-container {
-    right: 320px; /* Push the chat container to the left */
-}
-
-
-
-
 #opacity-control {
     margin-top: 10px;
 }
