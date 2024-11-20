@@ -1231,47 +1231,44 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
     }
 
     if (sender === 'assistant') {
+        // Create or reuse the current bot message element
         if (!currentBotMessageElement) {
             currentBotMessageElement = document.createElement('div');
             currentBotMessageElement.className = `message ${sender}`;
             chatContainer.appendChild(currentBotMessageElement);
         }
 
-        // Apply typing animation if the message is loading
-        if (isLoading) {
-            currentBotMessageElement.innerHTML = `<span class="typing-dots">...</span>`;
-        } else {
-            let typingIndex = 0;
-            currentBotMessageElement.innerHTML = `<span class="message-content"></span>`;
-            const messageContent = currentBotMessageElement.querySelector('.message-content');
-
-            // Simulate typing animation
-            const typeCharacter = () => {
-                if (typingIndex < sanitizedContent.length) {
-                    const nextChar = sanitizedContent[typingIndex];
-                    messageContent.innerHTML += nextChar === '<' ? "&lt;" : nextChar; // Safely append characters
-                    typingIndex++;
-                    setTimeout(typeCharacter, 30); // Adjust typing speed here
-                } else if (isFinal) {
-                    botMessages.push(sanitizedContent);
-                    currentBotMessageIndex = botMessages.length - 1;
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }
-            };
-            typeCharacter();
+        // Update the content of the existing bot message element
+        if (currentBotMessageElement) {
+            currentBotMessageElement.innerHTML =  `
+        <span class="message-content">${sanitizedContent}</span>
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        `;
         }
-
-        // Update navigation if the message is final
+        // If the message is final, update the navigation header
         if (isFinal) {
-            const previousHeader = document.querySelector('.message-header');
-            if (previousHeader) previousHeader.remove();
+            // Store bot message in the botMessages array
+            botMessages.push(sanitizedContent);
+            currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
+            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
 
+            // Remove previous bot message header if exists
+            const previousHeader = document.querySelector('.message-header');
+            if (previousHeader) {
+                previousHeader.remove();
+            }
+
+            // Create a new message header with navigation arrows
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             `;
+
+            // Append message header to the chat container
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
 
@@ -1289,9 +1286,13 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
     }
 
     if (isFinal || sender === 'user'){
+        // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
-    }
+        // Update arrow states
+        }
+    // // Scroll to the bottom of the chat container
+    // chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 function escapeQuotes(str) {
