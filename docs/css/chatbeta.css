@@ -271,35 +271,74 @@ code {
 }
 
 
-/* .message {
-    margin-bottom: 15px;
+#chat-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    justify-content: flex-start; /* Default to left alignment */
+}
+
+#chat-image, #chat-image-inside {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%; /* Set width for the image */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#chat-image-inside {
+    display: none; /* Initially hidden */
+}
+
+#chat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px; /* Default margin for image on left */
+    justify-content: flex-start;
+    overflow-y: auto;
+}
+
+.message {
+    background-color: #444;
+    color: white;
     padding: 10px;
+    margin: 5px 0;
     border-radius: 5px;
-    background-color: #353b48;
-} */
+}
+
+.left-image #chat-content {
+    margin-left: 0; /* No margin when image is on the left */
+}
+
+.right-image #chat-content {
+    margin-right: 0; /* No 
+
 
 .assistant {
     text-align: left;
     background-color: #124429; /* Orange background for bot */
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
 }
 
 .user {
     text-align: right;
     background-color: #1b663e; /* Softer neon green background for user */
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
 }
 
 .system {
     text-align: left;
     background-color: brown; /* Orange background for bot */
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
 }
 
 #input-container {
