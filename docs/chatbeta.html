@@ -612,8 +612,9 @@
 
         const { url } = await response.json();
 
-        // Set the background image on the ::before pseudo-element
+        // Set the background image on the ::before pseudo-element using a CSS variable
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
+        chatContainer.style.backgroundImage = `url('${url}')`;
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);
@@ -625,8 +626,8 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
 
-    // Apply opacity to the pseudo-element
-    chatContainer.querySelector('::before').style.opacity = opacityValue / 100;
+    // Update the CSS variable for opacity
+    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
 });
 
     </script>

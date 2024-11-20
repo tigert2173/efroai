@@ -205,6 +205,7 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
+
 #chat-container {
     width: 100%;
     z-index: 500;
@@ -230,46 +231,9 @@ code {
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1; /* Place behind the content */
-    opacity: 1; /* Default opacity */
+    opacity: var(--bg-opacity, 1); /* Default opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
-}
-
-#opacity-control {
-    margin-top: 10px;
-}
-#chat-container {
-    width: 100%;
-    z-index: 500;
-    background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    height: 500px;
-    margin-bottom: 20px;
-    position: relative; /* Ensure positioning for pseudo-element */
-}
-
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: 1; /* Default opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
-}
-
-#opacity-control {
-    margin-top: 10px;
 }
 
 .message {
@@ -774,4 +738,8 @@ input[type="checkbox"]:not(:checked) + label {
 .like-btn:hover {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
+}
+
+#opacity-control {
+    margin-top: 10px;
 }
