@@ -205,7 +205,6 @@ code, codelight {
 /* Chat container layout */
 #chat-container {
     display: flex;
-    flex-direction: row; /* Ensure horizontal layout */
     position: relative;
     width: 100%;
     height: 500px;
@@ -215,6 +214,7 @@ code, codelight {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
+    justify-content: flex-start; /* Default to left alignment */
 }
 
 #chat-image, #chat-image-inside {
@@ -226,7 +226,6 @@ code, codelight {
     background-size: cover;
     background-position: center;
     opacity: 1;
-    position: absolute;
     transition: opacity 0.3s ease;
 }
 
@@ -238,27 +237,21 @@ code, codelight {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 50px; /* Space for image if it's on the left */
     justify-content: flex-start;
     overflow-y: auto;
+    padding-left: 50px; /* Space for image if it's on the left */
+    margin-left: 0; /* Remove any extra margin */
 }
 
-/* Styling individual messages */
-.message {
-    background-color: #444;
-    color: white;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-/* Left Image: Adjust message container margin */
+/* For when image is on the left */
 .left-image #chat-content {
-    margin-left: 0; /* No space when image is on the left */
+    padding-left: 0; /* Remove left padding */
+    margin-right: 50px; /* Add space for image on the left side */
 }
 
+/* For when image is on the right */
 .right-image #chat-content {
-    margin-right: 0; /* No space when image is on the right */
+    margin-left: 50px; /* Add space for image on the right side */
 }
 
 /* Class for positioning image to the left */
