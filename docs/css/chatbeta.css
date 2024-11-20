@@ -861,7 +861,7 @@ input[type="checkbox"]:not(:checked) + label {
 /* Form and opacity slider styling */
 .menu-container {
     display: none; /* Hidden by default */
-    background-color: #f4f4f4;
+    background-color: #242424;
     padding: 20px;
     margin-top: 10px;
     border-radius: 8px;
