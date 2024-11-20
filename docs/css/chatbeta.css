@@ -208,14 +208,14 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: #00FF00; */
     display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
+    justify-content: center; /* Center chat and images */
+    align-items: flex-start; /* Align images and chat container at the top */
+    height: auto;
 }
 
 #chat-container {
-    width: 60%; /* Adjust width as needed */
+    width: 100%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
