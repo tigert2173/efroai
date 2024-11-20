@@ -582,33 +582,34 @@
     <div id="image-container"></div>
 
     <script>
-        // Handle form submission to fetch and display the image
-        document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+      document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-            const bucketName = document.getElementById('bucketName').value.trim();
-            const objectKey = document.getElementById('objectKey').value.trim();
-            const imageContainer = document.getElementById('image-container');
+    const bucketName = document.getElementById('bucketName').value.trim();
+    const objectKey = document.getElementById('objectKey').value.trim();
+    const chatContainer = document.getElementById('chat-container');
 
-            if (!bucketName || !objectKey) {
-                alert('Please enter both bucket name and object key.');
-                return;
-            }
+    if (!bucketName || !objectKey) {
+        alert('Please enter both bucket name and object key.');
+        return;
+    }
 
-            try {
-                // Fetch the pre-signed URL for the image
-                const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
-                if (!response.ok) throw new Error('Error generating URL.');
+    try {
+        // Fetch the pre-signed URL for the image
+        const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+        if (!response.ok) throw new Error('Error generating URL.');
 
-                const { url } = await response.json();
+        const { url } = await response.json();
 
-                // Display the image
-                imageContainer.innerHTML = `<img src="${url}" alt="Embedded Image">`;
-            } catch (error) {
-                imageContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-                console.error(error);
-            }
-        });
+        // Set the background image of the chat-container div
+        chatContainer.style.backgroundImage = `url('${url}')`;
+        chatContainer.style.backgroundSize = 'cover'; // Make sure the image covers the container
+        chatContainer.style.backgroundPosition = 'center'; // Center the image
+    } catch (error) {
+        console.error(error);
+        alert('Failed to set background image: ' + error.message);
+    }
+});
     </script>
 
     <script>
