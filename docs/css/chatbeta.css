@@ -216,7 +216,7 @@ code {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row; /* Align image and chat content side by side */
 }
 
 #chat-image, #chat-image-inside {
@@ -229,40 +229,30 @@ code {
     background-position: center;
     opacity: 1;
     transition: opacity 0.3s ease;
-}
-
-#chat-image-inside {
-    display: none; /* Initially hidden */
+    display: none; /* Hide by default */
 }
 
 #chat-content {
-    flex: 1;
-    margin-left: 50px; /* To ensure messages don't overlap image */
+    flex-grow: 1; /* Allow the chat content to grow and take remaining space */
+    margin-left: 50px; /* To prevent text from being covered by image */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align messages to the bottom */
 }
 
 .message {
-    background-color: #444;
-    color: white;
+    background-color: #353b48; /* Dark grey */
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
 }
 
-/* Positioning classes */
 .left-image #chat-content {
-    margin-left: 0; /* Shift content to the left */
+    margin-left: 0; /* Shift content to the left when image is on the left */
 }
 
 .right-image #chat-content {
-    margin-right: 0; /* Shift content to the right */
-}
-
-
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #353b48; /* Dark grey */
+    margin-right: 0; /* Shift content to the right when image is on the right */
 }
 
 .assistant {
