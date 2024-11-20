@@ -206,7 +206,6 @@
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
-
         <form id="fetchImageForm">
             <label for="bucketName">Bucket Name:</label>
             <input type="text" id="bucketName" name="bucketName" required>
@@ -230,14 +229,15 @@
         
         <input type="range" id="opacity-slider" min="0" max="100" value="100">
         
-        <!-- Container for chat and images -->
-  
+        <!-- Parent container for chat and images -->
+        <div id="chat-wrapper">
             <div id="left-image-container"></div>  <!-- Left side image container -->
             <div id="chat-container">
                 <!-- Chat content will go here -->
             </div>
             <div id="right-image-container"></div> <!-- Right side image container -->
-       
+        </div>
+        
         
     </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->

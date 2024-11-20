@@ -205,13 +205,15 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-#container {
+#chat-wrapper {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 #chat-container {
-    width: 100%;
+    width: 80%; /* Adjust this value as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -239,11 +241,11 @@ code {
 }
 
 #left-image-container {
-    left: 0;
+    left: -170px; /* Place on the left side of the chat container */
 }
 
 #right-image-container {
-    right: 0;
+    right: -170px; /* Place on the right side of the chat container */
 }
 
 #chat-container::before {
