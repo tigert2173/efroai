@@ -208,6 +208,98 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
+    /* background-color: #00FF00; */
+    display: flex;
+    justify-content: center; /* Centers the chat container horizontally */
+    align-items: center; /* Vertically aligns the chat container */
+}
+
+#chat-container {
+    width: 100%; /* Adjust width as needed */
+    z-index: 500;
+    background-color: #2f3640; /* Dark grey */
+    border: 1px solid #32CD32; /* Softer neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    height: 500px;
+    margin-bottom: 20px;
+    position: relative;
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
+}
+
+#left-image-container,
+#right-image-container {
+    position: absolute;
+    top: 20px; /* Offset from the top */
+    height: 100%; /* Set a fixed width for the side image */
+    max-width: 300px;
+    height: auto;
+    padding: 10px;
+    z-index: 500; /* Place behind the content */
+    opacity: var(--bg-opacity); /* Opacity control */
+    transition: opacity 0.3s ease; /* Smooth opacity change */
+}
+
+#left-image-container {
+    left: -10px; /* Place on the left side of the chat container */
+}
+
+#right-image-container {
+    right: -10px; /* Place on the right side of the chat container */
+}
+
+/* If the left or right images are shown, shift chat-container accordingly */
+#chat-wrapper.has-left-image #chat-container {
+    margin-left: 320px; /* Push the chat container to the right */
+}
+
+#chat-wrapper.has-right-image #chat-container {
+    margin-right: 320px; /* Push the chat container to the left */
+}
+
+/* Apply the same shift to input container */
+#chat-wrapper.has-left-image #input-container {
+    margin-left: 320px; /* Shift input-container to the right */
+}
+
+#chat-wrapper.has-right-image #input-container {
+    margin-right: 320px; /* Shift input-container to the left */
+}
+
+#opacity-control {
+    margin-top: 10px;
+}
+
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: e;
+    background-color: #353b48; /* Dark grey */
+}
+
+.assistant {
+    text-align: left;
+    background-color: #124429; /* Orange background for bot */
+}
+
+.user {
+    text-align: right;
+    background-color: #1b663e; /* Softer neon green background for user */
+}
+
+.system {
+    text-align: left;
+    background-color: brown; /* Orange background for bot */
+}
+
+#chat-wrapper {
+    position: relative;
+    width: 100%;
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
@@ -269,33 +361,6 @@ code {
     max-width: 700px;
     margin-bottom: 10px;
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
-}
-
-#opacity-control {
-    margin-top: 10px;
-}
-
-
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: e;
-    background-color: #353b48; /* Dark grey */
-}
-
-.assistant {
-    text-align: left;
-    background-color: #124429; /* Orange background for bot */
-}
-
-.user {
-    text-align: right;
-    background-color: #1b663e; /* Softer neon green background for user */
-}
-
-.system {
-    text-align: left;
-    background-color: brown; /* Orange background for bot */
 }
 
 #input-container input {
