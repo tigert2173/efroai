@@ -345,55 +345,6 @@ code {
     border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
 }
 
-/* Styling the message container */
-.message-content {
-    display: block;
-    white-space: wrap; /* Prevent wrapping */
-    overflow: hidden; /* Hide overflowing text */
-    position: relative;
-    width: 100%;
-}
-
-/* Typing animation */
-.message-content::after {
-    content: attr(data-content);
-    display: block;
-    width: 100%;
-    white-space: wrap;
-    overflow: hidden;
-    border-right: 3px solid black; /* Simulated cursor */
-    animation: typing 600s steps(60, end) 10s forwards, blink-caret 0.75s step-end infinite;
-}
-
-/* Typing effect */
-@keyframes typing {
-    from {
-        width: 0; /* Start with no visible text */
-    }
-    to {
-        width: 100%; /* End with full visible text */
-    }
-}
-
-/* Blinking caret effect */
-@keyframes blink-caret {
-    50% {
-        border-color: transparent;
-    }
-    100% {
-        border-color: black;
-    }
-}
-
-/* Add the text you want to type out */
-.message-content {
-    position: relative;
-}
-
-.message-content[data-content]::after {
-    content: attr(data-content);
-}
-
 
 /* Fade-in and slide-up animation */
 @keyframes slideFadeIn {
