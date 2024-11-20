@@ -345,33 +345,54 @@ code {
     border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
 }
 
-/* Container for the typing animation */
+/* Styling the message container */
 .message-content {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden; /* Hide the text that is not yet visible */
-    border-right: 2px solid black; /* Simulate the typing cursor */
-    animation: typing 5s steps(40, end), blink-caret 0.75s step-end infinite;
+    display: block;
+    font-family: 'Courier New', monospace; /* Monospace font for typing effect */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    position: relative;
+    width: 100%;
 }
 
-/* Typing effect: Animate the text character by character */
+/* Typing animation */
+.message-content::after {
+    content: attr(data-content);
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid black; /* Simulated cursor */
+    animation: typing 6s steps(60, end) 0s forwards, blink-caret 0.75s step-end infinite;
+}
+
+/* Typing effect */
 @keyframes typing {
     from {
         width: 0; /* Start with no visible text */
     }
     to {
-        width: 100%; /* Make all text visible at the end */
+        width: 100%; /* End with full visible text */
     }
 }
 
-/* Blinking cursor effect */
+/* Blinking caret effect */
 @keyframes blink-caret {
-    from, to {
+    50% {
         border-color: transparent;
     }
-    50% {
+    100% {
         border-color: black;
     }
+}
+
+/* Add the text you want to type out */
+.message-content {
+    position: relative;
+}
+
+.message-content[data-content]::after {
+    content: attr(data-content);
 }
 
 
