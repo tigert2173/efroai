@@ -624,7 +624,7 @@
     <div id="image-container"></div>
 
     <script>
- document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+  document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
@@ -653,22 +653,24 @@
         // Set background image and adjust positioning
         if (imagePlacement === 'outside') {
             chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';  // Show image outside
+            chatImage.style.display = 'block';  // Display image outside
             chatImageInside.style.display = 'none';  // Hide inside image
+            chatImage.style.opacity = 1; // Ensure opacity is full
             chatImageInside.style.opacity = 1;
-            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
-
+            
             if (imagePosition === 'left') {
-                chatContainer.classList.add('left-image'); // Move chat content right
+                chatContainer.classList.remove('right-image');
+                chatContainer.classList.add('left-image');
             } else {
-                chatContainer.classList.add('right-image'); // Move chat content left
+                chatContainer.classList.remove('left-image');
+                chatContainer.classList.add('right-image');
             }
         } else {
             chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';  // Show image inside
+            chatImageInside.style.display = 'block';  // Display image inside
             chatImage.style.display = 'none';  // Hide outside image
-            chatImageInside.style.opacity = 1;
-            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
+            chatImageInside.style.opacity = 1; // Ensure opacity is full
+            chatContainer.classList.remove('left-image', 'right-image');
         }
 
         // Handle opacity control slider
@@ -683,7 +685,6 @@
         console.error(error);
     }
 });
-
 
 
     </script>
