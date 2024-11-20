@@ -206,42 +206,39 @@
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
-<!-- Form to fetch image URL -->
-<form id="fetchImageForm">
-    <label for="bucketName">Bucket Name:</label>
-    <input type="text" id="bucketName" name="bucketName" required><br>
-
-    <label for="objectKey">Object Key:</label>
-    <input type="text" id="objectKey" name="objectKey" required><br>
-
-    <label for="image-position">Image Position:</label>
-    <select id="image-position">
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-    </select><br>
-
-    <label for="image-placement">Image Placement:</label>
-    <select id="image-placement">
-        <option value="inside">Inside</option>
-        <option value="outside">Outside</option>
-    </select><br>
-
-    <button type="submit">Fetch Image</button>
-</form>
-
-<!-- Opacity Control -->
-<label for="opacity-slider">Opacity:</label>
-<input type="range" id="opacity-slider" min="0" max="100" value="100"><br>
-
-<!-- Chat Container -->
-<div id="chat-container">
-    <div id="chat-image"></div>  <!-- Image Outside -->
-    <div id="chat-image-inside"></div>  <!-- Image Inside -->
-    <div id="chat-content">
-        <!-- Your chat messages go here -->
-    </div>
-</div>
+        <div id="chat-settings">
+            <label for="image-placement">Image Placement:</label>
+            <select id="image-placement">
+                <option value="inside">Inside Chat</option>
+                <option value="outside">Outside Chat</option>
+            </select>
+        
+            <label for="image-position">Image Position:</label>
+            <select id="image-position">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        
+            <label for="opacity-slider">Image Opacity:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
+        
+        <form id="fetchImageForm">
+            <input type="text" id="bucketName" placeholder="Bucket Name" required>
+            <input type="text" id="objectKey" placeholder="Object Key" required>
+            <button type="submit">Fetch Image</button>
+        </form>
+        
+        <div id="chat-container">
+            <div id="chat-image"></div> <!-- Image outside the chat -->
+            <div id="chat-image-inside"></div> <!-- Image inside the chat -->
+            <div id="chat-content">
+                <!-- Chat messages go here -->
+            </div>
+        </div>
+
+
+    </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
         <div class="desktop-only-ad">
@@ -634,6 +631,7 @@
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatImage = document.getElementById('chat-image');
     const chatImageInside = document.getElementById('chat-image-inside');
+    const chatContainer = document.getElementById('chat-container');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -646,53 +644,43 @@
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
-        console.log("Fetched Image URL:", url); // Log the URL for debugging
+        console.log("Fetched Image URL:", url); // Log URL for debugging
 
-        // Apply the image as background based on placement (inside or outside)
+        // Get placement (inside or outside) and position (left or right) from dropdown
         const imagePlacement = document.getElementById('image-placement').value;
-
-        if (imagePlacement === 'outside') {
-            chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';  // Ensure the image is displayed outside
-            chatImageInside.style.display = 'none';  // Hide the inside image container
-        } else {
-            chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';  // Ensure the image is displayed inside
-            chatImage.style.display = 'none';  // Hide the outside image container
-        }
-
-        // Set position (left or right)
         const imagePosition = document.getElementById('image-position').value;
 
-        if (imagePosition === 'left') {
-            chatImage.style.left = '0';
-            chatImage.style.right = 'auto';
-            chatImageInside.style.left = '0';
-            chatImageInside.style.right = 'auto';
-        } else if (imagePosition === 'right') {
-            chatImage.style.right = '0';
-            chatImage.style.left = 'auto';
-            chatImageInside.style.right = '0';
-            chatImageInside.style.left = 'auto';
+        // Set background image and adjust positioning
+        if (imagePlacement === 'outside') {
+            chatImage.style.backgroundImage = `url('${url}')`;
+            chatImage.style.display = 'block';  // Display image outside
+            chatImageInside.style.display = 'none';  // Hide inside image
+            if (imagePosition === 'left') {
+                chatContainer.classList.remove('right-image');
+                chatContainer.classList.add('left-image');
+            } else {
+                chatContainer.classList.remove('left-image');
+                chatContainer.classList.add('right-image');
+            }
+        } else {
+            chatImageInside.style.backgroundImage = `url('${url}')`;
+            chatImageInside.style.display = 'block';  // Display image inside
+            chatImage.style.display = 'none';  // Hide outside image
+            chatContainer.classList.remove('left-image', 'right-image');
         }
+
+        // Handle opacity control slider
+        document.getElementById('opacity-slider').addEventListener('input', (e) => {
+            const opacityValue = e.target.value / 100;
+            chatImage.style.opacity = opacityValue;
+            chatImageInside.style.opacity = opacityValue;
+        });
 
     } catch (error) {
         alert('Error fetching image: ' + error.message);
-        console.error(error); // Log the error
+        console.error(error);
     }
 });
-
-// Handle opacity control slider
-document.getElementById('opacity-slider').addEventListener('input', (e) => {
-    const opacityValue = e.target.value / 100;
-    const chatImage = document.getElementById('chat-image');
-    const chatImageInside = document.getElementById('chat-image-inside');
-
-    // Update opacity for the image
-    chatImage.style.opacity = opacityValue;
-    chatImageInside.style.opacity = opacityValue;
-});
-
 
     </script>
 

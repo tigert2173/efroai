@@ -205,7 +205,25 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-/* Image container outside the chat */
+/* Container for chat */
+#chat-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #2f3640; /* Dark grey background */
+    border: 1px solid #32CD32; /* Neon green border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* Image outside chat */
 #chat-image {
     position: absolute;
     top: 0;
@@ -215,12 +233,11 @@ code {
     background-size: cover;
     background-position: center;
     opacity: 1;
-    z-index: -1; /* Put the image behind the chat */
-    display: none;
-    background-color: rgba(255, 0, 0, 0.2); /* Add background color for visibility during debugging */
+    z-index: -1; /* Put it behind the chat */
+    display: none; /* Initially hidden */
 }
 
-/* Image container inside the chat */
+/* Image inside chat */
 #chat-image-inside {
     position: absolute;
     top: 0;
@@ -231,28 +248,26 @@ code {
     background-position: center;
     opacity: 1;
     z-index: -1;
-    display: none;
-    background-color: rgba(0, 0, 255, 0.2); /* Add background color for visibility during debugging */
+    display: none; /* Initially hidden */
 }
 
-/* Chat container styles */
-#chat-container {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    background-color: #2f3640;
-    border: 1px solid #32CD32;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    margin-bottom: 20px;
-}
-
-/* Chat content inside the container */
+/* Chat content (messages) */
 #chat-content {
     position: relative;
     z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Adjusting the chat when the image is on the left or right */
+#chat-container.left-image #chat-content {
+    margin-left: 300px; /* Adjust to make space for the image */
+}
+
+#chat-container.right-image #chat-content {
+    margin-right: 300px; /* Adjust to make space for the image */
 }
 
 
