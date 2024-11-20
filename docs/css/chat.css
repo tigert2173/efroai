@@ -206,8 +206,7 @@ code {
     font-family: "Courier New", Courier, monospace;
 }
 #chat-container {
-    display: flex; /* Use flexbox to handle layout */
-    flex-direction: row; /* Default layout: image and chat content side by side */
+    position: relative; /* Allow absolute positioning within this container */
     width: 100%;
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
@@ -218,45 +217,26 @@ code {
     overflow-y: auto;
     height: 500px;
     margin-bottom: 20px;
-    position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-}
-
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
-}
-
-#chat-content {
-    flex: 1; /* Take up remaining space */
-    padding: 20px;
-    overflow-y: auto;
-    position: relative;
 }
 
 #chat-image {
+    position: absolute; /* Position outside the container */
+    top: 0;
+    bottom: 0;
     width: 200px; /* Set width of the image container */
-    height: 100%;
-    background-image: var(--background-image);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: var(--bg-opacity);
+    opacity: 1;
     transition: opacity 0.3s ease;
     border-radius: 8px;
+    z-index: -1; /* Ensure it stays behind the chat content */
+}
+
+#chat-content {
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
 }
 
 .message {

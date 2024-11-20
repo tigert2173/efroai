@@ -207,7 +207,7 @@
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
         <div id="chat-container">
-            <div id="chat-image"></div> <!-- Image on the side -->
+            <div id="chat-image"></div> <!-- Image outside the chat container -->
             <div id="chat-content">
                 <!-- Chat content goes here (messages, input fields, etc.) -->
             </div>
@@ -611,7 +611,7 @@
     <div id="image-container"></div>
 
     <script>
-     // Handle form submission to fetch and set the background image
+  // Handle form submission to fetch and set the background image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -632,9 +632,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         const { url } = await response.json();
 
-        // Update the CSS variable for the background image
-        chatContainer.style.setProperty('--background-image', `url('${url}')`);
-        chatImage.style.backgroundImage = `url('${url}')`; // Set image on the side
+        // Update the CSS background image for the chat image
+        chatImage.style.backgroundImage = `url('${url}')`; 
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);
@@ -644,26 +643,28 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
-    const chatContainer = document.getElementById('chat-container');
     const chatImage = document.getElementById('chat-image');
 
-    // Update the CSS variable for opacity
-    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
+    // Update opacity for the image
     chatImage.style.opacity = opacityValue / 100;
 });
 
-// Handle image position change
+// Handle image position change (left or right)
 document.getElementById('image-position').addEventListener('change', (e) => {
     const chatContainer = document.getElementById('chat-container');
+    const chatImage = document.getElementById('chat-image');
     const imagePosition = e.target.value;
 
-    // Change the flex-direction based on the selected position
+    // Update the position of the image
     if (imagePosition === 'left') {
-        chatContainer.style.flexDirection = 'row'; // Image on the left
+        chatImage.style.left = '0'; // Position image on the left side
+        chatImage.style.right = 'auto'; // Remove any right positioning
     } else if (imagePosition === 'right') {
-        chatContainer.style.flexDirection = 'row-reverse'; // Image on the right
+        chatImage.style.right = '0'; // Position image on the right side
+        chatImage.style.left = 'auto'; // Remove any left positioning
     }
 });
+
 
     </script>
 
