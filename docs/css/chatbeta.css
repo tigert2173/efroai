@@ -205,12 +205,12 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-/* Container for chat */
+/* Chat Container */
 #chat-container {
     position: relative;
     width: 100%;
     height: 500px;
-    background-color: #2f3640; /* Dark grey background */
+    background-color: #2f3640; /* Dark gray background */
     border: 1px solid #32CD32; /* Neon green border */
     border-radius: 8px;
     padding: 20px;
@@ -220,23 +220,23 @@ code {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
-/* Image outside chat */
+/* Outside Image */
 #chat-image {
     position: absolute;
     top: 0;
-    left: 0;
     width: 300px; /* Fixed width for the image */
     height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
-    z-index: -1; /* Put it behind the chat */
+    z-index: -1;
     display: none; /* Initially hidden */
 }
 
-/* Image inside chat */
+/* Inside Image */
 #chat-image-inside {
     position: absolute;
     top: 0;
@@ -261,13 +261,14 @@ code {
     transition: margin-left 0.3s, margin-right 0.3s;
 }
 
-/* Adjusting the chat when the image is on the left or right */
+/* Adjust layout for left image position */
 #chat-container.left-image #chat-content {
-    margin-left: 300px; /* Adjust to make space for the image */
+    margin-left: 300px; /* Adjust to make space for image */
 }
 
+/* Adjust layout for right image position */
 #chat-container.right-image #chat-content {
-    margin-right: 300px; /* Adjust to make space for the image */
+    margin-right: 300px; /* Adjust to make space for image */
 }
 
 

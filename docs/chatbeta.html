@@ -206,39 +206,42 @@
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
-        <div id="chat-settings">
-            <label for="image-placement">Image Placement:</label>
-            <select id="image-placement">
-                <option value="inside">Inside Chat</option>
-                <option value="outside">Outside Chat</option>
-            </select>
-        
-            <label for="image-position">Image Position:</label>
-            <select id="image-position">
-                <option value="left">Left</option>
-                <option value="right">Right</option>
-            </select>
-        
-            <label for="opacity-slider">Image Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
-        </div>
-        
-        <form id="fetchImageForm">
-            <input type="text" id="bucketName" placeholder="Bucket Name" required>
-            <input type="text" id="objectKey" placeholder="Object Key" required>
-            <button type="submit">Fetch Image</button>
-        </form>
-        
-        <div id="chat-container">
-            <div id="chat-image"></div> <!-- Image outside the chat -->
-            <div id="chat-image-inside"></div> <!-- Image inside the chat -->
-            <div id="chat-content">
-                <!-- Chat messages go here -->
-            </div>
-        </div>
+     <!-- Form for image control -->
+<form id="fetchImageForm">
+    <label for="bucketName">Bucket Name:</label>
+    <input type="text" id="bucketName" required>
+    
+    <label for="objectKey">Object Key:</label>
+    <input type="text" id="objectKey" required>
+    
+    <label for="image-placement">Image Placement:</label>
+    <select id="image-placement">
+        <option value="inside">Inside</option>
+        <option value="outside">Outside</option>
+    </select>
+    
+    <label for="image-position">Image Position:</label>
+    <select id="image-position">
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+    </select>
+    
+    <label for="opacity-slider">Opacity:</label>
+    <input type="range" id="opacity-slider" min="0" max="100" value="100">
+    
+    <button type="submit">Fetch Image</button>
+</form>
 
-
+<!-- Chat container -->
+<div id="chat-container">
+    <div id="chat-image"></div> <!-- For the outside image -->
+    <div id="chat-image-inside"></div> <!-- For the inside image -->
+    
+    <div id="chat-content">
+        <!-- Chat messages here -->
     </div>
+</div>
+
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
         <div class="desktop-only-ad">
@@ -681,6 +684,7 @@
         console.error(error);
     }
 });
+
 
     </script>
 
