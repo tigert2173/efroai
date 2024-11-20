@@ -207,6 +207,24 @@
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
         <div id="chat-container">
+            <div id="chat-image"></div> <!-- Image on the side -->
+            <div id="chat-content">
+                <!-- Chat content goes here (messages, input fields, etc.) -->
+            </div>
+        </div>
+        
+        <!-- Controls to adjust the position of the image and opacity -->
+        <div>
+            <label for="image-position">Image Position: </label>
+            <select id="image-position">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        
+            <label for="opacity-slider">Image Opacity: </label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        </div>
+        
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
@@ -600,6 +618,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const bucketName = document.getElementById('bucketName').value.trim();
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
+    const chatImage = document.getElementById('chat-image');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -615,6 +634,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         // Update the CSS variable for the background image
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
+        chatImage.style.backgroundImage = `url('${url}')`; // Set image on the side
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);
@@ -625,9 +645,24 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
+    const chatImage = document.getElementById('chat-image');
 
     // Update the CSS variable for opacity
     chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
+    chatImage.style.opacity = opacityValue / 100;
+});
+
+// Handle image position change
+document.getElementById('image-position').addEventListener('change', (e) => {
+    const chatContainer = document.getElementById('chat-container');
+    const imagePosition = e.target.value;
+
+    // Change the flex-direction based on the selected position
+    if (imagePosition === 'left') {
+        chatContainer.style.flexDirection = 'row'; // Image on the left
+    } else if (imagePosition === 'right') {
+        chatContainer.style.flexDirection = 'row-reverse'; // Image on the right
+    }
 });
 
     </script>

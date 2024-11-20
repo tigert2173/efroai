@@ -206,6 +206,8 @@ code {
     font-family: "Courier New", Courier, monospace;
 }
 #chat-container {
+    display: flex; /* Use flexbox to handle layout */
+    flex-direction: row; /* Default layout: image and chat content side by side */
     width: 100%;
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
@@ -216,7 +218,7 @@ code {
     overflow-y: auto;
     height: 500px;
     margin-bottom: 20px;
-    position: relative; /* Ensure positioning for pseudo-element */
+    position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
 }
@@ -236,6 +238,25 @@ code {
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
+}
+
+#chat-content {
+    flex: 1; /* Take up remaining space */
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+}
+
+#chat-image {
+    width: 200px; /* Set width of the image container */
+    height: 100%;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: var(--bg-opacity);
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
 }
 
 .message {
