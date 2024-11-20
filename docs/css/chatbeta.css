@@ -280,22 +280,16 @@ code {
     border-radius: inherit; /* Match the border radius */
 }
 
-/* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container {
-    margin-left: 320px; /* Push the chat container to the right */
+/* If the left image is shown, push everything to the right */
+#chat-wrapper.has-left-image,
+#input-container.has-left-image {
+    margin-left: 320px; /* Shift both chat and input containers to the right */
 }
 
-#chat-wrapper.has-right-image #chat-container {
-    margin-right: 320px; /* Push the chat container to the left */
-}
-
-/* If the left or right images are shown, shift chat-wrapper accordingly */
-#input-wrapper.has-left-image {
-    margin-left: 320px; /* Push the entire wrapper to the right */
-}
-
-#input-wrapper.has-right-image {
-    margin-right: 320px; /* Push the entire wrapper to the left */
+/* If the right image is shown, push everything to the left */
+#chat-wrapper.has-right-image,
+#input-container.has-right-image {
+    margin-right: 320px; /* Shift both chat and input containers to the left */
 }
 
 /* Input container that shifts with chat-wrapper */
