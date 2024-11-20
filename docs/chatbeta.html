@@ -213,24 +213,27 @@
         
         <form id="fetchImageForm">
             <label for="bucketName">Bucket Name:</label>
-            <input type="text" id="bucketName" required><br>
+            <input type="text" id="bucketName" name="bucketName" required>
         
             <label for="objectKey">Object Key:</label>
-            <input type="text" id="objectKey" required><br>
+            <input type="text" id="objectKey" name="objectKey" required>
         
-            <label for="image-position-left">
-                <input type="radio" name="image-position" id="image-position-left" value="left"> Left
+            <label>Image Position:</label>
+            <label for="background">
+                <input type="radio" id="background" name="imagePosition" value="background" checked> Background
             </label>
-            <label for="image-position-right">
-                <input type="radio" name="image-position" id="image-position-right" value="right"> Right
-            </label><br>
+            <label for="left">
+                <input type="radio" id="left" name="imagePosition" value="left"> Left
+            </label>
+            <label for="right">
+                <input type="radio" id="right" name="imagePosition" value="right"> Right
+            </label>
         
             <button type="submit">Fetch Image</button>
         </form>
         
-        <!-- Opacity slider -->
         <input type="range" id="opacity-slider" min="0" max="100" value="100">
-   
+        
     </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
@@ -596,7 +599,7 @@
     
     <script>
     // Handle form submission to fetch and set the background or inline image
-// Handle form submission to fetch and set the image outside the container
+// Handle form submission to fetch and set the background image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -616,25 +619,22 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         const { url } = await response.json();
 
-        // If there's already an image, remove it
-        const existingImage = chatContainer.querySelector('img');
-        if (existingImage) {
-            existingImage.remove();
-        }
+        // Update the background image or side image based on the selected option
+        const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value; // Get the selected position (left, right, or background)
 
-        // Create the new image element and set its source
-        const imgElement = document.createElement('img');
-        imgElement.src = url;
-
-        // Add the image to the container
-        chatContainer.appendChild(imgElement);
-
-        // Set image position: left or right
-        const position = document.querySelector('input[name="image-position"]:checked')?.value;
-        if (position) {
-            chatContainer.setAttribute('data-image-position', position);
+        if (imagePosition === 'background') {
+            // Set the background image
+            chatContainer.style.setProperty('--background-image', `url('${url}')`);
+            chatContainer.classList.remove('left', 'right');
         } else {
-            chatContainer.removeAttribute('data-image-position');
+            // Set the side image
+            chatContainer.style.setProperty('--background-image', 'none'); // Remove the background image
+            const sideImage = document.createElement('img');
+            sideImage.src = url;
+            sideImage.classList.add('side-image');
+            chatContainer.innerHTML = ''; // Clear the chat container to avoid overwriting existing content
+            chatContainer.appendChild(sideImage); // Add the side image
+            chatContainer.classList.add(imagePosition); // Add left or right class to position it
         }
     } catch (error) {
         console.error(error);
@@ -647,11 +647,8 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
 
-    // Update the opacity of the image
-    const img = chatContainer.querySelector('img');
-    if (img) {
-        img.style.opacity = opacityValue / 100;
-    }
+    // Update the CSS variable for opacity
+    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
 });
 
 

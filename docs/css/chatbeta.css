@@ -216,28 +216,46 @@ code {
     overflow-y: auto;
     height: 500px;
     margin-bottom: 20px;
-    position: relative; /* Ensure positioning for child elements */
+    position: relative; /* Ensure positioning for pseudo-element */
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
+    --image-position: 'none'; /* Default position of image */
 }
 
-/* Styling for the image outside the chat container */
-#chat-container img {
+#chat-container::before {
+    content: '';
     position: absolute;
-    top: 20px;
-    z-index: 1; /* Ensure the image stays behind the content */
-    max-width: 40%; /* Adjust size as needed */
-    max-height: 100%;
-    border-radius: 8px; /* Match the container's border radius */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--background-image); /* Use the variable for the image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; /* Place behind the content */
+    opacity: var(--bg-opacity); /* Use the variable for opacity */
+    transition: opacity 0.3s ease; /* Smooth opacity change */
+    border-radius: inherit; /* Match the border radius */
+}
+
+/* For side image positioning */
+#chat-container .side-image {
+    position: absolute;
+    top: 20px; /* Offset from the top */
+    width: 150px; /* Set a fixed width for the side image */
+    height: auto;
+    z-index: -1; /* Place behind the content */
+    opacity: var(--bg-opacity);
     transition: opacity 0.3s ease; /* Smooth opacity change */
 }
 
-/* Position the image on the left side */
-#chat-container[data-image-position="left"] img {
-    left: -50px; /* Position outside the container */
+#chat-container.left .side-image {
+    left: 0;
 }
 
-/* Position the image on the right side */
-#chat-container[data-image-position="right"] img {
-    right: -50px; /* Position outside the container */
+#chat-container.right .side-image {
+    right: 0;
 }
 
 
