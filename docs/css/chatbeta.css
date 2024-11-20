@@ -226,6 +226,7 @@ code, codelight {
     background-size: cover;
     background-position: center;
     opacity: 1;
+    position: absolute;
     transition: opacity 0.3s ease;
 }
 
