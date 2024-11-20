@@ -230,8 +230,7 @@
         
         <!-- Opacity slider -->
         <input type="range" id="opacity-slider" min="0" max="100" value="100">
-        
-
+   
     </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
@@ -597,6 +596,7 @@
     
     <script>
     // Handle form submission to fetch and set the background or inline image
+// Handle form submission to fetch and set the image outside the container
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -616,12 +616,17 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         const { url } = await response.json();
 
-        // Update the CSS variable for the background image
-        chatContainer.style.setProperty('--background-image', `url('${url}')`);
-        
-        // If you want to display the image inline, do it here:
+        // If there's already an image, remove it
+        const existingImage = chatContainer.querySelector('img');
+        if (existingImage) {
+            existingImage.remove();
+        }
+
+        // Create the new image element and set its source
         const imgElement = document.createElement('img');
         imgElement.src = url;
+
+        // Add the image to the container
         chatContainer.appendChild(imgElement);
 
         // Set image position: left or right
@@ -633,7 +638,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         }
     } catch (error) {
         console.error(error);
-        alert('Failed to set background image: ' + error.message);
+        alert('Failed to set image: ' + error.message);
     }
 });
 
@@ -642,9 +647,13 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
 
-    // Update the CSS variable for opacity
-    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
+    // Update the opacity of the image
+    const img = chatContainer.querySelector('img');
+    if (img) {
+        img.style.opacity = opacityValue / 100;
+    }
 });
+
 
 
     </script>
