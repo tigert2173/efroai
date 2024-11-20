@@ -612,23 +612,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
-const rightImageContainer = document.getElementById('right-image-container');
-const chatWrapper = document.getElementById('chat-wrapper');
-
-// Add class if the left image exists
-if (leftImageContainer && leftImageContainer.style.opacity > 0) {
-    chatWrapper.classList.add('has-left-image');
-} else {
-    chatWrapper.classList.remove('has-left-image');
-}
-
-// Add class if the right image exists
-if (rightImageContainer && rightImageContainer.style.opacity > 0) {
-    chatWrapper.classList.add('has-right-image');
-} else {
-    chatWrapper.classList.remove('has-right-image');
-}
-
+    const rightImageContainer = document.getElementById('right-image-container');
+    const chatWrapper = document.getElementById('chat-wrapper');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
@@ -645,28 +630,36 @@ if (rightImageContainer && rightImageContainer.style.opacity > 0) {
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
 
+        // Clear side images and reset chat wrapper class before applying new image
+        leftImageContainer.innerHTML = '';
+        rightImageContainer.innerHTML = '';
+        chatWrapper.classList.remove('has-left-image', 'has-right-image');
+
         if (imagePosition === 'background') {
             // Set the background image
             chatContainer.style.setProperty('--background-image', `url('${url}')`);
             chatContainer.style.setProperty('--bg-opacity', 1);
-            leftImageContainer.innerHTML = ''; // Clear side images if any
-            rightImageContainer.innerHTML = '';
+            // Ensure the chat container is centered by removing any shifts
+            chatWrapper.classList.remove('has-left-image', 'has-right-image');
         } else if (imagePosition === 'left') {
             // Set the left side image
             chatContainer.style.setProperty('--background-image', 'none');
             leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
-            rightImageContainer.innerHTML = ''; // Clear right side if any
+            // Add class to shift chat container for left image
+            chatWrapper.classList.add('has-left-image');
         } else if (imagePosition === 'right') {
             // Set the right side image
             chatContainer.style.setProperty('--background-image', 'none');
             rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
-            leftImageContainer.innerHTML = ''; // Clear left side if any
+            // Add class to shift chat container for right image
+            chatWrapper.classList.add('has-right-image');
         }
     } catch (error) {
         console.error(error);
         alert('Failed to set image: ' + error.message);
     }
 });
+
 
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
