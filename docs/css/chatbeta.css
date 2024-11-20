@@ -244,11 +244,11 @@ code {
 }
 
 #left-image-container {
-    left: -5px; /* Place on the left side of the chat container */
+    left: 5px; /* Place on the left side of the chat container */
 }
 
 #right-image-container {
-    right: -e; /* Place on the right side of the chat container */
+    right: 5px; /* Place on the right side of the chat container */
 }
 
 #chat-container::before {
