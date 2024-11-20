@@ -223,7 +223,7 @@ code {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 40%; /* Set width for the image */
+    width: 40%; /* 40% width for the image */
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -239,7 +239,7 @@ code {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 50px; /* Default margin for image on left */
+    margin-left: 50px; /* Default margin to allow space for the image */
     justify-content: flex-start;
     overflow-y: auto;
 }
@@ -260,17 +260,16 @@ code {
     margin-right: 0; /* No margin when image is on the right */
 }
 
+/* Class for positioning image to the left */
 .left-image {
-    flex-direction: row-reverse; /* Swap positions of content and image */
+    flex-direction: row-reverse;
 }
 
+/* Class for positioning image to the right */
 .right-image {
-    flex-direction: row; /* Image and content on right */
+    flex-direction: row;
 }
 
-#chat-image, #chat-image-inside {
-    z-index: -1; /* Ensure image stays behind the chat content */
-}
 
 .message {
     margin-bottom: 15px;
