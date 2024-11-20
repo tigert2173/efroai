@@ -323,9 +323,37 @@ code {
     opacity: 0; /* Start invisible for animation */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-    animation: typing 3s steps(30, end), blink-caret 0.5s step-end infinite;
-
+    
 }
+
+/* Specific message types */
+.assistant {
+    text-align: left;
+    background-color: #124429; /* Dark green background for bot */
+    border: 1px solid #1abc9c; /* Optional: Add a soft green border for style */
+}
+
+.user {
+    text-align: right;
+    background-color: #1b663e; /* Softer neon green background for user */
+    border: 1px solid #2ecc71; /* Optional: Add a soft green border for style */
+}
+
+.system {
+    text-align: left;
+    background-color: brown; /* Brown background for system */
+    border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
+}
+
+/* Typing animation container */
+.message-content {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #000; /* Cursor effect */
+    animation: typing 3s steps(30, end), blink-caret 0.5s step-end infinite;
+}
+
 /* Typing effect */
 @keyframes typing {
     from {
@@ -344,24 +372,6 @@ code {
     50% {
         border-color: black;
     }
-}
-/* Specific message types */
-.assistant {
-    text-align: left;
-    background-color: #124429; /* Dark green background for bot */
-    border: 1px solid #1abc9c; /* Optional: Add a soft green border for style */
-}
-
-.user {
-    text-align: right;
-    background-color: #1b663e; /* Softer neon green background for user */
-    border: 1px solid #2ecc71; /* Optional: Add a soft green border for style */
-}
-
-.system {
-    text-align: left;
-    background-color: brown; /* Brown background for system */
-    border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
 }
 
 /* Fade-in and slide-up animation */
