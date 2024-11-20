@@ -1249,7 +1249,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                 if (charIndex < sanitizedContent.length) {
                     span.innerHTML += sanitizedContent[charIndex]; // Append next character
                     charIndex++;
-                    setTimeout(typeNextCharacter, 50); // Adjust speed as needed
+                    setTimeout(typeNextCharacter, 20); // Adjust speed as needed
                 } else if (isFinal) {
                     span.innerHTML += `
                         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
