@@ -158,6 +158,7 @@ a:active {
     animation: gradientAnimation 5s linear infinite; /* Apply the gradient animation */
     position: relative; /* Position relative for pseudo-elements */
 }
+
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
@@ -180,7 +181,6 @@ a:active {
     width: 100%; /* Take full width */
     max-width: 700px; /* Limit max width */
 }
-
 /* Style for block code */
 .code-block {
     background-color: #303030;
@@ -193,22 +193,21 @@ a:active {
 
 /* Style for inline code */
 codelight {
+    /* background-color: #2e2e2e; */
     border-radius: 3px;
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-
+/* Style for inline code */
 code {
     background-color: #2e2e2e;
     border-radius: 3px;
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-
 #chat-container {
     display: flex;
     position: relative;
-    flex-direction: row; /* Ensure content is laid out in a row */
     width: 100%;
     height: 500px;
     background-color: #2f3640; /* Dark grey */
@@ -216,8 +215,8 @@ code {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto; /* Allow scrolling when content exceeds container height */
-    justify-content: flex-start;
+    overflow-y: auto;
+    justify-content: flex-start; /* Default to left alignment */
 }
 
 #chat-image, #chat-image-inside {
@@ -230,7 +229,6 @@ code {
     background-position: center;
     opacity: 1;
     transition: opacity 0.3s ease;
-    z-index: -1; /* Ensure image stays behind the chat content */
 }
 
 #chat-image-inside {
@@ -241,9 +239,9 @@ code {
     flex: 1;
     display: flex;
     flex-direction: column;
+    margin-left: 50px; /* Default margin for image on left */
     justify-content: flex-start;
-    overflow-y: auto; /* Allow scrolling within chat content */
-    padding-right: 10px; /* Add padding to avoid overlap with the edge */
+    overflow-y: auto;
 }
 
 .message {
@@ -252,7 +250,6 @@ code {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
-    word-wrap: break-word; /* Allow long words to break */
 }
 
 .left-image #chat-content {
@@ -309,6 +306,7 @@ code {
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 5px 0 0 5px;
+    /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
 }
@@ -318,10 +316,10 @@ code {
     color: #f9f9fc;
 }
 
-/* Change placeholder text color */
-#user-input::placeholder {
-    color: #a0a0a0; /* Light gray placeholder */
-}
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
