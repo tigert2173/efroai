@@ -254,6 +254,15 @@ code {
 
 #input-wrapper {
     bottom: -500px; /* Place on the right side of the chat container */
+    position: absolute;
+    top: 20px; /* Offset from the top */
+    height: 100%; /* Set a fixed width for the side image */
+    max-width: 300px;
+    height: auto;
+    padding: 10px;
+    z-index: 500; /* Place behind the content */
+    opacity: var(--bg-opacity); /* Opacity control */
+    transition: opacity 0.3s ease; /* Smooth opacity change */
 }
 
 
