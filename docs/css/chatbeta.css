@@ -179,7 +179,7 @@ a:active {
     align-items: center;
     padding: 20px;
     width: 100%; /* Take full width */
-    max-width: 7000px; /* Limit max width */
+    max-width: 1200px; /* Limit max width */
 }
 /* Style for block code */
 .code-block {
