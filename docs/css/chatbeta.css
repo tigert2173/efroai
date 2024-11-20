@@ -323,8 +323,28 @@ code {
     opacity: 0; /* Start invisible for animation */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
+    animation: typing 3s steps(30, end), blink-caret 0.5s step-end infinite;
+
+}
+/* Typing effect */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%; /* Adjust width dynamically based on content */
+    }
 }
 
+/* Blinking caret */
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: black;
+    }
+}
 /* Specific message types */
 .assistant {
     text-align: left;
