@@ -657,13 +657,13 @@
 
         if (imagePlacement === 'outside') {
             chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';
-            chatImageInside.style.display = 'none';
+            chatImage.style.display = 'block';  // Ensure the image is displayed outside
+            chatImageInside.style.display = 'none';  // Hide the inside image container
             console.log('Image placed outside');
         } else {
             chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';
-            chatImage.style.display = 'none';
+            chatImageInside.style.display = 'block';  // Ensure the image is displayed inside
+            chatImage.style.display = 'none';  // Hide the outside image container
             console.log('Image placed inside');
         }
 
@@ -671,9 +671,13 @@
         if (imagePosition === 'left') {
             chatImage.style.left = '0';
             chatImage.style.right = 'auto';
+            chatImage.style.top = '0';
+            chatImage.style.bottom = '0';
         } else if (imagePosition === 'right') {
             chatImage.style.right = '0';
             chatImage.style.left = 'auto';
+            chatImage.style.top = '0';
+            chatImage.style.bottom = '0';
         }
 
     } catch (error) {

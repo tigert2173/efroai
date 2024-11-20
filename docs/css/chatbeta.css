@@ -210,30 +210,34 @@ code {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 200px;  /* Width can be adjusted */
-    height: 100%;  /* Ensure it takes up full height */
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
-    transition: opacity 0.3s ease;
     z-index: -1;
     display: none;  /* Initially hidden */
 }
 
 /* Style for image inside the container */
 #chat-image-inside {
-    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
-    transition: opacity 0.3s ease;
     z-index: -1;
     display: none;  /* Initially hidden */
 }
 
-/* Style for chat container */
+/* Style for the chat container */
 #chat-container {
     position: relative;
     width: 100%;
@@ -249,8 +253,6 @@ code {
 
 /* Style for the chat content */
 #chat-content {
-    padding: 20px;
-    overflow-y: auto;
     position: relative;
     z-index: 1;
 }
