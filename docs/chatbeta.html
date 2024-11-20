@@ -234,10 +234,8 @@
     
     <div id="chat-container">
         <div id="chat-image"></div> 
-        <div id="chat-image-inside"></div> 
-        
         <div id="chat-content">
-            <!-- Chat messages -->
+            <!-- Chat messages here -->
         </div>
     </div>
     
@@ -655,24 +653,22 @@
         // Set background image and adjust positioning
         if (imagePlacement === 'outside') {
             chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block';  // Display image outside
+            chatImage.style.display = 'block';  // Show image outside
             chatImageInside.style.display = 'none';  // Hide inside image
-            chatImage.style.opacity = 1; // Ensure opacity is full
             chatImageInside.style.opacity = 1;
-            
+            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
+
             if (imagePosition === 'left') {
-                chatContainer.classList.remove('right-image');
-                chatContainer.classList.add('left-image');
+                chatContainer.classList.add('left-image'); // Move chat content right
             } else {
-                chatContainer.classList.remove('left-image');
-                chatContainer.classList.add('right-image');
+                chatContainer.classList.add('right-image'); // Move chat content left
             }
         } else {
             chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';  // Display image inside
+            chatImageInside.style.display = 'block';  // Show image inside
             chatImage.style.display = 'none';  // Hide outside image
-            chatImageInside.style.opacity = 1; // Ensure opacity is full
-            chatContainer.classList.remove('left-image', 'right-image');
+            chatImageInside.style.opacity = 1;
+            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
         }
 
         // Handle opacity control slider
@@ -687,6 +683,7 @@
         console.error(error);
     }
 });
+
 
 
     </script>

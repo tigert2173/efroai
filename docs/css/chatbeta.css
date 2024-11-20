@@ -209,8 +209,8 @@ code {
     position: relative;
     width: 100%;
     height: 500px;
-    background-color: #2f3640;
-    border: 1px solid #32CD32;
+    background-color: #2f3640; /* Dark gray background */
+    border: 1px solid #32CD32; /* Soft neon green border */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -232,8 +232,8 @@ code {
     background-size: cover;
     background-position: center;
     opacity: 1;
-    z-index: -1;
-    display: none;
+    z-index: -1; /* Keep it behind the chat messages */
+    display: none; /* Initially hidden */
 }
 
 /* Inside Image (Positioned Inside the Chat Box) */
@@ -246,17 +246,17 @@ code {
     background-size: cover;
     background-position: center;
     opacity: 1;
-    z-index: -1;
-    display: block;
+    z-index: -1; /* Ensure it's behind chat messages */
+    display: none; /* Initially hidden */
 }
 
 /* Adjust chat content when image is positioned left or right */
 #chat-container.left-image #chat-content {
-    margin-left: 300px;
+    margin-left: 300px; /* Shift content to the right */
 }
 
 #chat-container.right-image #chat-content {
-    margin-right: 300px;
+    margin-right: 300px; /* Shift content to the left */
 }
 
 #chat-content {
