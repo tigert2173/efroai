@@ -593,7 +593,8 @@
     <div id="image-container"></div>
 
     <script>
-     document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+     // Handle form submission to fetch and set the background image
+document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
@@ -612,9 +613,8 @@
 
         const { url } = await response.json();
 
-        // Set the background image on the ::before pseudo-element using a CSS variable
+        // Update the CSS variable for the background image
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
-        chatContainer.style.backgroundImage = `url('${url}')`;
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);

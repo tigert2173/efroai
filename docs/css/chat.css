@@ -205,7 +205,6 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-
 #chat-container {
     width: 100%;
     z-index: 500;
@@ -218,6 +217,8 @@ code {
     height: 500px;
     margin-bottom: 20px;
     position: relative; /* Ensure positioning for pseudo-element */
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
 }
 
 #chat-container::before {
@@ -227,11 +228,12 @@ code {
     left: 0;
     right: 0;
     bottom: 0;
+    background-image: var(--background-image); /* Use the variable for the image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity, 1); /* Default opacity */
+    opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
