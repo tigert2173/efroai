@@ -646,7 +646,7 @@
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
-        console.log('Fetched Image URL:', url); // Debugging line
+        console.log("Fetched Image URL:", url); // Log the URL for debugging
 
         // Apply the image as background based on placement (inside or outside)
         const imagePlacement = document.getElementById('image-placement').value;

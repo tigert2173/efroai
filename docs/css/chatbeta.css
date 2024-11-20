@@ -217,6 +217,7 @@ code {
     opacity: 1;
     z-index: -1;
     display: none;  /* Hidden initially */
+    background-color: rgba(255, 0, 0, 0.2);  /* Add a red tint to make it visible */
 }
 
 /* Style for image inside the container */
@@ -231,6 +232,7 @@ code {
     opacity: 1;
     z-index: -1;
     display: none;  /* Hidden initially */
+    background-color: rgba(0, 0, 255, 0.2);  /* Add a blue tint to make it visible */
 }
 
 /* Chat container styles */
