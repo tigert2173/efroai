@@ -222,12 +222,12 @@ code {
     box-sizing: border-box;
 }
 
-/* Outside Image */
+/* Outside Image (Positioned Outside Chat Box) */
 #chat-image {
     position: absolute;
     top: 0;
     left: 0;
-    width: 300px; /* Adjust as needed */
+    width: 300px;  /* Adjust the size of the image */
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -236,7 +236,7 @@ code {
     display: none;
 }
 
-/* Inside Image */
+/* Inside Image (Positioned Inside the Chat Box) */
 #chat-image-inside {
     position: absolute;
     top: 0;
@@ -250,12 +250,11 @@ code {
     display: none;
 }
 
-/* Adjust content when image is on left */
+/* Adjust chat content when image is positioned left or right */
 #chat-container.left-image #chat-content {
     margin-left: 300px;
 }
 
-/* Adjust content when image is on right */
 #chat-container.right-image #chat-content {
     margin-right: 300px;
 }
