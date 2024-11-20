@@ -206,49 +206,16 @@ code {
     font-family: "Courier New", Courier, monospace;
 }
 #chat-container {
-    position: relative; /* Allow absolute positioning within this container */
     width: 100%;
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     overflow-y: auto;
     height: 500px;
     margin-bottom: 20px;
-}
-
-#chat-image {
-    position: absolute; /* Position outside the container when needed */
-    top: 0;
-    bottom: 0;
-    width: 200px; /* Set width of the image container */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    border-radius: 8px;
-    z-index: -1; /* Ensure it stays behind the chat content */
-}
-
-#chat-image-inside {
-    position: relative; /* Positioned inside the container */
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    z-index: -1; /* Behind the content */
-}
-
-#chat-content {
-    padding: 20px;
-    overflow-y: auto;
-    position: relative;
 }
 
 .message {
