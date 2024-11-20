@@ -207,17 +207,15 @@ code {
 }
 #chat-wrapper {
     position: relative;
+    width: 100%;
     display: flex;
-    justify-content: center; /* This will horizontally center the chat-container */
-    align-items: center; /* This will vertically center the chat-container */
-    max-width: 1200px; /* Optional: Limit the max width of the entire chat area */
-    width: 100%; /* Full width of the parent container */
-    height: 600px; /* Optional: Set a height for the container */
-    padding: 20px; /* Optional: Padding around the content */
+    justify-content: center; /* Centers the chat container horizontally */
+    align-items: center; /* Vertically aligns the chat container */
+    height: 100vh; /* Makes sure it takes up the full viewport height */
 }
 
 #chat-container {
-    width: 80%; /* Adjust this to control the chat container width */
+    width: 60%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -232,7 +230,6 @@ code {
     --background-image: none; /* Default background image */
 }
 
-/* For side image positioning */
 #left-image-container,
 #right-image-container {
     position: absolute;
@@ -268,6 +265,7 @@ code {
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
+
 
 
 #opacity-control {
