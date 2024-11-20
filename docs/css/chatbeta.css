@@ -234,8 +234,10 @@ code {
 #right-image-container {
     position: absolute;
     top: 20px; /* Offset from the top */
-    width: 150px; /* Set a fixed width for the side image */
+    height: 100%; /* Set a fixed width for the side image */
+    max-width: 300px;
     height: auto;
+    padding: 10px;
     z-index: -1; /* Place behind the content */
     opacity: var(--bg-opacity); /* Opacity control */
     transition: opacity 0.3s ease; /* Smooth opacity change */
