@@ -232,7 +232,7 @@ code {
 
 #left-image-container,
 #right-image-container {
-    position: relative;
+    position: absolute;
     top: 20px; /* Offset from the top */
     width: 150px; /* Set a fixed width for the side image */
     height: auto;
@@ -242,7 +242,7 @@ code {
 }
 
 #left-image-container {
-    left: -170px; /* Place on the left side of the chat container */
+    left: -20px; /* Place on the left side of the chat container */
 }
 
 #right-image-container {
