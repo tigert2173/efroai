@@ -206,28 +206,44 @@
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
-        <form id="fetchImageForm">
-            <label for="bucketName">Bucket Name:</label>
-            <input type="text" id="bucketName" name="bucketName" required>
-        
-            <label for="objectKey">Object Key:</label>
-            <input type="text" id="objectKey" name="objectKey" required>
-        
-            <label>Image Position:</label>
-            <label for="background">
-                <input type="radio" id="background" name="imagePosition" value="background" checked> Background
-            </label>
-            <label for="left">
-                <input type="radio" id="left" name="imagePosition" value="left"> Left
-            </label>
-            <label for="right">
-                <input type="radio" id="right" name="imagePosition" value="right"> Right
-            </label>
-        
-            <button type="submit">Fetch Image</button>
-        </form>
-        
-        <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
+
+        <div id="imageMenu" class="menu-container">
+            <form id="fetchImageForm">
+                <label for="bucketName">Bucket Name:</label>
+                <input type="text" id="bucketName" name="bucketName" required>
+            
+                <label for="objectKey">Object Key:</label>
+                <input type="text" id="objectKey" name="objectKey" required>
+            
+                <label>Image Position:</label>
+                <label for="background">
+                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background
+                </label>
+                <label for="left">
+                    <input type="radio" id="left" name="imagePosition" value="left"> Left
+                </label>
+                <label for="right">
+                    <input type="radio" id="right" name="imagePosition" value="right"> Right
+                </label>
+            
+                <button type="submit">Fetch Image</button>
+            </form>
+            
+            <label for="opacity-slider">Opacity:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        </div>
+        <script>
+            // Select the button and the menu container
+            const toggleMenuBtn = document.getElementById("toggleMenuBtn");
+            const imageMenu = document.getElementById("imageMenu");
+
+            // Toggle visibility of the menu when the button is clicked
+            toggleMenuBtn.addEventListener("click", () => {
+                imageMenu.classList.toggle("show-menu");
+            });
+
+        </script>        
         
         <!-- Parent container for chat and images -->
         <div id="chat-wrapper">

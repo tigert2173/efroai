@@ -837,3 +837,52 @@ input[type="checkbox"]:not(:checked) + label {
 #opacity-control {
     margin-top: 10px;
 }
+
+/* Button styling */
+.menu-btn {
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Form and opacity slider styling */
+.menu-container {
+    display: none; /* Hidden by default */
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-container label {
+    margin: 8px 0;
+}
+
+#opacity-slider {
+    margin-top: 10px;
+}
+
+/* Show the menu when the button is clicked */
+.show-menu {
+    display: block;
+}
