@@ -632,7 +632,7 @@
     const bucketName = document.getElementById('bucketName').value.trim();
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatImage = document.getElementById('chat-image');
-    const chatImageInside = document.getElementById('chat-image-inside');
+    const chatImageInside = document.getElementById('chat-image-inside');  // Ensuring the correct element is selected
     const chatContainer = document.getElementById('chat-container');
 
     if (!bucketName || !objectKey) {
@@ -666,11 +666,16 @@
                 chatContainer.classList.add('right-image'); // Move chat content left
             }
         } else {
-            chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block';  // Show image inside
-            chatImage.style.display = 'none';  // Hide outside image
-            chatImageInside.style.opacity = 1;
-            chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
+            // Ensure chatImageInside exists before modifying its style
+            if (chatImageInside) {
+                chatImageInside.style.backgroundImage = `url('${url}')`;
+                chatImageInside.style.display = 'block';  // Show image inside
+                chatImage.style.display = 'none';  // Hide outside image
+                chatImageInside.style.opacity = 1;
+                chatContainer.classList.remove('left-image', 'right-image'); // Remove positioning classes
+            } else {
+                console.error("Error: chat-image-inside element not found.");
+            }
         }
 
         // Handle opacity control slider
@@ -685,6 +690,7 @@
         console.error(error);
     }
 });
+
 
 
 
