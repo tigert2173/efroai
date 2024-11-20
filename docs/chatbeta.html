@@ -597,7 +597,7 @@
 
             try {
                 // Fetch the pre-signed URL for the image
-                const response = await fetch(`/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+                const response = await fetch(`https://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
                 if (!response.ok) throw new Error('Error generating URL.');
 
                 const { url } = await response.json();
