@@ -247,7 +247,7 @@ code {
     background-position: center;
     opacity: 1;
     z-index: -1;
-    display: none;
+    display: block;
 }
 
 /* Adjust chat content when image is positioned left or right */
