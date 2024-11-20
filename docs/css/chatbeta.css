@@ -311,17 +311,18 @@ code {
     display: flex;
     width: 100%;
     max-width: 700px;
+    margin-top: 20px; /* Adds spacing between the chat container and input */
     margin-bottom: 10px;
+    justify-content: flex-start; /* Aligns input fields to the left */
 }
 
 #input-container input {
     flex: 1;
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: e 0 0 e;
-    /* background-color: #2f3640; Dark grey */
-    background-color: #124429; 
-    color: #f5f6fa; /* Light grey */
+    border-radius: 8px;
+    background-color: #124429; /* Dark grey background */
+    color: #f5f6fa; /* Light grey text color */
 }
 
 #user-input {
