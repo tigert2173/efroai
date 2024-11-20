@@ -257,7 +257,7 @@ code {
     margin-left: 320px; /* Push the chat container to the right */
 }
 
-#chat-wrapper.has-right-image #chat-container {
+#chat-wrapper.has-right-image #chat-container, #input-container{
     margin-right: 320px; /* Push the chat container to the left */
 }
 
