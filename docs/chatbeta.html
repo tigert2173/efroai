@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - EFRO.AI</title>
-    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/chatbeta.css">
     <link rel="stylesheet" href="css/menu2.0.css">
 
     <styles>
@@ -206,8 +206,23 @@
      <!-- Audio Players for Each Generated Clip -->
         <div id="audioPlayersContainer"></div>
     <div id="main-content">
+
         <div id="chat-container">
+            <!-- Your chat content goes here -->
         </div>
+        
+        <form id="fetchImageForm">
+            <input type="text" id="bucketName" placeholder="Bucket Name" required>
+            <input type="text" id="objectKey" placeholder="Object Key" required>
+            <button type="submit">Set Background</button>
+        </form>
+        
+        <div id="opacity-control">
+            <label for="opacity-slider">Background Opacity:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        </div>
+
+    </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
         <div class="desktop-only-ad">
@@ -593,7 +608,7 @@
     <div id="image-container"></div>
 
     <script>
-      document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+     document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
@@ -612,10 +627,8 @@
 
         const { url } = await response.json();
 
-        // Set the background image of the chat-container div
-        chatContainer.style.backgroundImage = `url('${url}')`;
-        chatContainer.style.backgroundSize = 'cover'; // Make sure the image covers the container
-        chatContainer.style.backgroundPosition = 'center'; // Center the image
+        // Set the background image on the ::before pseudo-element
+        chatContainer.style.setProperty('--background-image', `url('${url}')`);
     } catch (error) {
         console.error(error);
         alert('Failed to set background image: ' + error.message);
@@ -627,9 +640,10 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value;
     const chatContainer = document.getElementById('chat-container');
 
-    // Apply opacity to the container
-    chatContainer.style.opacity = opacityValue / 100; // Convert 0-100 range to 0-1
+    // Apply opacity to the pseudo-element
+    chatContainer.querySelector('::before').style.opacity = opacityValue / 100;
 });
+
     </script>
 
     <script>
