@@ -290,16 +290,9 @@ code {
 
 #input-container {
     display: flex;
-    flex-direction: row; /* Align buttons and input field horizontally */
-    justify-content: center;
-    align-items: center;
     width: 100%;
     max-width: 700px;
-    margin-top: 20px; /* Ensure it’s separated from the chat container */
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #2f3640;
-    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 #input-container input {
