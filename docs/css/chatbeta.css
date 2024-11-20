@@ -206,6 +206,7 @@ code {
     font-family: "Courier New", Courier, monospace;
 }
 #chat-container {
+    display: flex;
     position: relative;
     width: 100%;
     height: 500px;
@@ -215,59 +216,90 @@ code {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    display: flex;
-    flex-direction: row; /* Align image and chat content side by side */
+    justify-content: flex-start; /* Default to left alignment */
 }
 
 #chat-image, #chat-image-inside {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 40%;
+    width: 40%; /* 40% width for the image */
     height: 100%;
     background-size: cover;
     background-position: center;
     opacity: 1;
     transition: opacity 0.3s ease;
-    display: none; /* Hide by default */
+}
+
+#chat-image-inside {
+    display: none; /* Initially hidden */
 }
 
 #chat-content {
-    flex-grow: 1; /* Allow the chat content to grow and take remaining space */
-    margin-left: 50px; /* To prevent text from being covered by image */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Align messages to the bottom */
+    margin-left: 50px; /* Default margin to allow space for the image */
+    justify-content: flex-start;
+    overflow-y: auto;
 }
 
 .message {
-    background-color: #353b48; /* Dark grey */
+    background-color: #444;
+    color: white;
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
 }
 
 .left-image #chat-content {
-    margin-left: 0; /* Shift content to the left when image is on the left */
+    margin-left: 0; /* No margin when image is on the left */
 }
 
 .right-image #chat-content {
-    margin-right: 0; /* Shift content to the right when image is on the right */
+    margin-right: 0; /* No margin when image is on the right */
 }
+
+/* Class for positioning image to the left */
+.left-image {
+    flex-direction: row-reverse;
+}
+
+/* Class for positioning image to the right */
+.right-image {
+    flex-direction: row;
+}
+
+
+/* .message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #353b48;
+} */
 
 .assistant {
     text-align: left;
     background-color: #124429; /* Orange background for bot */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
 .user {
     text-align: right;
     background-color: #1b663e; /* Softer neon green background for user */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
 .system {
     text-align: left;
     background-color: brown; /* Orange background for bot */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
 #input-container {
