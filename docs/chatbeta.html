@@ -649,23 +649,25 @@
 
         const { url } = await response.json();
 
-        // Get the user settings for image placement and position
+        console.log('Fetched Image URL:', url); // Debugging line
+
+        // Apply the image as background based on placement (inside or outside)
         const imagePosition = document.getElementById('image-position').value;
         const imagePlacement = document.getElementById('image-placement').value;
 
         if (imagePlacement === 'outside') {
-            // Apply the image as a background for the outside element
             chatImage.style.backgroundImage = `url('${url}')`;
             chatImage.style.display = 'block';
             chatImageInside.style.display = 'none';
+            console.log('Image placed outside');
         } else {
-            // Apply the image as a background for the inside element
             chatImageInside.style.backgroundImage = `url('${url}')`;
             chatImageInside.style.display = 'block';
             chatImage.style.display = 'none';
+            console.log('Image placed inside');
         }
 
-        // Set the position for outside image (left or right)
+        // Set position (left or right)
         if (imagePosition === 'left') {
             chatImage.style.left = '0';
             chatImage.style.right = 'auto';
@@ -676,6 +678,7 @@
 
     } catch (error) {
         alert('Error fetching image: ' + error.message);
+        console.error(error); // Log the error
     }
 });
 
