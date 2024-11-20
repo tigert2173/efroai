@@ -208,7 +208,7 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    background-color: #00FF00;
+    /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
@@ -228,6 +228,7 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 #left-image-container,
@@ -251,29 +252,12 @@ code {
     right: -10px; /* Place on the right side of the chat container */
 }
 
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
-}
-
 /* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container {
+#chat-wrapper.has-left-image #chat-container #input-container{
     margin-left: 320px; /* Push the chat container to the right */
 }
 
-#chat-wrapper.has-right-image #chat-container {
+#chat-wrapper.has-right-image #chat-container #input-container{
     margin-right: 320px; /* Push the chat container to the left */
 }
 
@@ -309,9 +293,16 @@ code {
 
 #input-container {
     display: flex;
+    flex-direction: row; /* Align buttons and input field horizontally */
+    justify-content: center;
+    align-items: center;
     width: 100%;
     max-width: 700px;
-    margin-bottom: 10px;
+    margin-top: 20px; /* Ensure it’s separated from the chat container */
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #2f3640;
+    border-radius: 8px;
 }
 
 #input-container input {
