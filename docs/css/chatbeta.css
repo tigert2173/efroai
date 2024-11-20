@@ -255,7 +255,6 @@ code {
 #input-wrapper {
     bottom: -500px; /* Place on the right side of the chat container */
     position: relative;
-    top: 20px; /* Offset from the top */
     height: 100%; /* Set a fixed width for the side image */
     max-width: 300px;
     height: auto;
