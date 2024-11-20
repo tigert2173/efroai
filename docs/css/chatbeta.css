@@ -220,7 +220,6 @@ code {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
 }
 
 /* Image outside chat */
@@ -228,7 +227,7 @@ code {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 300px; /* Fixed width for the image */
     height: 100%;
     background-size: cover;
     background-position: center;
@@ -259,6 +258,7 @@ code {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    transition: margin-left 0.3s, margin-right 0.3s;
 }
 
 /* Adjusting the chat when the image is on the left or right */
