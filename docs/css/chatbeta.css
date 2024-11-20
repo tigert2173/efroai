@@ -348,8 +348,7 @@ code {
 /* Styling the message container */
 .message-content {
     display: block;
-    font-family: 'Courier New', monospace; /* Monospace font for typing effect */
-    white-space: nowrap; /* Prevent wrapping */
+    white-space: wrap; /* Prevent wrapping */
     overflow: hidden; /* Hide overflowing text */
     position: relative;
     width: 100%;
@@ -360,7 +359,7 @@ code {
     content: attr(data-content);
     display: block;
     width: 100%;
-    white-space: nowrap;
+    white-space: wrap;
     overflow: hidden;
     border-right: 3px solid black; /* Simulated cursor */
     animation: typing 6s steps(60, end) 0s forwards, blink-caret 0.75s step-end infinite;
