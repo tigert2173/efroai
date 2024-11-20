@@ -253,7 +253,7 @@ code {
 }
 
 /* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container {
+#chat-wrapper.has-left-image #chat-container #input-container {
     margin-left: 320px; /* Push the chat container to the right */
 }
 
@@ -290,6 +290,7 @@ code {
 
 #input-container {
     display: flex;
+    position: absolute;
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
