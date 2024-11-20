@@ -585,29 +585,23 @@
         // Handle form submission to fetch and display the image
         document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-    
+
             const bucketName = document.getElementById('bucketName').value.trim();
             const objectKey = document.getElementById('objectKey').value.trim();
             const imageContainer = document.getElementById('image-container');
-    
+
             if (!bucketName || !objectKey) {
                 alert('Please enter both bucket name and object key.');
                 return;
             }
-    
+
             try {
                 // Fetch the pre-signed URL for the image
                 const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
                 if (!response.ok) throw new Error('Error generating URL.');
-    
+
                 const { url } = await response.json();
-    
-                // Test the pre-signed URL by trying to fetch it
-                const imageResponse = await fetch(url);
-                if (!imageResponse.ok) {
-                    throw new Error('Error accessing image URL. Check if the URL is accessible.');
-                }
-    
+
                 // Display the image
                 imageContainer.innerHTML = `<img src="${url}" alt="Embedded Image">`;
             } catch (error) {
@@ -616,7 +610,6 @@
             }
         });
     </script>
-    
 
     <script>
           document.getElementById('toggleSettings').addEventListener('click', function() {
