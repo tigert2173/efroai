@@ -301,7 +301,7 @@ code {
 /* Ensures the input container shifts with the chat-wrapper */
 #input-container {
     display: flex;
-    position: relative;
+    position: absolute;
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
