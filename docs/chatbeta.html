@@ -232,9 +232,6 @@
         
         <!-- Chat container -->
         <div id="chat-container">
-            <!-- Image inside the chat container -->
-<div id="chat-image-inside"></div>
-
             <!-- Background image inside or outside the chat container -->
             <div id="chat-image"></div>
             <div id="chat-content">
@@ -629,77 +626,79 @@
     <div id="image-container"></div>
 
     <script>
- document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+ document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const bucketName = document.getElementById('bucketName').value.trim();
-    const objectKey = document.getElementById('objectKey').value.trim();
-    const imagePosition = document.getElementById('image-position').value;
-    const imagePlacement = document.getElementById('image-placement').value;
-    const opacitySlider = document.getElementById('opacity-slider');
+        const bucketName = document.getElementById('bucketName').value.trim();
+        const objectKey = document.getElementById('objectKey').value.trim();
+        const imagePosition = document.getElementById('image-position').value;
+        const imagePlacement = document.getElementById('image-placement').value;
+        const opacitySlider = document.getElementById('opacity-slider');
 
-    const chatImage = document.getElementById('chat-image');
-    const chatImageInside = document.getElementById('chat-image-inside');
+        const chatImage = document.getElementById('chat-image');
+        const chatImageInside = document.getElementById('chat-image-inside');
 
-    if (!bucketName || !objectKey) {
-        alert('Please enter both bucket name and object key.');
-        return;
-    }
-
-    try {
-        // Fetch the pre-signed URL for the image
-        const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
-        if (!response.ok) throw new Error('Error generating URL.');
-
-        const { url } = await response.json();
-
-        // Set the background image based on placement (inside or outside)
-        if (imagePlacement === 'outside') {
-            chatImage.style.backgroundImage = `url('${url}')`;
-            chatImage.style.display = 'block'; // Display the image outside
-            chatImageInside.style.display = 'none'; // Hide the inside image container
-        } else {
-            chatImageInside.style.backgroundImage = `url('${url}')`;
-            chatImageInside.style.display = 'block'; // Display the image inside
-            chatImage.style.display = 'none'; // Hide the outside image container
+        if (!bucketName || !objectKey) {
+            alert('Please enter both bucket name and object key.');
+            return;
         }
 
-        // Set image position (left or right)
-        if (imagePosition === 'left') {
-            chatImage.style.left = '0';
-            chatImage.style.right = 'auto';
-            chatImage.style.top = '0';
-            chatImage.style.bottom = '0';
-            chatImageInside.style.left = '0';
-            chatImageInside.style.right = 'auto';
-            chatImageInside.style.top = '0';
-            chatImageInside.style.bottom = '0';
-        } else {
-            chatImage.style.right = '0';
-            chatImage.style.left = 'auto';
-            chatImage.style.top = '0';
-            chatImage.style.bottom = '0';
-            chatImageInside.style.right = '0';
-            chatImageInside.style.left = 'auto';
-            chatImageInside.style.top = '0';
-            chatImageInside.style.bottom = '0';
+        try {
+            // Fetch the pre-signed URL for the image
+            const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+            if (!response.ok) throw new Error('Error generating URL.');
+
+            const { url } = await response.json();
+
+            // Set the background image based on placement (inside or outside)
+            if (imagePlacement === 'outside') {
+                chatImage.style.backgroundImage = `url('${url}')`;
+                chatImage.style.display = 'block'; // Display the image outside
+                chatImageInside.style.display = 'none'; // Hide the inside image container
+            } else {
+                chatImageInside.style.backgroundImage = `url('${url}')`;
+                chatImageInside.style.display = 'block'; // Display the image inside
+                chatImage.style.display = 'none'; // Hide the outside image container
+            }
+
+            // Set image position (left or right)
+            if (imagePosition === 'left') {
+                chatImage.style.left = '0';
+                chatImage.style.right = 'auto';
+                chatImage.style.top = '0';
+                chatImage.style.bottom = '0';
+                chatImageInside.style.left = '0';
+                chatImageInside.style.right = 'auto';
+                chatImageInside.style.top = '0';
+                chatImageInside.style.bottom = '0';
+            } else {
+                chatImage.style.right = '0';
+                chatImage.style.left = 'auto';
+                chatImage.style.top = '0';
+                chatImage.style.bottom = '0';
+                chatImageInside.style.right = '0';
+                chatImageInside.style.left = 'auto';
+                chatImageInside.style.top = '0';
+                chatImageInside.style.bottom = '0';
+            }
+
+        } catch (error) {
+            alert('Error fetching image: ' + error.message);
+            console.error(error); // Log the error
         }
+    });
 
-    } catch (error) {
-        alert('Error fetching image: ' + error.message);
-        console.error(error); // Log the error
-    }
-});
+    // Handle opacity control slider
+    document.getElementById('opacity-slider').addEventListener('input', (e) => {
+        const opacityValue = e.target.value / 100;
+        const chatImage = document.getElementById('chat-image');
+        const chatImageInside = document.getElementById('chat-image-inside');
 
-// Handle opacity control slider
-document.getElementById('opacity-slider').addEventListener('input', (e) => {
-    const opacityValue = e.target.value / 100;
-    const chatImage = document.getElementById('chat-image');
-    const chatImageInside = document.getElementById('chat-image-inside');
-
-    // Update opacity for the image
-    chatImage.style.opacity = opacityValue;
-    chatImageInside.style.opacity = opacityValue;
+        // Update opacity for the image
+        chatImage.style.opacity = opacityValue;
+        chatImageInside.style.opacity = opacityValue;
+    });
 });
 
 
