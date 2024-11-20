@@ -245,7 +245,6 @@ code {
 #left-image-container,
 #right-image-container {
     position: absolute;
-    top: 20px; /* Offset from the top */
     height: 100%; /* Set a fixed width for the side image */
     max-width: 300px;
     height: auto;
@@ -297,8 +296,6 @@ code {
 #input-wrapper.has-right-image #input-container {
     margin-right: 320px; /* Push the chat container to the left */
 }
-
-
 
 /* Ensures the input container shifts with the chat-wrapper */
 #input-container {
