@@ -235,11 +235,6 @@
             <div id="chat-container">
                 <!-- Chat content will go here -->
             </div>
-            <div id="input-container">
-                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
             <div id="right-image-container"></div> <!-- Right side image container -->
         </div>
 
@@ -256,7 +251,12 @@
         <ins class="eas6a97888e17" data-zoneid="5461574"></ins> 
         <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
-        
+         
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+        </div>
 
         <label for="enter-send" class="send-on-enter-label">
             <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">

@@ -208,14 +208,15 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift for the whole wrapper */
 }
 
+/* Make sure the chat container and input container move together */
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 100%;
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -228,7 +229,6 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 #left-image-container,
@@ -252,22 +252,23 @@ code {
     right: -10px; /* Place on the right side of the chat container */
 }
 
-/* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container {
-    margin-left: 320px; /* Push the chat container to the right */
+/* If the left or right images are shown, shift chat-wrapper accordingly */
+#chat-wrapper.has-left-image {
+    margin-left: 320px; /* Push the entire wrapper to the right */
 }
 
-#chat-wrapper.has-right-image #chat-container {
-    margin-right: 320px; /* Push the chat container to the left */
+#chat-wrapper.has-right-image {
+    margin-right: 320px; /* Push the entire wrapper to the left */
 }
 
-/* Apply the same shift to input container */
-#chat-wrapper.has-left-image #input-container {
-    margin-left: 320px; /* Shift input-container to the right */
-}
-
-#chat-wrapper.has-right-image #input-container {
-    margin-right: 320px; /* Shift input-container to the left */
+/* Ensures the input container shifts with the chat-wrapper */
+#input-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 10px;
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
 }
 
 #opacity-control {
@@ -295,15 +296,6 @@ code {
 .system {
     text-align: left;
     background-color: brown; /* Orange background for bot */
-}
-
-#input-container {
-    display: flex;
-    position: relative;
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 10px;
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
 }
 
 #input-container input {
