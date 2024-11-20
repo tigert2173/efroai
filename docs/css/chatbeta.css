@@ -228,7 +228,7 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth transition for when the image appears */
+    transition: margin 0.3s ease; /* Smooth transition when adjusting margins */
 }
 
 #left-image-container,
@@ -250,13 +250,13 @@ code {
     right: -170px; /* Place on the right side of the chat container */
 }
 
-/* Adjust the chat container when the left or right image is visible */
-#chat-container.left-image-visible {
-    margin-left: 170px; /* Push chat container to the right when left image is present */
+/* Adjust the chat container when there is an image on the left or right */
+#chat-container.left-image {
+    margin-left: 170px; /* Adjust the margin when left image is present */
 }
 
-#chat-container.right-image-visible {
-    margin-right: 170px; /* Push chat container to the left when right image is present */
+#chat-container.right-image {
+    margin-right: 170px; /* Adjust the margin when right image is present */
 }
 
 #chat-container::before {

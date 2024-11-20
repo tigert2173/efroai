@@ -611,22 +611,29 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const bucketName = document.getElementById('bucketName').value.trim();
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
-    // Check if the left image or right image container has an image
-const leftImageContainer = document.getElementById('left-image-container');
+    const leftImageContainer = document.getElementById('left-image-container');
 const rightImageContainer = document.getElementById('right-image-container');
 
-// Check if left image is visible
-if (leftImageContainer.querySelector('img')) {
-    chatContainer.classList.add('left-image-visible');
-} else {
-    chatContainer.classList.remove('left-image-visible');
+// Example function to toggle the left image
+function toggleLeftImage(show) {
+    if (show) {
+        leftImageContainer.style.opacity = 1; // Show left image
+        chatContainer.classList.add('left-image'); // Adjust chat container position
+    } else {
+        leftImageContainer.style.opacity = 0; // Hide left image
+        chatContainer.classList.remove('left-image'); // Reset chat container position
+    }
 }
 
-// Check if right image is visible
-if (rightImageContainer.querySelector('img')) {
-    chatContainer.classList.add('right-image-visible');
-} else {
-    chatContainer.classList.remove('right-image-visible');
+// Example function to toggle the right image
+function toggleRightImage(show) {
+    if (show) {
+        rightImageContainer.style.opacity = 1; // Show right image
+        chatContainer.classList.add('right-image'); // Adjust chat container position
+    } else {
+        rightImageContainer.style.opacity = 0; // Hide right image
+        chatContainer.classList.remove('right-image'); // Reset chat container position
+    }
 }
 
 
