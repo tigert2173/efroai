@@ -253,13 +253,12 @@ code {
 }
 
 /* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container #input-container {
+#chat-wrapper.has-left-image #chat-container {
     margin-left: 320px; /* Push the chat container to the right */
 }
 
-#chat-wrapper.has-right-image #chat-container, #input-container{
+#chat-wrapper.has-right-image #chat-container {
     margin-right: 320px; /* Push the chat container to the left */
-    left: 100px;
 }
 
 #opacity-control {
@@ -291,7 +290,7 @@ code {
 
 #input-container {
     display: flex;
-    position: absolute;
+    position: relative;
     width: 100%;
     max-width: 700px;
     margin-bottom: 10px;
