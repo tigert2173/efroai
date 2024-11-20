@@ -179,7 +179,7 @@ a:active {
     align-items: center;
     padding: 20px;
     width: 100%; /* Take full width */
-    max-width: 700px; /* Limit max width */
+    max-width: 1200px; /* Limit max width */
 }
 /* Style for block code */
 .code-block {
@@ -212,7 +212,6 @@ code {
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
-    height: 100vh; /* Makes sure it takes up the full viewport height */
 }
 
 #chat-container {
