@@ -158,7 +158,6 @@ a:active {
     animation: gradientAnimation 5s linear infinite; /* Apply the gradient animation */
     position: relative; /* Position relative for pseudo-elements */
 }
-
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
@@ -181,6 +180,7 @@ a:active {
     width: 100%; /* Take full width */
     max-width: 700px; /* Limit max width */
 }
+
 /* Style for block code */
 .code-block {
     background-color: #303030;
@@ -193,21 +193,22 @@ a:active {
 
 /* Style for inline code */
 codelight {
-    /* background-color: #2e2e2e; */
     border-radius: 3px;
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-/* Style for inline code */
+
 code {
     background-color: #2e2e2e;
     border-radius: 3px;
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
+
 #chat-container {
     display: flex;
     position: relative;
+    flex-direction: row; /* Ensure content is laid out in a row */
     width: 100%;
     height: 500px;
     background-color: #2f3640; /* Dark grey */
@@ -215,73 +216,7 @@ code {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    justify-content: flex-start; /* Default to left alignment */
-}
-
-#chat-image, #chat-image-inside {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 40%; /* 40% width for the image */
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-#chat-image-inside {
-    display: none; /* Initially hidden */
-}
-
-#chat-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-left: 50px; /* Default margin to allow space for the image */
-    justify-content: flex-start;
-    overflow-y: auto;
-}
-
-.message {
-    background-color: #444;
-    color: white;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-.left-image #chat-content {
-    margin-left: 0; /* No margin when image is on the left */
-}
-
-.right-image #chat-content {
-    margin-right: 0; /* No margin when image is on the right */
-}
-
-/* Class for positioning image to the left */
-.left-image {
-    flex-direction: row-reverse;
-}
-
-/* Class for positioning image to the right */
-.right-image {
-    flex-direction: row;
-}
-
-
-#chat-container {
-    display: flex;
-    position: relative;
-    width: 100%;
-    height: 500px;
-    background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
+    overflow-y: auto; /* Allow scrolling when content exceeds container height */
     justify-content: flex-start;
 }
 
@@ -295,6 +230,7 @@ code {
     background-position: center;
     opacity: 1;
     transition: opacity 0.3s ease;
+    z-index: -1; /* Ensure image stays behind the chat content */
 }
 
 #chat-image-inside {
@@ -305,10 +241,9 @@ code {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 50px; /* Default margin for image on left */
     justify-content: flex-start;
-    overflow-y: auto;
-    position: relative; /* Prevents content from overlapping */
+    overflow-y: auto; /* Allow scrolling within chat content */
+    padding-right: 10px; /* Add padding to avoid overlap with the edge */
 }
 
 .message {
@@ -317,6 +252,7 @@ code {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
+    word-wrap: break-word; /* Allow long words to break */
 }
 
 .left-image #chat-content {
@@ -339,6 +275,12 @@ code {
     z-index: -1; /* Ensure image stays behind the chat content */
 }
 
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #353b48; /* Dark grey */
+}
 
 .assistant {
     text-align: left;
@@ -367,7 +309,6 @@ code {
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 5px 0 0 5px;
-    /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
 }
@@ -377,10 +318,10 @@ code {
     color: #f9f9fc;
 }
 
-    /* Change placeholder text color */
-    #user-input::placeholder {
-        color: #a0a0a0; /* Light gray placeholder */
-    }
+/* Change placeholder text color */
+#user-input::placeholder {
+    color: #a0a0a0; /* Light gray placeholder */
+}
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
