@@ -1011,7 +1011,7 @@ const soundEffects = {
     "choke": "sfx/choke-sfx.mp3",
 };
 
-let audioQueue = [];  // Queue to store audio sources
+let audioQueue = [];  // Global audio queue to store audio sources
 
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
@@ -1092,7 +1092,6 @@ function speakMessage(index) {
         console.log("Query Params:", queryParams);
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
-        let audioQueue = [];
         let isPlaying = false;
         let retryCount = 0;
         const MAX_RETRIES = 5;
@@ -1121,20 +1120,19 @@ function speakMessage(index) {
                     playNextAudio();
                     retryCount = 0;
                 } else if (data.error) {
-                 //   document.getElementById('generateMessage').innerText = data.error;
+                    console.error('Error in audio generation:', data.error);
                 } else if (data.end) {
                     console.log("Audio generation complete.");
                     eventSource.close();
                 }
             } catch (e) {
                 console.error('Error parsing event data:', e);
-               // document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
                     console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
                     setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
                 } else {
-              //      document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                    console.log('Max retry attempts reached. Please try again later.');
                     eventSource.close();
                 }
             }
@@ -1142,13 +1140,12 @@ function speakMessage(index) {
 
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
-            //document.getElementById('generateMessage').innerText = 'Error generating voice';
             if (retryCount < MAX_RETRIES) {
                 retryCount++;
                 console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
                 setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
             } else {
-           //     document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                console.log('Max retry attempts reached. Please try again later.');
                 eventSource.close();
             }
         };
@@ -1161,6 +1158,7 @@ function speakMessage(index) {
         };
     }
 }
+
 
 
 let userName = '{{user}}';
