@@ -1046,9 +1046,9 @@ function speakMessage(index) {
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
         let lastIndex = 0; // Tracks last processed position
         let match;
+        const selectedSpeaker = speakerSelect.value;
 
         while ((match = targetRegex.exec(sentence)) !== null) {
-            const selectedSpeaker = speakerSelect.value;
 
             // Add text before the target word
             const beforeTarget = sentence.substring(lastIndex, match.index).trim();
