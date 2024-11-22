@@ -1121,7 +1121,7 @@ function speakMessage(index) {
                     // Check if it's time to add a sound effect
                     if (sfxIndices.length > 0 && audioQueue.length - 1 === sfxIndices[0]) {
                         // Add the sound effect to the audio queue after the current clip
-                        const sfx = "sfx/spray-91794.mp3";  // Define the sound effect path
+                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
                         audioQueue.push(sfx);  // Add sound effect to the queue
                         sfxIndices.shift();  // Remove the processed index
                     }
