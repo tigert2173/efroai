@@ -1059,16 +1059,17 @@ function speakMessage(index) {
                 let beforeWord = sentence.split(word)[0].trim();
                 let afterWord = sentence.split(word)[1].trim();
 
-                // Add the parts before and after the word to the lines array
+                // Add the parts before the word to the lines array
                 if (beforeWord.trim()) {
-                    lines.push({ text: beforeWord, speaker: selectedSpeaker });
+                    lines.push({ text: beforeWord, speaker: selectedSpeaker, id: sentenceCounter++ });
                 }
 
-                // Queue the sound effect with its order number
-                soundEffectQueue.push({ soundEffect, position: lines.length + 1 }); // Add position after current sentence
+                // Queue the sound effect with its order, we will add it at the correct time
+                soundEffectQueue.push({ soundEffect, position: sentenceCounter });
 
+                // Add the part after the word to the lines array
                 if (afterWord.trim()) {
-                    lines.push({ text: afterWord, speaker: selectedSpeaker });
+                    lines.push({ text: afterWord, speaker: selectedSpeaker, id: sentenceCounter++ });
                 }
 
                 processed = true;
@@ -1081,7 +1082,7 @@ function speakMessage(index) {
                 tempSentence += ' ' + sentence.trim();
             } else {
                 if (tempSentence.trim().length > 0) {
-                    lines.push({ text: tempSentence, speaker: selectedSpeaker });
+                    lines.push({ text: tempSentence, speaker: selectedSpeaker, id: sentenceCounter++ });
                 }
                 tempSentence = sentence.trim();
             }
@@ -1090,7 +1091,7 @@ function speakMessage(index) {
 
     // Push the remaining temp sentence if any
     if (tempSentence.trim().length > 0) {
-        lines.push({ text: tempSentence, speaker: speakerSelect.value });
+        lines.push({ text: tempSentence, speaker: speakerSelect.value, id: sentenceCounter++ });
     }
 
     // Now queue the sound effects in the correct order
