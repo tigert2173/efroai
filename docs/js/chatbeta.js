@@ -1063,7 +1063,7 @@ function speakMessage(index) {
         // Add the remaining part of the sentence after the last occurrence
         const afterTarget = sentence.substring(lastIndex).trim();
         if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
+            capturedSentences.push({ text: afterTarget, speaker: 'Daisy Studious' });
         }
     });
 
