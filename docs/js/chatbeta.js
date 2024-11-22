@@ -1023,8 +1023,8 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Define the target sentence
-    const targetSentence = "choke";  // Example: Trigger when "choke" is mentioned
+    // Define the target sentence trigger for sound effects (e.g., "choke")
+    const targetWord = "choke";  // Example: Trigger when "choke" is mentioned
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
@@ -1037,72 +1037,62 @@ function speakMessage(index) {
 
     console.log('All sentences:', sentences);
 
-    // Capture the sentences before and after the target phrase
-    let capturedSentences = [];
-    let sfxIndex = -1;  // Track index for sound effects insertion
+    // Initialize a list to hold the audio play order
+    let audioQueue = [];
+    let isPlaying = false; // Flag to check if audio is playing
+    let retryCount = 0;   // Retry counter
+    const MAX_RETRIES = 5; // Max number of retries before giving up
+    const RETRY_DELAY = 2000; // Delay between retries in ms
+    const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
 
-    sentences.forEach((sentence, index) => {
-        capturedSentences.push({ text: sentence, index: index + 1 });  // Store sentence and index
-        if (sentence.includes(targetSentence)) {
-            sfxIndex = index + 1;  // Mark where the sound effect should go
-        }
-    });
+    // Split sentences based on the target word for sound effect insertion
+    sentences.forEach(sentence => {
+        if (sentence.includes(targetWord)) {
+            const [beforeEffect, afterEffect] = sentence.split(targetWord);
 
-    console.log('Captured sentences:', capturedSentences);
+            // Push the part before the sound effect to the audio queue
+            audioQueue.push({ text: beforeEffect.trim(), speaker: document.getElementById('speakerSelect').value });
 
-    // Prepare the output lines for sending
-    let lines = [];
-    let tempSentence = '';
-    const speakerSelect = document.getElementById('speakerSelect');
+            // Add the sound effect to the queue
+            audioQueue.push({ text: "sfx/choke-sfx.mp3", speaker: "effect" });
 
-    // Function to build lines based on captured sentences
-    capturedSentences.forEach((sentenceObj) => {
-        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        if (tempSentence.length + sentenceObj.text.length < 72) {
-            // Combine sentences if they fit within the limit
-            tempSentence += ' ' + sentenceObj.text.trim();
+            // Push the part after the sound effect to the audio queue
+            audioQueue.push({ text: afterEffect.trim(), speaker: document.getElementById('speakerSelect').value });
         } else {
-            // Push the current sentence to the lines array
-            if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence, speaker: selectedSpeaker });
-            }
-            tempSentence = sentenceObj.text.trim(); // Start a new sentence
+            // If no target word found, push the entire sentence as normal
+            audioQueue.push({ text: sentence, speaker: document.getElementById('speakerSelect').value });
         }
     });
 
-    // Ensure the last sentence is added
-    if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        lines.push({ text: tempSentence, speaker: selectedSpeaker });
-    }
-
-    console.log('Final lines to speak:', lines);
+    console.log('Final audio queue:', audioQueue);
 
     // Now, send the lines to the TTS backend and handle sound effects
-    if (lines.length > 0) {
-        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+    if (audioQueue.length > 0) {
+        const queryParams = audioQueue.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
         console.log("Query Params:", queryParams);  // Log query params to verify
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
-
-        let audioQueue = [];  // Queue to store audio sources
-        let isPlaying = false; // Flag to check if audio is playing
-        let retryCount = 0;   // Retry counter
-        const MAX_RETRIES = 5; // Max number of retries before giving up
-        const RETRY_DELAY = 2000; // Delay between retries in ms
-        const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
 
         // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
         audioElement.controls = true;
         document.getElementById('audioPlayersContainer').appendChild(audioElement);
 
+        let isPlaying = false; // Flag to check if audio is playing
+
         // Function to play next audio in the queue with a pause in between
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();  // Get next audio source from the queue
-                audioElement.src = nextAudioSrc;  // Set the new audio source
-                isPlaying = true;
-                audioElement.play();  // Play the audio
+                const nextAudio = audioQueue.shift();  // Get next audio in the queue
+
+                if (nextAudio.speaker === "effect") {
+                    audioElement.src = nextAudio.text;  // If it's a sound effect, set the SFX URL
+                } else {
+                    // Otherwise, play the TTS response
+                    audioElement.src = `https://tts1.botbridgeai.net/audio/${nextAudio.text}.mp3`;  // Assuming audio is saved here
+                }
+
+                isPlaying = true; // Mark as playing
+                audioElement.play(); // Play the audio
             }
         }
 
@@ -1113,14 +1103,6 @@ function speakMessage(index) {
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
-
-                    // If the current sentence is where we need to insert a sound effect
-                    if (capturedSentences.length > 0 && capturedSentences.length === sfxIndex) {
-                        // Add the sound effect to the audio queue
-                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
-                        audioQueue.push(sfx);  // Add sound effect to the queue
-                        sfxIndex = -1;  // Reset the SFX index
-                    }
 
                     // If no audio is playing, start playing the first one
                     playNextAudio();
