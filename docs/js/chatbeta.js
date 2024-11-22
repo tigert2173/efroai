@@ -1151,13 +1151,14 @@ function speakMessage(index) {
         audioElement.onended = function() {
             isPlaying = false;
 
-            // Add a pause before playing the next audio clip
+            // Add SFX between sentences if applicable
+            if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
+                audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
+            }
+
+            // Ensure we play the next audio after the pause
             setTimeout(function() {
-                // Add SFX between sentences if applicable
-                if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
-                    audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
-                }
-                playNextAudio();  // Play the next audio clip in the queue after the pause
+                playNextAudio();  // Play the next audio clip
             }, PAUSE_DURATION);
         };
     }
