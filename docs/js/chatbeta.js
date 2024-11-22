@@ -1037,22 +1037,23 @@ function speakMessage(index) {
 
     console.log('All sentences:', sentences);
 
-    // Capture sentences and split when the target word appears
+    // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
     let sfxIndices = [];  // Array to store indices where sound effects should go
 
     sentences.forEach((sentence, index) => {
-        let occurrences = (sentence.match(new RegExp(targetWord, 'g')) || []).length;
+        const targetIndex = sentence.indexOf(targetWord);  // Find the first occurrence of the target word
 
-        if (occurrences > 0) {
-            // Split the sentence immediately before the target word
-            const splitParts = sentence.split(new RegExp(`(${targetWord})`));  // Split sentence by the target word
-            capturedSentences.push({ text: splitParts[0].trim(), index: index + 1 });  // First part of sentence
-            capturedSentences.push({ text: splitParts[1].trim(), index: index + 2 });  // Target word itself
-            capturedSentences.push({ text: splitParts.slice(2).join(' ').trim(), index: index + 3 });  // Rest of sentence
+        if (targetIndex !== -1) {
+            // Split the sentence into two parts
+            const beforeTarget = sentence.substring(0, targetIndex).trim();  // Part before the target word
+            const afterTarget = sentence.substring(targetIndex).trim();  // Part after the target word
 
-            // Add the sound effect immediately after the target word part
-            sfxIndices.push(index + 2);  // Mark the sound effect position after the target word
+            capturedSentences.push({ text: beforeTarget, index: index + 1 });  // Add before part
+            capturedSentences.push({ text: afterTarget, index: index + 1 });  // Add after part
+
+            // Mark the sound effect index to be added right after the first part
+            sfxIndices.push(index + 1);  // Add the index of the sentence to be marked for SFX
         } else {
             capturedSentences.push({ text: sentence, index: index + 1 });
         }
