@@ -1023,65 +1023,63 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Define the target sentence
-    const targetSentence = "I'm Kyrie - remember that name as you choke!";
+    // Define a list of sound effects and their placeholders (example)
+    const soundEffects = {
+        "[SFX:choke]": "sfx/choke-sfx.mp3",
+        "[SFX:applause]": "sfx/applause-sfx.mp3"
+    };
+
+    // Replace the sound effects placeholders with a marker
+    let processedText = cleanedTextContent;
+    for (let [key, value] of Object.entries(soundEffects)) {
+        processedText = processedText.replace(new RegExp(key, 'g'), value);  // Replace placeholders with actual file paths
+    }
+
+    console.log('Processed text with SFX:', processedText);
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
     let sentences = [];
     let match;
 
-    while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
+    while ((match = sentenceRegex.exec(processedText)) !== null) {
         sentences.push(match[0].trim());
     }
 
     console.log('All sentences:', sentences);
 
-    // Track order and map to insert SFX later
-    let sentenceWithSFX = [];
-
-    // Example of sound effect mappings (this can be customized)
-    const soundEffects = {
-        "choke": "sfx/choke-sfx.mp3",  // Replace "choke" with this sound effect
-    };
-
-    // Capture sentences and identify where to insert SFX
-    sentences.forEach((sentence, idx) => {
-        // Look for specific words in the sentence that need sound effects
-        Object.keys(soundEffects).forEach(word => {
-            if (sentence.includes(word)) {
-                sentenceWithSFX.push({
-                    sentence: sentence,
-                    index: idx,
-                    sfx: soundEffects[word],  // Attach the sound effect
-                });
-            }
-        });
+    // Capture the sentences with the sound effects paths
+    let capturedSentences = [];
+    sentences.forEach((sentence) => {
+        capturedSentences.push(sentence);  // Capture all sentences, including ones with SFX paths
     });
+
+    console.log('Captured sentences with SFX:', capturedSentences);
 
     // Prepare the output lines for sending
     let lines = [];
     let tempSentence = '';
+
     const speakerSelect = document.getElementById('speakerSelect');
 
-    sentenceWithSFX.forEach(({ sentence, index, sfx }) => {
-        // When building the sentences, insert SFX at the right location
-        const selectedSpeaker = speakerSelect.value;
-        const lineContent = sentence.replace(/choke/g, `[SFX: ${sfx}]`);  // Replace target words with SFX
-
-        if (tempSentence.length + lineContent.length < 72) {
-            tempSentence += ' ' + lineContent.trim();
+    // Function to build lines based on captured sentences
+    capturedSentences.forEach((sentence) => {
+        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
+        if (tempSentence.length + sentence.length < 72) {
+            // Combine sentences if they fit within the limit
+            tempSentence += ' ' + sentence.trim();
         } else {
+            // Push the current sentence to the lines array
             if (tempSentence.trim().length > 0) {
                 lines.push({ text: tempSentence, speaker: selectedSpeaker });
             }
-            tempSentence = lineContent.trim(); // Start a new sentence
+            tempSentence = sentence.trim(); // Start a new sentence
         }
     });
 
     // Ensure the last sentence is added
     if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value;
+        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
         lines.push({ text: tempSentence, speaker: selectedSpeaker });
     }
 
