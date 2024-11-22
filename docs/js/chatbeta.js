@@ -1011,6 +1011,8 @@ const soundEffects = {
     "choke": "sfx/choke-sfx.mp3",
 };
 
+let audioQueue = [];  // Queue to store audio sources
+
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
