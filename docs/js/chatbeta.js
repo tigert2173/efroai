@@ -1057,7 +1057,7 @@ sentences.forEach((sentence) => {
         }
 
         // Add the target word and mark its position for SFX
-        capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+        // capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
         sfxIndices.push(capturedSentences.length - 1);  // Record the index for the SFX
 
         lastIndex = targetRegex.lastIndex;  // Update the last processed position
