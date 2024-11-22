@@ -1041,54 +1041,35 @@ function speakMessage(index) {
     let capturedSentences = [];
     let sfxIndices = [];  // Array to store indices where sound effects should go
 
-    sentences.forEach((sentence, index) => {
-        const targetIndices = [...sentence.matchAll(new RegExp(targetWord, 'g'))];  // Find all occurrences of the target word
+    sentences.forEach((sentence) => {
+        const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g');  // Match the target word globally
+        let splitPoint = 0;
+        let lastIndex = 0;
 
-        if (targetIndices.length > 0) {
-            // For each occurrence of the target word, split the sentence at the target word
-            let lastIndex = 0;
-            targetIndices.forEach((match, matchIndex) => {
-                const beforeTarget = sentence.substring(lastIndex, match.index).trim();  // Part before the target word
-                const afterTarget = sentence.substring(match.index).trim();  // Part after the target word
+        // Find all occurrences of the target word in the sentence
+        while ((splitPoint = targetRegex.exec(sentence)) !== null) {
+            const beforeTarget = sentence.substring(lastIndex, splitPoint.index).trim();  // Before the target word
+            const afterTarget = sentence.substring(splitPoint.index).trim();  // After the target word
 
-                capturedSentences.push({ text: beforeTarget, index: index + 1 });  // Add before part
-                capturedSentences.push({ text: afterTarget, index: index + 1 });  // Add after part
+            if (beforeTarget) {
+                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
+                sfxIndices.push(capturedSentences.length - 1);  // Add the index of the first part
+            }
+            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
 
-                // Mark sound effect to be added after the first part of the sentence
-                if (matchIndex === 0) {
-                    sfxIndices.push(capturedSentences.length - 1);  // Mark for sound effect after the first part
-                }
-
-                lastIndex = match.index + targetWord.length;  // Update the last index after the target word
-            });
-        } else {
-            capturedSentences.push({ text: sentence, index: index + 1 });
+            lastIndex = targetRegex.lastIndex;  // Update the last index after each target word occurrence
         }
     });
 
     console.log('Captured sentences:', capturedSentences);
-    console.log('Sound effect indices:', sfxIndices);
 
     // Prepare the output lines for sending
     let lines = [];
-    let tempSentence = '';
-    const speakerSelect = document.getElementById('speakerSelect');
-
-    // Function to build lines based on captured sentences
-    capturedSentences.forEach((sentenceObj, index) => {
-        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-
-        // Add the sentence to the tempSentence buffer
-        tempSentence = sentenceObj.text.trim();
-
-        // If a sound effect index is encountered, add the SFX to the audio queue
-        if (sfxIndices.includes(index)) {
-            // Add the sound effect
-            lines.push({ text: tempSentence, speaker: selectedSpeaker });
-            lines.push({ text: "sfx/choke-sfx.mp3", speaker: selectedSpeaker });  // Add sound effect as a line
-        } else {
-            lines.push({ text: tempSentence, speaker: selectedSpeaker });
-        }
+    capturedSentences.forEach((sentenceObj) => {
+        lines.push({
+            text: sentenceObj.text,
+            speaker: sentenceObj.speaker
+        });
     });
 
     console.log('Final lines to speak:', lines);
@@ -1128,6 +1109,14 @@ function speakMessage(index) {
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
+
+                    // Check if it's time to add a sound effect
+                    if (sfxIndices.length > 0) {
+                        // Add the sound effect to the audio queue after the first part
+                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
+                        audioQueue.push(sfx);  // Add sound effect to the queue
+                        sfxIndices.shift();  // Remove the processed index
+                    }
 
                     // If no audio is playing, start playing the first one
                     playNextAudio();
