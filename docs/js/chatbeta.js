@@ -1108,22 +1108,17 @@ function speakMessage(index) {
             }
         }
 
-        let audioResponseCount = 0;  // Initialize a counter for the number of audio responses received
-
         eventSource.onmessage = function(event) {
             try {
                 const data = JSON.parse(event.data); // Parse the JSON response
         
                 if (data.audio) {
-                    // Increment the audio response counter
-                    audioResponseCount++;
-        
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
         
                     // Check if it's time to add a sound effect
-                    if (sfxIndices.length > 0 && audioResponseCount === sfxIndices.length) {
-                        // Add the sound effect to the audio queue after the first part
+                    if (sfxIndices.length > 0 && audioQueue.length - 1 === sfxIndices[0]) {
+                        // Add the sound effect to the audio queue after the current clip
                         const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
                         audioQueue.push(sfx);  // Add sound effect to the queue
                         sfxIndices.shift();  // Remove the processed index
