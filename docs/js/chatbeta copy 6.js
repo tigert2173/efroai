@@ -1055,9 +1055,9 @@ function speakMessage(index) {
                 sfxIndices.push(capturedSentences.length - 1);  // Add the index of the current part for the SFX
             }
     
-            // // Add the target word itself as a separate part if desired (optional)
-            // capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-            // sfxIndices.push(capturedSentences.length - 1); // Repeat or index this specifically for timing.
+            // Add the target word itself as a separate part if desired (optional)
+            capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+            sfxIndices.push(capturedSentences.length - 1); // Repeat or index this specifically for timing.
     
             // Add the part after the target word, if any
             if (afterTarget) {
