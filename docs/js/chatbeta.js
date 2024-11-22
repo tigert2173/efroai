@@ -1108,25 +1108,30 @@ function speakMessage(index) {
             }
         }
 
+        let audioResponseCount = 0;  // Initialize a counter for the number of audio responses received
+
         eventSource.onmessage = function(event) {
             try {
                 const data = JSON.parse(event.data); // Parse the JSON response
-
+        
                 if (data.audio) {
+                    // Increment the audio response counter
+                    audioResponseCount++;
+        
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
-
+        
                     // Check if it's time to add a sound effect
-                    if (sfxIndices.length > 0) {
+                    if (sfxIndices.length > 0 && audioResponseCount === sfxIndices.length) {
                         // Add the sound effect to the audio queue after the first part
                         const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
                         audioQueue.push(sfx);  // Add sound effect to the queue
                         sfxIndices.shift();  // Remove the processed index
                     }
-
+        
                     // If no audio is playing, start playing the first one
                     playNextAudio();
-
+        
                     // Reset retry counter once the audio is successfully received
                     retryCount = 0;
                 } else if (data.error) {
@@ -1138,7 +1143,7 @@ function speakMessage(index) {
             } catch (e) {
                 console.error('Error parsing event data:', e);
                 document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
-
+        
                 // Retry logic if error occurs
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
@@ -1150,7 +1155,7 @@ function speakMessage(index) {
                 }
             }
         };
-
+        
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
             document.getElementById('generateMessage').innerText = 'Error generating voice';
