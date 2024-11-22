@@ -1040,10 +1040,8 @@ function speakMessage(index) {
     // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
     let sfxIndices = []; // To store indices where SFX should be played
-    const speakerSelect = document.getElementById('speakerSelect');
 
     sentences.forEach((sentence) => {
-        const selectedSpeaker = speakerSelect.value;
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
         let lastIndex = 0; // Tracks last processed position
         let match;
@@ -1052,12 +1050,12 @@ function speakMessage(index) {
             // Add text before the target word
             const beforeTarget = sentence.substring(lastIndex, match.index).trim();
             if (beforeTarget) {
-                capturedSentences.push({ text: beforeTarget, speaker: selectedSpeaker });
+                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
             }
 
             // Add the target word itself and mark it for SFX
-            // capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-            sfxIndices.push(capturedSentences.length - 2); // Store index of the "choke" word for SFX
+            capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+            sfxIndices.push(capturedSentences.length - 1); // Store index of the "choke" word for SFX
 
             lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
         }
@@ -1065,7 +1063,7 @@ function speakMessage(index) {
         // Add the remaining part of the sentence after the last occurrence
         const afterTarget = sentence.substring(lastIndex).trim();
         if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: selectedSpeaker });
+            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
         }
     });
 
@@ -1113,22 +1111,22 @@ function speakMessage(index) {
         eventSource.onmessage = function(event) {
             try {
                 const data = JSON.parse(event.data); // Parse the JSON response
-        
+
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
-        
+
                     // Check if it's time to add a sound effect
-                    if (sfxIndices.length > 0 && audioQueue.length - 1 === sfxIndices[0]) {
-                        // Add the sound effect to the audio queue after the current clip
+                    if (sfxIndices.length > 0) {
+                        // Add the sound effect to the audio queue after the first part
                         const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
                         audioQueue.push(sfx);  // Add sound effect to the queue
                         sfxIndices.shift();  // Remove the processed index
                     }
-        
+
                     // If no audio is playing, start playing the first one
                     playNextAudio();
-        
+
                     // Reset retry counter once the audio is successfully received
                     retryCount = 0;
                 } else if (data.error) {
@@ -1140,7 +1138,7 @@ function speakMessage(index) {
             } catch (e) {
                 console.error('Error parsing event data:', e);
                 document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
-        
+
                 // Retry logic if error occurs
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
@@ -1152,7 +1150,7 @@ function speakMessage(index) {
                 }
             }
         };
-        
+
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
             document.getElementById('generateMessage').innerText = 'Error generating voice';
