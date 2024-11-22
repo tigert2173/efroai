@@ -1113,30 +1113,45 @@ function speakMessage(index) {
 
         eventSource.onmessage = function(event) {
             try {
-                const data = JSON.parse(event.data);
-
-                if (data.audio) {
-                    audioQueue.push(data.audio);
+                const data = event.data.trim();
+                
+                // Check if the response is empty or not a valid JSON string
+                if (data.length === 0) {
+                    console.error('Received empty data');
+                    return;
+                }
+        
+                let parsedData;
+                try {
+                    parsedData = JSON.parse(data);
+                } catch (jsonError) {
+                    console.error('Error parsing JSON:', jsonError);
+                    return;
+                }
+        
+                if (parsedData.audio) {
+                    audioQueue.push(parsedData.audio);
                     playNextAudio();
                     retryCount = 0;
-                } else if (data.error) {
-                    console.error('Error in audio generation:', data.error);
-                } else if (data.end) {
+                } else if (parsedData.error) {
+                    console.error('Error in audio generation:', parsedData.error);
+                } else if (parsedData.end) {
                     console.log("Audio generation complete.");
                     eventSource.close();
                 }
             } catch (e) {
-                console.error('Error parsing event data:', e);
+                console.error('General error:', e);
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
                     console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
                     setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
                 } else {
-                    console.log('Max retry attempts reached. Please try again later.');
+                    console.error('Max retry attempts reached. Please try again later.');
                     eventSource.close();
                 }
             }
         };
+        
 
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
