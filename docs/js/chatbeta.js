@@ -1057,8 +1057,8 @@ sentences.forEach((sentence) => {
         capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
         sfxIndices.push(capturedSentences.length - 1); // Index of the SFX
 
-        lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
     }
+    lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
 
     // Add the remaining part of the sentence after the last occurrence
     const afterTarget = sentence.substring(lastIndex).trim();
