@@ -1071,7 +1071,7 @@ function speakMessage(index) {
 
                 // Add parts and sound effect to the lines array
                 lines.push({ text: beforeWord, speaker: selectedSpeaker });
-                lines.push({ text: " ", speaker: selectedSpeaker });  // Empty line for sound effect
+               // lines.push({ text: " ", speaker: selectedSpeaker });  // Empty line for sound effect
                 lines.push({ text: "SFX: " + soundEffect, speaker: selectedSpeaker });  // Add the sound effect
                 lines.push({ text: afterWord, speaker: selectedSpeaker });
                 tempSentence = '';  // Reset the temp sentence after processing
