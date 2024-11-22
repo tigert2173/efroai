@@ -1036,6 +1036,11 @@ function speakMessage(index) {
     }
 
     console.log('All sentences:', sentences);
+
+    // Capture sentences and check for multiple occurrences of the target word
+    let capturedSentences = [];
+    let sfxIndices = [];  // Array to store indices where sound effects should go
+
     sentences.forEach((sentence) => {
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g');  // Match the target word globally
         let lastIndex = 0;  // Keeps track of the last processed position in the sentence
@@ -1062,7 +1067,7 @@ function speakMessage(index) {
             lastIndex = targetRegex.lastIndex;  // Update the last processed position
         }
     });
-    
+
     console.log('Captured sentences:', capturedSentences);
 
     // Prepare the output lines for sending
