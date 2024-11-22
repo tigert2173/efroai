@@ -1040,10 +1040,8 @@ function speakMessage(index) {
     // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
     let sfxIndices = []; // To store indices where SFX should be played
-    const speakerSelect = document.getElementById('speakerSelect');
 
     sentences.forEach((sentence) => {
-        const selectedSpeaker = speakerSelect.value;
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
         let lastIndex = 0; // Tracks last processed position
         let match;
