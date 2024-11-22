@@ -1040,14 +1040,17 @@ function speakMessage(index) {
     // Capture the sentences before and after the target word
     let capturedSentences = [];
     let sfxIndex = -1;  // Track index for sound effects insertion
+    let sentenceCount = 0;  // Track how many sentences have been added to the audio queue
 
     sentences.forEach((sentence, index) => {
         if (sentence.includes(targetWord)) {
-            // If target word is found, split the sentence
+            // Split sentence at the target word (e.g., "choke")
             const parts = sentence.split(targetWord);  // Split sentence at the target word
-            capturedSentences.push({ text: parts[0].trim(), index: index + 1 });  // Part before "choke"
+            // Capture the part before "choke"
+            capturedSentences.push({ text: parts[0].trim(), index: index + 1 });
             sfxIndex = index + 1;  // Mark where to insert the sound effect
-            capturedSentences.push({ text: parts[1].trim(), index: index + 2 });  // Part after "choke"
+            // Capture the part after "choke"
+            capturedSentences.push({ text: parts[1].trim(), index: index + 2 });
         } else {
             capturedSentences.push({ text: sentence, index: index + 1 });
         }
@@ -1095,7 +1098,6 @@ function speakMessage(index) {
         const MAX_RETRIES = 5; // Max number of retries before giving up
         const RETRY_DELAY = 2000; // Delay between retries in ms
         const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
-        let sentenceCount = 0;  // Track how many sentences have been added to the audio queue
 
         // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
