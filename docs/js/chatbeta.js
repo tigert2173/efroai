@@ -1023,57 +1023,60 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Define a list of sound effects and their placeholders (example)
-    const soundEffects = {
-        "[SFX:choke]": "sfx/choke-sfx.mp3",
-        "[SFX:applause]": "sfx/applause-sfx.mp3"
-    };
-
-    // Replace the sound effects placeholders with a marker
-    let processedText = cleanedTextContent;
-    for (let [key, value] of Object.entries(soundEffects)) {
-        processedText = processedText.replace(new RegExp(key, 'g'), value);  // Replace placeholders with actual file paths
-    }
-
-    console.log('Processed text with SFX:', processedText);
-
-    // Split the content into individual sentences
-    const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
+    // Define a regex to capture both text and sound effects (e.g., [SFX: ...])
+    const sentenceRegex = /([^\[]+|\[SFX:[^\]]+\])/g;
     let sentences = [];
     let match;
 
-    while ((match = sentenceRegex.exec(processedText)) !== null) {
+    while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
         sentences.push(match[0].trim());
     }
 
-    console.log('All sentences:', sentences);
+    console.log('Captured sentences and sound effects:', sentences);
 
-    // Capture the sentences with the sound effects paths
-    let capturedSentences = [];
+    // Split the content into sentences and number the sound effects
+    let numberedSentences = [];
+    let sfxCount = 1;  // Start counting sound effects
+
     sentences.forEach((sentence) => {
-        capturedSentences.push(sentence);  // Capture all sentences, including ones with SFX paths
+        if (sentence.startsWith('[SFX:')) {
+            // If it's a sound effect, assign it a unique number
+            numberedSentences.push({ type: 'sfx', sfxIndex: sfxCount, content: sentence });
+            sfxCount++;
+        } else {
+            // Otherwise, treat it as regular text
+            numberedSentences.push({ type: 'text', content: sentence });
+        }
     });
 
-    console.log('Captured sentences with SFX:', capturedSentences);
+    console.log('Numbered sentences:', numberedSentences);
 
     // Prepare the output lines for sending
     let lines = [];
     let tempSentence = '';
+    const speakerSelect = document.getElementById('speakerSelect');  // Get the dropdown element
 
-    const speakerSelect = document.getElementById('speakerSelect');
-
-    // Function to build lines based on captured sentences
-    capturedSentences.forEach((sentence) => {
+    // Function to build lines based on numbered sentences
+    numberedSentences.forEach((sentenceObj) => {
         const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        if (tempSentence.length + sentence.length < 72) {
-            // Combine sentences if they fit within the limit
-            tempSentence += ' ' + sentence.trim();
-        } else {
-            // Push the current sentence to the lines array
+        if (sentenceObj.type === 'text') {
+            if (tempSentence.length + sentenceObj.content.length < 72) {
+                // Combine sentences if they fit within the limit
+                tempSentence += ' ' + sentenceObj.content.trim();
+            } else {
+                // Push the current sentence to the lines array
+                if (tempSentence.trim().length > 0) {
+                    lines.push({ text: tempSentence, speaker: selectedSpeaker });
+                }
+                tempSentence = sentenceObj.content.trim(); // Start a new sentence
+            }
+        } else if (sentenceObj.type === 'sfx') {
+            // For sound effects, push the previous sentence and add the sound effect separately
             if (tempSentence.trim().length > 0) {
                 lines.push({ text: tempSentence, speaker: selectedSpeaker });
             }
-            tempSentence = sentence.trim(); // Start a new sentence
+            tempSentence = '';  // Reset temp sentence as we handle sound effect
+            lines.push({ text: '', sfxIndex: sentenceObj.sfxIndex, speaker: selectedSpeaker });
         }
     });
 
@@ -1094,7 +1097,6 @@ function speakMessage(index) {
         let audioQueue = [];  // Queue to store audio sources
         let isPlaying = false; // Flag to check if audio is playing
         let retryCount = 0;   // Retry counter
-
         const MAX_RETRIES = 5; // Max number of retries before giving up
         const RETRY_DELAY = 2000; // Delay between retries in ms
         const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
