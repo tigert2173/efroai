@@ -1037,15 +1037,24 @@ function speakMessage(index) {
 
     console.log('All sentences:', sentences);
 
-    // Capture sentences and check for multiple occurrences of the target word
+    // Capture sentences and split when the target word appears
     let capturedSentences = [];
     let sfxIndices = [];  // Array to store indices where sound effects should go
 
     sentences.forEach((sentence, index) => {
-        capturedSentences.push({ text: sentence, index: index + 1 });  // Store sentence and index
         let occurrences = (sentence.match(new RegExp(targetWord, 'g')) || []).length;
-        for (let i = 0; i < occurrences; i++) {
-            sfxIndices.push(index + 1);  // Mark multiple occurrences of the sound effect
+
+        if (occurrences > 0) {
+            // Split the sentence immediately before the target word
+            const splitParts = sentence.split(new RegExp(`(${targetWord})`));  // Split sentence by the target word
+            capturedSentences.push({ text: splitParts[0].trim(), index: index + 1 });  // First part of sentence
+            capturedSentences.push({ text: splitParts[1].trim(), index: index + 2 });  // Target word itself
+            capturedSentences.push({ text: splitParts.slice(2).join(' ').trim(), index: index + 3 });  // Rest of sentence
+
+            // Add the sound effect immediately after the target word part
+            sfxIndices.push(index + 2);  // Mark the sound effect position after the target word
+        } else {
+            capturedSentences.push({ text: sentence, index: index + 1 });
         }
     });
 
