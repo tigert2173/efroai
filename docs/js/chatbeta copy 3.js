@@ -1031,6 +1031,8 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
+    const targetSentence = "I'm Kyrie - remember that name as you choke!";
+    
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;
     let sentences = [];
@@ -1064,22 +1066,10 @@ function speakMessage(index) {
                 const soundEffect = soundEffects[word];
                 audioQueue.push(soundEffect);  // Add sound effect to the queue
                 console.log("added SFX! " + soundEffect);
-
-                // Split the sentence into parts before and after the word
-                let beforeWord = sentence.split(word)[0].trim();
-                let afterWord = sentence.split(word)[1].trim();
-
-                // Add parts and sound effect to the lines array
-                lines.push({ text: beforeWord, speaker: selectedSpeaker });
-                lines.push({ text: " ", speaker: selectedSpeaker });  // Empty line for sound effect
-                lines.push({ text: "SFX: " + soundEffect, speaker: selectedSpeaker });  // Add the sound effect
-                lines.push({ text: afterWord, speaker: selectedSpeaker });
-                tempSentence = '';  // Reset the temp sentence after processing
-                return;  // Skip to the next sentence after adding the sound effect
+               // lines.push({ text: " ", speaker: selectedSpeaker });  // Empty line for the sound effect
             }
         });
 
-        // Handle lines of text that are not split by sound effects
         if (tempSentence.length + sentence.length < 72) {
             tempSentence += ' ' + sentence.trim();
         } else {
@@ -1161,6 +1151,7 @@ function speakMessage(index) {
                 }
             }
         };
+        
 
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
@@ -1182,6 +1173,7 @@ function speakMessage(index) {
         };
     }
 }
+
 
 
 let userName = '{{user}}';
