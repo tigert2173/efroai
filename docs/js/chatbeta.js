@@ -1012,12 +1012,13 @@ const soundEffects = {
 };
 
 let audioQueue = [];  // Global audio queue to store audio sources
+let sentenceIndex = 1; // Initial sentence index
 
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
-    console.log('Full message content:', textContent);
+    console.log('Audio Queue Initialized:', audioQueue);
 
     if (!textContent || textContent.length === 0) {
         console.log("No content found.");
@@ -1049,7 +1050,6 @@ function speakMessage(index) {
     // Prepare lines
     let lines = [];
     let tempSentence = '';
-
     const speakerSelect = document.getElementById('speakerSelect');
 
     capturedSentences.forEach((sentence) => {
@@ -1065,11 +1065,11 @@ function speakMessage(index) {
                 let afterWord = sentence.split(word)[1].trim();
 
                 // Add parts and sound effect to the lines array
-                lines.push({ text: beforeWord, speaker: selectedSpeaker });
-                audioQueue.push(soundEffect);  // Add sound effect to the queue
+                lines.push({ text: beforeWord, speaker: selectedSpeaker, index: sentenceIndex++ });
+                audioQueue.push({ soundEffect, index: sentenceIndex - 1 });  // Add sound effect with the sequence number
                 console.log("added SFX! " + soundEffect);
 
-                lines.push({ text: afterWord, speaker: selectedSpeaker });
+                lines.push({ text: afterWord, speaker: selectedSpeaker, index: sentenceIndex++ });
                 tempSentence = '';  // Reset the temp sentence after processing
                 return;  // Skip to the next sentence after adding the sound effect
             }
@@ -1080,7 +1080,7 @@ function speakMessage(index) {
             tempSentence += ' ' + sentence.trim();
         } else {
             if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence, speaker: selectedSpeaker });
+                lines.push({ text: tempSentence, speaker: selectedSpeaker, index: sentenceIndex++ });
             }
             tempSentence = sentence.trim();
         }
@@ -1088,7 +1088,7 @@ function speakMessage(index) {
 
     if (tempSentence.trim().length > 0) {
         const selectedSpeaker = speakerSelect.value;
-        lines.push({ text: tempSentence, speaker: selectedSpeaker });
+        lines.push({ text: tempSentence, speaker: selectedSpeaker, index: sentenceIndex++ });
     }
 
     console.log('Final lines to speak:', lines);
@@ -1110,27 +1110,27 @@ function speakMessage(index) {
 
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();
-                audioElement.src = nextAudioSrc;
-                audioElement.play().then(() => {
+                const nextAudio = audioQueue.shift();
+                // Wait for the previous audio to finish playing before starting the next
+                if (nextAudio.index === sentenceIndex - 1) {
+                    audioElement.src = nextAudio.soundEffect || nextAudio.audioSrc;
                     isPlaying = true;
-                }).catch(err => {
-                    console.error('Failed to play audio:', err);
-                    setTimeout(playNextAudio, RETRY_DELAY);  // Retry playback if it fails
-                });
+                    audioElement.play();
+                } else {
+                    // Hold the item until the previous one is played
+                    audioQueue.push(nextAudio);
+                }
             }
         }
 
         eventSource.onmessage = function(event) {
             try {
                 const data = event.data.trim();
-                
-                // Check if the response is empty or not a valid JSON string
                 if (data.length === 0) {
                     console.error('Received empty data');
                     return;
                 }
-        
+
                 let parsedData;
                 try {
                     parsedData = JSON.parse(data);
@@ -1138,10 +1138,11 @@ function speakMessage(index) {
                     console.error('Error parsing JSON:', jsonError);
                     return;
                 }
-        
+
                 if (parsedData.audio) {
-                    audioQueue.push(parsedData.audio);
+                    audioQueue.push({ audioSrc: parsedData.audio, index: sentenceIndex - 1 });
                     playNextAudio();
+                    retryCount = 0;
                 } else if (parsedData.error) {
                     console.error('Error in audio generation:', parsedData.error);
                 } else if (parsedData.end) {
