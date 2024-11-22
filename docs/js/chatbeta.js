@@ -1018,8 +1018,6 @@ function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
-    console.log('Audio Queue Initialized:', audioQueue);  // Check the queue initialization
-
     if (!textContent || textContent.length === 0) {
         console.log("No content found.");
         return;  // Early exit if no content
@@ -1027,7 +1025,6 @@ function speakMessage(index) {
 
     // Clean text of any HTML tags if present
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
-    console.log('Cleaned content:', cleanedTextContent);
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;
@@ -1038,23 +1035,19 @@ function speakMessage(index) {
         sentences.push(match[0].trim());
     }
 
-    console.log('All sentences:', sentences);
-
     let capturedSentences = [];
     sentences.forEach((sentence) => {
         capturedSentences.push(sentence);  // Capture all sentences
     });
 
-    console.log('Captured sentences:', capturedSentences);
-
-    // Prepare lines
     let lines = [];
     let tempSentence = '';
-
     const speakerSelect = document.getElementById('speakerSelect');
 
+    // Process sentences, looking for sound effects
     capturedSentences.forEach((sentence) => {
         const selectedSpeaker = speakerSelect.value;
+        let processed = false;
 
         // Check if the sentence contains any target words with sound effects
         Object.keys(soundEffects).forEach(word => {
@@ -1065,79 +1058,64 @@ function speakMessage(index) {
                 let beforeWord = sentence.split(word)[0].trim();
                 let afterWord = sentence.split(word)[1].trim();
 
-                // Assign unique numbers to sentences and sound effects
-                lines.push({ text: `${beforeWord} #${sentenceCounter + 1}`, speaker: selectedSpeaker });
-                audioQueue.push({ soundEffect, sentenceNumber: sentenceCounter + 1 });  // Add sound effect with number to the queue
+                // Add the parts before and after the word to the lines array
+                if (beforeWord.trim()) {
+                    lines.push({ text: beforeWord, speaker: selectedSpeaker });
+                }
+
+                // Add the sound effect and then the rest of the sentence to the queue
+                audioQueue.push(soundEffect);  // Add sound effect to the queue
                 console.log("added SFX! " + soundEffect);
 
-                // Increment the sentence counter
-                sentenceCounter++;
+                if (afterWord.trim()) {
+                    lines.push({ text: afterWord, speaker: selectedSpeaker });
+                }
 
-                lines.push({ text: `${afterWord} #${sentenceCounter + 1}`, speaker: selectedSpeaker });
-                tempSentence = '';  // Reset the temp sentence after processing
-                sentenceCounter++;  // Increment for the next sentence
-                return;  // Skip to the next sentence after adding the sound effect
+                processed = true;
             }
         });
 
-        // Handle lines of text that are not split by sound effects
-        if (tempSentence.length + sentence.length < 72) {
-            tempSentence += ' ' + sentence.trim();
-        } else {
-            if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence + ` #${sentenceCounter + 1}`, speaker: selectedSpeaker });
-                sentenceCounter++;  // Increment for the next sentence
+        // If no sound effect was added, process the sentence normally
+        if (!processed) {
+            if (tempSentence.length + sentence.length < 72) {
+                tempSentence += ' ' + sentence.trim();
+            } else {
+                if (tempSentence.trim().length > 0) {
+                    lines.push({ text: tempSentence, speaker: selectedSpeaker });
+                }
+                tempSentence = sentence.trim();
             }
-            tempSentence = sentence.trim();
         }
     });
 
     if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value;
-        lines.push({ text: tempSentence + ` #${sentenceCounter + 1}`, speaker: selectedSpeaker });
+        lines.push({ text: tempSentence, speaker: speakerSelect.value });
     }
 
-    console.log('Final lines to speak:', lines);
-
+    // Queue all the audio for this message
     if (lines.length > 0) {
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
-        console.log("Query Params:", queryParams);
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
         let isPlaying = false;
-        let retryCount = 0;
-        const MAX_RETRIES = 5;
-        const RETRY_DELAY = 2000;
-        const PAUSE_DURATION = 500;
-
         const audioElement = document.createElement('audio');
         audioElement.controls = true;
         document.getElementById('audioPlayersContainer').appendChild(audioElement);
 
+        // Play audio in order
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudio = audioQueue.shift();
-                // Check for out-of-order audio
-                if (nextAudio.sentenceNumber === sentenceCounter) {
-                    audioElement.src = nextAudio.soundEffect;
-                    isPlaying = true;
-                    audioElement.play();
-                } else {
-                    // Hold on to out-of-order audio until the right sentence number is reached
-                    audioQueue.unshift(nextAudio);  // Put the audio back at the start of the queue
-                }
+                const nextAudioSrc = audioQueue.shift();
+                audioElement.src = nextAudioSrc;
+                isPlaying = true;
+                audioElement.play();
             }
         }
 
         eventSource.onmessage = function(event) {
             try {
                 const data = event.data.trim();
-                
-                // Check if the response is empty or not a valid JSON string
-                if (data.length === 0) {
-                    console.error('Received empty data');
-                    return;
-                }
+                if (data.length === 0) return;
 
                 let parsedData;
                 try {
@@ -1150,7 +1128,6 @@ function speakMessage(index) {
                 if (parsedData.audio) {
                     audioQueue.push(parsedData.audio);
                     playNextAudio();
-                    retryCount = 0;
                 } else if (parsedData.error) {
                     console.error('Error in audio generation:', parsedData.error);
                 } else if (parsedData.end) {
@@ -1159,26 +1136,6 @@ function speakMessage(index) {
                 }
             } catch (e) {
                 console.error('General error:', e);
-                if (retryCount < MAX_RETRIES) {
-                    retryCount++;
-                    console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
-                    setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
-                } else {
-                    console.error('Max retry attempts reached. Please try again later.');
-                    eventSource.close();
-                }
-            }
-        };
-
-        eventSource.onerror = function(error) {
-            console.error('Error in SSE:', error);
-            if (retryCount < MAX_RETRIES) {
-                retryCount++;
-                console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
-                setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
-            } else {
-                console.log('Max retry attempts reached. Please try again later.');
-                eventSource.close();
             }
         };
 
@@ -1186,10 +1143,11 @@ function speakMessage(index) {
             isPlaying = false;
             setTimeout(function() {
                 playNextAudio();
-            }, PAUSE_DURATION);
+            }, 500); // Pause for a bit before the next audio plays
         };
     }
 }
+
 
 
 
