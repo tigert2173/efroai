@@ -1066,6 +1066,11 @@ function speakMessage(index) {
     
             lastIndex = targetRegex.lastIndex;  // Update the last processed position
         }
+
+        // If no target word was found, add the whole sentence as-is
+        if (!containsTarget) {
+            capturedSentences.push({ text: sentence.trim(), speaker: 'Claribel Dervla' });
+        }
     });
 
     console.log('Captured sentences:', capturedSentences);
