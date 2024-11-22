@@ -1007,122 +1007,133 @@ function playSantaVoice() {
     document.getElementById('santa-voice').play();
 }
 
-const soundEffects = {
-    "choke": "choke-sfx.mp3",
-};
 
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
-    const textContent = messageContent.content[0].text;  // Extracting the text from the message object
+const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
-    console.log('Full message content:', textContent);
+console.log('Full message content:', textContent);
 
-    if (!textContent || textContent.length === 0) {
-        console.log("No content found.");
-        return;  // Early exit if no content
-    }
+// Check if content exists
+if (!textContent || textContent.length === 0) {
+    console.log("No content found.");
+    return;  // Early exit if no content
+}
 
-    // Clean text of any HTML tags if present
-    const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
-    console.log('Cleaned content:', cleanedTextContent);
+// Clean text of any HTML tags if present
+const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
+console.log('Cleaned content:', cleanedTextContent);
 
-    const targetSentence = "I'm Kyrie - remember that name as you choke!";
-    
-    // Split the content into individual sentences
-    const sentenceRegex = /([^.!?~]+[.!?~]*)/g;
-    let sentences = [];
-    let match;
+// Define the target sentence
+const targetSentence = "I'm Kyrie - remember that name as you choke!";
 
-    while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
-        sentences.push(match[0].trim());
-    }
+// Split the content into individual sentences
+const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
+let sentences = [];
+let match;
 
-    console.log('All sentences:', sentences);
+while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
+    sentences.push(match[0].trim());
+}
 
-    let capturedSentences = [];
-    sentences.forEach((sentence) => {
-        capturedSentences.push(sentence);  // Capture all sentences
-    });
+console.log('All sentences:', sentences);
 
-    console.log('Captured sentences:', capturedSentences);
+// Capture all sentences from the start, and include the ones after the target phrase
+let captureAfterTarget = false;
+let capturedSentences = [];
 
-    // Prepare lines
-    let lines = [];
-    let tempSentence = '';
+// Loop through all sentences to capture both before and after the target sentence
+sentences.forEach((sentence) => {
+    capturedSentences.push(sentence);  // Capture all sentences, before and after the target
+});
 
-    const speakerSelect = document.getElementById('speakerSelect');
+console.log('Captured sentences:', capturedSentences);
 
-    capturedSentences.forEach((sentence) => {
-        const selectedSpeaker = speakerSelect.value;
+// Prepare the output lines for sending
+let lines = [];
+let tempSentence = '';
 
-        // Check if the sentence contains any target words with sound effects
-        Object.keys(soundEffects).forEach(word => {
-            if (sentence.toLowerCase().includes(word.toLowerCase())) {
-                const soundEffect = soundEffects[word];
-                audioQueue.push(soundEffect);  // Add sound effect to the queue
-                lines.push({ text: "", speaker: selectedSpeaker });  // Empty line for the sound effect
-            }
-        });
+// Get the dropdown element
+const speakerSelect = document.getElementById('speakerSelect');
 
-        if (tempSentence.length + sentence.length < 72) {
-            tempSentence += ' ' + sentence.trim();
-        } else {
-            if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence, speaker: selectedSpeaker });
-            }
-            tempSentence = sentence.trim();
+// Function to build lines based on captured sentences
+capturedSentences.forEach((sentence) => {
+    const selectedSpeaker = speakerSelect.value; // Get the selected speaker
+    if (tempSentence.length + sentence.length < 72) {
+        // Combine sentences if they fit within the limit
+        tempSentence += ' ' + sentence.trim();
+    } else {
+        // Push the current sentence to the lines array
+        if (tempSentence.trim().length > 0) {
+            lines.push({ text: tempSentence, speaker: selectedSpeaker });
         }
-    });
-
-    if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value;
-        lines.push({ text: tempSentence, speaker: selectedSpeaker });
+        tempSentence = sentence.trim(); // Start a new sentence
     }
+});
 
-    console.log('Final lines to speak:', lines);
+// Ensure the last sentence is added
+if (tempSentence.trim().length > 0) {
+    const selectedSpeaker = speakerSelect.value; // Get the selected speaker
+    lines.push({ text: tempSentence, speaker: selectedSpeaker });
+}
+
+console.log('Final lines to speak:', lines);
+
+// Now, you can send the `lines` array
 
     if (lines.length > 0) {
+        // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
-        console.log("Query Params:", queryParams);
+        console.log("Query Params:", queryParams);  // Log query params to verify
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
-        let audioQueue = [];
-        let isPlaying = false;
-        let retryCount = 0;
-        const MAX_RETRIES = 5;
-        const RETRY_DELAY = 2000;
-        const PAUSE_DURATION = 500;
+        let audioQueue = [];  // Queue to store audio sources
+        let isPlaying = false; // Flag to check if audio is playing
+        let retryCount = 0;   // Retry counter
 
+        const MAX_RETRIES = 5; // Max number of retries before giving up
+        const RETRY_DELAY = 2000; // Delay between retries in ms
+        const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
+
+        // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
         audioElement.controls = true;
         document.getElementById('audioPlayersContainer').appendChild(audioElement);
 
+        // Function to play next audio in the queue with a pause in between
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();
-                audioElement.src = nextAudioSrc;
+                const nextAudioSrc = audioQueue.shift();  // Get next audio source from the queue
+                audioElement.src = nextAudioSrc;  // Set the new audio source
                 isPlaying = true;
-                audioElement.play();
+                audioElement.play();  // Play the audio
             }
         }
 
         eventSource.onmessage = function(event) {
             try {
-                const data = JSON.parse(event.data);
+                const data = JSON.parse(event.data); // Parse the JSON response
 
                 if (data.audio) {
+                    // Add the new audio source to the queue
                     audioQueue.push(data.audio);
+
+                    // If no audio is playing, start playing the first one
                     playNextAudio();
+
+                    // Reset retry counter once the audio is successfully received
                     retryCount = 0;
                 } else if (data.error) {
                     document.getElementById('generateMessage').innerText = data.error;
                 } else if (data.end) {
                     console.log("Audio generation complete.");
-                    eventSource.close();
+                    eventSource.close();  // Close the EventSource connection when done
                 }
             } catch (e) {
                 console.error('Error parsing event data:', e);
                 document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
+
+                // Retry logic if error occurs
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
                     console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
@@ -1137,6 +1148,8 @@ function speakMessage(index) {
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
             document.getElementById('generateMessage').innerText = 'Error generating voice';
+
+            // Retry logic on error
             if (retryCount < MAX_RETRIES) {
                 retryCount++;
                 console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
@@ -1147,15 +1160,17 @@ function speakMessage(index) {
             }
         };
 
+        // When audio finishes playing, check if there's another one in the queue
         audioElement.onended = function() {
             isPlaying = false;
+
+            // Add a pause before playing the next audio clip
             setTimeout(function() {
-                playNextAudio();
+                playNextAudio();  // Play the next audio clip in the queue after the pause
             }, PAUSE_DURATION);
         };
     }
 }
-
 
 let userName = '{{user}}';
 let charName = '{{char}}';
