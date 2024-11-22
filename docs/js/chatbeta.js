@@ -1155,7 +1155,7 @@ function speakMessage(index) {
             setTimeout(function() {
                 // Add SFX between sentences if applicable
                 if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
-                    audioQueue.push("path/to/sfx/choke.mp3");  // Add the SFX to the queue
+                    audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
                 }
                 playNextAudio();  // Play the next audio clip in the queue after the pause
             }, PAUSE_DURATION);
