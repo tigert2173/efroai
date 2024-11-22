@@ -1023,7 +1023,6 @@ function speakMessage(index) {
 
     const targetWord = "choke";
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;
-
     let sentences = [];
     let match;
 
@@ -1034,17 +1033,17 @@ function speakMessage(index) {
     console.log('All sentences:', sentences);
 
     let capturedSentences = [];
-    let sfxQueue = []; // Store indices of sound effects to queue them correctly
+    let sfxIndices = [];
 
     sentences.forEach((sentence) => {
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g');
+        let splitPoint = 0;
         let lastIndex = 0;
-        let match;
 
-        while ((match = targetRegex.exec(sentence)) !== null) {
-            const beforeTarget = sentence.substring(lastIndex, match.index).trim();
-            const target = sentence.substring(match.index, match.index + targetWord.length).trim();
-            const afterTarget = sentence.substring(match.index + targetWord.length).trim();
+        while ((splitPoint = targetRegex.exec(sentence)) !== null) {
+            const beforeTarget = sentence.substring(lastIndex, splitPoint.index).trim();
+            const target = sentence.substring(splitPoint.index, targetRegex.lastIndex).trim();
+            const afterTarget = sentence.substring(targetRegex.lastIndex).trim();
 
             if (beforeTarget) {
                 capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
@@ -1052,91 +1051,118 @@ function speakMessage(index) {
 
             if (target) {
                 capturedSentences.push({ text: target, speaker: 'Claribel Dervla' });
-                sfxQueue.push(capturedSentences.length - 1); // Queue sound effect immediately after the target word
+                sfxIndices.push(capturedSentences.length - 1); // Add the index where the sound effect should go
             }
 
             if (afterTarget) {
                 capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
             }
 
-            lastIndex = match.index + targetWord.length;
-        }
-
-        if (lastIndex < sentence.length) {
-            capturedSentences.push({ text: sentence.substring(lastIndex).trim(), speaker: 'Claribel Dervla' });
+            lastIndex = targetRegex.lastIndex;
         }
     });
 
     console.log('Captured sentences:', capturedSentences);
-    console.log('Sound effect indices:', sfxQueue);
 
-    let lines = [];
-    capturedSentences.forEach((sentenceObj) => {
-        lines.push({
-            text: sentenceObj.text,
-            speaker: sentenceObj.speaker
-        });
-    });
+    let lines = capturedSentences.map((sentenceObj) => ({
+        text: sentenceObj.text,
+        speaker: sentenceObj.speaker,
+    }));
 
     console.log('Final lines to speak:', lines);
 
-    if (lines.length > 0) {
-        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
-        console.log("Query Params:", queryParams);
+    const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+    console.log("Query Params:", queryParams);
+    const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
-        const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
+    let audioQueue = [];
+    let isPlaying = false;
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
+    const RETRY_DELAY = 2000;
+    const PAUSE_DURATION = 500;
+    const sfxPath = "sfx/choke-sfx.mp3";
 
-        let audioQueue = [];
-        let isPlaying = false;
-        const audioElement = document.createElement('audio');
-        audioElement.controls = true;
-        document.getElementById('audioPlayersContainer').appendChild(audioElement);
+    const audioElement = document.createElement('audio');
+    audioElement.controls = true;
+    document.getElementById('audioPlayersContainer').appendChild(audioElement);
 
-        function playNextAudio() {
-            if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();
-                audioElement.src = nextAudioSrc;
-                isPlaying = true;
+    function playNextAudio() {
+        if (audioQueue.length > 0 && !isPlaying) {
+            const nextAudio = audioQueue.shift();
+            audioElement.src = nextAudio.src;
+            isPlaying = true;
+
+            if (nextAudio.isSFX) {
+                setTimeout(() => {
+                    isPlaying = false;
+                    playNextAudio();
+                }, nextAudio.duration || 1000); // Set duration for SFX
+            } else {
                 audioElement.play();
             }
         }
-
-        eventSource.onmessage = function(event) {
-            try {
-                const data = JSON.parse(event.data);
-
-                if (data.audio) {
-                    audioQueue.push(data.audio);
-
-                    // Add sound effects at the correct points
-                    if (sfxQueue.length > 0 && audioQueue.length === sfxQueue[0] + 1) {
-                        audioQueue.push("sfx/choke-sfx.mp3");
-                        sfxQueue.shift(); // Remove the processed sound effect
-                    }
-
-                    playNextAudio();
-                } else if (data.error) {
-                    document.getElementById('generateMessage').innerText = data.error;
-                } else if (data.end) {
-                    console.log("Audio generation complete.");
-                    eventSource.close();
-                }
-            } catch (e) {
-                console.error('Error parsing event data:', e);
-                document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
-            }
-        };
-
-        eventSource.onerror = function(error) {
-            console.error('Error in SSE:', error);
-            document.getElementById('generateMessage').innerText = 'Error generating voice';
-        };
-
-        audioElement.onended = function() {
-            isPlaying = false;
-            setTimeout(playNextAudio, 500); // Add slight pause before the next audio
-        };
     }
+
+    eventSource.onmessage = function(event) {
+        try {
+            const data = JSON.parse(event.data);
+
+            if (data.audio) {
+                const audioIndex = audioQueue.length;
+
+                audioQueue.push({
+                    src: data.audio,
+                    isSFX: false,
+                });
+
+                if (sfxIndices.includes(audioIndex)) {
+                    audioQueue.push({
+                        src: sfxPath,
+                        isSFX: true,
+                    });
+                }
+
+                if (!isPlaying) {
+                    playNextAudio();
+                }
+
+                retryCount = 0;
+            } else if (data.error) {
+                document.getElementById('generateMessage').innerText = data.error;
+            } else if (data.end) {
+                console.log("Audio generation complete.");
+                eventSource.close();
+            }
+        } catch (e) {
+            console.error('Error parsing event data:', e);
+
+            if (retryCount < MAX_RETRIES) {
+                retryCount++;
+                console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
+                setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+            } else {
+                document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                eventSource.close();
+            }
+        }
+    };
+
+    eventSource.onerror = function(error) {
+        console.error('Error in SSE:', error);
+
+        if (retryCount < MAX_RETRIES) {
+            retryCount++;
+            setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+        } else {
+            eventSource.close();
+        }
+    };
+
+    audioElement.onended = function() {
+        isPlaying = false;
+        setTimeout(playNextAudio, PAUSE_DURATION);
+    };
 }
 
 
