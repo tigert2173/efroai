@@ -1035,19 +1035,14 @@ function speakMessage(index) {
         sentences.push(match[0].trim());
     }
 
-    let capturedSentences = [];
-    sentences.forEach((sentence) => {
-        capturedSentences.push(sentence);  // Capture all sentences
-    });
+    // Store processed sentences and sound effects in order
+    let processedSentences = [];
+    let soundEffectQueue = [];  // Temporary array for sound effects to be added at the right point
 
-    let lines = [];
-    let tempSentence = '';
-    const speakerSelect = document.getElementById('speakerSelect');
-    let soundEffectQueue = [];  // Temporary array for sound effects to be added at the right point in the queue
-
-    // Process sentences, looking for sound effects
-    capturedSentences.forEach((sentence, index) => {
-        const selectedSpeaker = speakerSelect.value;
+    sentences.forEach((sentence, index) => {
+        let parts = [];
+        let currentSentence = '';
+        const speakerSelect = document.getElementById('speakerSelect');
         let processed = false;
 
         // Check if the sentence contains any target words with sound effects
@@ -1059,50 +1054,48 @@ function speakMessage(index) {
                 let beforeWord = sentence.split(word)[0].trim();
                 let afterWord = sentence.split(word)[1].trim();
 
-                // Add the parts before the word to the lines array
+                // Queue parts before and after the sound effect separately
                 if (beforeWord.trim()) {
-                    lines.push({ text: beforeWord, speaker: selectedSpeaker, id: sentenceCounter++ });
+                    parts.push({ text: beforeWord, speaker: speakerSelect.value, order: sentenceCounter++ });
                 }
 
-                // Queue the sound effect with its order, we will add it at the correct time
-                soundEffectQueue.push({ soundEffect, position: sentenceCounter });
+                // Queue the sound effect separately with its order, placed after the part before it
+                soundEffectQueue.push({ soundEffect, order: sentenceCounter++ });
 
-                // Add the part after the word to the lines array
                 if (afterWord.trim()) {
-                    lines.push({ text: afterWord, speaker: selectedSpeaker, id: sentenceCounter++ });
+                    parts.push({ text: afterWord, speaker: speakerSelect.value, order: sentenceCounter++ });
                 }
 
                 processed = true;
             }
         });
 
-        // If no sound effect was added, process the sentence normally
+        // If no sound effect was added, just push the whole sentence
         if (!processed) {
-            if (tempSentence.length + sentence.length < 72) {
-                tempSentence += ' ' + sentence.trim();
-            } else {
-                if (tempSentence.trim().length > 0) {
-                    lines.push({ text: tempSentence, speaker: selectedSpeaker, id: sentenceCounter++ });
-                }
-                tempSentence = sentence.trim();
-            }
+            parts.push({ text: sentence, speaker: speakerSelect.value, order: sentenceCounter++ });
+        }
+
+        // Add processed parts to the sentence queue
+        processedSentences.push(...parts);
+    });
+
+    // Sort all parts by their order to maintain the correct sequence
+    processedSentences.sort((a, b) => a.order - b.order);
+
+    // Combine sentences and sound effects into the final order
+    processedSentences.forEach((part) => {
+        if (part.text) {
+            audioQueue.push(part.text);  // Add text content to audio queue
         }
     });
 
-    // Push the remaining temp sentence if any
-    if (tempSentence.trim().length > 0) {
-        lines.push({ text: tempSentence, speaker: speakerSelect.value, id: sentenceCounter++ });
-    }
-
-    // Now queue the sound effects in the correct order
-    soundEffectQueue.forEach(({ soundEffect, position }) => {
-        // Ensure sound effect is inserted at the correct position in the lines array
-        audioQueue.splice(position, 0, soundEffect);
+    soundEffectQueue.forEach(({ soundEffect }) => {
+        audioQueue.push(soundEffect);  // Add sound effect to the queue at the correct time
     });
 
-    // Process and play the audio
-    if (lines.length > 0) {
-        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+    // Now process and play the audio
+    if (audioQueue.length > 0) {
+        const queryParams = processedSentences.map(part => `lines[]=${encodeURIComponent(JSON.stringify(part))}`).join('&');
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
         let isPlaying = false;
