@@ -1116,6 +1116,7 @@ function speakMessage(index) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
         
+                    console.log(sfxIndices);
                     // Check if it's time to add a sound effect
                     if (sfxIndices.length > 0 && audioQueue.length - 1 === sfxIndices[0]) {
                         // Add the sound effect to the audio queue after the current clip
