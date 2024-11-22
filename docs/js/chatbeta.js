@@ -1082,17 +1082,6 @@ function speakMessage(index) {
     // Sort all parts by their order to maintain the correct sequence
     processedSentences.sort((a, b) => a.order - b.order);
 
-    // Combine sentences and sound effects into the final order
-    processedSentences.forEach((part) => {
-        if (part.text) {
-            audioQueue.push(part.text);  // Add text content to audio queue
-        }
-    });
-
-    soundEffectQueue.forEach(({ soundEffect }) => {
-        audioQueue.push(soundEffect);  // Add sound effect to the queue at the correct time
-    });
-
     // Now process and play the audio
     if (audioQueue.length > 0) {
         const queryParams = processedSentences.map(part => `lines[]=${encodeURIComponent(JSON.stringify(part))}`).join('&');
@@ -1108,7 +1097,14 @@ function speakMessage(index) {
             if (audioQueue.length > 0 && !isPlaying) {
                 console.log("Current Audio Queue:", audioQueue);  // Log the audio queue before playing
                 const nextAudioSrc = audioQueue.shift();  // Remove the next audio item from the queue
-                audioElement.src = nextAudioSrc;  // Set the audio source to the next item
+
+                // Check if it's a valid audio source (string, base64, etc.)
+                if (nextAudioSrc && nextAudioSrc.startsWith("data:")) {
+                    audioElement.src = nextAudioSrc;  // If it's a base64 encoded audio, set it as the source
+                } else if (nextAudioSrc && nextAudioSrc.endsWith(".mp3")) {
+                    audioElement.src = nextAudioSrc;  // If it's a valid URL (MP3 or WAV), set it as the source
+                }
+
                 isPlaying = true;  // Set the flag to indicate audio is playing
                 audioElement.play();  // Play the audio
             }
@@ -1128,6 +1124,7 @@ function speakMessage(index) {
                 }
 
                 if (parsedData.audio) {
+                    // If audio is available in the response, queue it
                     audioQueue.push(parsedData.audio);
                     playNextAudio();
                 } else if (parsedData.error) {
