@@ -1008,7 +1008,7 @@ function playSantaVoice() {
 }
 
 const soundEffects = {
-    "choke": "choke-sfx.mp3",
+    "choke": "sfx/choke-sfx.mp3",
 };
 
 function speakMessage(index) {
