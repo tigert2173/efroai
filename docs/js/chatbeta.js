@@ -1042,7 +1042,7 @@ function speakMessage(index) {
 
     // Example of sound effect mappings (this can be customized)
     const soundEffects = {
-        "choke": "sfx_choke.wav",  // Replace "choke" with this sound effect
+        "choke": "sfx/choke-sfx.mp3",  // Replace "choke" with this sound effect
     };
 
     // Capture sentences and identify where to insert SFX
