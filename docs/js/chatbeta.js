@@ -1060,6 +1060,7 @@ function speakMessage(index) {
             if (sentence.toLowerCase().includes(word.toLowerCase())) {
                 const soundEffect = soundEffects[word];
                 audioQueue.push(soundEffect);  // Add sound effect to the queue
+                console.log("added SFX! " + soundEffect);
                 lines.push({ text: "", speaker: selectedSpeaker });  // Empty line for the sound effect
             }
         });
