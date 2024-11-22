@@ -1017,6 +1017,9 @@ function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
+    // Ensure audioQueue is accessible throughout this function
+    console.log('Audio Queue Initialized:', audioQueue);  // Check the queue initialization
+
     console.log('Full message content:', textContent);
 
     if (!textContent || textContent.length === 0) {
