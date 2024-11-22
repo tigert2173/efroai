@@ -1040,10 +1040,9 @@ function speakMessage(index) {
     // Capture the sentences before and after the target word
     let capturedSentences = [];
     let sfxIndex = -1;  // Track index for sound effects insertion
-    let sfxInserted = false;  // Flag to ensure SFX is only inserted once
 
     sentences.forEach((sentence, index) => {
-        if (sentence.includes(targetWord) && !sfxInserted) {
+        if (sentence.includes(targetWord)) {
             // Split sentence at the target word (e.g., "choke")
             const parts = sentence.split(targetWord);  // Split sentence at the target word
             // Capture the part before "choke"
@@ -1051,8 +1050,6 @@ function speakMessage(index) {
             sfxIndex = capturedSentences.length;  // Mark where to insert the sound effect
             // Capture the part after "choke"
             capturedSentences.push({ text: parts[1].trim(), index: index + 2 });
-
-            sfxInserted = true;  // Prevent re-inserting the SFX
         } else {
             capturedSentences.push({ text: sentence, index: index + 1 });
         }
@@ -1154,13 +1151,14 @@ function speakMessage(index) {
         audioElement.onended = function() {
             isPlaying = false;
 
-            // Add a pause before playing the next audio clip
+            // Add SFX between sentences if applicable
+            if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
+                audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
+            }
+
+            // Ensure we play the next audio after the pause
             setTimeout(function() {
-                // Add SFX between sentences if applicable
-                if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
-                    audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
-                }
-                playNextAudio();  // Play the next audio clip in the queue after the pause
+                playNextAudio();  // Play the next audio clip
             }, PAUSE_DURATION);
         };
     }
