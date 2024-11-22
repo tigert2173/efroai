@@ -1059,14 +1059,15 @@ function speakMessage(index) {
                 let beforeWord = sentence.split(word)[0].trim();
                 let afterWord = sentence.split(word)[1].trim();
 
-                // Add the parts before and after the word to the lines array
+                // Add the parts before the word to the lines array
                 if (beforeWord.trim()) {
                     lines.push({ text: beforeWord, speaker: selectedSpeaker });
                 }
 
-                // Queue the sound effect with its order, we will add it at the correct time
+                // Queue the sound effect, but don't add it to audioQueue yet
                 soundEffectQueue.push({ soundEffect, position: lines.length });
 
+                // Add the part after the word to the lines array
                 if (afterWord.trim()) {
                     lines.push({ text: afterWord, speaker: selectedSpeaker });
                 }
@@ -1093,10 +1094,11 @@ function speakMessage(index) {
         lines.push({ text: tempSentence, speaker: speakerSelect.value });
     }
 
-    // Now queue the sound effects in the correct order
+    // Now process and queue the sound effects in the correct order
     soundEffectQueue.forEach(({ soundEffect, position }) => {
-        // Ensure sound effect is inserted at the correct position in the lines array
-        audioQueue.splice(position, 0, soundEffect);
+        // Ensure the sound effect is added after the sentence at the correct position
+        audioQueue.push(...lines.slice(position).map(line => line.text));  // Add the sentences before the sound effect
+        audioQueue.push(soundEffect);  // Add the sound effect
     });
 
     // Process and play the audio
