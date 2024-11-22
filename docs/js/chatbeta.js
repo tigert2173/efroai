@@ -1039,39 +1039,42 @@ function speakMessage(index) {
 
     // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
-    let sfxIndices = [];  // Array to store indices where sound effects should go
+let sfxIndices = [];  // Array to store indices where sound effects should go
 
-    sentences.forEach((sentence) => {
-        const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g');  // Match the target word globally
-        let lastIndex = 0;  // Keeps track of the last processed position in the sentence
-    
-        while ((match = targetRegex.exec(sentence)) !== null) {
-            const beforeTarget = sentence.substring(lastIndex, match.index).trim();  // Text before the target word
-            const afterTarget = sentence.substring(match.index + targetWord.length).trim();  // Text after the target word
-    
-            // Add the part before the target word
-            if (beforeTarget) {
-                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
-                sfxIndices.push(capturedSentences.length - 1);  // Add the index of the current part for the SFX
-            }
-    
-            // // Add the target word itself as a separate part if desired (optional)
-            // capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-            // sfxIndices.push(capturedSentences.length - 1); // Repeat or index this specifically for timing.
-    
-            // Add the part after the target word, if any
-            if (afterTarget) {
-                capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
-            }
-    
-            lastIndex = targetRegex.lastIndex;  // Update the last processed position
+sentences.forEach((sentence) => {
+    const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g');  // Match the target word globally
+    let lastIndex = 0;  // Keeps track of the last processed position in the sentence
+    let match;  // To store regex matches
+    let containsTarget = false;  // Tracks if the sentence contains the target word
+
+    while ((match = targetRegex.exec(sentence)) !== null) {
+        containsTarget = true;  // Mark that the target word is found in this sentence
+        const beforeTarget = sentence.substring(lastIndex, match.index).trim();  // Text before the target word
+        const afterTarget = sentence.substring(match.index + targetWord.length).trim();  // Text after the target word
+
+        // Add the part before the target word
+        if (beforeTarget) {
+            capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
         }
 
-        // If no target word was found, add the whole sentence as-is
-        if (!containsTarget) {
-            capturedSentences.push({ text: sentence.trim(), speaker: 'Claribel Dervla' });
+        // Add the SFX trigger at this point
+        sfxIndices.push(capturedSentences.length);  // SFX should occur after this part
+        capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+
+        // Add the part after the target word, if any
+        if (afterTarget) {
+            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
         }
-    });
+
+        lastIndex = targetRegex.lastIndex;  // Update the last processed position
+    }
+
+    // If no target word was found, add the whole sentence as-is
+    if (!containsTarget) {
+        capturedSentences.push({ text: sentence.trim(), speaker: 'Claribel Dervla' });
+    }
+});
+
 
     console.log('Captured sentences:', capturedSentences);
 
