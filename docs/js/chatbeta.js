@@ -1112,12 +1112,14 @@ function speakMessage(index) {
         // Play audio in order
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();
-                audioElement.src = nextAudioSrc;
-                isPlaying = true;
-                audioElement.play();
+                console.log("Current Audio Queue:", audioQueue);  // Log the audio queue before playing
+                const nextAudioSrc = audioQueue.shift();  // Remove the next audio item from the queue
+                audioElement.src = nextAudioSrc;  // Set the audio source to the next item
+                isPlaying = true;  // Set the flag to indicate audio is playing
+                audioElement.play();  // Play the audio
             }
         }
+        
 
         eventSource.onmessage = function(event) {
             try {
