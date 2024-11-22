@@ -1121,20 +1121,20 @@ function speakMessage(index) {
                     playNextAudio();
                     retryCount = 0;
                 } else if (data.error) {
-                    document.getElementById('generateMessage').innerText = data.error;
+                 //   document.getElementById('generateMessage').innerText = data.error;
                 } else if (data.end) {
                     console.log("Audio generation complete.");
                     eventSource.close();
                 }
             } catch (e) {
                 console.error('Error parsing event data:', e);
-                document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
+               // document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
                 if (retryCount < MAX_RETRIES) {
                     retryCount++;
                     console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
                     setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
                 } else {
-                    document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+              //      document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
                     eventSource.close();
                 }
             }
@@ -1142,13 +1142,13 @@ function speakMessage(index) {
 
         eventSource.onerror = function(error) {
             console.error('Error in SSE:', error);
-            document.getElementById('generateMessage').innerText = 'Error generating voice';
+            //document.getElementById('generateMessage').innerText = 'Error generating voice';
             if (retryCount < MAX_RETRIES) {
                 retryCount++;
                 console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
                 setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
             } else {
-                document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+           //     document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
                 eventSource.close();
             }
         };
