@@ -1041,16 +1041,19 @@ function speakMessage(index) {
     let capturedSentences = [];
     let sfxIndices = []; // To store indices where SFX should be played
 
+    const speakerSelect = document.getElementById('speakerSelect');
     sentences.forEach((sentence) => {
         const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
         let lastIndex = 0; // Tracks last processed position
         let match;
 
         while ((match = targetRegex.exec(sentence)) !== null) {
+            const selectedSpeaker = speakerSelect.value;
+
             // Add text before the target word
             const beforeTarget = sentence.substring(lastIndex, match.index).trim();
             if (beforeTarget) {
-                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
+                capturedSentences.push({ text: beforeTarget, speaker: selectedSpeaker });
             }
 
             // Add the target word itself and mark it for SFX
@@ -1063,7 +1066,7 @@ function speakMessage(index) {
         // Add the remaining part of the sentence after the last occurrence
         const afterTarget = sentence.substring(lastIndex).trim();
         if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
+            capturedSentences.push({ text: afterTarget, speaker: selectedSpeaker });
         }
     });
 
