@@ -1052,7 +1052,7 @@ function speakMessage(index) {
             // Add text before the target word
             const beforeTarget = sentence.substring(lastIndex, match.index).trim();
             if (beforeTarget) {
-                capturedSentences.push({ text: beforeTarget, speaker: selectedSpeaker });
+                capturedSentences.push({ text: beforeTarget, speaker: 'Daisy Studious' });
             }
 
             // Add the target word itself and mark it for SFX
@@ -1065,7 +1065,7 @@ function speakMessage(index) {
         // Add the remaining part of the sentence after the last occurrence
         const afterTarget = sentence.substring(lastIndex).trim();
         if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: selectedSpeaker });
+            capturedSentences.push({ text: afterTarget, speaker: 'Daisy Studious' });
         }
     });
 
