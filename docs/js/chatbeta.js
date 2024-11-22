@@ -1023,8 +1023,8 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Define the target sentence for sound effect
-    const targetSentence = "choke";  // Example: Trigger when "choke" is mentioned
+    // Define the target word
+    const targetWord = "choke";  // Example: Trigger when "choke" is mentioned
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
@@ -1037,18 +1037,20 @@ function speakMessage(index) {
 
     console.log('All sentences:', sentences);
 
-    // Capture the sentences before and after the target phrase
+    // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
-    let sfxIndex = -1;  // Track index for sound effects insertion
+    let sfxIndices = [];  // Array to store indices where sound effects should go
 
     sentences.forEach((sentence, index) => {
         capturedSentences.push({ text: sentence, index: index + 1 });  // Store sentence and index
-        if (sentence.includes(targetSentence)) {
-            sfxIndex = index + 1;  // Mark where the sound effect should go
+        let occurrences = (sentence.match(new RegExp(targetWord, 'g')) || []).length;
+        for (let i = 0; i < occurrences; i++) {
+            sfxIndices.push(index + 1);  // Mark multiple occurrences of the sound effect
         }
     });
 
     console.log('Captured sentences:', capturedSentences);
+    console.log('Sound effect indices:', sfxIndices);
 
     // Prepare the output lines for sending
     let lines = [];
@@ -1090,7 +1092,6 @@ function speakMessage(index) {
         const MAX_RETRIES = 5; // Max number of retries before giving up
         const RETRY_DELAY = 2000; // Delay between retries in ms
         const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
-        let sentenceCount = 0;  // Track how many sentences have been added to the audio queue
 
         // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
@@ -1114,14 +1115,13 @@ function speakMessage(index) {
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
-                    sentenceCount++;  // Increment sentence count as audio is added
 
-                    // Check if it's time to insert the sound effect
-                    if (sfxIndex !== -1 && sentenceCount >= sfxIndex) {
-                        // Add the sound effect to the queue once the required sentences have been added
+                    // Check if it's time to add a sound effect
+                    if (sfxIndices.length > 0 && sfxIndices.includes(lines.length)) {
+                        // Add the sound effect to the audio queue
                         const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
                         audioQueue.push(sfx);  // Add sound effect to the queue
-                        sfxIndex = -1;  // Reset the SFX index after adding the effect
+                        sfxIndices.shift();  // Remove the processed index
                     }
 
                     // If no audio is playing, start playing the first one
