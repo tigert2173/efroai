@@ -1024,7 +1024,7 @@ function speakMessage(index) {
     console.log('Cleaned content:', cleanedTextContent);
 
     // Define the target word
-    const targetWord = "FFFFRRRROOOOOTTTTT";  // Example: Trigger when "choke" is mentioned
+    const targetWord = "BZZZZZT";  // Example: Trigger when "choke" is mentioned
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
