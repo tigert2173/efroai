@@ -1050,12 +1050,12 @@ function speakMessage(index) {
             // Add text before the target word
             const beforeTarget = sentence.substring(lastIndex, match.index).trim();
             if (beforeTarget) {
-                capturedSentences.push({ text: beforeTarget, speaker: 'Daisy Studious' });
+                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
             }
 
             // Add the target word itself and mark it for SFX
-            // capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-            sfxIndices.push(capturedSentences.length - 2); // Store index of the "choke" word for SFX
+            capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+            sfxIndices.push(capturedSentences.length - 1); // Store index of the "choke" word for SFX
 
             lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
         }
@@ -1063,7 +1063,7 @@ function speakMessage(index) {
         // Add the remaining part of the sentence after the last occurrence
         const afterTarget = sentence.substring(lastIndex).trim();
         if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: 'Daisy Studious' });
+            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
         }
     });
 
