@@ -1085,7 +1085,7 @@ console.log('Final lines to speak:', lines);
         // Build query parameters
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
         console.log("Query Params:", queryParams);  // Log query params to verify
-        const eventSource = new EventSource(`https://ld-prominent-taxi-ant.trycloudflare.com/generate_voice_stream?${queryParams}`);
+        const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
         let audioQueue = [];  // Queue to store audio sources
         let isPlaying = false; // Flag to check if audio is playing
