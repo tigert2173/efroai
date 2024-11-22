@@ -1023,42 +1023,41 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Split the content into sentences and sound effects
-    const sentenceRegex = /([^\[]+|\[SFX: [^\]]+\])/g;  // Match both sentences and SFX
-    let segments = [];
+    // Define the target sentence
+    const targetSentence = "choke";  // Example: Trigger when "choke" is mentioned
+
+    // Split the content into individual sentences
+    const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
+    let sentences = [];
     let match;
 
-    // Split the text into segments (sentences and SFX)
     while ((match = sentenceRegex.exec(cleanedTextContent)) !== null) {
-        segments.push(match[0].trim());
+        sentences.push(match[0].trim());
     }
 
-    console.log('All segments:', segments);
+    console.log('All sentences:', sentences);
 
-    // Build a sequence of sentences and SFX
-    let sentenceOrder = [];
-    let sfxQueue = [];
-    segments.forEach((segment, idx) => {
-        if (segment.startsWith('[SFX:')) {
-            // It's an SFX, so store it in the queue
-            sfxQueue.push({ index: idx, sfx: segment });
-        } else {
-            // It's a regular sentence
-            sentenceOrder.push({ index: idx, text: segment });
+    // Capture the sentences before and after the target phrase
+    let capturedSentences = [];
+    let sfxIndex = -1;  // Track index for sound effects insertion
+
+    sentences.forEach((sentence, index) => {
+        capturedSentences.push({ text: sentence, index: index + 1 });  // Store sentence and index
+        if (sentence.includes(targetSentence)) {
+            sfxIndex = index + 1;  // Mark where the sound effect should go
         }
     });
 
-    console.log('Sentence Order:', sentenceOrder);
-    console.log('SFX Queue:', sfxQueue);
+    console.log('Captured sentences:', capturedSentences);
 
-    // Function to send to TTS (text-to-speech) backend
+    // Prepare the output lines for sending
     let lines = [];
-    const speakerSelect = document.getElementById('speakerSelect'); // Get the speaker dropdown
     let tempSentence = '';
+    const speakerSelect = document.getElementById('speakerSelect');
 
-    // Build the sentences based on the order
-    sentenceOrder.forEach((sentenceObj) => {
-        const selectedSpeaker = speakerSelect.value;  // Get the selected speaker
+    // Function to build lines based on captured sentences
+    capturedSentences.forEach((sentenceObj) => {
+        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
         if (tempSentence.length + sentenceObj.text.length < 72) {
             // Combine sentences if they fit within the limit
             tempSentence += ' ' + sentenceObj.text.trim();
@@ -1079,19 +1078,15 @@ function speakMessage(index) {
 
     console.log('Final lines to speak:', lines);
 
-    // Send the lines to the backend for TTS
+    // Now, send the lines to the TTS backend and handle sound effects
     if (lines.length > 0) {
-        // Build query parameters for TTS request
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
-        console.log("Query Params:", queryParams);
-
-        // Handle the backend response to insert SFX at the correct point
+        console.log("Query Params:", queryParams);  // Log query params to verify
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
         let audioQueue = [];  // Queue to store audio sources
         let isPlaying = false; // Flag to check if audio is playing
         let retryCount = 0;   // Retry counter
-
         const MAX_RETRIES = 5; // Max number of retries before giving up
         const RETRY_DELAY = 2000; // Delay between retries in ms
         const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
@@ -1119,11 +1114,12 @@ function speakMessage(index) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
 
-                    // Check if it's time to insert the SFX
-                    if (sfxQueue.length > 0) {
-                        const nextSFX = sfxQueue.shift();  // Get the next SFX in the queue
-                        console.log('Inserting SFX:', nextSFX.sfx);
-                        audioQueue.push(nextSFX.sfx);  // Add SFX to the queue
+                    // If the current sentence is where we need to insert a sound effect
+                    if (capturedSentences.length > 0 && capturedSentences.length === sfxIndex) {
+                        // Add the sound effect to the audio queue
+                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
+                        audioQueue.push(sfx);  // Add sound effect to the queue
+                        sfxIndex = -1;  // Reset the SFX index
                     }
 
                     // If no audio is playing, start playing the first one
