@@ -1062,8 +1062,6 @@ function speakMessage(index) {
         Object.keys(soundEffects).forEach(word => {
             if (sentence.toLowerCase().includes(word.toLowerCase())) {
                 const soundEffect = soundEffects[word];
-                audioQueue.push(soundEffect);  // Add sound effect to the queue
-                console.log("added SFX! " + soundEffect);
 
                 // Split the sentence into parts before and after the word
                 let beforeWord = sentence.split(word)[0].trim();
@@ -1071,8 +1069,9 @@ function speakMessage(index) {
 
                 // Add parts and sound effect to the lines array
                 lines.push({ text: beforeWord, speaker: selectedSpeaker });
-               // lines.push({ text: " ", speaker: selectedSpeaker });  // Empty line for sound effect
-                lines.push({ text: "SFX: " + soundEffect, speaker: selectedSpeaker });  // Add the sound effect
+                audioQueue.push(soundEffect);  // Add sound effect to the queue
+                console.log("added SFX! " + soundEffect);
+
                 lines.push({ text: afterWord, speaker: selectedSpeaker });
                 tempSentence = '';  // Reset the temp sentence after processing
                 return;  // Skip to the next sentence after adding the sound effect
