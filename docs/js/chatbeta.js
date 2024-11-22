@@ -1040,18 +1040,14 @@ function speakMessage(index) {
     // Capture the sentences before and after the target word
     let capturedSentences = [];
     let sfxIndex = -1;  // Track index for sound effects insertion
-    let sfxAdded = false;  // Flag to track if SFX has already been added
 
     sentences.forEach((sentence, index) => {
-        if (sentence.includes(targetWord) && !sfxAdded) {
-            // Split sentence at the target word (e.g., "choke")
+        if (sentence.includes(targetWord)) {
+            // If target word is found, split the sentence
             const parts = sentence.split(targetWord);  // Split sentence at the target word
-            // Capture the part before "choke"
-            capturedSentences.push({ text: parts[0].trim(), index: index + 1 });
-            sfxIndex = capturedSentences.length;  // Mark where to insert the sound effect
-            sfxAdded = true;  // Set flag to prevent adding multiple SFX
-            // Capture the part after "choke"
-            capturedSentences.push({ text: parts[1].trim(), index: index + 2 });
+            capturedSentences.push({ text: parts[0].trim(), index: index + 1 });  // Part before "choke"
+            sfxIndex = index + 1;  // Mark where to insert the sound effect
+            capturedSentences.push({ text: parts[1].trim(), index: index + 2 });  // Part after "choke"
         } else {
             capturedSentences.push({ text: sentence, index: index + 1 });
         }
@@ -1061,13 +1057,29 @@ function speakMessage(index) {
 
     // Prepare the output lines for sending
     let lines = [];
+    let tempSentence = '';
     const speakerSelect = document.getElementById('speakerSelect');
 
     // Function to build lines based on captured sentences
     capturedSentences.forEach((sentenceObj) => {
         const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        lines.push({ text: sentenceObj.text, speaker: selectedSpeaker }); // Add each captured sentence as a separate line
+        if (tempSentence.length + sentenceObj.text.length < 72) {
+            // Combine sentences if they fit within the limit
+            tempSentence += ' ' + sentenceObj.text.trim();
+        } else {
+            // Push the current sentence to the lines array
+            if (tempSentence.trim().length > 0) {
+                lines.push({ text: tempSentence, speaker: selectedSpeaker });
+            }
+            tempSentence = sentenceObj.text.trim(); // Start a new sentence
+        }
     });
+
+    // Ensure the last sentence is added
+    if (tempSentence.trim().length > 0) {
+        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
+        lines.push({ text: tempSentence, speaker: selectedSpeaker });
+    }
 
     console.log('Final lines to speak:', lines);
 
@@ -1083,6 +1095,7 @@ function speakMessage(index) {
         const MAX_RETRIES = 5; // Max number of retries before giving up
         const RETRY_DELAY = 2000; // Delay between retries in ms
         const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
+        let sentenceCount = 0;  // Track how many sentences have been added to the audio queue
 
         // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
@@ -1106,6 +1119,15 @@ function speakMessage(index) {
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
+                    sentenceCount++;  // Increment sentence count as audio is added
+
+                    // Check if it's time to insert the sound effect
+                    if (sfxIndex !== -1 && sentenceCount >= sfxIndex) {
+                        // Add the sound effect to the queue once the required sentences have been added
+                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
+                        audioQueue.push(sfx);  // Add sound effect to the queue
+                        sfxIndex = -1;  // Reset the SFX index after adding the effect
+                    }
 
                     // If no audio is playing, start playing the first one
                     playNextAudio();
@@ -1155,11 +1177,6 @@ function speakMessage(index) {
 
             // Add a pause before playing the next audio clip
             setTimeout(function() {
-                // Add SFX between sentences if applicable (only once)
-                if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
-                    audioQueue.push("sfx/choke-sfx.mp3");  // Add the SFX to the queue
-                    sfxIndex = -1;  // Reset the index to prevent re-insertion
-                }
                 playNextAudio();  // Play the next audio clip in the queue after the pause
             }, PAUSE_DURATION);
         };
