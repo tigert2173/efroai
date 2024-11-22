@@ -1096,6 +1096,7 @@ function speakMessage(index) {
     });
 
     if (tempSentence.trim().length > 0) {
+        const selectedSpeaker = speakerSelect.value;
         lines.push({ text: tempSentence, speaker: selectedSpeaker, order: currentIndex });
         currentIndex++;  // Increment for the last sentence
     }
