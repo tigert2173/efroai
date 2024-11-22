@@ -1049,9 +1049,10 @@ function speakMessage(index) {
 
     console.log('Captured sentences:', capturedSentences);
 
-    // Prepare lines
+    // Prepare lines with sequence numbers
     let lines = [];
     let tempSentence = '';
+    let currentIndex = 0;  // Index to maintain the order of sentences with sound effects
 
     const speakerSelect = document.getElementById('speakerSelect');
 
@@ -1068,11 +1069,15 @@ function speakMessage(index) {
                 let afterWord = sentence.split(word)[1].trim();
 
                 // Add parts and sound effect to the lines array
-                lines.push({ text: beforeWord, speaker: selectedSpeaker });
-                audioQueue.push(soundEffect);  // Add sound effect to the queue
+                lines.push({ text: beforeWord, speaker: selectedSpeaker, order: currentIndex });
+                audioQueue.push({ soundEffect, order: currentIndex });  // Add sound effect with order
                 console.log("added SFX! " + soundEffect);
 
-                lines.push({ text: afterWord, speaker: selectedSpeaker });
+                currentIndex++;  // Increment the index for the next sentence
+
+                lines.push({ text: afterWord, speaker: selectedSpeaker, order: currentIndex });
+                currentIndex++;  // Increment for the next part
+
                 tempSentence = '';  // Reset the temp sentence after processing
                 return;  // Skip to the next sentence after adding the sound effect
             }
@@ -1083,15 +1088,16 @@ function speakMessage(index) {
             tempSentence += ' ' + sentence.trim();
         } else {
             if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence, speaker: selectedSpeaker });
+                lines.push({ text: tempSentence, speaker: selectedSpeaker, order: currentIndex });
+                currentIndex++;  // Increment for the next sentence
             }
             tempSentence = sentence.trim();
         }
     });
 
     if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value;
-        lines.push({ text: tempSentence, speaker: selectedSpeaker });
+        lines.push({ text: tempSentence, speaker: selectedSpeaker, order: currentIndex });
+        currentIndex++;  // Increment for the last sentence
     }
 
     console.log('Final lines to speak:', lines);
@@ -1113,10 +1119,16 @@ function speakMessage(index) {
 
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                const nextAudioSrc = audioQueue.shift();
-                audioElement.src = nextAudioSrc;
-                isPlaying = true;
-                audioElement.play();
+                const nextAudio = audioQueue.shift();
+                // Wait until the sequence number is correct before playing the audio
+                if (nextAudio.order === currentIndex - 1) {
+                    audioElement.src = nextAudio.soundEffect;
+                    isPlaying = true;
+                    audioElement.play();
+                } else {
+                    // Hold onto the audio if the order is not correct
+                    audioQueue.push(nextAudio);
+                }
             }
         }
 
@@ -1129,7 +1141,7 @@ function speakMessage(index) {
                     console.error('Received empty data');
                     return;
                 }
-        
+
                 let parsedData;
                 try {
                     parsedData = JSON.parse(data);
@@ -1137,9 +1149,9 @@ function speakMessage(index) {
                     console.error('Error parsing JSON:', jsonError);
                     return;
                 }
-        
+
                 if (parsedData.audio) {
-                    audioQueue.push(parsedData.audio);
+                    audioQueue.push({ soundEffect: parsedData.audio, order: currentIndex });
                     playNextAudio();
                     retryCount = 0;
                 } else if (parsedData.error) {
@@ -1181,6 +1193,7 @@ function speakMessage(index) {
         };
     }
 }
+
 
 
 let userName = '{{user}}';
