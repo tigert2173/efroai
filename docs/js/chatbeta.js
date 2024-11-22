@@ -1040,7 +1040,6 @@ function speakMessage(index) {
     // Capture the sentences before and after the target word
     let capturedSentences = [];
     let sfxIndex = -1;  // Track index for sound effects insertion
-    let sentenceCount = 0;  // Track how many sentences have been added to the audio queue
 
     sentences.forEach((sentence, index) => {
         if (sentence.includes(targetWord)) {
@@ -1066,23 +1065,8 @@ function speakMessage(index) {
     // Function to build lines based on captured sentences
     capturedSentences.forEach((sentenceObj) => {
         const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        if (tempSentence.length + sentenceObj.text.length < 72) {
-            // Combine sentences if they fit within the limit
-            tempSentence += ' ' + sentenceObj.text.trim();
-        } else {
-            // Push the current sentence to the lines array
-            if (tempSentence.trim().length > 0) {
-                lines.push({ text: tempSentence, speaker: selectedSpeaker });
-            }
-            tempSentence = sentenceObj.text.trim(); // Start a new sentence
-        }
+        lines.push({ text: sentenceObj.text, speaker: selectedSpeaker }); // Add each captured sentence as a separate line
     });
-
-    // Ensure the last sentence is added
-    if (tempSentence.trim().length > 0) {
-        const selectedSpeaker = speakerSelect.value; // Get the selected speaker
-        lines.push({ text: tempSentence, speaker: selectedSpeaker });
-    }
 
     console.log('Final lines to speak:', lines);
 
@@ -1121,15 +1105,6 @@ function speakMessage(index) {
                 if (data.audio) {
                     // Add the new audio source to the queue
                     audioQueue.push(data.audio);
-                    sentenceCount++;  // Increment sentence count as audio is added
-
-                    // Check if it's time to insert the sound effect
-                    if (sfxIndex !== -1 && sentenceCount >= sfxIndex) {
-                        // Add the sound effect to the queue once the required sentences have been added
-                        const sfx = "sfx/choke-sfx.mp3";  // Define the sound effect path
-                        audioQueue.push(sfx);  // Add sound effect to the queue
-                        sfxIndex = -1;  // Reset the SFX index after adding the effect
-                    }
 
                     // If no audio is playing, start playing the first one
                     playNextAudio();
