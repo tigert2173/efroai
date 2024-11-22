@@ -1023,8 +1023,8 @@ function speakMessage(index) {
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
     console.log('Cleaned content:', cleanedTextContent);
 
-    // Define the target word for sound effect
-    const targetWord = "choke";  // Example: Trigger when "choke" is mentioned
+    // Define the target sentence for sound effect
+    const targetSentence = "choke";  // Example: Trigger when "choke" is mentioned
 
     // Split the content into individual sentences
     const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
@@ -1037,19 +1037,14 @@ function speakMessage(index) {
 
     console.log('All sentences:', sentences);
 
-    // Capture the sentences before and after the target word
+    // Capture the sentences before and after the target phrase
     let capturedSentences = [];
     let sfxIndex = -1;  // Track index for sound effects insertion
 
     sentences.forEach((sentence, index) => {
-        if (sentence.includes(targetWord)) {
-            // If target word is found, split the sentence
-            const parts = sentence.split(targetWord);  // Split sentence at the target word
-            capturedSentences.push({ text: parts[0].trim(), index: index + 1 });  // Part before "choke"
-            sfxIndex = index + 1;  // Mark where to insert the sound effect
-            capturedSentences.push({ text: parts[1].trim(), index: index + 2 });  // Part after "choke"
-        } else {
-            capturedSentences.push({ text: sentence, index: index + 1 });
+        capturedSentences.push({ text: sentence, index: index + 1 });  // Store sentence and index
+        if (sentence.includes(targetSentence)) {
+            sfxIndex = index + 1;  // Mark where the sound effect should go
         }
     });
 
