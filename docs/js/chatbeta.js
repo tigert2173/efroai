@@ -1039,34 +1039,33 @@ function speakMessage(index) {
 
     // Capture sentences and check for multiple occurrences of the target word
     let capturedSentences = [];
-let sfxIndices = []; // To store indices where SFX should be played
+    let sfxIndices = []; // To store indices where SFX should be played
 
-sentences.forEach((sentence) => {
-    const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
-    let lastIndex = 0; // Tracks last processed position
-    let match;
+    sentences.forEach((sentence) => {
+        const targetRegex = new RegExp(`\\b${targetWord}\\b`, 'g'); // Match the target word globally
+        let lastIndex = 0; // Tracks last processed position
+        let match;
 
-    while ((match = targetRegex.exec(sentence)) !== null) {
-        // Add text before the target word
-        const beforeTarget = sentence.substring(lastIndex, match.index).trim();
-        if (beforeTarget) {
-            capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
+        while ((match = targetRegex.exec(sentence)) !== null) {
+            // Add text before the target word
+            const beforeTarget = sentence.substring(lastIndex, match.index).trim();
+            if (beforeTarget) {
+                capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
+            }
+
+            // Add the target word itself and mark it for SFX
+            capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
+            sfxIndices.push(capturedSentences.length - 1); // Store the index of the target word
+
+            lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
         }
 
-        // Add the target word itself and mark it for SFX
-        capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-        sfxIndices.push(capturedSentences.length - 1); // Index of the SFX
-
-    }
-    lastIndex = targetRegex.lastIndex; // Update lastIndex after the match
-
-    // Add the remaining part of the sentence after the last occurrence
-    const afterTarget = sentence.substring(lastIndex).trim();
-    if (afterTarget) {
-        capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
-    }
-});
-
+        // Add the remaining part of the sentence after the last occurrence of target word
+        const afterTarget = sentence.substring(lastIndex).trim();
+        if (afterTarget) {
+            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
+        }
+    });
 
     console.log('Captured sentences:', capturedSentences);
 
