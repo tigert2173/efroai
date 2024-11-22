@@ -1049,29 +1049,24 @@ sentences.forEach((sentence) => {
 
     while ((match = targetRegex.exec(sentence)) !== null) {
         containsTarget = true;  // Mark that the target word is found in this sentence
-        const beforeTarget = sentence.substring(lastIndex, match.index).trim();  // Text before the target word
-        const afterTarget = sentence.substring(match.index + targetWord.length).trim();  // Text after the target word
 
-        // Add the part before the target word
+        // Add the text before the target word, if any
+        const beforeTarget = sentence.substring(lastIndex, match.index).trim();
         if (beforeTarget) {
             capturedSentences.push({ text: beforeTarget, speaker: 'Claribel Dervla' });
         }
 
-        // Add the SFX trigger at this point
-        sfxIndices.push(capturedSentences.length);  // SFX should occur after this part
+        // Add the target word and mark its position for SFX
         capturedSentences.push({ text: targetWord, speaker: 'Claribel Dervla' });
-
-        // Add the part after the target word, if any
-        if (afterTarget) {
-            capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
-        }
+        sfxIndices.push(capturedSentences.length - 1);  // Record the index for the SFX
 
         lastIndex = targetRegex.lastIndex;  // Update the last processed position
     }
 
-    // If no target word was found, add the whole sentence as-is
-    if (!containsTarget) {
-        capturedSentences.push({ text: sentence.trim(), speaker: 'Claribel Dervla' });
+    // Add the remaining part of the sentence, if any
+    const afterTarget = sentence.substring(lastIndex).trim();
+    if (afterTarget || !containsTarget) {  // Add remaining or whole sentence if no target
+        capturedSentences.push({ text: afterTarget, speaker: 'Claribel Dervla' });
     }
 });
 
