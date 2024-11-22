@@ -1043,9 +1043,10 @@ function speakMessage(index) {
     let lines = [];
     let tempSentence = '';
     const speakerSelect = document.getElementById('speakerSelect');
+    let soundEffectQueue = [];  // Temporary array for sound effects to be added at the right point in the queue
 
     // Process sentences, looking for sound effects
-    capturedSentences.forEach((sentence) => {
+    capturedSentences.forEach((sentence, index) => {
         const selectedSpeaker = speakerSelect.value;
         let processed = false;
 
@@ -1063,9 +1064,8 @@ function speakMessage(index) {
                     lines.push({ text: beforeWord, speaker: selectedSpeaker });
                 }
 
-                // Add the sound effect and then the rest of the sentence to the queue
-                audioQueue.push(soundEffect);  // Add sound effect to the queue
-                console.log("added SFX! " + soundEffect);
+                // Queue the sound effect with its order, we will add it at the correct time
+                soundEffectQueue.push({ soundEffect, position: lines.length });
 
                 if (afterWord.trim()) {
                     lines.push({ text: afterWord, speaker: selectedSpeaker });
@@ -1088,11 +1088,18 @@ function speakMessage(index) {
         }
     });
 
+    // Push the remaining temp sentence if any
     if (tempSentence.trim().length > 0) {
         lines.push({ text: tempSentence, speaker: speakerSelect.value });
     }
 
-    // Queue all the audio for this message
+    // Now queue the sound effects in the correct order
+    soundEffectQueue.forEach(({ soundEffect, position }) => {
+        // Ensure sound effect is inserted at the correct position in the lines array
+        audioQueue.splice(position, 0, soundEffect);
+    });
+
+    // Process and play the audio
     if (lines.length > 0) {
         const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
