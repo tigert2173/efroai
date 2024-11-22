@@ -1012,16 +1012,13 @@ const soundEffects = {
 };
 
 let audioQueue = [];  // Global audio queue to store audio sources
-let sentenceIndex = 0; // Track the sentence order for correct playback
+let sentenceCounter = 0; // Counter to assign unique numbers to sentences
 
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
-    // Ensure audioQueue is accessible throughout this function
     console.log('Audio Queue Initialized:', audioQueue);  // Check the queue initialization
-
-    console.log('Full message content:', textContent);
 
     if (!textContent || textContent.length === 0) {
         console.log("No content found.");
@@ -1068,15 +1065,17 @@ function speakMessage(index) {
                 let beforeWord = sentence.split(word)[0].trim();
                 let afterWord = sentence.split(word)[1].trim();
 
-                // Add parts and sound effect to the lines array with order number
-                lines.push({ text: `${beforeWord} #${sentenceIndex + 1}`, speaker: selectedSpeaker });
-                audioQueue.push({ soundEffect, order: sentenceIndex + 1 });  // Add sound effect to the queue with order
+                // Assign unique numbers to sentences and sound effects
+                lines.push({ text: `${beforeWord} #${sentenceCounter + 1}`, speaker: selectedSpeaker });
+                audioQueue.push({ soundEffect, sentenceNumber: sentenceCounter + 1 });  // Add sound effect with number to the queue
                 console.log("added SFX! " + soundEffect);
 
-                sentenceIndex++; // Increment for the next sentence
-                lines.push({ text: `${afterWord} #${sentenceIndex + 1}`, speaker: selectedSpeaker });
-                sentenceIndex++; // Increment for the next sentence after the split
+                // Increment the sentence counter
+                sentenceCounter++;
+
+                lines.push({ text: `${afterWord} #${sentenceCounter + 1}`, speaker: selectedSpeaker });
                 tempSentence = '';  // Reset the temp sentence after processing
+                sentenceCounter++;  // Increment for the next sentence
                 return;  // Skip to the next sentence after adding the sound effect
             }
         });
@@ -1086,16 +1085,16 @@ function speakMessage(index) {
             tempSentence += ' ' + sentence.trim();
         } else {
             if (tempSentence.trim().length > 0) {
-                lines.push({ text: `${tempSentence} #${sentenceIndex + 1}`, speaker: selectedSpeaker });
+                lines.push({ text: tempSentence + ` #${sentenceCounter + 1}`, speaker: selectedSpeaker });
+                sentenceCounter++;  // Increment for the next sentence
             }
             tempSentence = sentence.trim();
-            sentenceIndex++; // Increment for the next sentence
         }
     });
 
     if (tempSentence.trim().length > 0) {
         const selectedSpeaker = speakerSelect.value;
-        lines.push({ text: `${tempSentence} #${sentenceIndex + 1}`, speaker: selectedSpeaker });
+        lines.push({ text: tempSentence + ` #${sentenceCounter + 1}`, speaker: selectedSpeaker });
     }
 
     console.log('Final lines to speak:', lines);
@@ -1118,12 +1117,14 @@ function speakMessage(index) {
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
                 const nextAudio = audioQueue.shift();
-                if (nextAudio.order === sentenceIndex - 1) {
+                // Check for out-of-order audio
+                if (nextAudio.sentenceNumber === sentenceCounter) {
                     audioElement.src = nextAudio.soundEffect;
                     isPlaying = true;
                     audioElement.play();
                 } else {
-                    audioQueue.unshift(nextAudio); // Put it back if it's not the right order
+                    // Hold on to out-of-order audio until the right sentence number is reached
+                    audioQueue.unshift(nextAudio);  // Put the audio back at the start of the queue
                 }
             }
         }
@@ -1137,7 +1138,7 @@ function speakMessage(index) {
                     console.error('Received empty data');
                     return;
                 }
-        
+
                 let parsedData;
                 try {
                     parsedData = JSON.parse(data);
@@ -1145,9 +1146,9 @@ function speakMessage(index) {
                     console.error('Error parsing JSON:', jsonError);
                     return;
                 }
-        
+
                 if (parsedData.audio) {
-                    audioQueue.push({ soundEffect: parsedData.audio, order: sentenceIndex });
+                    audioQueue.push(parsedData.audio);
                     playNextAudio();
                     retryCount = 0;
                 } else if (parsedData.error) {
