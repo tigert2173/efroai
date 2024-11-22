@@ -1047,7 +1047,7 @@ function speakMessage(index) {
             const parts = sentence.split(targetWord);  // Split sentence at the target word
             // Capture the part before "choke"
             capturedSentences.push({ text: parts[0].trim(), index: index + 1 });
-            sfxIndex = index + 1;  // Mark where to insert the sound effect
+            sfxIndex = capturedSentences.length;  // Mark where to insert the sound effect
             // Capture the part after "choke"
             capturedSentences.push({ text: parts[1].trim(), index: index + 2 });
         } else {
@@ -1059,7 +1059,6 @@ function speakMessage(index) {
 
     // Prepare the output lines for sending
     let lines = [];
-    let tempSentence = '';
     const speakerSelect = document.getElementById('speakerSelect');
 
     // Function to build lines based on captured sentences
@@ -1154,6 +1153,10 @@ function speakMessage(index) {
 
             // Add a pause before playing the next audio clip
             setTimeout(function() {
+                // Add SFX between sentences if applicable
+                if (sfxIndex > 0 && capturedSentences[sfxIndex - 1]) {
+                    audioQueue.push("path/to/sfx/choke.mp3");  // Add the SFX to the queue
+                }
                 playNextAudio();  // Play the next audio clip in the queue after the pause
             }, PAUSE_DURATION);
         };
