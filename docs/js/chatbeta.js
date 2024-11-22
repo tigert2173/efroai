@@ -1007,7 +1007,7 @@ function playSantaVoice() {
     document.getElementById('santa-voice').play();
 }
 
-function processMessageWithSplits(index) {
+function speakMessage(index) {
     const messageContent = messages[index]; // Extract the message
     const textContent = messageContent.content[0].text; // Extract the text
     const speakerSelect = document.getElementById('speakerSelect'); // Selected speaker
