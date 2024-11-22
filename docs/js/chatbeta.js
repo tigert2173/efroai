@@ -1007,17 +1007,13 @@ function playSantaVoice() {
     document.getElementById('santa-voice').play();
 }
 
-const soundEffects = {
-    "choke": "sfx/choke-sfx.mp3",
-};
-
-let audioQueue = [];  // Global audio queue to store audio sources
-let sentenceCounter = 0; // Counter to assign unique numbers to sentences
-
 function speakMessage(index) {
     const messageContent = messages[index];  // Extracting the message at the current index
     const textContent = messageContent.content[0].text;  // Extracting the text from the message object
 
+    console.log('Full message content:', textContent);
+
+    // Check if content exists
     if (!textContent || textContent.length === 0) {
         console.log("No content found.");
         return;  // Early exit if no content
@@ -1025,9 +1021,13 @@ function speakMessage(index) {
 
     // Clean text of any HTML tags if present
     const cleanedTextContent = textContent.replace(/<[^>]*>/g, '').trim();
+    console.log('Cleaned content:', cleanedTextContent);
+
+    // Define the target sentence
+    const targetSentence = "I'm Kyrie - remember that name as you choke!";
 
     // Split the content into individual sentences
-    const sentenceRegex = /([^.!?~]+[.!?~]*)/g;
+    const sentenceRegex = /([^.!?~]+[.!?~]*)/g;  // Improved regex to handle sentence splitting
     let sentences = [];
     let match;
 
@@ -1035,118 +1035,148 @@ function speakMessage(index) {
         sentences.push(match[0].trim());
     }
 
-    // Store processed sentences and sound effects in order
-    let processedSentences = [];
-    let soundEffectQueue = [];  // Temporary array for sound effects to be added at the right point
+    console.log('All sentences:', sentences);
 
-    sentences.forEach((sentence, index) => {
-        let parts = [];
-        let currentSentence = '';
-        const speakerSelect = document.getElementById('speakerSelect');
-        let processed = false;
+    // Track order and map to insert SFX later
+    let sentenceWithSFX = [];
 
-        // Check if the sentence contains any target words with sound effects
+    // Example of sound effect mappings (this can be customized)
+    const soundEffects = {
+        "choke": "sfx_choke.wav",  // Replace "choke" with this sound effect
+    };
+
+    // Capture sentences and identify where to insert SFX
+    sentences.forEach((sentence, idx) => {
+        // Look for specific words in the sentence that need sound effects
         Object.keys(soundEffects).forEach(word => {
-            if (sentence.toLowerCase().includes(word.toLowerCase())) {
-                const soundEffect = soundEffects[word];
-
-                // Split the sentence into parts before and after the word
-                let beforeWord = sentence.split(word)[0].trim();
-                let afterWord = sentence.split(word)[1].trim();
-
-                // Queue parts before and after the sound effect separately
-                if (beforeWord.trim()) {
-                    parts.push({ text: beforeWord, speaker: speakerSelect.value, order: sentenceCounter++ });
-                }
-
-                // Queue the sound effect separately with its order, placed after the part before it
-                soundEffectQueue.push({ soundEffect, order: sentenceCounter++ });
-
-                if (afterWord.trim()) {
-                    parts.push({ text: afterWord, speaker: speakerSelect.value, order: sentenceCounter++ });
-                }
-
-                processed = true;
+            if (sentence.includes(word)) {
+                sentenceWithSFX.push({
+                    sentence: sentence,
+                    index: idx,
+                    sfx: soundEffects[word],  // Attach the sound effect
+                });
             }
         });
-
-        // If no sound effect was added, just push the whole sentence
-        if (!processed) {
-            parts.push({ text: sentence, speaker: speakerSelect.value, order: sentenceCounter++ });
-        }
-
-        // Add processed parts to the sentence queue
-        processedSentences.push(...parts);
     });
 
-    // Sort all parts by their order to maintain the correct sequence
-    processedSentences.sort((a, b) => a.order - b.order);
+    // Prepare the output lines for sending
+    let lines = [];
+    let tempSentence = '';
+    const speakerSelect = document.getElementById('speakerSelect');
 
-    // Now process and play the audio
-    if (audioQueue.length > 0) {
-        const queryParams = processedSentences.map(part => `lines[]=${encodeURIComponent(JSON.stringify(part))}`).join('&');
+    sentenceWithSFX.forEach(({ sentence, index, sfx }) => {
+        // When building the sentences, insert SFX at the right location
+        const selectedSpeaker = speakerSelect.value;
+        const lineContent = sentence.replace(/choke/g, `[SFX: ${sfx}]`);  // Replace target words with SFX
+
+        if (tempSentence.length + lineContent.length < 72) {
+            tempSentence += ' ' + lineContent.trim();
+        } else {
+            if (tempSentence.trim().length > 0) {
+                lines.push({ text: tempSentence, speaker: selectedSpeaker });
+            }
+            tempSentence = lineContent.trim(); // Start a new sentence
+        }
+    });
+
+    // Ensure the last sentence is added
+    if (tempSentence.trim().length > 0) {
+        const selectedSpeaker = speakerSelect.value;
+        lines.push({ text: tempSentence, speaker: selectedSpeaker });
+    }
+
+    console.log('Final lines to speak:', lines);
+
+    if (lines.length > 0) {
+        // Build query parameters
+        const queryParams = lines.map(line => `lines[]=${encodeURIComponent(JSON.stringify(line))}`).join('&');
+        console.log("Query Params:", queryParams);  // Log query params to verify
         const eventSource = new EventSource(`https://tts1.botbridgeai.net/generate_voice_stream?${queryParams}`);
 
-        let isPlaying = false;
+        let audioQueue = [];  // Queue to store audio sources
+        let isPlaying = false; // Flag to check if audio is playing
+        let retryCount = 0;   // Retry counter
+
+        const MAX_RETRIES = 5; // Max number of retries before giving up
+        const RETRY_DELAY = 2000; // Delay between retries in ms
+        const PAUSE_DURATION = 500; // Pause duration between clips (in milliseconds)
+
+        // Create a single audio element to play clips one after the other
         const audioElement = document.createElement('audio');
         audioElement.controls = true;
         document.getElementById('audioPlayersContainer').appendChild(audioElement);
 
-        // Play audio in order
+        // Function to play next audio in the queue with a pause in between
         function playNextAudio() {
             if (audioQueue.length > 0 && !isPlaying) {
-                console.log("Current Audio Queue:", audioQueue);  // Log the audio queue before playing
-                const nextAudioSrc = audioQueue.shift();  // Remove the next audio item from the queue
-
-                // Check if it's a valid audio source (string, base64, etc.)
-                if (nextAudioSrc && nextAudioSrc.startsWith("data:")) {
-                    audioElement.src = nextAudioSrc;  // If it's a base64 encoded audio, set it as the source
-                } else if (nextAudioSrc && nextAudioSrc.endsWith(".mp3")) {
-                    audioElement.src = nextAudioSrc;  // If it's a valid URL (MP3 or WAV), set it as the source
-                }
-
-                isPlaying = true;  // Set the flag to indicate audio is playing
+                const nextAudioSrc = audioQueue.shift();  // Get next audio source from the queue
+                audioElement.src = nextAudioSrc;  // Set the new audio source
+                isPlaying = true;
                 audioElement.play();  // Play the audio
             }
         }
 
         eventSource.onmessage = function(event) {
             try {
-                const data = event.data.trim();
-                if (data.length === 0) return;
+                const data = JSON.parse(event.data); // Parse the JSON response
 
-                let parsedData;
-                try {
-                    parsedData = JSON.parse(data);
-                } catch (jsonError) {
-                    console.error('Error parsing JSON:', jsonError);
-                    return;
-                }
+                if (data.audio) {
+                    // Add the new audio source to the queue
+                    audioQueue.push(data.audio);
 
-                if (parsedData.audio) {
-                    // If audio is available in the response, queue it
-                    audioQueue.push(parsedData.audio);
+                    // If no audio is playing, start playing the first one
                     playNextAudio();
-                } else if (parsedData.error) {
-                    console.error('Error in audio generation:', parsedData.error);
-                } else if (parsedData.end) {
+
+                    // Reset retry counter once the audio is successfully received
+                    retryCount = 0;
+                } else if (data.error) {
+                    document.getElementById('generateMessage').innerText = data.error;
+                } else if (data.end) {
                     console.log("Audio generation complete.");
-                    eventSource.close();
+                    eventSource.close();  // Close the EventSource connection when done
                 }
             } catch (e) {
-                console.error('General error:', e);
+                console.error('Error parsing event data:', e);
+                document.getElementById('generateMessage').innerText = 'Error processing the voice generation data.';
+
+                // Retry logic if error occurs
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
+                    setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+                } else {
+                    document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                    eventSource.close();
+                }
             }
         };
 
+        eventSource.onerror = function(error) {
+            console.error('Error in SSE:', error);
+            document.getElementById('generateMessage').innerText = 'Error generating voice';
+
+            // Retry logic on error
+            if (retryCount < MAX_RETRIES) {
+                retryCount++;
+                console.log(`Retrying... Attempt ${retryCount} of ${MAX_RETRIES}`);
+                setTimeout(() => eventSource.dispatchEvent(new Event('message')), RETRY_DELAY);
+            } else {
+                document.getElementById('generateMessage').innerText = 'Max retry attempts reached. Please try again later.';
+                eventSource.close();
+            }
+        };
+
+        // When audio finishes playing, check if there's another one in the queue
         audioElement.onended = function() {
             isPlaying = false;
+
+            // Add a pause before playing the next audio clip
             setTimeout(function() {
-                playNextAudio();
-            }, 500); // Pause for a bit before the next audio plays
+                playNextAudio();  // Play the next audio clip in the queue after the pause
+            }, PAUSE_DURATION);
         };
     }
 }
-
 
 
 
