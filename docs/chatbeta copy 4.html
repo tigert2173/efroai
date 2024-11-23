@@ -638,12 +638,11 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     }
 
     try {
-        // Construct the direct URL
-        const url = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(objectKey)}`;
+        // Fetch the pre-signed URL for the image
+        const response = await fetch(`http://localhost:3000/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+        if (!response.ok) throw new Error('Error generating URL.');
 
-        // Test the URL by trying to fetch the image
-        const response = await fetch(url, { method: 'HEAD' });
-        if (!response.ok) throw new Error('Error accessing the image. Make sure the object is public.');
+        const { url } = await response.json();
 
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
