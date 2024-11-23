@@ -639,7 +639,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
     try {
         // Fetch the pre-signed URL for the image
-        const response = await fetch(`http://efroai.net:8089/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
+        const response = await fetch(`http://74.208.164.101:8089/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
