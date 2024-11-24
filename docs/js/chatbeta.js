@@ -1339,7 +1339,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
         updateArrowStates();
-
+        
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -1399,6 +1399,7 @@ function navigateBotMessages(direction) {
 }
 
 function updateArrowStates() {
+    console.log("updating arrow states");
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
     const rightArrow = document.querySelector('.nav-arrows:last-of-type');
 
