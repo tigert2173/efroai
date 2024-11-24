@@ -137,30 +137,6 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
- /* Wrapper for responsive ad container */
-.responsive-ad-container {
-    width: 100%;
-    max-width: 728px; /* Maximum width */
-    margin: 0 auto; /* Center the container horizontally */
-    position: relative;
-    padding-top: 12.3%; /* Aspect ratio (90 / 728) x 100 for the height */
-    box-sizing: border-box; /* Ensure padding does not affect the container's width */
-}
-
-.responsive-ad {
-    position: absolute; /* Position the ad absolutely within the container */
-    top: 0;
-    left: 0;
-    width: 100%; /* Take the full width of the container */
-    height: 100%; /* Take the full height of the container */
-    display: block; /* Ensure it's a block-level element */
-}
-
-
-
-
-
-
           </style>
     </styles>
 </head>
@@ -257,6 +233,7 @@
     </header>
     <div id="main-content">
 
+        <div id="main-content">
             <!-- Ad container that scales with the content -->
             <div id="juicy-ad-container" class="responsive-ad-container">
                 <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
@@ -265,57 +242,19 @@
                     (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
                 </script>
             </div>
-        <script>
- window.addEventListener('resize', function() {
-    adjustAdSize();
-});
+        </div>
+        <div id="main-content">
+            <!-- Ad container that scales with the content -->
+            <div id="juicy-ad-container" class="responsive-ad-container">
+                <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+                <ins id="1073770" class="responsive-ad" data-width="364" data-height="45"></ins>
+                <script type="text/javascript" data-cfasync="false" async>
+                    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+                </script>
+            </div>
+        </div>
+        
 
-function adjustAdSize() {
-    const ad = document.getElementById('1073770');
-    const adContainer = document.getElementById('juicy-ad-container');
-
-    if (!ad || !adContainer) return;
-
-    const containerWidth = adContainer.offsetWidth; // Get the container's width
-
-    // Define the base width and height (original size of the ad)
-    const baseWidth = 728;
-    const baseHeight = 90;
-
-    // Calculate the aspect ratio (width / height)
-    const aspectRatio = baseWidth / baseHeight;
-
-    // Calculate new width and height based on the container's width
-    let newWidth = containerWidth;
-    let newHeight = newWidth / aspectRatio;
-
-    // Apply minimum size limits (if necessary)
-    if (newWidth < 320) {
-        newWidth = 320;  // Minimum width
-        newHeight = newWidth / aspectRatio;
-    }
-
-    // Apply maximum size (ensure it does not exceed the original size)
-    if (newWidth > baseWidth) {
-        newWidth = baseWidth;
-        newHeight = newWidth / aspectRatio;
-    }
-
-    // Set the new width and height on the ad container
-    ad.setAttribute('data-width', newWidth);
-    ad.setAttribute('data-height', newHeight);
-
-    // Reload the ad to reflect the changes (if needed)
-    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
-}
-
-// Initial call to set size on page load
-adjustAdSize();
-
-// Additional call after resizing
-window.addEventListener('resize', adjustAdSize);
-
-        </script>
 
         <div id="chat-container">
         </div>
