@@ -80,8 +80,6 @@ function loadCharacters() {
         })
         .catch(error => console.error('Error fetching characters:', error));
 }
-
-
 function displayCharacters(characters, searchQuery) {
     const characterGrid = document.getElementById('character-grid');
 
@@ -93,8 +91,9 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-       // Simply check if the character name or description matches the search query
-       const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery); {
+        // Simply check if the character name or description matches the search query
+        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery);
+        if (matchesSearch) {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -139,8 +138,6 @@ function displayCharacters(characters, searchQuery) {
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         const imageUrl = img.getAttribute('data-src'); // Get the image URL from the data-src attribute
-
-                        console.log(`Loading image from: ${imageUrl}`);
 
                         // Fetch the image only when the card is in view
                         fetch(imageUrl, {
@@ -191,34 +188,30 @@ function displayCharacters(characters, searchQuery) {
             // Append the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
+        }
+    });
 
-         // Check if ads should be displayed
-if (!adExempt) {
+    // Check if ads should be displayed after characters are loaded
     let adLoading = false; // Track if an ad is currently loading
-    if (cardCounter >= nextAdInterval && !adLoading) {
-        adLoading = true;
+    if (!adExempt) {
+        if (cardCounter >= nextAdInterval && !adLoading) {
+            adLoading = true;
 
-        // Create an ad container only if it doesn't already exist
-        const existingAdContainer = document.querySelector('.ad-container');
-        if (!existingAdContainer) {
-            // Create a new ad container
+            // Create an ad container for Adsterra banner
             const adContainer = document.createElement('div');
             adContainer.className = 'ad-container';
 
-            // Create a div for Adsterra to render the ad into (ID must match the Adsterra script's target)
             const adDiv = document.createElement('div');
-            adDiv.id = 'container-7c80b8064dd18a028f4297f82a0c8ca4'; // Ensure the ID matches Adsterra's ID
-
-            // Append the div to the ad container
+            adDiv.id = 'container-7c80b8064dd18a028f4297f82a0c8ca4'; // Adsterra container ID
             adContainer.appendChild(adDiv);
 
-            // Load the Adsterra script asynchronously
+            // Load the Adsterra script
             const adScript = document.createElement('script');
             adScript.async = true;
             adScript.setAttribute('data-cfasync', 'false');
             adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
 
-            // Append the script to the body (Adsterra will handle the ad rendering)
+            // Append the script to the body
             document.body.appendChild(adScript);
 
             // Append the ad container to the character grid
@@ -226,16 +219,11 @@ if (!adExempt) {
 
             // Update the next ad interval
             nextAdInterval = cardCounter + getRandomAdInterval();
-        }
 
-        // Reset the loading flag after the ad has been added
-        adLoading = false;
+            // Reset adLoading flag after ad loads
+            adLoading = false;
+        }
     }
-}
-
-        }
-
-    });
 }
 
 
