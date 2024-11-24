@@ -196,18 +196,22 @@ function displayCharacters(characters, searchQuery) {
                 let adLoading = false; // Track if an ad is currently loading
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true;
+                    console.log("Loading ad..."); // Log when the ad starts loading
             
                     // Create an ad container
                     const adContainer = document.createElement('div');
                     adContainer.className = 'ad-container';
+                    console.log("Created ad container"); // Log ad container creation
             
                     // Generate a unique ID for each ad container
                     const uniqueAdId = 'container-' + cardCounter; // Use cardCounter or any unique identifier
                     const adDiv = document.createElement('div');
                     adDiv.id = uniqueAdId; // Set unique ID for each ad div
+                    console.log("Created ad div with ID: " + uniqueAdId); // Log ad div creation
             
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
+                    console.log("Appended ad div to ad container"); // Log append operation
             
                     // Load the Adsterra script asynchronously only once
                     const adScript = document.createElement('script');
@@ -216,6 +220,7 @@ function displayCharacters(characters, searchQuery) {
                     adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
             
                     adScript.onload = function () {
+                        console.log("Ad script loaded successfully");
                         if (window.AdProvider) {
                             window.AdProvider.push({ "serve": {} });
                             console.log("Ad loaded successfully");
@@ -235,12 +240,15 @@ function displayCharacters(characters, searchQuery) {
             
                     // Append the script to the body (Adsterra will handle the ad rendering)
                     document.body.appendChild(adScript);
+                    console.log("Ad script appended to body");
             
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);
+                    console.log("Ad container appended to character grid");
             
                     // Update the next ad interval
                     nextAdInterval = cardCounter + getRandomAdInterval();
+                    console.log("Next ad interval set to: " + nextAdInterval);
                 }
             }
                     }
