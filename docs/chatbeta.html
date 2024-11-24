@@ -4,9 +4,11 @@
 <head>
     <audio id="christmas-music">
         <source src="christmas_jingle.mp3" type="audio/mpeg">
+        </source>
     </audio>
     <audio id="santa-voice">
         <source src="ho_ho_ho.mp3" type="audio/mpeg">
+        </source>
     </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,7 +76,7 @@
                         <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
                         <div class="dropdown-content">
                             <a href="documentation.html">Documentation</a>
-                            <a href="updates.html">Updates & Features</a>
+                            <a href="updates.html">Updates &amp; Features</a>
                             <a href="contact.html">Contact</a>
                         </div>
                     </li>
@@ -94,7 +96,7 @@
                     <span class="bar"></span>
                 </div>
             </div>
-            </div>
+
         </nav>
     </header>
     <!-- Audio Players for Each Generated Clip -->
@@ -191,7 +193,8 @@
         <div id="speed-indicator-container">
             <div id="speed-indicator" class="speed-indicator"></div>
         </div>
-        <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
+        <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span>
+        </div>
         <!-- New button for 13B model page -->
         <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
         <button id="model8B-button" onclick="goToModel8B()">Back to Text Only</button>
@@ -235,13 +238,13 @@
             <option value="Lidiya Szekeres">Lidiya Szekeres</option>
             <option value="Chandra MacFarland">Chandra MacFarland</option>
             <option value="Szofi Granger">Szofi Granger</option>
-            <option value="Camilla Holmström">Camilla Holmström</option>
+            <option value="Camilla Holmstr&ouml;m">Camilla Holmstr&ouml;m</option>
             <option value="Lilya Stainthorpe">Lilya Stainthorpe</option>
             <option value="Zofija Kendrick">Zofija Kendrick</option>
             <option value="Narelle Moon">Narelle Moon</option>
             <option value="Barbora MacLean">Barbora MacLean</option>
             <option value="Alexandra Hisakawa">Alexandra Hisakawa</option>
-            <option value="Alma María">Alma María</option>
+            <option value="Alma Mar&iacute;a">Alma Mar&iacute;a</option>
             <option value="Rosemary Okafor">Rosemary Okafor</option>
             <option value="Ige Behringer">Ige Behringer</option>
             <option value="Filip Traverse">Filip Traverse</option>
@@ -249,7 +252,7 @@
             <option value="Wulf Carlevaro">Wulf Carlevaro</option>
             <option value="Aaron Dreschner">Aaron Dreschner</option>
             <option value="Kumar Dahl">Kumar Dahl</option>
-            <option value="Eugenio Mataracı">Eugenio Mataracı</option>
+            <option value="Eugenio Matarac&#305;">Eugenio Matarac&#305;</option>
             <option value="Ferran Simen">Ferran Simen</option>
             <option value="Xavier Hayasaka">Xavier Hayasaka</option>
             <option value="Luis Moray">Luis Moray</option>
@@ -266,7 +269,7 @@
         </script>
         <button id="save-button">Save Chat</button>
         <button id="download-button">Download Chat as JSON</button>
-        <input type="file" id="upload-input" style="display:none;" />
+        <input type="file" id="upload-input" style="display:none;">
         <button id="upload-button">Upload Chat</button>
         <div id="saved-chats">
             <h2 style="text-align: center;">Saved Chats</h2>
@@ -288,12 +291,12 @@
             </div>
             <!-- Negative Prompt dropdown menu -->
             <select id="negativePrompt">
-                <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs &amp; Repetition)</option>
                 <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
                 <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
                 <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
                 <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
-                <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs &amp; Repetition)</option>
                 <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
             </select>
             <script src="js/scripts/chat/negativeprompt.js"></script>
@@ -328,10 +331,10 @@
             <br>
             <label for="systemParameters">Parameters:</label>
             <select id="systemParameters">
-                <option value="Ethereal Winds">𝐄𝐭𝐡𝐞𝐫𝐞𝐚𝐥 𝐖𝐢𝐧𝐝𝐬 - 𝘈 𝘴𝘰𝘧𝘵 𝘣𝘳𝘦𝘦𝘻𝘦 𝘵𝘩𝘢𝘵 𝘯𝘶𝘳𝘵𝘶𝘳𝘦𝘴 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘪𝘵𝘺, 𝘪𝘥𝘦𝘢𝘭 𝘧𝘰𝘳 𝘴𝘦𝘳𝘦𝘯𝘦 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨</option>
-                <option value="AetherFume">𝐀𝐞𝐭𝐡𝐞𝐫𝐅𝐮𝐦𝐞 - 𝘈𝘯 𝘪𝘯𝘷𝘪𝘨𝘰𝘳𝘢𝘵𝘪𝘯𝘨 𝘧𝘰𝘳𝘤𝘦 𝘵𝘩𝘢𝘵 𝘱𝘳𝘰𝘱𝘦𝘭𝘴 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨 𝘧𝘰𝘳𝘸𝘢𝘳𝘥, 𝘪𝘯𝘷𝘪𝘵𝘪𝘯𝘨 𝘯𝘦𝘸 𝘪𝘥𝘦𝘢𝘴 𝘢𝘯𝘥 𝘢𝘥𝘷𝘦𝘯𝘵𝘶𝘳𝘦𝘴</option>
-                <option value="Nebula Drift">𝐍𝐞𝐛𝐮𝐥𝐚 𝐃𝐫𝐢𝐟𝐭 - 𝘌𝘮𝘣𝘳𝘢𝘤𝘦 𝘵𝘩𝘦 𝘦𝘵𝘩𝘦𝘳 𝘰𝘧 𝘯𝘦𝘣𝘶𝘭𝘢𝘳 𝘨𝘢𝘴𝘦𝘴, 𝘶𝘯𝘭𝘦𝘢𝘴𝘩 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘦 𝘢𝘯𝘴𝘸𝘦𝘳𝘴 𝘧𝘳𝘰𝘮 𝘥𝘦𝘦𝘱 𝘴𝘱𝘢𝘤𝘦</option>
-                <option value="Chaos Catalyst">𝐂𝐡𝐚𝐨𝐬 𝐂𝐚𝐭𝐚𝐥𝐲𝐬𝐭 - 𝘈 𝘧𝘰𝘳𝘤𝘦𝘧𝘶𝘭 𝘥𝘪𝘴𝘳𝘶𝘱𝘵𝘪𝘰𝘯 𝘮𝘰𝘥𝘦 𝘵𝘰 𝘣𝘳𝘦𝘢𝘬 𝘤𝘺𝘤𝘭𝘦𝘴 𝘰𝘧 𝘳𝘦𝘱𝘦𝘵𝘪𝘵𝘪𝘷𝘦 𝘭𝘰𝘰𝘱𝘴, 𝘧𝘰𝘳𝘤𝘪𝘯𝘨 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘶𝘯𝘦𝘹𝘱𝘦𝘤𝘵𝘦𝘥 𝘰𝘶𝘵𝘱𝘶𝘵.</option>
+                <option value="Ethereal Winds">&#119812;&#119853;&#119841;&#119838;&#119851;&#119838;&#119834;&#119845; &#119830;&#119842;&#119847;&#119837;&#119852; - &#120328; &#120372;&#120368;&#120359;&#120373; &#120355;&#120371;&#120358;&#120358;&#120379;&#120358; &#120373;&#120361;&#120354;&#120373; &#120367;&#120374;&#120371;&#120373;&#120374;&#120371;&#120358;&#120372; &#120356;&#120371;&#120358;&#120354;&#120373;&#120362;&#120375;&#120362;&#120373;&#120378;, &#120362;&#120357;&#120358;&#120354;&#120365; &#120359;&#120368;&#120371; &#120372;&#120358;&#120371;&#120358;&#120367;&#120358; &#120372;&#120373;&#120368;&#120371;&#120378;&#120373;&#120358;&#120365;&#120365;&#120362;&#120367;&#120360;</option>
+                <option value="AetherFume">&#119808;&#119838;&#119853;&#119841;&#119838;&#119851;&#119813;&#119854;&#119846;&#119838; - &#120328;&#120367; &#120362;&#120367;&#120375;&#120362;&#120360;&#120368;&#120371;&#120354;&#120373;&#120362;&#120367;&#120360; &#120359;&#120368;&#120371;&#120356;&#120358; &#120373;&#120361;&#120354;&#120373; &#120369;&#120371;&#120368;&#120369;&#120358;&#120365;&#120372; &#120372;&#120373;&#120368;&#120371;&#120378;&#120373;&#120358;&#120365;&#120365;&#120362;&#120367;&#120360; &#120359;&#120368;&#120371;&#120376;&#120354;&#120371;&#120357;, &#120362;&#120367;&#120375;&#120362;&#120373;&#120362;&#120367;&#120360; &#120367;&#120358;&#120376; &#120362;&#120357;&#120358;&#120354;&#120372; &#120354;&#120367;&#120357; &#120354;&#120357;&#120375;&#120358;&#120367;&#120373;&#120374;&#120371;&#120358;&#120372;</option>
+                <option value="Nebula Drift">&#119821;&#119838;&#119835;&#119854;&#119845;&#119834; &#119811;&#119851;&#119842;&#119839;&#119853; - &#120332;&#120366;&#120355;&#120371;&#120354;&#120356;&#120358; &#120373;&#120361;&#120358; &#120358;&#120373;&#120361;&#120358;&#120371; &#120368;&#120359; &#120367;&#120358;&#120355;&#120374;&#120365;&#120354;&#120371; &#120360;&#120354;&#120372;&#120358;&#120372;, &#120374;&#120367;&#120365;&#120358;&#120354;&#120372;&#120361; &#120375;&#120354;&#120371;&#120362;&#120358;&#120357; &#120354;&#120367;&#120357; &#120356;&#120371;&#120358;&#120354;&#120373;&#120362;&#120375;&#120358; &#120354;&#120367;&#120372;&#120376;&#120358;&#120371;&#120372; &#120359;&#120371;&#120368;&#120366; &#120357;&#120358;&#120358;&#120369; &#120372;&#120369;&#120354;&#120356;&#120358;</option>
+                <option value="Chaos Catalyst">&#119810;&#119841;&#119834;&#119848;&#119852; &#119810;&#119834;&#119853;&#119834;&#119845;&#119858;&#119852;&#119853; - &#120328; &#120359;&#120368;&#120371;&#120356;&#120358;&#120359;&#120374;&#120365; &#120357;&#120362;&#120372;&#120371;&#120374;&#120369;&#120373;&#120362;&#120368;&#120367; &#120366;&#120368;&#120357;&#120358; &#120373;&#120368; &#120355;&#120371;&#120358;&#120354;&#120364; &#120356;&#120378;&#120356;&#120365;&#120358;&#120372; &#120368;&#120359; &#120371;&#120358;&#120369;&#120358;&#120373;&#120362;&#120373;&#120362;&#120375;&#120358; &#120365;&#120368;&#120368;&#120369;&#120372;, &#120359;&#120368;&#120371;&#120356;&#120362;&#120367;&#120360; &#120375;&#120354;&#120371;&#120362;&#120358;&#120357; &#120354;&#120367;&#120357; &#120374;&#120367;&#120358;&#120377;&#120369;&#120358;&#120356;&#120373;&#120358;&#120357; &#120368;&#120374;&#120373;&#120369;&#120374;&#120373;.</option>
                 <option value="Llama 3 Default">Llama 3 Default</option>
                 <option value="Creative Boost">Creative Boost</option>
                 <option value="Yodayo Default">Yodayo Default</option>
