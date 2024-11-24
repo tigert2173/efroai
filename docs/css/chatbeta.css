@@ -596,7 +596,7 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container {
-        display: flex; /* Enable flexbox for input and buttons */
+        display: flex; /* Enable flexbox for input and button */
         flex-direction: row; /* Keep input and send button inline */
         align-items: center; /* Vertically center the items */
         width: 100%; /* Full width */
@@ -604,7 +604,7 @@ input[type="checkbox"]:not(:checked) + label {
 
     #input-container textarea {
         width: 70%; /* Adjust width of the textarea on mobile */
-        margin-right: 10px; /* Space between input and button */
+        margin-right: 10px; /* Space between input and send button */
         box-sizing: border-box; /* Prevent overflow */
     }
 
@@ -619,7 +619,8 @@ input[type="checkbox"]:not(:checked) + label {
         cursor: pointer;
     }
 
-    #regenerate-button {
+    /* Move the Regenerate button to a new line below */
+    #input-container button + button {
         width: 100%; /* Make regenerate button take full width */
         margin-top: 10px; /* Add space between the send and regenerate button */
         padding: 10px; /* Add padding */
