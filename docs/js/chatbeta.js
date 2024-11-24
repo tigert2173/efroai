@@ -1379,8 +1379,27 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.closest('.message'); // Find the closest message element (header or content area)
-    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element inside the message
+    // Log the button and its parent to understand the structure
+    console.log('Button:', button);
+    
+    // Find the closest '.message' or whatever structure you have
+    const messageElement = button.closest('.message'); 
+    console.log('Message Element:', messageElement);
+    
+    // If no message element found, log an error and return early
+    if (!messageElement) {
+        console.error('Message element not found!');
+        return;
+    }
+    
+    const messageContentElement = messageElement.querySelector('.message-content'); 
+    console.log('Message Content Element:', messageContentElement);
+    
+    if (!messageContentElement) {
+        console.error('Message content not found!');
+        return;
+    }
+
     const currentContent = messageContentElement.innerHTML;
 
     // Replace the message content with a textarea for inline editing
