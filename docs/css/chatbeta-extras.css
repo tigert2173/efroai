@@ -96,7 +96,7 @@ img {
 button:disabled {
     background-color: #cccccc; /* Gray background to indicate disabled state */
     cursor: not-allowed; /* Show a "not-allowed" cursor */
-    opacity: 0.5; /* Reduce opacity to indicate the button is inactive */
+    opacity: 0.6; /* Reduce opacity to indicate the button is inactive */
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
 }
 
@@ -157,11 +157,4 @@ button.cooldown span {
     100% {
         transform: rotate(360deg);
     }
-}
-
-
-/* Countdown shrinking animation */
-@keyframes countdown-shrink {
-    0% { font-size: 20px; }
-    100% { font-size: 24px; }
 }
