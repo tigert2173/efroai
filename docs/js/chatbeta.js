@@ -1254,7 +1254,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
-        <span class="message-content">${sanitizedContent}</span>
+            <span class="message-content">${sanitizedContent}</span>
 
         `;
         }
@@ -1315,26 +1315,26 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         `;
         chatContainer.appendChild(messageElement);
 
-        if (sender !== 'assistant') {
-        const messageHeader = document.createElement('div');
+        // if (sender !== 'assistant') {
+        // const messageHeader = document.createElement('div');
         
-        messageHeader.className = 'message-header';
-        messageHeader.innerHTML = `
-         <div class="message-header">
-            <div class="nav-arrows-container">
-            </div>
-            <div class="buttons">
-                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
-            </div>
-        </div>
+        // messageHeader.className = 'message-header';
+        // messageHeader.innerHTML = `
+        //  <div class="message-header">
+        //     <div class="nav-arrows-container">
+        //     </div>
+        //     <div class="buttons">
+        //         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        //         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        //         <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        //     </div>
+        // </div>
 
-        `;
+        // `;
     
-        // Append message header to the chat container
-        chatContainer.insertBefore(messageHeader, messageElement);
-        }
+        // // Append message header to the chat container
+        // chatContainer.insertBefore(messageHeader, messageElement);
+        // }
     }
 
     if (isFinal || sender === 'user') {
