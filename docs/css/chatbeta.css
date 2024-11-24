@@ -770,6 +770,7 @@ input[type="checkbox"]:not(:checked) + label {
     align-items: center; /* Vertically align items */
     justify-content: space-between; /* Space between the two groups (arrows and buttons) */
     width: 100%; /* Ensure full width for the header */
+    flex-wrap: wrap; /* Allow items to wrap if necessary */
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -793,7 +794,7 @@ input[type="checkbox"]:not(:checked) + label {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between buttons */
-    flex-wrap: wrap; /* Allow buttons to wrap to a new row if needed */
+    flex-wrap: wrap; /* Allow buttons to wrap onto a new row if necessary */
     justify-content: flex-end; /* Align buttons to the right */
 }
 
@@ -857,7 +858,23 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Media query for mobile devices */
+/* Mobile-specific styles */
+@media (max-width: 600px) {
+    /* Shrink buttons and make them stack on smaller screens */
+    .buttons {
+        justify-content: space-between; /* Ensure buttons are spaced out */
+        gap: 5px; /* Reduce gap between buttons on mobile */
+        width: 100%; /* Full width for the buttons container */
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .audio-btn {
+        flex: 1 1 30%; /* Make each button take up at least 30% of the width, but allow shrinking */
+        font-size: 12px; /* Smaller font size for mobile */
+        padding: 6px 10px; /* Adjust padding to fit on smaller screens */
+    }
+}
 
 .likes-count {
     position: absolute;
