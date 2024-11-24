@@ -599,10 +599,7 @@ async function sendMessage() {
     const countdownInterval = setInterval(() => {
         countdownTime -= 1;
         countdownElement.innerText = countdownTime;
-
-        // Shrink the font size dynamically as the countdown goes
-        countdownElement.style.fontSize = `${14 + (8 - countdownTime)}px`;
-
+        
         if (countdownTime <= 0) {
             clearInterval(countdownInterval);
             countdownElement.remove(); // Remove countdown element once time is up
