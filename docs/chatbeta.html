@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <audio id="christmas-music">
         <source src="christmas_jingle.mp3" type="audio/mpeg">
-      </audio>
-      
-      <audio id="santa-voice">
+    </audio>
+    <audio id="santa-voice">
         <source src="ho_ho_ho.mp3" type="audio/mpeg">
-      </audio>
+    </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - EFRO.AI</title>
@@ -15,133 +15,116 @@
     <link rel="stylesheet" href="css/menu2.0.css">
     <link rel="stylesheet" href="css/chatbeta-extras.css">
 </head>
+
 <body>
-
-<!-- Header -->
-<header>
-    <nav class="navbar">
-        <div class="left-content">
-            <a href="/" class="logo"> <!-- Make the logo clickable -->
-            <div class="logo">
-                <img src="logo.png" alt=" ">
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="left-content">
+                <a href="/" class="logo">
+                    <!-- Make the logo clickable -->
+                    <div class="logo">
+                        <img src="logo.png" alt=" ">
+                    </div>
+                </a>
+                <a href="/" class="text">
+                    <div class="text">
+                        <span class="letter letter-1">E</span>
+                        <span class="letter letter-2">F</span>
+                        <span class="letter letter-3">R</span>
+                        <span class="letter letter-4">O</span>
+                        <span class="letter letter-5">.</span>
+                        <span class="letter letter-6">A</span>
+                        <span class="letter letter-7">I</span>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/" class="text">
-            <div class="text">
-                <span class="letter letter-1">E</span>
-                <span class="letter letter-2">F</span>
-                <span class="letter letter-3">R</span>
-                <span class="letter letter-4">O</span>
-                <span class="letter letter-5">.</span>
-                <span class="letter letter-6">A</span>
-                <span class="letter letter-7">I</span>
+            <div class="right-content">
+                <ul class="nav-links">
+                    <!-- Characters with dropdown -->
+                    <li class="dropdown">
+                        <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Characters Hub</a>
+                            <a href="editor.html">Upload Character</a>
+                            <a href="mycharacters.html">My Characters</a>
+                        </div>
+                    </li>
+                    <!-- Community with dropdown -->
+                    <li class="dropdown">
+                        <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                        <div class="dropdown-content">
+                            <a href="rules.html">Rules</a>
+                            <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                            <a href="/EFROTales/">Old Stories Page</a>
+                            <a href="contribute.html" class="nav-btn">Contribute</a>
+                        </div>
+                    </li>
+                    <!-- Account with dropdown -->
+                    <li class="dropdown">
+                        <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                        <div class="dropdown-content">
+                            <a href="myaccount.html">Account</a>
+                            <a href="mylikes.html">My Likes</a>
+                            <a href="login.html">Login</a>
+                        </div>
+                    </li>
+                    <!-- Help with dropdown -->
+                    <li class="dropdown">
+                        <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                        <div class="dropdown-content">
+                            <a href="documentation.html">Documentation</a>
+                            <a href="updates.html">Updates & Features</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                </ul>
+                <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
+                <!-- Popup Modal for Login Warning -->
+                <div id="login-popup" class="login-popup">
+                    <div class="popup-content">
+                        <p>You must be logged in to chat. Please log in or register to continue.</p>
+                        <button id="login-btn">Log In</button>
+                    </div>
+                </div>
+                <!-- Hamburger menu for mobile view -->
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
             </div>
-        </a>
-        </div>
-<div class="right-content">
-    <ul class="nav-links">
-        <!-- Characters with dropdown -->
-        <li class="dropdown">
-            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-            <div class="dropdown-content">
-                <a href="index.html">Characters Hub</a>
-                <a href="editor.html">Upload Character</a>
-                <a href="mycharacters.html">My Characters</a>
             </div>
-        </li>
-
-        <!-- Community with dropdown -->
-        <li class="dropdown">
-            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-            <div class="dropdown-content">
-                <a href="rules.html">Rules</a>
-                <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                <a href="/EFROTales/">Old Stories Page</a>
-                <a href="contribute.html" class="nav-btn">Contribute</a>
-            </div>
-        </li>
-
-        <!-- Account with dropdown -->
-        <li class="dropdown">
-            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-            <div class="dropdown-content">
-                <a href="myaccount.html">Account</a>
-                <a href="mylikes.html">My Likes</a>
-                <a href="login.html">Login</a>
-            </div>
-        </li>
-
-        <!-- Help with dropdown -->
-        <li class="dropdown">
-            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-            <div class="dropdown-content">
-                <a href="documentation.html">Documentation</a>
-                <a href="updates.html">Updates & Features</a>
-                <a href="contact.html">Contact</a>
-            </div>
-        </li>
-
-    </ul>     
-
-        <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
-
-        <!-- Popup Modal for Login Warning -->
-        <div id="login-popup" class="login-popup">
-            <div class="popup-content">
-                <p>You must be logged in to chat. Please log in or register to continue.</p>
-                <button id="login-btn">Log In</button>
-            </div>
-        </div>
-        
-        <!-- Hamburger menu for mobile view -->
-    <div class="hamburger" onclick="toggleMenu()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>  
-    </div>
-</div>
-
-</nav>
-</header>
-     <!-- Audio Players for Each Generated Clip -->
-        <div id="audioPlayersContainer"></div>
+        </nav>
+    </header>
+    <!-- Audio Players for Each Generated Clip -->
+    <div id="audioPlayersContainer"></div>
     <div id="main-content">
         <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
-
         <div id="imageMenu" class="menu-container">
             <form id="fetchImageForm">
                 <label for="bucketName">Bucket Name:</label>
                 <input type="text" id="bucketName" name="bucketName" required>
-            
                 <label for="objectKey">Object Key:</label>
                 <input type="text" id="objectKey" name="objectKey" required>
-            
                 <label>Image Position:</label>
                 <label for="background">
-                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background
-                </label>
+                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background </label>
                 <label for="left">
-                    <input type="radio" id="left" name="imagePosition" value="left"> Left
-                </label>
+                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
                 <label for="right">
-                    <input type="radio" id="right" name="imagePosition" value="right"> Right
-                </label>
-            
+                    <input type="radio" id="right" name="imagePosition" value="right"> Right </label>
                 <button type="submit">Fetch Image</button>
             </form>
-            
             <label for="opacity-slider">Opacity:</label>
             <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
         <script src="js/scripts/chat/fetchbgimages.js"></script>
-    
-           <!-- Button to manually trigger saving chat messages -->
-            <button id="save-chat-button">Save Chat</button>
-
+        <!-- Button to manually trigger saving chat messages -->
+        <button id="save-chat-button">Save Chat</button>
         <!-- Parent container for chat and images -->
         <div id="chat-wrapper">
-            <div id="left-image-container"></div>  <!-- Left side image container -->
+            <div id="left-image-container"></div> <!-- Left side image container -->
             <div id="chat-container">
                 <!-- Chat content will go here -->
             </div>
@@ -154,154 +137,145 @@
                 <button onclick="regenerateMessage()">Regenerate Message</button>
             </div>
         </div>
-
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-
         <div class="desktop-only-ad">
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-        <ins class="eas6a97888e17" data-zoneid="5461572"></ins> 
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+            <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+            <ins class="eas6a97888e17" data-zoneid="5461572"></ins>
+            <script>
+                (AdProvider = window.AdProvider || []).push({
+                    "serve": {}
+                });
+            </script>
         </div>
-
         <div class="desktop-only-ad">
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-        <ins class="eas6a97888e17" data-zoneid="5461574"></ins> 
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+            <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+            <ins class="eas6a97888e17" data-zoneid="5461574"></ins>
+            <script>
+                (AdProvider = window.AdProvider || []).push({
+                    "serve": {}
+                });
+            </script>
         </div>
-        
-
         <label for="enter-send" class="send-on-enter-label">
             <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
             <span class="checkbox-text">Send on Enter</span>
         </label>
-
         <script>
-        // Function to handle Enter key behavior
-        let sendOnEnter = true;
-        
-        function toggleEnterKey() {
-            sendOnEnter = document.getElementById("enter-send").checked;
-        }
-        
-        // Listen for the Enter key to send the message if enabled
-        document.getElementById("user-input").addEventListener("keydown", function(event) {
-            if (sendOnEnter && event.key === "Enter") {
-                event.preventDefault(); // Prevent default behavior (new line)
-                sendMessage();
+            // Function to handle Enter key behavior
+            let sendOnEnter = true;
+
+            function toggleEnterKey() {
+                sendOnEnter = document.getElementById("enter-send").checked;
             }
-        });
-        
-        // Function to simulate sending the message
-        let sendButtonDisabled = false;
+            // Listen for the Enter key to send the message if enabled
+            document.getElementById("user-input").addEventListener("keydown", function(event) {
+                if (sendOnEnter && event.key === "Enter") {
+                    event.preventDefault(); // Prevent default behavior (new line)
+                    sendMessage();
+                }
+            });
+            // Function to simulate sending the message
+            let sendButtonDisabled = false;
         </script>
-        
-           <!-- For ads mobile -->
-          <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-            <ins class="eas6a97888e38" data-zoneid="5461560"></ins> 
-            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        <!-- For ads mobile -->
+        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+        <ins class="eas6a97888e38" data-zoneid="5461560"></ins>
+        <script>
+            (AdProvider = window.AdProvider || []).push({
+                "serve": {}
+            });
+        </script>
+        <div class="status">
+            <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
+        </div>
+        <div id="speed-indicator-container">
+            <div id="speed-indicator" class="speed-indicator"></div>
+        </div>
+        <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
+        <!-- New button for 13B model page -->
+        <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
+        <button id="model8B-button" onclick="goToModel8B()">Back to Text Only</button>
+        <select id="speakerSelect">
+            <option value="Claribel Dervla">Claribel Dervla</option>
+            <option value="Daisy Studious">Daisy Studious</option>
+            <option value="Gracie Wise">Gracie Wise</option>
+            <option value="Tammie Ema">Tammie Ema</option>
+            <option value="Alison Dietlinde">Alison Dietlinde</option>
+            <option value="Ana Florence">Ana Florence</option>
+            <option value="Annmarie Nele">Annmarie Nele</option>
+            <option value="Asya Anara">Asya Anara</option>
+            <option value="Brenda Stern">Brenda Stern</option>
+            <option value="Gitta Nikolina">Gitta Nikolina</option>
+            <option value="Henriette Usha">Henriette Usha</option>
+            <option value="Sofia Hellen">Sofia Hellen</option>
+            <option value="Tammy Grit">Tammy Grit</option>
+            <option value="Tanja Adelina">Tanja Adelina</option>
+            <option value="Vjollca Johnnie">Vjollca Johnnie</option>
+            <option value="Andrew Chipper">Andrew Chipper</option>
+            <option value="Badr Odhiambo">Badr Odhiambo</option>
+            <option value="Dionisio Schuyler">Dionisio Schuyler</option>
+            <option value="Royston Min">Royston Min</option>
+            <option value="Viktor Eka">Viktor Eka</option>
+            <option value="Abrahan Mack">Abrahan Mack</option>
+            <option value="Adde Michal">Adde Michal</option>
+            <option value="Baldur Sanjin">Baldur Sanjin</option>
+            <option value="Craig Gutsy">Craig Gutsy</option>
+            <option value="Damien Black">Damien Black</option>
+            <option value="Gilberto Mathias">Gilberto Mathias</option>
+            <option value="Ilkin Urbano">Ilkin Urbano</option>
+            <option value="Kazuhiko Atallah">Kazuhiko Atallah</option>
+            <option value="Ludvig Milivoj">Ludvig Milivoj</option>
+            <option value="Suad Qasim">Suad Qasim</option>
+            <option value="Torcull Diarmuid">Torcull Diarmuid</option>
+            <option value="Viktor Menelaos">Viktor Menelaos</option>
+            <option value="Zacharie Aimilios">Zacharie Aimilios</option>
+            <option value="Nova Hogarth">Nova Hogarth</option>
+            <option value="Maja Ruoho">Maja Ruoho</option>
+            <option value="Uta Obando">Uta Obando</option>
+            <option value="Lidiya Szekeres">Lidiya Szekeres</option>
+            <option value="Chandra MacFarland">Chandra MacFarland</option>
+            <option value="Szofi Granger">Szofi Granger</option>
+            <option value="Camilla Holmström">Camilla Holmström</option>
+            <option value="Lilya Stainthorpe">Lilya Stainthorpe</option>
+            <option value="Zofija Kendrick">Zofija Kendrick</option>
+            <option value="Narelle Moon">Narelle Moon</option>
+            <option value="Barbora MacLean">Barbora MacLean</option>
+            <option value="Alexandra Hisakawa">Alexandra Hisakawa</option>
+            <option value="Alma María">Alma María</option>
+            <option value="Rosemary Okafor">Rosemary Okafor</option>
+            <option value="Ige Behringer">Ige Behringer</option>
+            <option value="Filip Traverse">Filip Traverse</option>
+            <option value="Damjan Chapman">Damjan Chapman</option>
+            <option value="Wulf Carlevaro">Wulf Carlevaro</option>
+            <option value="Aaron Dreschner">Aaron Dreschner</option>
+            <option value="Kumar Dahl">Kumar Dahl</option>
+            <option value="Eugenio Mataracı">Eugenio Mataracı</option>
+            <option value="Ferran Simen">Ferran Simen</option>
+            <option value="Xavier Hayasaka">Xavier Hayasaka</option>
+            <option value="Luis Moray">Luis Moray</option>
+            <option value="Marcos Rudaski">Marcos Rudaski</option>
+        </select>
+        <script>
+            function goToModel13B() {
+                window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
+            }
 
-            <div class="status">
-                <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
-            </div>
-            <div id="speed-indicator-container">
-                <div id="speed-indicator" class="speed-indicator"></div>
-            </div>
-            <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
-       
-            <!-- New button for 13B model page -->
-            <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
-            <button id="model8B-button" onclick="goToModel8B()">Back to Text Only</button>
-
-            <select id="speakerSelect">
-                <option value="Claribel Dervla">Claribel Dervla</option>
-                <option value="Daisy Studious">Daisy Studious</option>
-                <option value="Gracie Wise">Gracie Wise</option>
-                <option value="Tammie Ema">Tammie Ema</option>
-                <option value="Alison Dietlinde">Alison Dietlinde</option>
-                <option value="Ana Florence">Ana Florence</option>
-                <option value="Annmarie Nele">Annmarie Nele</option>
-                <option value="Asya Anara">Asya Anara</option>
-                <option value="Brenda Stern">Brenda Stern</option>
-                <option value="Gitta Nikolina">Gitta Nikolina</option>
-                <option value="Henriette Usha">Henriette Usha</option>
-                <option value="Sofia Hellen">Sofia Hellen</option>
-                <option value="Tammy Grit">Tammy Grit</option>
-                <option value="Tanja Adelina">Tanja Adelina</option>
-                <option value="Vjollca Johnnie">Vjollca Johnnie</option>
-                <option value="Andrew Chipper">Andrew Chipper</option>
-                <option value="Badr Odhiambo">Badr Odhiambo</option>
-                <option value="Dionisio Schuyler">Dionisio Schuyler</option>
-                <option value="Royston Min">Royston Min</option>
-                <option value="Viktor Eka">Viktor Eka</option>
-                <option value="Abrahan Mack">Abrahan Mack</option>
-                <option value="Adde Michal">Adde Michal</option>
-                <option value="Baldur Sanjin">Baldur Sanjin</option>
-                <option value="Craig Gutsy">Craig Gutsy</option>
-                <option value="Damien Black">Damien Black</option>
-                <option value="Gilberto Mathias">Gilberto Mathias</option>
-                <option value="Ilkin Urbano">Ilkin Urbano</option>
-                <option value="Kazuhiko Atallah">Kazuhiko Atallah</option>
-                <option value="Ludvig Milivoj">Ludvig Milivoj</option>
-                <option value="Suad Qasim">Suad Qasim</option>
-                <option value="Torcull Diarmuid">Torcull Diarmuid</option>
-                <option value="Viktor Menelaos">Viktor Menelaos</option>
-                <option value="Zacharie Aimilios">Zacharie Aimilios</option>
-                <option value="Nova Hogarth">Nova Hogarth</option>
-                <option value="Maja Ruoho">Maja Ruoho</option>
-                <option value="Uta Obando">Uta Obando</option>
-                <option value="Lidiya Szekeres">Lidiya Szekeres</option>
-                <option value="Chandra MacFarland">Chandra MacFarland</option>
-                <option value="Szofi Granger">Szofi Granger</option>
-                <option value="Camilla Holmström">Camilla Holmström</option>
-                <option value="Lilya Stainthorpe">Lilya Stainthorpe</option>
-                <option value="Zofija Kendrick">Zofija Kendrick</option>
-                <option value="Narelle Moon">Narelle Moon</option>
-                <option value="Barbora MacLean">Barbora MacLean</option>
-                <option value="Alexandra Hisakawa">Alexandra Hisakawa</option>
-                <option value="Alma María">Alma María</option>
-                <option value="Rosemary Okafor">Rosemary Okafor</option>
-                <option value="Ige Behringer">Ige Behringer</option>
-                <option value="Filip Traverse">Filip Traverse</option>
-                <option value="Damjan Chapman">Damjan Chapman</option>
-                <option value="Wulf Carlevaro">Wulf Carlevaro</option>
-                <option value="Aaron Dreschner">Aaron Dreschner</option>
-                <option value="Kumar Dahl">Kumar Dahl</option>
-                <option value="Eugenio Mataracı">Eugenio Mataracı</option>
-                <option value="Ferran Simen">Ferran Simen</option>
-                <option value="Xavier Hayasaka">Xavier Hayasaka</option>
-                <option value="Luis Moray">Luis Moray</option>
-                <option value="Marcos Rudaski">Marcos Rudaski</option>
-            </select>
-            
-
-            <script>
-                function goToModel13B() {
-                    window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
-                }
-                function goToModel8B() {
-                    window.location.href = 'chat.html'; // replace with the actual URL for the 13B model page
-                }
-            </script>
-
-            <button id="save-button">Save Chat</button>
-
+            function goToModel8B() {
+                window.location.href = 'chat.html'; // replace with the actual URL for the 13B model page
+            }
+        </script>
+        <button id="save-button">Save Chat</button>
         <button id="download-button">Download Chat as JSON</button>
         <input type="file" id="upload-input" style="display:none;" />
         <button id="upload-button">Upload Chat</button>
-        
-      
         <div id="saved-chats">
             <h2 style="text-align: center;">Saved Chats</h2>
-            <div id="storage-notice" style="color: red; font-weight: bold;">
-                Note: Clearing your browser storage will delete all saved chats!
-            </div>    
+            <div id="storage-notice" style="color: red; font-weight: bold;"> Note: Clearing your browser storage will delete all saved chats! </div>
             <ul id="saved-chats-list"></ul>
         </div>
-        
         <div id="popup-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black; z-index: 1000;">
             <!-- The delete button will be dynamically added here -->
         </div>
-        
         <div id="settings-container">
             <div class="setting">
                 <label for="user-name">Your Name: </label>
@@ -312,27 +286,23 @@
                 <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
             </div>
-
-    <!-- Negative Prompt dropdown menu -->
-    <select id="negativePrompt">
-        <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
-        <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-        <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
-        <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
-        <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
-
-    </select>
-    <script src="js/scripts/chat/negativeprompt.js"></script>
-
-                <!-- <label for="negativePrompt">Negative Prompt:</label>
+            <!-- Negative Prompt dropdown menu -->
+            <select id="negativePrompt">
+                <option id="optionV3" selected>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+                <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+                <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
+                <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
+                <option id="optionV4">[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
+            </select>
+            <script src="js/scripts/chat/negativeprompt.js"></script>
+            <!-- <label for="negativePrompt">Negative Prompt:</label>
             <select id="negativePrompt">
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
                 <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
             </select> -->
-
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
@@ -344,7 +314,6 @@
                 <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle...">Emotional Support v2</option>
                 <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about...">Educational v2</option>
                 <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}...">Advice v2</option>
-
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
                 <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
                 <option value="Write {{char}} next response.">Default</option>
@@ -379,8 +348,7 @@
             <br>
             <br>
             <label for="use-example-dialogue">
-                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta)
-            </label>            
+                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta) </label>
             <div class="setting hidden">
                 <label for="persona">Character Persona</label>
                 <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
@@ -401,25 +369,22 @@
                 <label for="exampledialogue">Example Dialogue</label>
                 <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
             </div>
- 
-                <div class="setting">
-                    <label for="model">Select Model</label>
-                    <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
-                        <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
-                        <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
-                        <!-- Other options will be populated here -->
-                    </select>
-                    <div id="tooltip" class="tooltip"></div>
-                </div>
+            <div class="setting">
+                <label for="model">Select Model</label>
+                <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
+                    <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
+                    <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
+                    <!-- Other options will be populated here -->
+                </select>
+                <div id="tooltip" class="tooltip"></div>
+            </div>
             <div class="setting">
                 <a class="add-api" target="_blank" href="https://api.botbridge.net/dashboard.html">Add API</a>
             </div>
-
             <div class="setting">
                 <label for="temperature">Temperature</label>
                 <input type="number" id="temperature" min="0.2" max="2" step="0.1" value="1.10">
             </div>
-
             <div class="setting">
                 <label for="messages-sent">Messages Sent</label>
                 <input type="text" id="messages-sent" value="0" readonly>
@@ -436,44 +401,33 @@
             <label for="show-expert">Show Expert Settings:</label>
             <input type="checkbox" id="show-expert" onchange="toggleExpertSettings()">
         </div>
-        
         <!-- Expert Settings Section -->
         <div id="expert-settings">
-            <h3>Expert Settings</h3>   
-            <label for="appendNegativePrompt">
-                Append Negative Prompt (Makes it more aggressive)
-            </label>
-            <input type="checkbox" id="appendNegativePrompt"> 
-            <br>        
+            <h3>Expert Settings</h3>
+            <label for="appendNegativePrompt"> Append Negative Prompt (Makes it more aggressive) </label>
+            <input type="checkbox" id="appendNegativePrompt">
+            <br>
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
-
-        
-        
             <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
             <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
-            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span>
-            chat
-            <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
+            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span> chat <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
             <input type="range" id="ESettingsRandomNUMsentencesSlider" min="1" max="500" step="1" value="200">
             <span id="ESettingsRandomNUMsentencesValue">Select 200 Random Sentences</span>
             <br><i>Older Content has a lower and lower chance of being selected</i>
             <label for="setting2">Expert Setting 2:</label>
             <input type="text" id="setting2"><br><br>
-
             <label for="setting3">Expert Setting 3:</label>
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-
     <script src="js/scripts/chat/settings.js"></script>
 </body>
-
 <!-- Websocket -->
 <script src="js/scripts/websocket/socket.js"></script>
-
 <script src="js/scripts/chat/savechatremotely.js"></script>
 <script src="js/chatbeta.js"></script>
 <script src="js/scripts/checkbot.js"></script>
 <script src="js/menu.js" defer></script>
+
 </html>
