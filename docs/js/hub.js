@@ -202,20 +202,24 @@ function displayCharacters(characters, searchQuery) {
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-container';
         
-                // Create the ad iframe dynamically
-                const iframe = document.createElement('iframe');
-                iframe.src = "https://www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js";
-                iframe.width = "300";
-                iframe.height = "250";
-                iframe.frameBorder = "0"; // Ensure iframe borders are removed
-                iframe.scrolling = "no";  // Prevent scrollbars
-                iframe.style.border = "none"; // Remove border styling
+                // Create a div to hold the ad (Adsterra will populate this div)
+                const adDiv = document.createElement('div');
+                adDiv.id = "container-7c80b8064dd18a028f4297f82a0c8ca4"; // Set the correct ID for the ad container
         
-                // Append the iframe to the ad container
-                adContainer.appendChild(iframe);
+                // Append the div to the ad container
+                adContainer.appendChild(adDiv);
         
                 // Append the ad container to the character grid
                 characterGrid.appendChild(adContainer);
+        
+                // Load the Adsterra script asynchronously
+                const adScript = document.createElement('script');
+                adScript.async = true;
+                adScript.setAttribute('data-cfasync', 'false');
+                adScript.src = "//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js";
+        
+                // Append the script to the document head or body (Adsterra will handle the ad rendering)
+                document.body.appendChild(adScript);
         
                 // Update the next ad interval
                 nextAdInterval = cardCounter + getRandomAdInterval();
@@ -224,6 +228,7 @@ function displayCharacters(characters, searchQuery) {
                 adLoading = false;
             }
         }
+        
         }
 
     });
