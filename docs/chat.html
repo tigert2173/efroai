@@ -270,7 +270,7 @@
                 </script>
             </div>
         <script>
-window.addEventListener('resize', function() {
+ window.addEventListener('resize', function() {
     adjustAdSize();
 });
 
@@ -382,31 +382,12 @@ window.addEventListener('resize', adjustAdSize);
         }
         
         // Listen for the Enter key to send the message if enabled
-        document.getElementBy    /* Make sure the ad container is responsive */
-.responsive-ad-container {
-    width: 100%;
-    max-width: 728px; /* Maximum width */
-    margin: 0 auto; /* Centers the ad */
-}
-
-.responsive-ad {
-    width: 100%; /* Ad will take the full width of the container */
-    height: auto; /* Height will scale according to the aspect ratio */
-    display: block; /* Ensures it behaves like a block-level element */
-}
-
-/* Add some breakpoints for better control on mobile and tablets */
-@media (max-width: 768px) {
-    .responsive-ad-container {
-        max-width: 468px; /* Adjust for tablet devices */
-    }
-}
-
-@media (max-width: 480px) {
-    .responsive-ad-container {
-        max-width: 320px; /* Adjust for smaller screens */
-    }
-}
+        document.getElementById("user-input").addEventListener("keydown", function(event) {
+            if (sendOnEnter && event.key === "Enter") {
+                event.preventDefault(); // Prevent default behavior (new line)
+                sendMessage();
+            }
+        });
         
         // Function to simulate sending the message
         let sendButtonDisabled = false;
