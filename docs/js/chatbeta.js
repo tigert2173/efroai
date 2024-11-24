@@ -1373,7 +1373,7 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // The parent element of the button
+    const messageElement = messages[index]; // The parent element of the button
     const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
 
