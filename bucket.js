@@ -122,6 +122,8 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
+let chatSessions = {}; // In-memory storage for chat sessions (replace with a database in production)
+
 // Route to handle chat upload and update
 app.post('/upload-chat', async (req, res) => {
     const { sessionId, userId, characterName, messages, timestamp } = req.body;
@@ -148,6 +150,29 @@ app.post('/upload-chat', async (req, res) => {
         return res.status(200).json({ message: 'Chat saved successfully' });
     }
 });
+
+// Function to find or create a chat session
+function findChatBySessionID(sessionId, userId, characterName, messages, timestamp, res) {
+    // Check if the session already exists
+    if (chatSessions[sessionId]) {
+        // If session exists, update the messages
+        chatSessions[sessionId].messages = messages;
+        chatSessions[sessionId].timestamp = timestamp;
+        console.log(`Updated chat for session: ${sessionId}`);
+        return res.status(200).json({ message: 'Chat updated successfully' });
+    } else {
+        // If session doesn't exist, create a new one
+        chatSessions[sessionId] = {
+            sessionId: sessionId,
+            userId: userId,
+            characterName: characterName,
+            messages: messages,
+            timestamp: timestamp
+        };
+        console.log(`Created new chat session: ${sessionId}`);
+        return res.status(201).json({ message: 'Chat created successfully' });
+    }
+}
 
 // Serve your HTML page
 app.use(express.static('public'));
