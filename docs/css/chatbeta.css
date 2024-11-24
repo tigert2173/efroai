@@ -607,7 +607,7 @@ input[type="checkbox"]:not(:checked) + label {
     #user-input {
         background-color: #2e2e2e; /* Slightly lighter green for the input field */
         color: #f9f9fc;
-        min-width: 200px; /* Remove min-width to fit */
+        width: 80%; /* Remove min-width to fit */
     }
 
     #input-container button {
