@@ -154,8 +154,9 @@ async function loadChat(chat) {
     try {
         const response = await fetch(`https://bucket.efroai.net/download-chat?name=${chat.name}`);
         const chatData = await response.json();
-        
+
         if (chatData && chatData.messages) {
+            console.log('Loaded chat data:', chatData); // Debug log
             messages = []; // Clear current messages array
             clearAllMessages();
 
@@ -178,6 +179,7 @@ async function loadChat(chat) {
     }
 }
 
+
 // Function to close the popup menu
 function closePopup() {
     const popupMenu = document.getElementById('popup-menu');
@@ -188,7 +190,7 @@ function closePopup() {
 // Function to get userID (you need to implement this based on your app's logic)
 function getUserID() {
     // Example: fetch from sessionStorage or localStorage, or pass it via your app's context
-    return localStorage.getItem('userID') || 'defaultUser'; // Fallback to 'defaultUser' if not found
+    return userID;
 }
 // Event listeners for buttons
 document.getElementById('save-button').onclick = saveChat;
