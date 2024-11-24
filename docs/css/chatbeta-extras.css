@@ -101,7 +101,7 @@ button:disabled {
 }
 
 /* Countdown spinner styles */
-button.cooldown .countdown-text {
+button.cooldown .cooldown .countdown-text {
     position: absolute;
     top: 50%;
     left: 50%;
