@@ -121,17 +121,15 @@ button.cooldown .countdown-text {
 
 
 button.cooldown:before {
-    content: '';
-    position: absolute; /* Position absolutely within the button */
-    top: 50%;
-    left: 50%;
-    width: 15px; /* Set width for spinner */
-    height: 15px; /* Set height for spinner */
-    border: 3px solid #fff;
-    border-top: 3px solid #32CD32; /* Green spinner color */
+    border: 6px solid #333333; /* Dark gray background */
+    border-top: 6px solid #34db39; /* Green for the top of the spinner */
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    transform: translate(-0%, -0%); /* Center the spinner */
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
 }
 
 /* Spin animation for the cooldown indicator */
