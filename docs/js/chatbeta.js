@@ -1300,26 +1300,22 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
        
         `;
         chatContainer.appendChild(messageElement);
+        const messageHeader = document.createElement('div');
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        `;
+
+        // Append message header to the chat container
+        chatContainer.insertBefore(messageHeader, messageElement);
     }
 
     if (isFinal || sender === 'user'){
         // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
-
-        if (sender === 'user') {
-            // Create a new message header with navigation arrows
-            const messageHeader = document.createElement('div');
-            messageHeader.className = 'message-header';
-            messageHeader.innerHTML = `
-            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
-            `;
-
-            // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, messageElement);
-        }
         // Update arrow states
         }
     // // Scroll to the bottom of the chat container
