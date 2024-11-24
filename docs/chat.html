@@ -21,8 +21,8 @@
             .desktop-only-ad {
                 position: fixed;
                 display: none;
-                top: 25%;
-                transform: translateY(-25%);
+                top: 30%;
+                transform: translateY(-30%);
                 z-index: 9999; /* Make sure the ads are above other content */
             }
 
@@ -137,6 +137,26 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
+        /* Make the JuicyAds banner responsive */
+.responsive-ad {
+    width: 100%;
+    max-width: 728px; /* Maximum width for desktop view */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center align */
+}
+
+@media (max-width: 768px) {
+    .responsive-ad {
+        max-width: 468px; /* Adjust for tablets or smaller devices */
+    }
+}
+
+@media (max-width: 480px) {
+    .responsive-ad {
+        max-width: 320px; /* Adjust for mobile devices */
+    }
+}
           </style>
     </styles>
 </head>
@@ -232,10 +252,12 @@
 </nav>
     </header>
     <div id="main-content">
-        <!-- JuicyAds v3.0 -->
-<!-- <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-<ins id="1073770" data-width="728" data-height="90"></ins>
-<script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script> -->
+       <!-- JuicyAds v3.0 -->
+<script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+<ins id="1073770" class="responsive-ad" data-width="728" data-height="90"></ins>
+<script type="text/javascript" data-cfasync="false" async>
+    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+</script>
 
 <!--JuicyAds END -->
         <div id="chat-container">

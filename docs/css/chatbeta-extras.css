@@ -2,8 +2,8 @@
  .desktop-only-ad {
     position: fixed;
     display: none;
-    top: 25%;
-    transform: translateY(-25%);
+    top: 30%;
+    transform: translateY(-30%);
     z-index: 9999; /* Make sure the ads are above other content */
 }
 
