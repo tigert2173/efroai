@@ -185,6 +185,11 @@ function closePopup() {
     document.removeEventListener('click', closePopup);
 }
 
+// Function to get userID (you need to implement this based on your app's logic)
+function getUserID() {
+    // Example: fetch from sessionStorage or localStorage, or pass it via your app's context
+    return localStorage.getItem('userID') || 'defaultUser'; // Fallback to 'defaultUser' if not found
+}
 // Event listeners for buttons
 document.getElementById('save-button').onclick = saveChat;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
