@@ -882,7 +882,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 350px) {
     /* Further shrink navigation arrows */
     .nav-arrows {
         font-size: 1em; /* Smaller arrows */
