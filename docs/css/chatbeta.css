@@ -854,7 +854,7 @@ button:disabled {
 }
 
 /* Responsive adjustments for shrinking font and button size */
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     /* Shrink navigation arrows */
     .nav-arrows {
         font-size: 1.2em; /* Smaller font size for arrows */
@@ -872,7 +872,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 200px) {
+@media (max-width: 350px) {
     /* Further shrink navigation arrows */
     .nav-arrows {
         font-size: 1em; /* Even smaller arrows */
