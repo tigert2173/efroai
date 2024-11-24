@@ -793,9 +793,8 @@ input[type="checkbox"]:not(:checked) + label {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between buttons */
-    flex-wrap: nowrap; /* Prevent buttons from wrapping to the next row */
     justify-content: flex-end; /* Align buttons to the right */
-    width: auto; /* Allow the buttons container to adjust based on its content */
+    flex-wrap: nowrap; /* Ensure buttons stay in a single row */
 }
 
 /* Edit Button Styles */
@@ -811,6 +810,7 @@ input[type="checkbox"]:not(:checked) + label {
     flex-shrink: 1; /* Allow the button to shrink */
 }
 
+/* Edit Button Hover Effect */
 .edit-btn:hover {
     background-color: #0056b3; /* Darker blue on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -829,6 +829,7 @@ input[type="checkbox"]:not(:checked) + label {
     flex-shrink: 1; /* Allow the button to shrink */
 }
 
+/* Delete Button Hover Effect */
 .delete-btn:hover {
     background-color: #c9302c; /* Darker red on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -847,6 +848,7 @@ input[type="checkbox"]:not(:checked) + label {
     flex-shrink: 1; /* Allow the button to shrink */
 }
 
+/* Audio Button Hover Effect */
 .audio-btn:hover {
     background-color: #31b0d5; /* Darker blue on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -860,19 +862,18 @@ button:disabled {
 
 /* Mobile-specific styles */
 @media (max-width: 600px) {
-    /* Ensure buttons stay in one row and shrink proportionally */
+    /* Adjust button styles for smaller screens */
     .buttons {
-        justify-content: flex-end; /* Keep buttons aligned to the right */
-        width: 100%; /* Use full width for the container */
-        gap: 5px; /* Reduce the gap between buttons on mobile */
+        gap: 5px; /* Reduced gap between buttons */
+        width: 100%; /* Full width for the buttons container */
     }
 
     .edit-btn,
     .delete-btn,
     .audio-btn {
-        flex-shrink: 1; /* Allow the buttons to shrink */
         font-size: 12px; /* Smaller font size for mobile */
         padding: 6px 10px; /* Adjust padding to fit on smaller screens */
+        flex: 1 1 30%; /* Ensure buttons take up equal space */
     }
 }
 
