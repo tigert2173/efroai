@@ -1368,9 +1368,17 @@ function deleteMessage(index) {
     // Remove the message from the messages array
     messages.splice(index, 1);
 
-    // Remove the corresponding message element from the UI
+    // Remove the corresponding message element and header from the UI
     const messageElements = document.querySelectorAll('.message');
-    messageElements[index].remove();
+    const messageHeaderElements = document.querySelectorAll('.message-header');
+
+    // Remove both message body and header
+    if (messageElements[index]) {
+        messageElements[index].remove();
+    }
+    if (messageHeaderElements[index]) {
+        messageHeaderElements[index].remove();
+    }
 
     // Update the botMessages array if the message was from the assistant
     if (messages[index]?.role === 'assistant') {
@@ -1381,6 +1389,7 @@ function deleteMessage(index) {
     updateMessageIndexes();
     console.log('Updated messages array after deletion:', messages);
 }
+
 
 function updateMessageIndexes() {
     // Update the message indexes after deletion
