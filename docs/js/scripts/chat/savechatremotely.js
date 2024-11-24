@@ -12,6 +12,10 @@ async function saveChat() {
         const formData = new FormData();
         formData.append('file', blob, `${chatName}-${new Date().toISOString()}.json`);
         
+        // Assuming userID is stored in a variable or session
+        const userID = getUserID();  // Add function or logic to retrieve userID
+        formData.append('userId', userID);
+        
         try {
             // Send the data to the server
             const response = await fetch('https://bucket.efroai.net/upload-chat', {
@@ -32,6 +36,7 @@ async function saveChat() {
         alert('Chat name is required.');
     }
 }
+
 
 // Function to update the list of saved chats from the bucket
 async function updateSavedChatsList() {

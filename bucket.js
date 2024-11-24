@@ -127,7 +127,7 @@ app.post('/upload-chat', upload.single('file'), async (req, res) => {
     }
 
     const { originalname, buffer, mimetype } = req.file;
-    const userId = req.body.userId || 'defaultUser'; // You can set this dynamically based on the logged-in user
+    const userId = req.body.userId || 'defaultUser'; // Ensure userId is passed in the form data
     const timestamp = new Date().toISOString(); // Timestamp for versioning
 
     const params = {
@@ -145,21 +145,22 @@ app.post('/upload-chat', upload.single('file'), async (req, res) => {
     }
 });
 
+
 // Route to list saved chats
+// Route to list all saved chats for a user
 app.get('/list-chats', async (req, res) => {
     const userId = req.query.userId || 'defaultUser'; // Get userId from query parameter or default to 'defaultUser'
-
+    
     const params = {
         Bucket: 'efai-savedchats',
-        Prefix: `chats/${userId}/`,
+        Prefix: `chats/${userId}/`, // List only files in the user's folder
     };
 
     try {
-        const data = await s3.listObjectsV2(params).promise();
-        const chats = data.Contents.map((file) => ({
+        const response = await s3.listObjectsV2(params).promise();
+        const chats = response.Contents.map((file) => ({
+            name: file.Key.replace(`chats/${userId}/`, '').split('-')[0], // Extract chat name from file name
             key: file.Key,
-            size: file.Size,
-            lastModified: file.LastModified,
         }));
         res.json(chats);
     } catch (error) {
@@ -169,37 +170,30 @@ app.get('/list-chats', async (req, res) => {
 
 // Route to download a specific chat
 app.get('/download-chat', async (req, res) => {
-    const { userId, chatKey } = req.query;
-
-    if (!userId || !chatKey) {
-        return res.status(400).json({ error: 'Missing userId or chatKey' });
-    }
+    const { name, userId } = req.query; // Get name and userId from query params
+    const chatKey = `chats/${userId}/${name}-${req.query.timestamp}.json`; // Construct S3 key
 
     const params = {
         Bucket: 'efai-savedchats',
-        Key: `chats/${userId}/${chatKey}`,
+        Key: chatKey,
     };
 
     try {
         const data = await s3.getObject(params).promise();
-        res.setHeader('Content-Type', data.ContentType);
-        res.send(data.Body);
+        res.json(JSON.parse(data.Body.toString())); // Send back chat content as JSON
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Route to delete a specific chat
+// Route to delete a chat
 app.delete('/delete-chat', async (req, res) => {
-    const { userId, chatKey } = req.body;
-
-    if (!userId || !chatKey) {
-        return res.status(400).json({ error: 'Missing userId or chatKey' });
-    }
+    const { name, userId } = req.query; // Get name and userId from query params
+    const chatKey = `chats/${userId}/${name}.json`; // Construct S3 key for deletion
 
     const params = {
         Bucket: 'efai-savedchats',
-        Key: `chats/${userId}/${chatKey}`,
+        Key: chatKey,
     };
 
     try {
