@@ -194,32 +194,47 @@ function displayCharacters(characters, searchQuery) {
 
           // Check if ads should be displayed
           if (!adExempt) {
+            let adLoading = false; // Track if an ad is currently loading
             if (cardCounter >= nextAdInterval && !adLoading) {
                 adLoading = true;
-    
+        
                 // Create an ad container
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-container';
-    
-                // Asterra ad code (replacing your original ad provider code)
+        
                 const iframeElement = document.createElement('iframe');
-                iframeElement.src = "https://www.asterra.com/ads/iframe?key=94db35d8412d16e316382264a2f6025b"; // Replace with actual Asterra ad iframe URL
-                iframeElement.width = "300";
-                iframeElement.height = "250";
-                iframeElement.frameborder = "0";
-                iframeElement.scrolling = "no";
+                iframeElement.setAttribute('src', '//www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js');
+                iframeElement.setAttribute('width', '300');
+                iframeElement.setAttribute('height', '250');
+                iframeElement.setAttribute('frameborder', '0');
+                iframeElement.setAttribute('scrolling', 'no');
+                
                 adContainer.appendChild(iframeElement);
-    
+        
                 // Append the ad container to the character grid
-                const characterGrid = document.getElementById('character-grid');
                 characterGrid.appendChild(adContainer);
-    
+        
                 // Update the next ad interval
                 nextAdInterval = cardCounter + getRandomAdInterval();
+                
+                // Adsterra ad invocation script
+                const scriptElement = document.createElement('script');
+                scriptElement.type = 'text/javascript';
+                scriptElement.text = `
+                    atOptions = {
+                        'key' : '94db35d8412d16e316382264a2f6025b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                `;
+                adContainer.appendChild(scriptElement);
+        
+                adLoading = false; // Reset flag after ad loads
             }
         }
-            }
-
+        }
     });
 }
 
