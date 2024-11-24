@@ -100,24 +100,23 @@ button:disabled {
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
 }
 
-/* Countdown text styling */
+/* Countdown Indicator */
 button.cooldown {
     position: relative;
-    font-size: 14px; /* Smaller font size for countdown */
 }
 
-/* Countdown Text */
-button.cooldown span.countdown {
+button.cooldown .countdown-text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 16px; /* Make countdown text larger */
+    font-size: 14px;
+    color: white;
     font-weight: bold;
-    color: #333;
+    z-index: 2;
 }
 
-/* Optional: Adding a spinner or indicator for cooldown */
+/* Optional: Adding a cooldown spinner (already present) */
 button.cooldown:before {
     content: '';
     position: absolute;
@@ -132,8 +131,14 @@ button.cooldown:before {
     transform: translate(-50%, -50%);
 }
 
-/* Spin animation for the spinner */
+/* Spin animation for the cooldown indicator */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Countdown number shrinking animation */
+@keyframes countdown-shrink {
+    0% { font-size: 14px; }
+    100% { font-size: 20px; }
 }
