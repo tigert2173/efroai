@@ -858,22 +858,6 @@ button:disabled {
 }
 
 /* Media query for mobile devices */
-@media (max-width: 600px) {
-    .message-header {
-        flex-direction: row; /* Stack elements vertically on smaller screens */
-        align-items: flex-start; /* Align items to the left */
-    }
-
-    /* Shrink buttons when on small screens */
-    .buttons {
-        justify-content: flex-start; /* Align buttons to the left on small screens */
-    }
-
-    .buttons button {
-        flex: 1 1 100%; /* Allow buttons to take up full width and shrink */
-        margin-bottom: 5px; /* Space between buttons */
-    }
-}
 
 .likes-count {
     position: absolute;
