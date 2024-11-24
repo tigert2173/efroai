@@ -102,16 +102,12 @@ button:disabled {
 
 /* Cooldown button styles */
 button.cooldown {
-    position: relative;
-    padding: 8px 14px; /* Ensure there's enough space for the spinner */
-    width: 100px; /* You can adjust the button width if needed */
-    height: 40px; /* You can adjust the button height if needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; /* Position relative to contain the absolute spinner and text */
+    padding: 8px 14px; /* Make sure the button has sufficient space */
+    width: auto; /* Ensure button width is based on its content */
 }
 
-/* Countdown Spinner */
+/* Countdown spinner styles */
 button.cooldown .countdown-text {
     position: absolute;
     top: 50%;
@@ -120,29 +116,28 @@ button.cooldown .countdown-text {
     font-size: 14px;
     color: white;
     font-weight: bold;
-    z-index: 2;
-    animation: countdown-shrink 1s ease-in-out forwards;
+    z-index: 2; /* Ensure the text is above the spinner */
 }
 
-/* Cooldown spinner animation */
+/* Spinner styles */
 button.cooldown:before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
+    width: 30px; /* Set width for spinner */
+    height: 30px; /* Set height for spinner */
     border: 3px solid #fff;
     border-top: 3px solid #32CD32; /* Green spinner color */
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%); /* Ensure the spinner is centered */
+    transform: translate(-50%, -50%); /* Ensure spinner is centered */
 }
 
 /* Spin animation for the cooldown indicator */
 @keyframes spin {
-    0% { transform: rotate(0deg) translate(-50%, -50%); }
-    100% { transform: rotate(360deg) translate(-50%, -50%); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Countdown shrinking animation */
