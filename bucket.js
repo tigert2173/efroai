@@ -122,30 +122,30 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
-// Route to upload chat data to S3
+// Route to handle chat upload and update
 app.post('/upload-chat', async (req, res) => {
-    const { userId, characterName, messages, timestamp } = req.body;
+    const { sessionId, userId, characterName, messages, timestamp } = req.body;
 
-    if (!userId || !characterName || !messages) {
-        return res.status(400).json({ error: 'Missing required fields: userId, characterName, messages' });
-    }
+    // Check if the session already exists (e.g., in a database or in-memory store)
+    let existingChat = await findChatBySessionId(sessionId); // Implement this function to query your data source
 
-    // Convert chat messages to JSON string for storage
-    const chatFileContent = JSON.stringify({ characterName, messages });
-
-    // Prepare S3 upload parameters
-    const params = {
-        Bucket: 'efai-savedchats', // Your S3 bucket name
-        Key: `chats/${userId}/${timestamp}-${characterName}.json`, // Folder structure for each user
-        Body: chatFileContent,
-        ContentType: 'application/json',
-    };
-
-    try {
-        const data = await s3.upload(params).promise();
-        res.json({ message: 'Chat uploaded successfully!', data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (existingChat) {
+        // If the chat session exists, update it with the new messages
+        existingChat.messages = messages;
+        existingChat.timestamp = timestamp; // Update the timestamp if necessary
+        await saveChatSession(existingChat); // Implement this function to save updated chat session
+        return res.status(200).json({ message: 'Chat updated successfully' });
+    } else {
+        // If the chat session doesn't exist, create a new one
+        const newChat = {
+            sessionId: sessionId,
+            userId: userId,
+            characterName: characterName,
+            messages: messages,
+            timestamp: timestamp,
+        };
+        await saveChatSession(newChat); // Implement this function to save new chat session
+        return res.status(200).json({ message: 'Chat saved successfully' });
     }
 });
 

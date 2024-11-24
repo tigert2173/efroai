@@ -818,6 +818,8 @@ console.log("RequestData: ", requestData);
     displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
+    // Call the saveChatToBackend function to update the backend with the new message
+    saveChatToBackend(sessionId, username, characterName, messages);
 }
 }
 
