@@ -233,6 +233,7 @@
             <label for="opacity-slider">Opacity:</label>
             <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
+        
         <script>
             // Select the button and the menu container
             const toggleMenuBtn = document.getElementById("toggleMenuBtn");
@@ -244,7 +245,9 @@
             });
 
         </script>        
-        
+           <!-- Button to manually trigger saving chat messages -->
+            <button id="save-chat-button">Save Chat</button>
+
         <!-- Parent container for chat and images -->
         <div id="chat-wrapper">
             <div id="left-image-container"></div>  <!-- Left side image container -->

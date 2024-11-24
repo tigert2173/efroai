@@ -33,3 +33,12 @@ window.addEventListener('beforeunload', (event) => {
         saveChatToBackend(username, characterName, messages);
     }
 });
+    // Event listener for the "Save Chat" button
+    document.getElementById('save-chat-button').addEventListener('click', () => {
+        const username = "user123"; // Example user, replace with actual username
+        const characterName = "CharacterX"; // Replace with actual character name being chatted with
+
+        if (messages && messages.length > 0) {
+            saveChatToBackend(username, characterName, messages);
+        }
+    });
