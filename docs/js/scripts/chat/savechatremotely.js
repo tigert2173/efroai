@@ -8,7 +8,7 @@ async function saveChatToBackend(username, characterName, messages) {
         timestamp: timestamp,
     };
 
-    const response = await fetch('/upload-chat', {
+    const response = await fetch('https://bucket.efroai.net/upload-chat', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
