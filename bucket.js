@@ -121,88 +121,57 @@ app.get('/buckets', async (req, res) => {
 });
 
 // Route to upload a chat file to S3
-app.post('/upload-chat', upload.single('file'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded!' });
+app.post('/upload-chat', upload.single('file'), (req, res) => {
+    const file = req.file;
+    if (!file) {
+        return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const { originalname, buffer, mimetype } = req.file;
-    const userId = req.body.userId || 'defaultUser'; // Ensure userId is passed in the form data
-    const timestamp = new Date().toISOString(); // Timestamp for versioning
+    const filePath = path.join(chatsDir, file.originalname);
+    fs.renameSync(file.path, filePath); // Move file to permanent storage
 
-    const params = {
-        Bucket: 'efai-savedchats', // Your S3 bucket
-        Key: `chats/${userId}/${timestamp}-${originalname}`, // Folder structure for each user
-        Body: buffer,
-        ContentType: mimetype,
-    };
-
-    try {
-        const data = await s3.upload(params).promise();
-        res.json({ message: 'Chat uploaded successfully!', data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    res.status(200).json({ message: 'Chat uploaded successfully' });
 });
 
+// Route to list all chats
+app.get('/list-chats', (req, res) => {
+    fs.readdir(chatsDir, (err, files) => {
+        if (err) return res.status(500).json({ error: 'Error reading chat files' });
 
-// Route to list saved chats
-// Route to list all saved chats for a user
-app.get('/list-chats', async (req, res) => {
-    const userId = req.query.userId || 'defaultUser'; // Get userId from query parameter or default to 'defaultUser'
-    
-    const params = {
-        Bucket: 'efai-savedchats',
-        Prefix: `chats/${userId}/`, // List only files in the user's folder
-    };
+        const chats = files.filter(file => file.endsWith('.json')).map(file => {
+            return { name: file.replace('.json', '') };
+        });
 
-    try {
-        const response = await s3.listObjectsV2(params).promise();
-        const chats = response.Contents.map((file) => ({
-            name: file.Key.replace(`chats/${userId}/`, '').split('-')[0], // Extract chat name from file name
-            key: file.Key,
-        }));
-        res.json(chats);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+        res.status(200).json(chats);
+    });
 });
 
-// Route to download a specific chat
-app.get('/download-chat', async (req, res) => {
-    const { name, userId } = req.query; // Get name and userId from query params
-    const chatKey = `chats/${userId}/${name}-${req.query.timestamp}.json`; // Construct S3 key
+// Route to download a chat
+app.get('/download-chat', (req, res) => {
+    const { name } = req.query;
+    const filePath = path.join(chatsDir, `${name}.json`);
 
-    const params = {
-        Bucket: 'efai-savedchats',
-        Key: chatKey,
-    };
-
-    try {
-        const data = await s3.getObject(params).promise();
-        res.json(JSON.parse(data.Body.toString())); // Send back chat content as JSON
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Chat not found' });
     }
+
+    res.download(filePath);
 });
 
 // Route to delete a chat
-app.delete('/delete-chat', async (req, res) => {
-    const { name, userId } = req.query; // Get name and userId from query params
-    const chatKey = `chats/${userId}/${name}.json`; // Construct S3 key for deletion
+app.delete('/delete-chat', (req, res) => {
+    const { name } = req.query;
+    const filePath = path.join(chatsDir, `${name}.json`);
 
-    const params = {
-        Bucket: 'efai-savedchats',
-        Key: chatKey,
-    };
-
-    try {
-        await s3.deleteObject(params).promise();
-        res.json({ message: 'Chat deleted successfully!' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Chat not found' });
     }
+
+    fs.unlinkSync(filePath); // Delete the file
+
+    res.status(200).json({ message: 'Chat deleted successfully' });
 });
+
 
 // Serve your HTML page
 app.use(express.static('public'));
