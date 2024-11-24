@@ -95,7 +95,7 @@ img {
 /* Cooldown Disabled Button Styles */
 button:disabled {
     background-color: #0a2416 !important; /* Gray background to indicate disabled state */
-    color: rgb(46, 46, 46) !important;
+    color: hsla(0, 0%, 100%, 0.25) !important;
     cursor: not-allowed; /* Show a "not-allowed" cursor */
     opacity: 1; /* Reduce opacity to indicate the button is inactive */
     transition: background-color 0.5s, opacity 0.5s ease; /* Smooth transition */
