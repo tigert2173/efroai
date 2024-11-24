@@ -120,9 +120,13 @@ button.cooldown .countdown-text {
 }
 
 /* Spinner styles */
+button.cooldown {
+    position: relative; /* Ensure button is a positioned container */
+}
+
 button.cooldown:before {
     content: '';
-    position: absolute; /* Use absolute positioning to ensure it is centered relative to the button */
+    position: absolute; /* Position absolutely within the button */
     top: 50%;
     left: 50%;
     width: 30px; /* Set width for spinner */
@@ -131,9 +135,8 @@ button.cooldown:before {
     border-top: 3px solid #32CD32; /* Green spinner color */
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%); /* Ensure spinner is centered */
+    transform: translate(-50%, -50%); /* Center the spinner */
 }
-
 
 /* Spin animation for the cooldown indicator */
 @keyframes spin {
