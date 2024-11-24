@@ -111,6 +111,11 @@ button.cooldown .countdown-text {
     color: white;
     font-weight: bold;
     z-index: 2; /* Ensure the text is above the spinner */
+    position: relative;  /* Ensure button is a positioned container */
+    display: flex;  /* Use flexbox to center content */
+    align-items: center;  /* Vertically center content */
+    justify-content: center;  /* Horizontally center content */
+    padding: 10px 20px;  /* Adjust padding as needed */
 }
 
 
