@@ -1283,6 +1283,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                 `;
             }
 
+            if (isResend) {
+                previousHeader.remove();
+            }
             // Create a new message header with navigation arrows
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
@@ -1315,7 +1318,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         chatContainer.appendChild(messageElement);
         const messageHeader = document.createElement('div');
         
-        if (!isResend) {
         messageHeader.className = 'message-header';
         messageHeader.innerHTML = `
          <div class="message-header">
@@ -1329,7 +1331,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         </div>
 
         `;
-        }
+    
         // Append message header to the chat container
         chatContainer.insertBefore(messageHeader, messageElement);
     }
