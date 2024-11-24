@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 // Load SSL certificates
 const sslOptions = {
-    key: fs.readFileSync('./certs/private.key.pem'), // Path to your private key
-    cert: fs.readFileSync('./certs/domain.cert.pem'), // Path to your certificate
+    key: fs.readFileSync('certs/private.key.pem'), // Path to your private key
+    cert: fs.readFileSync('certs/domain.cert.pem'), // Path to your certificate
 };
 
 // Enable CORS for all routes
