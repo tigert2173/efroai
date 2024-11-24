@@ -193,46 +193,32 @@ function displayCharacters(characters, searchQuery) {
             cardCounter++; // Increment the counter after adding a card
 
           // Check if ads should be displayed
-        // Ad loading logic
-        if (!adExempt) {
-            let adLoading = false; // Track if an ad is currently loading
+          if (!adExempt) {
             if (cardCounter >= nextAdInterval && !adLoading) {
                 adLoading = true;
-
+    
                 // Create an ad container
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-container';
-
-                const insElement = document.createElement('ins');
-                insElement.className = 'eas6a97888e38 ins-animate';
-                insElement.setAttribute('data-zoneid', '5461570');
-                adContainer.appendChild(insElement);
-
-                // Add the first ad script (highperformanceformat)
-                const scriptElement = document.createElement('script');
-                scriptElement.type = 'text/javascript';
-                scriptElement.src = "//www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js";
-                scriptElement.onload = function () {
-                    console.log("Ad loaded successfully");
-                    adLoading = false; // Reset flag after ad loads
-                };
-                scriptElement.onerror = function () {
-                    console.error("Failed to load highperformanceformat ad script");
-                    adLoading = false; // Reset flag on load failure
-                };
-
-                // Append the script to the ad container
-                adContainer.appendChild(scriptElement);
-
+    
+                // Asterra ad code (replacing your original ad provider code)
+                const iframeElement = document.createElement('iframe');
+                iframeElement.src = "https://www.asterra.com/ads/iframe?key=94db35d8412d16e316382264a2f6025b"; // Replace with actual Asterra ad iframe URL
+                iframeElement.width = "300";
+                iframeElement.height = "250";
+                iframeElement.frameborder = "0";
+                iframeElement.scrolling = "no";
+                adContainer.appendChild(iframeElement);
+    
                 // Append the ad container to the character grid
                 const characterGrid = document.getElementById('character-grid');
                 characterGrid.appendChild(adContainer);
-
+    
                 // Update the next ad interval
                 nextAdInterval = cardCounter + getRandomAdInterval();
             }
         }
-     }
+            }
 
     });
 }
