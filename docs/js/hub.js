@@ -202,13 +202,15 @@ function displayCharacters(characters, searchQuery) {
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-container';
         
+                // Adsterra iframe setup (without the invocation script)
                 const iframeElement = document.createElement('iframe');
-                iframeElement.setAttribute('src', '//www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js');
                 iframeElement.setAttribute('width', '300');
                 iframeElement.setAttribute('height', '250');
                 iframeElement.setAttribute('frameborder', '0');
                 iframeElement.setAttribute('scrolling', 'no');
+                iframeElement.setAttribute('src', 'https://www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js');
                 
+                // Append the iframe element to the ad container
                 adContainer.appendChild(iframeElement);
         
                 // Append the ad container to the character grid
@@ -216,24 +218,28 @@ function displayCharacters(characters, searchQuery) {
         
                 // Update the next ad interval
                 nextAdInterval = cardCounter + getRandomAdInterval();
-                
-                // Adsterra ad invocation script
+        
+                // Create and append the script element for Adsterra invocation
                 const scriptElement = document.createElement('script');
                 scriptElement.type = 'text/javascript';
-                scriptElement.text = `
-                    atOptions = {
-                        'key' : '94db35d8412d16e316382264a2f6025b',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                `;
-                adContainer.appendChild(scriptElement);
+                scriptElement.src = 'https://www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js'; // Use HTTPS
+                scriptElement.async = true;
         
-                adLoading = false; // Reset flag after ad loads
+                scriptElement.onload = function() {
+                    console.log('Ad loaded successfully');
+                    adLoading = false; // Reset flag after ad loads
+                };
+        
+                scriptElement.onerror = function() {
+                    console.error('Failed to load Adsterra ad');
+                    adLoading = false; // Reset flag on load failure
+                };
+        
+                // Append the script to the container to load the ad
+                adContainer.appendChild(scriptElement);
             }
         }
+        
         }
     });
 }
