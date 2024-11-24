@@ -764,19 +764,12 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Make sure the arrows are grouped together and placed at the left side */
+/* Adjust the message header to space items correctly */
 .message-header {
     display: flex;
     align-items: center; /* Vertically align items */
-    justify-content: flex-start; /* Align to the left */
-    gap: 0; /* Remove gap between the elements */
-}
-
-/* Button container styles */
-.message-header .buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between buttons */
+    justify-content: space-between; /* Space between the two groups (arrows and buttons) */
+    width: 100%; /* Ensure full width for the header */
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -793,6 +786,13 @@ input[type="checkbox"]:not(:checked) + label {
 .nav-arrows.disabled {
     color: #555;
     cursor: not-allowed;
+}
+
+/* Button container styles for buttons on the right side */
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
 }
 
 /* Edit Button Styles */

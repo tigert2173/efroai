@@ -1280,15 +1280,18 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
             messageHeader.innerHTML = `
-            <div class="nav-arrows-container">
-                <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-                <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            </div>
-            <div class="buttons">
-                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
-            </div>
+          <div class="message-header">
+    <div class="nav-arrows-container">
+        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+    </div>
+    <div class="buttons">
+        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+    </div>
+</div>
+
             `;
 
             // Append message header to the chat container
