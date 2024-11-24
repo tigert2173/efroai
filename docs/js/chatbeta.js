@@ -1271,8 +1271,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                 //previousHeader.remove();
                 previousHeader.innerHTML = `
                  <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
                 `;
             }
 
@@ -1282,9 +1282,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             messageHeader.innerHTML = `
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
             `;
 
             // Append message header to the chat container
@@ -1306,6 +1306,19 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
+            // Create a new message header with navigation arrows
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.innerHTML = `
+            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            `;
+
+            // Append message header to the chat container
+            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         // Update arrow states
         }
     // // Scroll to the bottom of the chat container
