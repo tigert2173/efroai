@@ -120,21 +120,23 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
-// Route to upload a chat file to S3
-app.post('/upload-chat', upload.single('file'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded!' });
+// Route to upload chat data to S3
+app.post('/upload-chat', async (req, res) => {
+    const { userId, characterName, messages, timestamp } = req.body;
+
+    if (!userId || !characterName || !messages) {
+        return res.status(400).json({ error: 'Missing required fields: userId, characterName, messages' });
     }
 
-    const { originalname, buffer, mimetype } = req.file;
-    const userId = req.body.userId || 'defaultUser'; // Ensure userId is passed in the form data
-    const timestamp = new Date().toISOString(); // Timestamp for versioning
+    // Convert chat messages to JSON string for storage
+    const chatFileContent = JSON.stringify({ characterName, messages });
 
+    // Prepare S3 upload parameters
     const params = {
-        Bucket: 'efai-savedchats', // Your S3 bucket
-        Key: `chats/${userId}/${timestamp}-${originalname}`, // Folder structure for each user
-        Body: buffer,
-        ContentType: mimetype,
+        Bucket: 'efai-savedchats', // Your S3 bucket name
+        Key: `chats/${userId}/${timestamp}-${characterName}.json`, // Folder structure for each user
+        Body: chatFileContent,
+        ContentType: 'application/json',
     };
 
     try {
