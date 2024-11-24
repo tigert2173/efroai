@@ -156,7 +156,7 @@ main {
 
 /* Hover Effect */
 .character-card:hover, .recommendation-card:hover {
-    transform: translateX(-10px) translateY(-30px) scale(1.05); /* Lift card up and scale */
+    transform: translateX(-10px) translateY(-15px) scale(1.05); /* Lift card up and scale */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover with increased opacity */
     z-index: 10; /* Ensure it appears above other cards */
 }
