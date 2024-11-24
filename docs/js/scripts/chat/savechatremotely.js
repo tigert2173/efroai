@@ -1,4 +1,5 @@
 let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
+const userID = sessionStorage.getItem('userID'); // Get the current user's ID
 
 // Function to save the current chat
 async function saveChat() {
@@ -13,7 +14,7 @@ async function saveChat() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: 'user123', chat: chatData }), // You can replace 'user123' with the actual user ID
+                body: JSON.stringify({ userId: userID, chat: chatData }), 
             });
 
             const data = await response.json();
