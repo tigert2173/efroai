@@ -137,26 +137,6 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-        /* Make the JuicyAds banner responsive */
-.responsive-ad {
-    width: 100%;
-    max-width: 728px; /* Maximum width for desktop view */
-    height: auto;
-    display: block;
-    margin: 0 auto; /* Center align */
-}
-
-@media (max-width: 768px) {
-    .responsive-ad {
-        max-width: 468px; /* Adjust for tablets or smaller devices */
-    }
-}
-
-@media (max-width: 480px) {
-    .responsive-ad {
-        max-width: 320px; /* Adjust for mobile devices */
-    }
-}
           </style>
     </styles>
 </head>
@@ -251,8 +231,7 @@
 
 </nav>
     </header>
-    <div id="main-content">
-       <!-- JuicyAds v3.0 -->
+    <!-- JuicyAds v3.0 -->
 <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
 <ins id="1073770" class="responsive-ad" data-width="728" data-height="90"></ins>
 <script type="text/javascript" data-cfasync="false" async>
@@ -869,7 +848,40 @@ function hideTooltip() {
     socket.addEventListener('close', (event) => {
         console.log('Disconnected from WebSocket server');
     });
+
     
+    window.addEventListener('resize', function() {
+    adjustAdSize();
+});
+
+function adjustAdSize() {
+    const ad = document.getElementById('1073770');
+    
+    if (!ad) return;
+
+    const viewportWidth = window.innerWidth;
+
+    // Adjust the ad size based on the viewport width
+    if (viewportWidth >= 1024) {
+        // Desktop
+        ad.setAttribute('data-width', '728');
+        ad.setAttribute('data-height', '90');
+    } else if (viewportWidth >= 768) {
+        // Tablet
+        ad.setAttribute('data-width', '468');
+        ad.setAttribute('data-height', '60');
+    } else {
+        // Mobile
+        ad.setAttribute('data-width', '320');
+        ad.setAttribute('data-height', '50');
+    }
+
+    // Reload the ad to reflect the changes
+    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+}
+
+// Call the function initially to adjust size on page load
+adjustAdSize();
 </script>
 
 <script src="js/scripts/chat/savechatlocally.js?v=1"></script>
