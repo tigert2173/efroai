@@ -91,6 +91,7 @@ function displayCharacters(characters, searchQuery) {
 
     let cardCounter = 0; // Counter to keep track of the number of displayed cards
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
+    let adLoading = false; // Track if an ad is currently loading (set this flag outside of the loop)
 
     characters.forEach(character => {
        // Simply check if the character name or description matches the search query
@@ -193,42 +194,47 @@ function displayCharacters(characters, searchQuery) {
             cardCounter++; // Increment the counter after adding a card
 
           // Check if ads should be displayed
-// Check if ads should be displayed
-if (!adExempt) {
-    let adLoading = false; // Track if an ad is currently loading
-    if (cardCounter >= nextAdInterval && !adLoading) {
-        adLoading = true;
+  // Check if ads should be displayed
+            if (!adExempt && !adLoading && cardCounter >= nextAdInterval) {
+                adLoading = true; // Set ad loading flag to prevent further ad requests while one ad is loading
 
-        // Create an ad container
-        const adContainer = document.createElement('div');
-        adContainer.className = 'ad-container';
+                // Create an ad container
+                const adContainer = document.createElement('div');
+                adContainer.className = 'ad-container';
 
-        // Create a div for Adsterra to render the ad into (ID must match the Adsterra script's target)
-        const adDiv = document.createElement('div');
-        adDiv.id = 'container-7c80b8064dd18a028f4297f82a0c8ca4'; // Ensure the ID matches Adsterra's ID
+                // Create a div for Adsterra to render the ad into
+                const adDiv = document.createElement('div');
+                adDiv.id = 'container-7c80b8064dd18a028f4297f82a0c8ca4'; // Ensure the ID matches Adsterra's ID
 
-        // Append the div to the ad container
-        adContainer.appendChild(adDiv);
+                // Append the div to the ad container
+                adContainer.appendChild(adDiv);
 
-        // Load the Adsterra script asynchronously
-        const adScript = document.createElement('script');
-        adScript.async = true;
-        adScript.setAttribute('data-cfasync', 'false');
-        adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
+                // Load the Adsterra script asynchronously
+                const adScript = document.createElement('script');
+                adScript.async = true;
+                adScript.setAttribute('data-cfasync', 'false');
+                adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
 
-        // Append the script to the body (Adsterra will handle the ad rendering)
-        document.body.appendChild(adScript);
+                // Append the script to the ad container
+                adContainer.appendChild(adScript);
 
-        // Append the ad container to the character grid
-        characterGrid.appendChild(adContainer);
+                // Append the ad container to the character grid
+                characterGrid.appendChild(adContainer);
 
-        // Update the next ad interval
-        nextAdInterval = cardCounter + getRandomAdInterval();
+                // Update the next ad interval
+                nextAdInterval = cardCounter + getRandomAdInterval();
 
-        // Reset loading flag after ad load
-        adLoading = false;
-    }
-}
+                // Reset ad loading flag once ad is rendered
+                adScript.onload = () => {
+                    console.log("Ad loaded successfully");
+                    adLoading = false; // Reset after the ad has been loaded
+                };
+
+                adScript.onerror = () => {
+                    console.error("Failed to load ad-provider.js");
+                    adLoading = false; // Reset flag if the ad failed to load
+                };
+            }
         }
 
     });
