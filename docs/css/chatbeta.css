@@ -793,8 +793,7 @@ input[type="checkbox"]:not(:checked) + label {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between buttons */
-    justify-content: flex-end; /* Align buttons to the right */
-    flex-wrap: nowrap; /* Ensure buttons stay in a single row */
+    flex-shrink: 1; /* Allow buttons to shrink if needed */
 }
 
 /* Edit Button Styles */
@@ -808,9 +807,10 @@ input[type="checkbox"]:not(:checked) + label {
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
     flex-shrink: 1; /* Allow the button to shrink */
+    min-width: 60px; /* Minimum width to prevent too small buttons */
+    max-width: 120px; /* Maximum width for larger screens */
 }
 
-/* Edit Button Hover Effect */
 .edit-btn:hover {
     background-color: #0056b3; /* Darker blue on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -827,9 +827,10 @@ input[type="checkbox"]:not(:checked) + label {
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
     flex-shrink: 1; /* Allow the button to shrink */
+    min-width: 60px; /* Minimum width to prevent too small buttons */
+    max-width: 120px; /* Maximum width for larger screens */
 }
 
-/* Delete Button Hover Effect */
 .delete-btn:hover {
     background-color: #c9302c; /* Darker red on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -846,9 +847,10 @@ input[type="checkbox"]:not(:checked) + label {
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
     flex-shrink: 1; /* Allow the button to shrink */
+    min-width: 60px; /* Minimum width to prevent too small buttons */
+    max-width: 120px; /* Maximum width for larger screens */
 }
 
-/* Audio Button Hover Effect */
 .audio-btn:hover {
     background-color: #31b0d5; /* Darker blue on hover */
     transform: scale(1.05); /* Slight scale effect on hover */
@@ -858,23 +860,6 @@ input[type="checkbox"]:not(:checked) + label {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-}
-
-/* Mobile-specific styles */
-@media (max-width: 600px) {
-    /* Adjust button styles for smaller screens */
-    .buttons {
-        gap: 5px; /* Reduced gap between buttons */
-        width: 100%; /* Full width for the buttons container */
-    }
-
-    .edit-btn,
-    .delete-btn,
-    .audio-btn {
-        font-size: 12px; /* Smaller font size for mobile */
-        padding: 6px 10px; /* Adjust padding to fit on smaller screens */
-        flex: 1 1 30%; /* Ensure buttons take up equal space */
-    }
 }
 
 .likes-count {
