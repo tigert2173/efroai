@@ -145,6 +145,71 @@ app.post('/upload-chat', upload.single('file'), async (req, res) => {
     }
 });
 
+// Route to list saved chats
+app.get('/list-chats', async (req, res) => {
+    const userId = req.query.userId || 'defaultUser'; // Get userId from query parameter or default to 'defaultUser'
+
+    const params = {
+        Bucket: 'efai-savedchats',
+        Prefix: `chats/${userId}/`,
+    };
+
+    try {
+        const data = await s3.listObjectsV2(params).promise();
+        const chats = data.Contents.map((file) => ({
+            key: file.Key,
+            size: file.Size,
+            lastModified: file.LastModified,
+        }));
+        res.json(chats);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to download a specific chat
+app.get('/download-chat', async (req, res) => {
+    const { userId, chatKey } = req.query;
+
+    if (!userId || !chatKey) {
+        return res.status(400).json({ error: 'Missing userId or chatKey' });
+    }
+
+    const params = {
+        Bucket: 'efai-savedchats',
+        Key: `chats/${userId}/${chatKey}`,
+    };
+
+    try {
+        const data = await s3.getObject(params).promise();
+        res.setHeader('Content-Type', data.ContentType);
+        res.send(data.Body);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to delete a specific chat
+app.delete('/delete-chat', async (req, res) => {
+    const { userId, chatKey } = req.body;
+
+    if (!userId || !chatKey) {
+        return res.status(400).json({ error: 'Missing userId or chatKey' });
+    }
+
+    const params = {
+        Bucket: 'efai-savedchats',
+        Key: `chats/${userId}/${chatKey}`,
+    };
+
+    try {
+        await s3.deleteObject(params).promise();
+        res.json({ message: 'Chat deleted successfully!' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Serve your HTML page
 app.use(express.static('public'));
 
