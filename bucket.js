@@ -191,7 +191,7 @@ app.get('/files/efai-savedchats/:userId', async (req, res) => {
 });
 
 // Route to generate a pre-signed URL for a file
-app.get('/file-url/efai-savedchats/:userId/:key', async (req, res) => {
+app.get('/file-url/efai-savedchats/:key', async (req, res) => {
     const { userId, key } = req.params;
 
     const params = {
