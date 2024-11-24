@@ -17,9 +17,24 @@
     <styles>
         <style>
             /* Hide ad on screens smaller than 1119px */
+            /* Ensure ads only show on desktop */
             .desktop-only-ad {
-                display: none;
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 9999; /* Make sure the ads are above other content */
             }
+
+            /* Style for left-side ad */
+            .left-ad {
+                left: 10px; /* Distance from the left side */
+            }
+
+            /* Style for right-side ad */
+            .right-ad {
+                right: 10px; /* Distance from the right side */
+            }
+
           
              /* Show ad only on larger screens */
              @media (min-width: 1120px) {
@@ -197,18 +212,19 @@
         <div id="chat-container">
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+<!-- Left-side Ad -->
+<div class="desktop-only-ad left-ad">
+    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <ins class="eas6a97888e17" data-zoneid="5461572"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
 
-        <div class="desktop-only-ad">
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-        <ins class="eas6a97888e17" data-zoneid="5461572"></ins> 
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        </div>
-
-        <div class="desktop-only-ad">
-        <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-        <ins class="eas6a97888e17" data-zoneid="5461574"></ins> 
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-        </div>
+<!-- Right-side Ad -->
+<div class="desktop-only-ad right-ad">
+    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <ins class="eas6a97888e17" data-zoneid="5461574"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
 
         <div id="input-container">
             <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>

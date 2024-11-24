@@ -1,7 +1,20 @@
  /* Hide ad on screens smaller than 1119px */
-            .desktop-only-ad {
-                display: none;
-            }
+ .desktop-only-ad {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999; /* Make sure the ads are above other content */
+}
+
+/* Style for left-side ad */
+.left-ad {
+    left: 10px; /* Distance from the left side */
+}
+
+/* Style for right-side ad */
+.right-ad {
+    right: 10px; /* Distance from the right side */
+}
           
              /* Show ad only on larger screens */
              @media (min-width: 1120px) {
