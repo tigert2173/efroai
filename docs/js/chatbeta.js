@@ -1254,9 +1254,13 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
-                    <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        <div class="message-actions">
+            <div class="message-actions-header">
+                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            </div>
+        </div>
         <span class="message-content">${sanitizedContent}</span>
 
         `;
