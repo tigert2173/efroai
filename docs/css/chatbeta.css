@@ -603,9 +603,10 @@ input[type="checkbox"]:not(:checked) + label {
         margin-bottom: 10px; /* More space between input and button */
     }
 
-    #input-container button {
-        width: 100%; /* Full width for the button on mobile */
-        margin-top: 10px; /* Add space between the input and the button */
+  
+    #regen-button {
+        width: 100%; /* Full width for the regen button on mobile */
+        margin-top: 10px; /* Add space between the input and regen button */
     }
 
     #settings-container, #api-status {
