@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDrive e2 Object Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>IDrive e2 Object Storage</h1>
+
+    <!-- Upload File Section -->
+    <h2>Upload a File</h2>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p id="uploadStatus"></p>
+
+    <!-- List Files Section -->
+    <h2>Fetch Files in a Bucket</h2>
+    <input type="text" id="bucketName" placeholder="Enter bucket name" required>
+    <button id="fetchFiles">Fetch Files</button>
+    <ul id="fileList"></ul>
+
+    <script>
+        // Upload File
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const uploadStatus = document.getElementById('uploadStatus');
+
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error('Failed to upload file.');
+
+                const data = await response.json();
+                uploadStatus.textContent = 'File uploaded successfully!';
+                console.log('Upload response:', data);
+            } catch (error) {
+                uploadStatus.textContent = `Error: ${error.message}`;
+                console.error(error);
+            }
+        });
+
+        // Fetch Files
+        document.getElementById('fetchFiles').addEventListener('click', async () => {
+            const bucketName = document.getElementById('bucketName').value.trim();
+            const fileList = document.getElementById('fileList');
+
+            if (!bucketName) {
+                alert('Please enter a bucket name!');
+                return;
+            }
+
+            fileList.innerHTML = '<li>Fetching files...</li>';
+
+            try {
+                const response = await fetch(`/files/${bucketName}`);
+                if (!response.ok) throw new Error('Error fetching files.');
+
+                const files = await response.json();
+
+                if (files.length === 0) {
+                    fileList.innerHTML = '<li>No files found in this bucket.</li>';
+                    return;
+                }
+
+                fileList.innerHTML = files
+                    .map(
+                        (file) =>
+                            `<li>
+                                <strong>${file.key}</strong> (${file.size} bytes) - 
+                                Last modified: ${new Date(file.lastModified).toLocaleString()}
+                                <button onclick="downloadFile('${bucketName}', '${file.key}')">Download</button>
+                                <button onclick="viewFile('${bucketName}', '${file.key}')">View</button>
+                            </li>`
+                    )
+                    .join('');
+            } catch (error) {
+                fileList.innerHTML = `<li>Error: ${error.message}</li>`;
+                console.error(error);
+            }
+        });
+
+        // Download File
+        async function downloadFile(bucket, key) {
+            try {
+                const response = await fetch(`/file-url/${bucket}/${encodeURIComponent(key)}`);
+                if (!response.ok) throw new Error('Error generating file URL.');
+
+                const { url } = await response.json();
+                const anchor = document.createElement('a');
+                anchor.href = url;
+                anchor.download = key.split('/').pop(); // Use the file name for the download
+                document.body.appendChild(anchor);
+                anchor.click();
+                document.body.removeChild(anchor);
+            } catch (error) {
+                alert(`Error downloading file: ${error.message}`);
+                console.error(error);
+            }
+        }
+
+        // View File
+        async function viewFile(bucket, key) {
+            try {
+                const response = await fetch(`/file-url/${bucket}/${encodeURIComponent(key)}`);
+                if (!response.ok) throw new Error('Error generating file URL.');
+
+                const { url } = await response.json();
+                window.open(url, '_blank');
+            } catch (error) {
+                alert(`Error viewing file: ${error.message}`);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
