@@ -134,18 +134,8 @@
             <label for="opacity-slider">Opacity:</label>
             <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
-        
-        <script>
-            // Select the button and the menu container
-            const toggleMenuBtn = document.getElementById("toggleMenuBtn");
-            const imageMenu = document.getElementById("imageMenu");
-
-            // Toggle visibility of the menu when the button is clicked
-            toggleMenuBtn.addEventListener("click", () => {
-                imageMenu.classList.toggle("show-menu");
-            });
-
-        </script>        
+        <script src="js/scripts/chat/fetchbgimages.js"></script>
+    
            <!-- Button to manually trigger saving chat messages -->
             <button id="save-chat-button">Save Chat</button>
 
@@ -334,54 +324,8 @@
         <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
 
     </select>
+    <script src="js/scripts/chat/negativeprompt.js"></script>
 
-    <script>
-    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
-    const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
-    const negativePrompt = document.getElementById("negativePrompt");
-    const optionV4 = document.getElementById("optionV4");
-    const optionV3 = document.getElementById("optionV3");
-    const optionV2 = document.getElementById("optionV2");
-    const explicitEncourage = document.getElementById("explicitEncourage");
-    const skunkAnatomyFix = document.getElementById("skunkAnatomyFix");
-    const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
-
-    // Function to update the options' values and text
-    function updateNegativePromptOptions(maxTokens) {
-        optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-        optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
-
-        
-        optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
-        optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
-        // New option to allow sexual content with token limits and natural endings
-   
-        // New option for skunk anatomy correction with humor
-        skunkAnatomyFix.value = `Ensure skunks' anatomy is accurate: spray comes from anal glands, and farts come from the anus. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
-        skunkAnatomyFix.textContent = `[Beta] Skunk Anatomy Fix (For Accuracy)`;
-
-        explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
-        explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
-
-        optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. Ensure the response ends in a natural way without cut-off, even when reaching the token limit. Never repeat the last generation.`;
-        optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
-
-        // Add the speaker identifier prompt to the dropdown
-        speakerIdentifierOption.value = "Please write the response with each sentence clearly labeled with a speaker identifier, like this: Speaker 1: [sentence] Speaker 2: [sentence]... Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.";
-        speakerIdentifierOption.textContent = `Speaker Identifier Request (Write each sentence with a speaker identifier)`;
-
-    }
-
-    // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 48);
-    
-    // Event listener for the slider
-    tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 48;
-        tokenDisplay.textContent = `${maxTokens} Tokens`;
-        updateNegativePromptOptions(maxTokens);
-    });
-    </script>
                 <!-- <label for="negativePrompt">Negative Prompt:</label>
             <select id="negativePrompt">
                 <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
@@ -521,118 +465,9 @@
             <input type="text" id="setting3"><br><br>
         </div>
     </div>
-    
-    <script>
-    // Handle form submission to fetch and set the background or inline image
-// Handle form submission to fetch and set the background or side image
-document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
 
-    const bucketName = document.getElementById('bucketName').value.trim();
-    const objectKey = document.getElementById('objectKey').value.trim();
-    const chatContainer = document.getElementById('chat-container');
-    const leftImageContainer = document.getElementById('left-image-container');
-    const rightImageContainer = document.getElementById('right-image-container');
-    const chatWrapper = document.getElementById('chat-wrapper');
-    const inputWrapper = document.getElementById('input-wrapper');
+    <script src="js/scripts/chat/settings.js"></script>
 
-    if (!bucketName || !objectKey) {
-        alert('Please enter both bucket name and object key.');
-        return;
-    }
-
-    try {
-        // Fetch the pre-signed URL for the image
-        const response = await fetch(`https://bucket.efroai.net/file-url/${bucketName}/${encodeURIComponent(objectKey)}`);
-        if (!response.ok) throw new Error('Error generating URL.');
-
-        const { url } = await response.json();
-
-        // Get the selected image position (background, left, right)
-        const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-
-        // Clear side images and reset chat wrapper class before applying new image
-        leftImageContainer.innerHTML = '';
-        rightImageContainer.innerHTML = '';
-        chatWrapper.classList.remove('has-left-image', 'has-right-image');
-        inputWrapper.classList.remove('has-left-image', 'has-right-image');
-
-        if (imagePosition === 'background') {
-            // Set the background image
-            chatContainer.style.setProperty('--background-image', `url('${url}')`);
-            chatContainer.style.setProperty('--bg-opacity', 1);
-            // Ensure the chat container is centered by removing any shifts
-            chatWrapper.classList.remove('has-left-image', 'has-right-image');
-            inputWrapper.classList.remove('has-left-image', 'has-right-image');
-        } else if (imagePosition === 'left') {
-            // Set the left side image
-            chatContainer.style.setProperty('--background-image', 'none');
-            leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
-            // Add class to shift chat container for left image
-            chatWrapper.classList.add('has-left-image');
-            inputWrapper.classList.add('has-left-image');
-        } else if (imagePosition === 'right') {
-            // Set the right side image
-            chatContainer.style.setProperty('--background-image', 'none');
-            rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
-            // Add class to shift chat container for right image
-            chatWrapper.classList.add('has-right-image');
-            inputWrapper.classList.add('has-right-image');
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Failed to set image: ' + error.message);
-    }
-});
-
-
-// Handle opacity slider
-document.getElementById('opacity-slider').addEventListener('input', (e) => {
-    const opacityValue = e.target.value;
-    const chatContainer = document.getElementById('chat-container');
-    const leftImageContainer = document.getElementById('left-image-container');
-    const rightImageContainer = document.getElementById('right-image-container');
-
-    // Update the opacity for background or side images
-    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
-    leftImageContainer.style.opacity = opacityValue / 100;
-    rightImageContainer.style.opacity = opacityValue / 100;
-});
-
-
-    </script>
-
-    <script>
-          document.getElementById('toggleSettings').addEventListener('click', function() {
-        const settings = document.querySelectorAll('.setting');
-        settings.forEach(setting => {
-            setting.classList.toggle('hidden');
-        });
-    });
-        function showTooltip(event) {
-    const selectElement = event.target;
-    const tooltip = document.getElementById('tooltip');
-    
-    // Get the currently selected option
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
-    
-    // Set tooltip content
-    tooltip.textContent = selectedOption.getAttribute('data-description');
-    
-    // Position the tooltip
-    const rect = selectElement.getBoundingClientRect();
-    tooltip.style.left = `${rect.left}px`;
-    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
-    
-    // Show the tooltip
-    tooltip.style.display = 'block';
-}
-
-function hideTooltip() {
-    const tooltip = document.getElementById('tooltip');
-    tooltip.style.display = 'none';
-}
-    </script>
 </body>
 
 <head>
