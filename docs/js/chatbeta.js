@@ -1259,7 +1259,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         `;
         }
         // If the message is final, update the navigation header
-        if (isFinal && !isResend) {
+        if (isFinal) {
             // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
@@ -1268,19 +1268,22 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
-                //previousHeader.remove();
-                previousHeader.innerHTML = `
-                <div class="message-header">
-                    <div class="nav-arrows-container">
+                if (isResend) {
+                    previousHeader.remove();
+                } else {
+                    previousHeader.innerHTML = `
+                    <div class="message-header">
+                        <div class="nav-arrows-container">
+                        </div>
+                        <div class="buttons">
+                            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                        </div>
                     </div>
-                    <div class="buttons">
-                        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
-                    </div>
-                </div>
-            
-                `;
+                
+                    `;
+                }
             }
 
             // Create a new message header with navigation arrows
@@ -1304,6 +1307,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Append message header to the chat container
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
+        updateArrowStates();
+
     } else {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
@@ -1338,7 +1343,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
-        updateArrowStates();
         
         }
     // // Scroll to the bottom of the chat container
