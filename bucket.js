@@ -122,57 +122,32 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
-let chatSessions = {}; // In-memory storage for chat sessions (replace with a database in production)
-
-// Route to handle chat upload and update
+// Route to upload chat data to S3
 app.post('/upload-chat', async (req, res) => {
-    const { sessionId, userId, characterName, messages, timestamp } = req.body;
+    const { userId, characterName, messages, timestamp } = req.body;
 
-    // Check if the session already exists (e.g., in a database or in-memory store)
-    let existingChat = await findChatBySessionId(sessionId); // Implement this function to query your data source
+    if (!userId || !characterName || !messages) {
+        return res.status(400).json({ error: 'Missing required fields: userId, characterName, messages' });
+    }
 
-    if (existingChat) {
-        // If the chat session exists, update it with the new messages
-        existingChat.messages = messages;
-        existingChat.timestamp = timestamp; // Update the timestamp if necessary
-        await saveChatSession(existingChat); // Implement this function to save updated chat session
-        return res.status(200).json({ message: 'Chat updated successfully' });
-    } else {
-        // If the chat session doesn't exist, create a new one
-        const newChat = {
-            sessionId: sessionId,
-            userId: userId,
-            characterName: characterName,
-            messages: messages,
-            timestamp: timestamp,
-        };
-        await saveChatSession(newChat); // Implement this function to save new chat session
-        return res.status(200).json({ message: 'Chat saved successfully' });
+    // Convert chat messages to JSON string for storage
+    const chatFileContent = JSON.stringify({ characterName, messages });
+
+    // Prepare S3 upload parameters
+    const params = {
+        Bucket: 'efai-savedchats', // Your S3 bucket name
+        Key: `chats/${userId}/${timestamp}-${characterName}.json`, // Folder structure for each user
+        Body: chatFileContent,
+        ContentType: 'application/json',
+    };
+
+    try {
+        const data = await s3.upload(params).promise();
+        res.json({ message: 'Chat uploaded successfully!', data });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-
-// Function to find or create a chat session
-function findChatBySessionID(sessionId, userId, characterName, messages, timestamp, res) {
-    // Check if the session already exists
-    if (chatSessions[sessionId]) {
-        // If session exists, update the messages
-        chatSessions[sessionId].messages = messages;
-        chatSessions[sessionId].timestamp = timestamp;
-        console.log(`Updated chat for session: ${sessionId}`);
-        return res.status(200).json({ message: 'Chat updated successfully' });
-    } else {
-        // If session doesn't exist, create a new one
-        chatSessions[sessionId] = {
-            sessionId: sessionId,
-            userId: userId,
-            characterName: characterName,
-            messages: messages,
-            timestamp: timestamp
-        };
-        console.log(`Created new chat session: ${sessionId}`);
-        return res.status(201).json({ message: 'Chat created successfully' });
-    }
-}
 
 // Serve your HTML page
 app.use(express.static('public'));
