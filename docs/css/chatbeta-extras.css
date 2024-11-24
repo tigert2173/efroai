@@ -100,13 +100,6 @@ button:disabled {
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
 }
 
-/* Cooldown button styles */
-button.cooldown {
-    position: relative; /* Position relative to contain the absolute spinner and text */
-    padding: 8px 14px; /* Make sure the button has sufficient space */
-    width: auto; /* Ensure button width is based on its content */
-}
-
 /* Countdown spinner styles */
 button.cooldown .countdown-text {
     position: absolute;
@@ -120,25 +113,42 @@ button.cooldown .countdown-text {
 }
 
 
-button.cooldown:before {
-    content: '';
-    position: absolute; /* Position absolutely within the button */
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #fff;
-    border-top: 3px solid #32CD32; /* Green spinner color */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%); /* Center the spinner */
+/* Spinner styles */
+button.cooldown {
+    position: relative;  /* Ensure button is a positioned container */
+    display: flex;  /* Use flexbox to center content */
+    align-items: center;  /* Vertically center content */
+    justify-content: center;  /* Horizontally center content */
+    padding: 10px 20px;  /* Adjust padding as needed */
 }
 
-/* Spin animation for the cooldown indicator */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+button.cooldown:before {
+    content: '';
+    position: absolute;  /* Position the spinner within the button */
+    width: 30px;  /* Set width for spinner */
+    height: 30px;  /* Set height for spinner */
+    border: 3px solid #fff;
+    border-top: 3px solid #32CD32;  /* Green spinner color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    visibility: visible;  /* Ensure the spinner is visible */
 }
+
+button.cooldown span {
+    visibility: visible;  /* Ensure the text is visible when spinner is active */
+    position: relative;  /* Make sure text appears above spinner */
+}
+
+/* Keyframes for the spinner animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 /* Countdown shrinking animation */
 @keyframes countdown-shrink {
