@@ -110,8 +110,8 @@ button.cooldown {
 /* Countdown spinner styles */
 button.cooldown .countdown-text {
     position: absolute;
-    top: 0%;
-    left: 0%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     font-size: 14px;
     color: white;
@@ -123,8 +123,8 @@ button.cooldown .countdown-text {
 button.cooldown:before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0%;
+    left: 0%;
     width: 30px; /* Set width for spinner */
     height: 30px; /* Set height for spinner */
     border: 3px solid #fff;
