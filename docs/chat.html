@@ -232,12 +232,62 @@
 </nav>
     </header>
     <div id="main-content">
-        <!-- JuicyAds v3.0 -->
-<script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-<ins id="1073770" data-width="728" data-height="90"></ins>
-<script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script>
 
-<!--JuicyAds END -->
+        <!-- Ad container that scales with the content -->
+        <div id="juicy-ad-container" style="width: 100%; max-width: 728px; margin: 0 auto;">
+            <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+            <ins id="1073770" class="responsive-ad" data-width="728" data-height="90"></ins>
+            <script type="text/javascript" data-cfasync="false" async>
+                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+            </script>
+        </div>
+<script>
+    window.addEventListener('resize', function() {
+    adjustAdSize();
+});
+
+function adjustAdSize() {
+    const ad = document.getElementById('1073770');
+    const adContainer = document.getElementById('juicy-ad-container');
+
+    if (!ad || !adContainer) return;
+
+    const containerWidth = adContainer.offsetWidth; // Get the container's width
+
+    // Define the base width and height (this can be adjusted to match your original ad size)
+    const baseWidth = 728;
+    const baseHeight = 90;
+
+    // Calculate the aspect ratio (width / height)
+    const aspectRatio = baseWidth / baseHeight;
+
+    // Calculate new width and height based on the container's width
+    let newWidth = containerWidth; 
+    let newHeight = newWidth / aspectRatio;
+
+    // Apply minimum size limits (if necessary)
+    if (newWidth < 320) {
+        newWidth = 320;
+        newHeight = newWidth / aspectRatio;
+    }
+
+    if (newWidth > baseWidth) {
+        newWidth = baseWidth;
+        newHeight = newWidth / aspectRatio;
+    }
+
+    // Set the new width and height on the ad container
+    ad.setAttribute('data-width', newWidth);
+    ad.setAttribute('data-height', newHeight);
+
+    // Reload the ad to reflect the changes
+    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+}
+
+// Call the function initially to adjust size on page load
+adjustAdSize();
+
+</script>
         <div id="chat-container">
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
