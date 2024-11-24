@@ -765,21 +765,22 @@ input[type="checkbox"]:not(:checked) + label {
 }
 
 
-/* Button container styles */
+/* Adjust gap between navigation arrows and buttons */
 .message-header {
     display: flex;
     align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Space out the arrows and buttons */
-    gap: 15px; /* Adjust the gap between the arrows and the buttons container */
+    justify-content: space-between; /* Space out the arrows and buttons container */
+    gap: 10px; /* Adjust gap between the arrows and the buttons container */
 }
 
 /* Adjust placement of navigation arrows (left side) */
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
-    padding: 0 2px; /* Reduce padding to bring arrows closer together */
-    font-size: 1.5em; /* Slightly larger arrows */
+    padding: 0; /* Remove padding for no space between arrows */
+    font-size: 1.5em; /* Maintain a slightly larger arrow size */
     color: #32CD32; /* Softer neon green */
+    margin-right: 0; /* Ensure no margin between arrows */
 }
 
 /* Disabled navigation arrows */
