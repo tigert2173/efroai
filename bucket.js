@@ -141,9 +141,10 @@ app.get('/files/:bucket', async (req, res) => {
     }
 });
 
-// Route to save a chat
+// Route to save user chats
 app.post('/save-chat', async (req, res) => {
     const { userId, chat } = req.body;
+
     if (!userId || !chat) {
         return res.status(400).json({ error: 'Missing userId or chat data!' });
     }
@@ -152,15 +153,15 @@ app.post('/save-chat', async (req, res) => {
     const fileName = `${userId}/${timestamp}.json`;
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Bucket: BUCKET_NAME,
         Key: fileName,
         Body: JSON.stringify(chat, null, 2),
         ContentType: 'application/json',
     };
 
     try {
-        await s3.upload(params).promise();
-        res.status(200).json({ message: 'Chat saved successfully!', fileName });
+        const data = await s3.upload(params).promise();
+        res.json({ message: 'Chat saved successfully!', data });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -171,7 +172,7 @@ app.get('/files/:userId', async (req, res) => {
     const { userId } = req.params;
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Bucket: BUCKET_NAME,
         Prefix: `${userId}/`,
     };
 
@@ -179,9 +180,8 @@ app.get('/files/:userId', async (req, res) => {
         const data = await s3.listObjectsV2(params).promise();
         const chats = data.Contents.map(item => ({
             key: item.Key,
-            name: item.Key.split('/')[1], // Extract file name
+            name: item.Key.split('/')[1],
         }));
-
         res.json(chats);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -193,9 +193,9 @@ app.get('/file-url/:userId/:key', async (req, res) => {
     const { userId, key } = req.params;
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Bucket: BUCKET_NAME,
         Key: `${userId}/${key}`,
-        Expires: 60 * 5, // URL expiration time (5 minutes)
+        Expires: 300, // 5 minutes
     };
 
     try {
@@ -211,7 +211,7 @@ app.delete('/delete-chat/:key', async (req, res) => {
     const { key } = req.params;
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Bucket: BUCKET_NAME,
         Key: key,
     };
 
