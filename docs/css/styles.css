@@ -151,14 +151,14 @@ main {
     min-height: 280px; /* Set a minimum height for cards */
     position: relative; /* Allow absolute positioning of tooltip */
     transition: transform 0.2s ease-in, box-shadow 0.5s ease-in; /* Ensure box-shadow eases in on hover */
-    z-index: 5;
+    z-index: 500;
 }
 
 /* Hover Effect */
 .character-card:hover, .recommendation-card:hover {
     transform: translateX(-25px) translateY(-60px) scale(1.15); /* Lift card up and scale */
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover with increased opacity */
-    z-index: 10; /* Ensure it appears above other cards */
+    z-index: 1000; /* Ensure it appears above other cards */
 }
 
 /* Reset Transition for Non-Hover Effect */
