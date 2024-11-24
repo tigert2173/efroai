@@ -594,23 +594,25 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container {
-        flex-direction: row; /* Keep the input and send button inline on mobile */
-        align-items: center; /* Vertically center the items */
+        flex-direction: row; /* Stack input and button vertically */
+        align-items: stretch; /* Full width for both */
+        min-width: 100%;
     }
 
-    #input-container textarea {
-        width: 65%; /* Adjust width of the textarea on mobile */
-        margin-right: 10px; /* Space between input and button */
+    #input-container input {
+        width: 50%; /* Full width */
+        margin-bottom: 5px; /* Space between input and button */
+    }
+
+    #user-input {
+        background-color: #2e2e2e; /* Slightly lighter green for the input field */
+        color: #f9f9fc;
+        min-width: 200px; /* Remove min-width to fit */
     }
 
     #input-container button {
-        width: auto; /* Set button width to auto to keep it inline with the input */
-        margin-top: 0; /* Remove margin-top to avoid extra space */
-    }
-
-    #regenerate-button {
-        width: 100%; /* Make regenerate button take full width on mobile */
-        margin-top: 10px; /* Space between the send and regenerate button */
+        width: 20%; /* Full width for button */
+        min-width: 50px; /* Remove min-width to fit */
     }
 
     #settings-container, #api-status {
