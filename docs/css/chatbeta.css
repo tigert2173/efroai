@@ -853,35 +853,61 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Responsive adjustments for shrinking font and button size */
-@media (max-width: 450px) {
-    /* Shrink navigation arrows */
+/* Gradual resizing for smaller screens */
+@media (max-width: 900px) {
+    /* Slightly shrink navigation arrows */
     .nav-arrows {
-        font-size: 1.2em; /* Smaller font size for arrows */
+        font-size: 1.4em; /* Slightly smaller arrows */
     }
 
-    /* Shrink buttons */
+    /* Slightly shrink buttons */
     .buttons button {
-        padding: 6px 10px; /* Smaller button size */
-        font-size: 12px; /* Smaller text inside buttons */
-    }
-
-    /* Adjust message header padding */
-    .message-header {
-        padding: 5px; /* Add padding to the header */
+        padding: 7px 12px; /* Smaller button size */
+        font-size: 13px; /* Slightly smaller font */
     }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 700px) {
+    /* More noticeable shrink for navigation arrows */
+    .nav-arrows {
+        font-size: 1.2em; /* Noticeably smaller arrows */
+    }
+
+    /* More noticeable shrink for buttons */
+    .buttons button {
+        padding: 6px 10px; /* Smaller button size */
+        font-size: 12px; /* Smaller font */
+    }
+}
+
+@media (max-width: 500px) {
     /* Further shrink navigation arrows */
     .nav-arrows {
-        font-size: 1em; /* Even smaller arrows */
+        font-size: 1em; /* Smaller arrows */
     }
 
     /* Further shrink buttons */
     .buttons button {
+        padding: 5px 8px; /* Even smaller button size */
+        font-size: 11px; /* Smaller font */
+    }
+}
+
+@media (max-width: 400px) {
+    /* Even further shrink navigation arrows */
+    .nav-arrows {
+        font-size: 0.9em; /* Even smaller arrows */
+    }
+
+    /* Even further shrink buttons */
+    .buttons button {
         padding: 4px 8px; /* Even smaller buttons */
-        font-size: 10px; /* Smaller text inside buttons */
+        font-size: 10px; /* Smallest font size */
+    }
+
+    /* Adjust message header padding for very small screens */
+    .message-header {
+        padding: 4px; /* Add padding to the header */
     }
 }
 
