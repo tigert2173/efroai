@@ -860,7 +860,7 @@ button:disabled {
 /* Media query for mobile devices */
 @media (max-width: 600px) {
     .message-header {
-        flex-direction: column; /* Stack elements vertically on smaller screens */
+        flex-direction: row; /* Stack elements vertically on smaller screens */
         align-items: flex-start; /* Align items to the left */
     }
 
