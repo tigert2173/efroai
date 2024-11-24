@@ -580,9 +580,12 @@ async function sendMessage() {
     // Disable button and add delay
     sendButtonDisabled = true;
     document.getElementById("send-button").disabled = true;
+    document.getElementById("regenerate-button").disabled = true;
+
     setTimeout(function() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
+        document.getElementById("regenerate-button").disabled = false;
     }, 8000); // 8-second delay
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
