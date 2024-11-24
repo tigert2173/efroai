@@ -1270,9 +1270,16 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             if (previousHeader) {
                 //previousHeader.remove();
                 previousHeader.innerHTML = `
-                 <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                <div class="message-header">
+                    <div class="nav-arrows-container">
+                    </div>
+                    <div class="buttons">
+                        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                    </div>
+                </div>
+
                 `;
             }
 
@@ -1310,9 +1317,16 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         const messageHeader = document.createElement('div');
         messageHeader.className = 'message-header';
         messageHeader.innerHTML = `
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+         <div class="message-header">
+            <div class="nav-arrows-container">
+            </div>
+            <div class="buttons">
+                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            </div>
+        </div>
+
         `;
 
         // Append message header to the chat container
