@@ -1379,8 +1379,8 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // The parent element of the button
-    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
+    const messageElement = button.closest('.message'); // Find the closest message element (header or content area)
+    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element inside the message
     const currentContent = messageContentElement.innerHTML;
 
     // Replace the message content with a textarea for inline editing
@@ -1397,6 +1397,7 @@ function enableEditMode(button, index) {
     // Focus the edit area for immediate typing
     editArea.focus();
 }
+
 
 
 function saveEditedMessage(button, index) {
