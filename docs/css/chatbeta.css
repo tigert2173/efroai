@@ -764,20 +764,12 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Make sure the arrows are grouped together and placed at the left side */
+/* Adjust the message header to space items correctly */
 .message-header {
     display: flex;
     align-items: center; /* Vertically align items */
-    justify-content: flex-start; /* Align to the left */
-    gap: 0; /* Remove gap between the elements */
-}
-
-
-/* Button container styles */
-.message-header .buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between buttons */
+    justify-content: space-between; /* Space between the two groups (arrows and buttons) */
+    width: 100%; /* Ensure full width for the header */
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -790,13 +782,19 @@ input[type="checkbox"]:not(:checked) + label {
     margin: 0; /* No margin between arrows */
 }
 
-
 /* Disabled navigation arrows */
 .nav-arrows.disabled {
     color: #555;
     cursor: not-allowed;
 }
 
+/* Button container styles for buttons on the right side */
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+    flex-shrink: 1; /* Allow buttons to shrink */
+}
 
 /* Edit Button Styles */
 .edit-btn {
@@ -808,6 +806,8 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
+    flex-shrink: 1; /* Allow to shrink if necessary */
+    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .edit-btn:hover {
@@ -825,6 +825,8 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
+    flex-shrink: 1; /* Allow to shrink if necessary */
+    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .delete-btn:hover {
@@ -842,6 +844,8 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
+    flex-shrink: 1; /* Allow to shrink if necessary */
+    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .audio-btn:hover {
