@@ -374,10 +374,10 @@ code {
     color: #f9f9fc;
 }
 
-    /* Change placeholder text color */
-    #user-input::placeholder {
-        color: #a0a0a0; /* Light gray placeholder */
-    }
+/* Change placeholder text color */
+#user-input::placeholder {
+    color: #a0a0a0; /* Light gray placeholder */
+}
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
@@ -600,8 +600,14 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container input {
-        width: 100%; /* Full width */
+        width: 50%; /* Full width */
         margin-bottom: 5px; /* Space between input and button */
+    }
+
+    #user-input {
+        background-color: #2e2e2e; /* Slightly lighter green for the input field */
+        color: #f9f9fc;
+        min-width: 500px; /* Remove min-width to fit */
     }
 
     #input-container button {
