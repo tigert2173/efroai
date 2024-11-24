@@ -848,49 +848,7 @@ function hideTooltip() {
     socket.addEventListener('close', (event) => {
         console.log('Disconnected from WebSocket server');
     });
-    window.addEventListener('resize', function() {
-    adjustAdSize();
-});
-
-function adjustAdSize() {
-    const ad = document.getElementById('1073770');
     
-    if (!ad) return;
-
-    const viewportWidth = window.innerWidth;
-
-    // Define the base width and height (this can be adjusted to match your original ad size)
-    const baseWidth = 728;
-    const baseHeight = 90;
-
-    // Calculate the aspect ratio (width / height)
-    const aspectRatio = baseWidth / baseHeight;
-
-    let newWidth = viewportWidth; // Default to viewport width
-    let newHeight = newWidth / aspectRatio; // Adjust the height based on aspect ratio
-
-    // Apply minimum size limits (if necessary)
-    if (newWidth < 320) {
-        newWidth = 320;
-        newHeight = newWidth / aspectRatio;
-    }
-
-    if (newWidth > 728) {
-        newWidth = 728;
-        newHeight = newWidth / aspectRatio;
-    }
-
-    // Set the new width and height on the ad container
-    ad.setAttribute('data-width', newWidth);
-    ad.setAttribute('data-height', newHeight);
-
-    // Reload the ad to reflect the changes
-    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
-}
-
-// Call the function initially to adjust size on page load
-adjustAdSize();
-
 </script>
 
 <script src="js/scripts/chat/savechatlocally.js?v=1"></script>
