@@ -202,43 +202,39 @@ function displayCharacters(characters, searchQuery) {
                     adContainer.className = 'ad-container';
             
                     // Generate a unique ID for each ad container
-                    const adContainerId = `container-${Math.random().toString(36).substr(2, 9)}`;
-                    
-                    // Create a div for Adsterra to render the ad into (ID must match the Adsterra script's target)
+                    const uniqueAdId = 'container-' + cardCounter; // Use cardCounter or any unique identifier
                     const adDiv = document.createElement('div');
-                    adDiv.id = adContainerId;  // Assign unique ID to each ad container
+                    adDiv.id = uniqueAdId; // Set unique ID for each ad div
             
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
             
                     // Load the Adsterra script asynchronously only once
-                    if (!window.adScriptLoaded) {
-                        const adScript = document.createElement('script');
-                        adScript.async = true;
-                        adScript.setAttribute('data-cfasync', 'false');
-                        adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
+                    const adScript = document.createElement('script');
+                    adScript.async = true;
+                    adScript.setAttribute('data-cfasync', 'false');
+                    adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
             
-                        adScript.onload = function () {
-                            if (window.AdProvider) {
-                                window.AdProvider.push({ "serve": {} });
-                                console.log("Ad loaded successfully");
-                            } else {
-                                console.error("AdProvider object is not available");
-                            }
-                            adLoading = false; // Reset flag after ad loads
-                        };
+                    adScript.onload = function () {
+                        if (window.AdProvider) {
+                            window.AdProvider.push({ "serve": {} });
+                            console.log("Ad loaded successfully");
+                        } else {
+                            console.error("AdProvider object is not available");
+                        }
+                        adLoading = false; // Reset flag after ad loads
+                    };
             
-                        adScript.onerror = function () {
-                            console.error("Failed to load ad-provider.js");
-                            adLoading = false; // Reset flag on load failure
-                        };
+                    adScript.onerror = function () {
+                        console.error("Failed to load ad-provider.js");
+                        adLoading = false; // Reset flag on load failure
+                    };
             
-                        // Mark the script as loaded
-                        window.adScriptLoaded = true;
+                    // Mark the script as loaded
+                    window.adScriptLoaded = true;
             
-                        // Append the script to the body (Adsterra will handle the ad rendering)
-                        document.body.appendChild(adScript);
-                    }
+                    // Append the script to the body (Adsterra will handle the ad rendering)
+                    document.body.appendChild(adScript);
             
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);
