@@ -1268,7 +1268,12 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
-                previousHeader.remove();
+                messageHeader.innerHTML = `
+      
+             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            `;
             }
 
             // Create a new message header with navigation arrows
