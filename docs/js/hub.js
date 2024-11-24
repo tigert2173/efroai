@@ -202,15 +202,16 @@ function displayCharacters(characters, searchQuery) {
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-container';
         
-                // Create an iframe element for Adsterra ad
+                // Create the ad iframe dynamically
                 const iframe = document.createElement('iframe');
-                iframe.src = 'https://www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js';
-                iframe.width = '300';
-                iframe.height = '250';
-                iframe.style.border = 'none'; // Optional: to remove border from iframe
-                iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'); // Optional: to enable specific features
+                iframe.src = "https://www.highperformanceformat.com/94db35d8412d16e316382264a2f6025b/invoke.js";
+                iframe.width = "300";
+                iframe.height = "250";
+                iframe.frameBorder = "0"; // Ensure iframe borders are removed
+                iframe.scrolling = "no";  // Prevent scrollbars
+                iframe.style.border = "none"; // Remove border styling
         
-                // Append iframe to the ad container
+                // Append the iframe to the ad container
                 adContainer.appendChild(iframe);
         
                 // Append the ad container to the character grid
