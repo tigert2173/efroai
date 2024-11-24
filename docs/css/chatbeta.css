@@ -856,7 +856,7 @@ button:disabled {
 }
 
 /* Gradual resizing for smaller screens */
-@media (max-width: 600px) {
+@media (max-width: 500px) {
     /* Slightly shrink navigation arrows */
     .nav-arrows {
         font-size: 1.4em; /* Slightly smaller arrows */
@@ -869,7 +869,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 400px) {
     /* More noticeable shrink for navigation arrows */
     .nav-arrows {
         font-size: 1.2em; /* Noticeably smaller arrows */
@@ -882,7 +882,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 300px) {
     /* Further shrink navigation arrows */
     .nav-arrows {
         font-size: 1em; /* Smaller arrows */
@@ -895,7 +895,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 200px) {
     /* Even further shrink navigation arrows */
     .nav-arrows {
         font-size: 0.9em; /* Even smaller arrows */
