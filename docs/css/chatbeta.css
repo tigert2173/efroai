@@ -577,32 +577,11 @@ input[type="checkbox"]:not(:checked) + label {
 
 
 /* Mobile Styles */
+/* Mobile Styles */
 @media (max-width: 768px) {
-    #input-container {
-        display: flex; /* Enable flexbox for input and buttons */
-        flex-direction: row; /* Keep input and buttons horizontally aligned */
-        align-items: center; /* Vertically center the items */
-        justify-content: space-between; /* Distribute space evenly between items */
-        min-width: 100%;
-    }
-    
-    #input-container textarea {
-        width: 75%; /* Set the width of the textarea */
-        margin-right: 10px; /* Space between input and buttons */
-        box-sizing: border-box;
-    }
-    
-    #input-container button {
-        padding: 10px;
-        background-color: #4CAF50; /* Style for buttons */
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin: 5px;
-        border-radius: 5px;
-    }
     body {
-        flex-direction: column; /* Stack elements vertically on mobile */
+        display: flex; /* Enable flexbox layout */
+        flex-direction: column; /* Stack elements vertically */
         padding: 10px; /* Add some padding */
     }
 
@@ -617,23 +596,38 @@ input[type="checkbox"]:not(:checked) + label {
     }
 
     #input-container {
-        flex-direction: row; /* Keep the input and send button inline on mobile */
+        display: flex; /* Enable flexbox for input and buttons */
+        flex-direction: row; /* Keep input and send button inline */
         align-items: center; /* Vertically center the items */
+        width: 100%; /* Full width */
     }
 
     #input-container textarea {
-        width: 65%; /* Adjust width of the textarea on mobile */
+        width: 70%; /* Adjust width of the textarea on mobile */
         margin-right: 10px; /* Space between input and button */
+        box-sizing: border-box; /* Prevent overflow */
     }
 
     #input-container button {
-        width: auto; /* Set button width to auto to keep it inline with the input */
-        margin-top: 0; /* Remove margin-top to avoid extra space */
+        width: auto; /* Keep button width responsive */
+        margin-top: 0; /* Remove top margin */
+        padding: 10px; /* Add padding for better button appearance */
+        background-color: #4CAF50; /* Example background */
+        color: white;
+        border: none;
+        border-radius: 5px; /* Optional rounded button */
+        cursor: pointer;
     }
 
     #regenerate-button {
-        width: 100%; /* Make regenerate button take full width on mobile */
-        margin-top: 10px; /* Space between the send and regenerate button */
+        width: 100%; /* Make regenerate button take full width */
+        margin-top: 10px; /* Add space between the send and regenerate button */
+        padding: 10px; /* Add padding */
+        background-color: #f44336; /* Example background color */
+        color: white;
+        border: none;
+        border-radius: 5px; /* Optional rounded button */
+        cursor: pointer;
     }
 
     #settings-container, #api-status {
