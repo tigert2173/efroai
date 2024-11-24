@@ -777,7 +777,7 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     display: inline-block;
     padding: 0; /* Remove padding to eliminate space between the arrows */
-    font-size: 1.5em; /* Slightly larger arrows */
+    font-size: 2vw; /* Font size based on viewport width for responsiveness */
     color: #32CD32; /* Softer neon green */
     margin: 0; /* No margin between arrows */
 }
@@ -804,7 +804,7 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1.5vw; /* Font size relative to viewport width */
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
     flex-shrink: 1; /* Allow the button to shrink */
     min-width: 60px; /* Minimum width to prevent too small buttons */
@@ -824,7 +824,7 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1.5vw; /* Font size relative to viewport width */
     transition: background-color 0.3s, transform 0.3s ease-in-out;
     flex-shrink: 1; /* Allow the button to shrink */
     min-width: 60px; /* Minimum width to prevent too small buttons */
@@ -844,7 +844,7 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1.5vw; /* Font size relative to viewport width */
     transition: background-color 0.3s, transform 0.3s ease-in-out;
     flex-shrink: 1; /* Allow the button to shrink */
     min-width: 60px; /* Minimum width to prevent too small buttons */
@@ -860,6 +860,17 @@ input[type="checkbox"]:not(:checked) + label {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+/* Optional media query for larger screens */
+@media (min-width: 768px) {
+    .nav-arrows {
+        font-size: 1.5em; /* Fixed font size on larger screens */
+    }
+
+    .edit-btn, .delete-btn, .audio-btn {
+        font-size: 14px; /* Adjust font size for larger screens */
+    }
 }
 
 .likes-count {
