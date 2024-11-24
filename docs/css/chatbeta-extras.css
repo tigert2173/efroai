@@ -98,9 +98,10 @@ button:disabled {
     cursor: not-allowed; /* Show a "not-allowed" cursor */
     opacity: 0.5; /* Reduce opacity to indicate the button is inactive */
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
+    position: relative;
 }
 
-/* Optional: Adding a cooldown spinner or indicator */
+/* Countdown Circle Styles */
 button.cooldown {
     position: relative;
 }
@@ -110,17 +111,23 @@ button.cooldown:before {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #fff;
-    border-top: 3px solid #32CD32; /* Green spinner color */
+    width: 30px;
+    height: 30px;
+    border: 3px solid transparent;
+    border-top: 3px solid #32CD32; /* Green countdown */
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: countdown 8s linear forwards; /* The countdown animation */
     transform: translate(-50%, -50%);
 }
 
-/* Spin animation for the cooldown indicator */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Countdown animation */
+@keyframes countdown {
+    0% {
+        transform: rotate(0deg);
+        border-top-color: #32CD32; /* Initial green */
+    }
+    100% {
+        transform: rotate(360deg);
+        border-top-color: transparent; /* Fade out the green */
+    }
 }
