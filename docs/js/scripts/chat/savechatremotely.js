@@ -2,7 +2,7 @@
 async function saveChatToBackend(username, characterName, messages) {
     const timestamp = new Date().toISOString();
     const chatData = {
-        userId: username, 
+        userId: userID, 
         characterName: characterName,
         messages: messages,
         timestamp: timestamp,

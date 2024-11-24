@@ -818,7 +818,6 @@ console.log("RequestData: ", requestData);
     displayMessage('Sorry, there was an error processing your request.', 'temporary-notice');
 } finally {
     isResend = false;
-    handleNewMessage();
 }
 }
 
