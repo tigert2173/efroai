@@ -107,6 +107,7 @@ button.cooldown .countdown-text {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 14px;
+    background-color: black;
     color: white;
     font-weight: bold;
     z-index: 2; /* Ensure the text is above the spinner */
