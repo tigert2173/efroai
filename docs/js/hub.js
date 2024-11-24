@@ -192,43 +192,75 @@ function displayCharacters(characters, searchQuery) {
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
-      // Check if ads should be displayed
-if (!adExempt) {
-    let adLoading = false; // Track if an ad is currently loading
-    if (cardCounter >= nextAdInterval && !adLoading) {
-        adLoading = true;
-
-        // Create an ad container
-        const adContainer = document.createElement('div');
-        adContainer.className = 'ad-container';
-
-        // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
-        const adDiv = document.createElement('ins');
-        adDiv.id = '1073761'; // Use your JuicyAds adzone ID
-        adDiv.setAttribute('data-width', '300');  // Set the ad dimensions
-        adDiv.setAttribute('data-height', '250');
-
-        // Append the div to the ad container
-        adContainer.appendChild(adDiv);
-
-        // Push the ad into the JuicyAds queue
-        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
-
-        // Append the ad container to the character grid
-        characterGrid.appendChild(adContainer);
-
-        // Update the next ad interval
-        nextAdInterval = cardCounter + getRandomAdInterval();
+            if (!adExempt) {
+                let adLoading = false; // Track if an ad is currently loading
+                if (cardCounter >= nextAdInterval && !adLoading) {
+                    adLoading = true;
         
-        // Reset loading flag after ad load
-        adLoading = false;
-    }
-}
-
+                    // Create an ad container
+                    const adContainer = document.createElement('div');
+                    adContainer.className = 'ad-container';
+        
+                    // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
+                    const adDiv = document.createElement('ins');
+                    adDiv.id = '1073761'; // Use your JuicyAds adzone ID
+                    adDiv.setAttribute('data-width', '300');  // Set the ad dimensions
+                    adDiv.setAttribute('data-height', '250');
+        
+                    // Append the div to the ad container
+                    adContainer.appendChild(adDiv);
+        
+                    // Push the ad into the JuicyAds queue
+                    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
+        
+                    // Append the ad container to the character grid
+                    characterGrid.appendChild(adContainer);
+        
+                    // Update the next ad interval
+                    nextAdInterval = cardCounter + getRandomAdInterval();
+        
+                    // Ensure we remove and reload the ad script
+                    reloadAdScript();
+                    
+                    // Reset loading flag after ad load
+                    adLoading = false;
+                }
+            }
         }
     });
 }
+// Function to reload the ad script (only once per load)
+function reloadAdScript() {
+    // Remove the existing script if it's already there
+    const existingScript = document.querySelector("script[src*='jads.js']");
+    if (existingScript) {
+        existingScript.remove();
+    }
 
+    // Dynamically create the new script element
+    const adScript = document.createElement('script');
+    adScript.type = 'text/javascript';
+    adScript.async = true;
+    adScript.setAttribute('data-cfasync', 'false');
+    adScript.src = "https://poweredby.jads.co/js/jads.js";
+
+    // Add the ad script to the document body
+    document.body.appendChild(adScript);
+
+    // Add callback when the script is loaded
+    adScript.onload = function () {
+        if (window.adsbyjuicy) {
+            (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
+            console.log("Ad script reloaded and ad served successfully");
+        } else {
+            console.error("JuicyAds object is not available");
+        }
+    };
+
+    adScript.onerror = function () {
+        console.error("Failed to load JuicyAds script");
+    };
+}
 
 
 function createLoadMoreButton() {
