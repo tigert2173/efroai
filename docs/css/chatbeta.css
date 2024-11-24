@@ -764,36 +764,35 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-
-/* Adjust gap between navigation arrows and buttons */
+/* Make sure the arrows are grouped together and placed at the left side */
 .message-header {
     display: flex;
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Space out the arrows and buttons container */
-    gap: 10px; /* Adjust gap between the arrows and the buttons container */
+    align-items: center; /* Vertically align items */
+    justify-content: flex-start; /* Align to the left */
+    gap: 0; /* Remove gap between the elements */
+}
+
+/* Button container styles */
+.message-header .buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
 }
 
 /* Adjust placement of navigation arrows (left side) */
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
-    padding: 0; /* Remove padding for no space between arrows */
-    font-size: 1.5em; /* Maintain a slightly larger arrow size */
+    padding: 0; /* Remove padding to eliminate space between the arrows */
+    font-size: 1.5em; /* Slightly larger arrows */
     color: #32CD32; /* Softer neon green */
-    margin-right: 0; /* Ensure no margin between arrows */
+    margin: 0; /* No margin between arrows */
 }
 
 /* Disabled navigation arrows */
 .nav-arrows.disabled {
     color: #555;
     cursor: not-allowed;
-}
-
-/* Button container (right side) */
-.button-container {
-    display: flex;
-    gap: 10px; /* Add space between buttons */
-    align-items: center; /* Align buttons vertically */
 }
 
 /* Edit Button Styles */
