@@ -58,6 +58,13 @@
               }
             }
 
+            /* Show ad only on larger screens */
+            @media (min-width: 767px) {
+              .mobile-only-ad-2 {
+                display: block;
+            }
+            }
+
             /* Show ad only on smaller screens */
             @media (max-width: 1119px) {
               .mobile-only-ad {
@@ -67,6 +74,10 @@
 
                 /* Hide ad on screens larger than 1119px */
             .mobile-only-ad {
+                display: none;
+            }
+                /* Hide ad on screens larger than 1119px */
+                .mobile-only-ad-2 {
                 display: none;
             }
             /* Style the label to align items in a modern way */
@@ -255,7 +266,14 @@
     <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script>
     <!--JuicyAds END-->
     </div>
+    <div class="mobile-only-ad-2">
 
+<!-- JuicyAds v3.0 -->
+<script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+<ins id="1073773" data-width="300" data-height="62"></ins>
+<script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073773});</script>
+<!--JuicyAds END-->
+<div>
         <div id="chat-container">
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
