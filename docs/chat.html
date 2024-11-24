@@ -26,6 +26,13 @@
                 z-index: 9999; /* Make sure the ads are above other content */
             }
 
+            .desktop-only-ad-2 {
+                position: relative;
+                display: none;
+                z-index: 9999; /* Make sure the ads are above other content */
+            }
+
+
             /* Style for left-side ad */
             .left-ad {
                 left: 10px; /* Distance from the left side */
@@ -40,6 +47,13 @@
              /* Show ad only on larger screens */
              @media (min-width: 1120px) {
               .desktop-only-ad {
+                 display: block;
+              }
+            }
+
+            /* Show ad only on larger screens */
+            @media (min-width: 768px) {
+              .desktop-only-ad-2 {
                  display: block;
               }
             }
@@ -233,7 +247,7 @@
 </nav>
     </header>
     <div id="main-content">
-        <div class="desktop-only-ad" id="leftAd">
+        <div class="desktop-only-ad-2">
 
     <!-- JuicyAds v3.0 -->
     <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
