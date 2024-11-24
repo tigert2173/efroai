@@ -120,6 +120,27 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
+// Route to list files in a bucket (e.g., for displaying saved chats)
+app.get('/files/:bucket', async (req, res) => {
+    const bucketName = req.params.bucket;
+
+    const params = {
+        Bucket: bucketName,
+    };
+
+    try {
+        const response = await s3.listObjectsV2(params).promise();
+        const files = response.Contents.map((file) => ({
+            key: file.Key,
+            size: file.Size,
+            lastModified: file.LastModified,
+        }));
+        res.json(files);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Route to save user chats
 app.post('/save-chat', express.json(), async (req, res) => {
     const { userId, chat } = req.body;
@@ -141,6 +162,41 @@ app.post('/save-chat', express.json(), async (req, res) => {
     try {
         const data = await s3.upload(params).promise();
         res.json({ message: 'Chat saved successfully!', data });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to generate a pre-signed URL for a file
+app.get('/file-url/:bucket/:key', async (req, res) => {
+    const { bucket, key } = req.params;
+
+    const params = {
+        Bucket: bucket,
+        Key: key,
+        Expires: 60 * 5, // URL expiration time (5 minutes)
+    };
+
+    try {
+        const url = s3.getSignedUrl('getObject', params);
+        res.json({ url });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to delete a chat from S3
+app.delete('/delete-chat/:key', async (req, res) => {
+    const { key } = req.params;
+
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Key: key,
+    };
+
+    try {
+        await s3.deleteObject(params).promise();
+        res.json({ message: 'Chat deleted successfully!' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
