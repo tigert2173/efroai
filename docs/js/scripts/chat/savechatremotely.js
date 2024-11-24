@@ -35,7 +35,7 @@ if (!sessionId) {
 
 // Function to handle new message (call this when a new message is added)
 function handleNewMessage(message) {
-    const username = userID; // Replace with actual username
+    const username = sessionStorage.getItem('userID'); // Get the current user's ID
     const characterName = selectedCharacterId; // Replace with actual character name being chatted with
 
     // Update the message array with the new message
