@@ -137,23 +137,25 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-   /* Make sure the ad container is responsive and centered */
+ /* Wrapper for responsive ad container */
 .responsive-ad-container {
     width: 100%;
     max-width: 728px; /* Maximum width */
-    margin: 0 auto; /* Centers the ad horizontally */
+    margin: 0 auto; /* Center the container horizontally */
     position: relative;
-    text-align: center; /* Center the ad inside the container */
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
+    padding-top: 12.3%; /* Aspect ratio (90 / 728) x 100 for the height */
+    box-sizing: border-box; /* Ensure padding does not affect the container's width */
 }
 
 .responsive-ad {
-    width: 100%; /* Ad will take the full width of the container */
-    height: auto; /* Height will scale according to the aspect ratio */
-    display: block; /* Ensures it behaves like a block-level element */
+    position: absolute; /* Position the ad absolutely within the container */
+    top: 0;
+    left: 0;
+    width: 100%; /* Take the full width of the container */
+    height: 100%; /* Take the full height of the container */
+    display: block; /* Ensure it's a block-level element */
 }
+
 
 
 
