@@ -135,6 +135,14 @@ button.cooldown-spinner:before {
     visibility: visible;  /* Ensure the spinner is visible */
 }
 
+/* Spinner styles */
+button.cooldown {
+    position: relative;  /* Ensure button is a positioned container */
+    display: flex;  /* Use flexbox to center content */
+    align-items: center;  /* Vertically center content */
+    justify-content: center;  /* Horizontally center content */
+    padding: 10px 20px;  /* Adjust padding as needed */
+}
 
 button.cooldown:before {
     content: '';
