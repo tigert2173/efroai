@@ -894,3 +894,15 @@ input[type="checkbox"]:not(:checked) + label {
 .show-menu {
     display: block;
 }
+
+.message-actions {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.message-actions-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}

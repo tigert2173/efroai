@@ -1291,12 +1291,15 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
-         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        <div class="message-actions">
+            <div class="message-actions-header">
+                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            </div>
+        </div>
         <span class="message-content">${sanitizedContent}</span>
-       
-        `;
+    `;    
         chatContainer.appendChild(messageElement);
     }
 
