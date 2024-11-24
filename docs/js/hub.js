@@ -195,7 +195,7 @@ function displayCharacters(characters, searchQuery) {
       // Check if ads should be displayed
 if (!adExempt) {
     let adLoading = false; // Track if an ad is currently loading
-    if (cardCounter >= nextAdInterval) {
+    if (cardCounter >= nextAdInterval && !adLoading) {
         adLoading = true;
 
         // Create an ad container
