@@ -1,8 +1,8 @@
  /* Hide ad on screens smaller than 1119px */
  .desktop-only-ad {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 30%;
+    transform: translateY(-30%);
     z-index: 9999; /* Make sure the ads are above other content */
 }
 
