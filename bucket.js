@@ -120,104 +120,26 @@ app.get('/buckets', async (req, res) => {
     }
 });
 
-// Route to list files in a bucket (e.g., for displaying saved chats)
-app.get('/files/:bucket', async (req, res) => {
-    const bucketName = req.params.bucket;
-
-    const params = {
-        Bucket: bucketName,
-    };
-
-    try {
-        const response = await s3.listObjectsV2(params).promise();
-        const files = response.Contents.map((file) => ({
-            key: file.Key,
-            size: file.Size,
-            lastModified: file.LastModified,
-        }));
-        res.json(files);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Route to save user chats
-app.post('/save-chat', async (req, res) => {
-    const { userId, chat } = req.body;
-
-    if (!userId || !chat) {
-        return res.status(400).json({ error: 'Missing userId or chat data!' });
+// Route to upload a chat file to S3
+app.post('/upload-chat', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded!' });
     }
 
-    const timestamp = Date.now();
-    const fileName = `${userId}/${timestamp}.json`;
+    const { originalname, buffer, mimetype } = req.file;
+    const userId = req.body.userId || 'defaultUser'; // You can set this dynamically based on the logged-in user
+    const timestamp = new Date().toISOString(); // Timestamp for versioning
 
     const params = {
-        Bucket: BUCKET_NAME,
-        Key: fileName,
-        Body: JSON.stringify(chat, null, 2),
-        ContentType: 'application/json',
+        Bucket: 'efai-savedchats', // Your S3 bucket
+        Key: `chats/${userId}/${timestamp}-${originalname}`, // Folder structure for each user
+        Body: buffer,
+        ContentType: mimetype,
     };
 
     try {
         const data = await s3.upload(params).promise();
-        res.json({ message: 'Chat saved successfully!', data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Route to list saved chats for a user
-app.get('/files/:userId', async (req, res) => {
-    const { userId } = req.params;
-
-    const params = {
-        Bucket: BUCKET_NAME,
-        Prefix: `${userId}/`,
-    };
-
-    try {
-        const data = await s3.listObjectsV2(params).promise();
-        const chats = data.Contents.map(item => ({
-            key: item.Key,
-            name: item.Key.split('/')[1],
-        }));
-        res.json(chats);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Route to generate a pre-signed URL for a file
-app.get('/file-url/:userId/:key', async (req, res) => {
-    const { userId, key } = req.params;
-
-    const params = {
-        Bucket: BUCKET_NAME,
-        Key: `${userId}/${key}`,
-        Expires: 300, // 5 minutes
-    };
-
-    try {
-        const url = s3.getSignedUrl('getObject', params);
-        res.json({ url });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Route to delete a chat from S3
-app.delete('/delete-chat/:key', async (req, res) => {
-    const { key } = req.params;
-
-    const params = {
-        Bucket: BUCKET_NAME,
-        Key: key,
-    };
-
-    try {
-        await s3.deleteObject(params).promise();
-        res.json({ message: 'Chat deleted successfully!' });
+        res.json({ message: 'Chat uploaded successfully!', data });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

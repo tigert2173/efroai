@@ -1,82 +1,218 @@
-// Get the save button and the saved chats list
-const saveButton = document.getElementById('save-button');
-const savedChatsList = document.getElementById('saved-chats-list');
-// Save chat function
- async function saveChat() {
-    const chatData = { name: 'Chat1', messages: [{ role: 'user', content: 'Hello!' }] };
+let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
 
-    const response = await fetch('https://bucket.efroai.net/save-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, chat: chatData })
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-        alert('Chat saved successfully!');
-        updateSavedChatsList(); // Refresh the list
+// Function to save the current chat
+async function saveChat() {
+    const chatName = prompt("Enter a name for this chat:");
+    if (chatName) {
+        const chatData = { name: chatName, messages: [...messages], timestamp: new Date().toISOString() };
+        
+        // Prepare chat data for uploading
+        const chatJSON = JSON.stringify(chatData);
+        const blob = new Blob([chatJSON], { type: 'application/json' });
+        
+        // Create a form data to send to the server
+        const formData = new FormData();
+        formData.append('file', blob, `${chatName}-${new Date().toISOString()}.json`);
+        
+        try {
+            // Send the data to the server
+            const response = await fetch('/upload-chat', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert('Chat saved successfully!');
+            } else {
+                alert('Error saving chat: ' + result.error);
+            }
+        } catch (error) {
+            alert('An error occurred while saving the chat.');
+        }
     } else {
-        alert(`Error: ${data.error}`);
+        alert('Chat name is required.');
     }
 }
 
-// Update the list of saved chats
-async function updateSavedChatsList() {
-    savedChatsList.innerHTML = ''; // Clear current list
+// Function to update the list of saved chats
+function updateSavedChatsList() {
+    const savedChatsList = document.getElementById('saved-chats-list');
+    savedChatsList.innerHTML = '';
 
-    const response = await fetch(`https://bucket.efroai.net/files/${userId}`);
-    const chats = await response.json();
-
-    chats.forEach((chat) => {
+    savedChats.forEach((chat, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = chat.name;
 
-        // Create download button
-        const downloadButton = document.createElement('button');
-        downloadButton.textContent = 'Download';
-        downloadButton.classList.add('download-button');
-        downloadButton.onclick = () => downloadChat(chat.key);
+        listItem.onclick = () => loadChat(index); // Load chat on left click
 
-        // Create delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.classList.add('delete-button');
-        deleteButton.onclick = () => deleteChat(chat.key);
-
-        listItem.appendChild(downloadButton);
-        listItem.appendChild(deleteButton);
+        // Right-click context menu
+        listItem.oncontextmenu = (e) => {
+            e.preventDefault();
+            showPopupMenu(e, index);
+        };
 
         savedChatsList.appendChild(listItem);
+
+        // Create a delete button for each chat
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '';
+        deleteButton.className = 'delete-button'; // Apply class for styling
+        deleteButton.onclick = (e) => {
+            e.stopPropagation(); // Prevent loading chat on button click
+            deleteChat(index);
+        };
+        listItem.appendChild(deleteButton);
     });
 }
 
-// Delete chat function
-async function deleteChat(key) {
-    if (confirm('Are you sure you want to delete this chat?')) {
-        const response = await fetch(`https://bucket.efroai.net/delete-chat/${key}`, { method: 'DELETE' });
-        const data = await response.json();
-        if (response.ok) {
-            updateSavedChatsList(); // Refresh the list after deletion
-            alert('Chat deleted successfully!');
-        } else {
-            alert(`Error: ${data.error}`);
-        }
+// Function to show the popup menu for deletion
+function showPopupMenu(event, index) {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'block';
+    popupMenu.style.left = `${event.pageX}px`;
+    popupMenu.style.top = `${event.pageY}px`;
+    
+    popupMenu.innerHTML = ''; // Clear previous items
+
+    // Create the Delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.className = 'popup-delete-button'; // Apply class for styling
+    deleteButton.onclick = (e) => {
+        e.stopPropagation();
+        deleteChat(index);
+    };
+    popupMenu.appendChild(deleteButton);
+
+    // Create the Download button
+    const downloadButton = document.createElement('button');
+    downloadButton.textContent = 'Download';
+    downloadButton.className = 'popup-download-button'; // Apply class for styling
+    downloadButton.onclick = (e) => {
+        e.stopPropagation();
+        downloadChat(index);
+    };
+    popupMenu.appendChild(downloadButton);
+
+    // Close the popup when clicking elsewhere
+    document.addEventListener('click', closePopup);
+}
+
+// Function to download a chat as JSON
+function downloadChat(index) {
+    const chatData = savedChats[index];
+    if (chatData) {
+        const jsonString = JSON.stringify(chatData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${chatData.name}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Chat downloaded successfully!');
+    } else {
+        alert('Chat not found. Please ensure you entered the correct index.');
     }
 }
 
-// Download chat function
-async function downloadChat(key) {
-    const response = await fetch(`https://bucket.efroai.net/file-url/${userId}/${key}`);
-    const { url } = await response.json();
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = key;
-    a.click();
+// Function to close the popup menu
+function closePopup() {
+    const popupMenu = document.getElementById('popup-menu');
+    popupMenu.style.display = 'none';
+    document.removeEventListener('click', closePopup);
 }
 
-// Set up event listener for save button
-saveButton.onclick = saveChat;
+// Function to delete a chat
+function deleteChat(index) {
+    if (confirm('Are you sure you want to delete this chat?')) {
+        savedChats.splice(index, 1);
+        localStorage.setItem('savedChats', JSON.stringify(savedChats));
+        updateSavedChatsList();
+        alert('Chat deleted successfully!');
+        closePopup(); // Close the popup after deletion
+    }
+}
 
-// Initially load saved chats
+// Function to load a selected chat
+function loadChat(index) {
+    const selectedChat = savedChats[index];
+    if (selectedChat) {
+        messages = []; // Clear current messages array
+        clearAllMessages();
+
+        selectedChat.messages.forEach(msg => {
+            if (msg.content && msg.content.length > 0 && msg.role) {
+                const messageText = msg.content[0].text; // Get the message text
+                const senderRole = msg.role; // Determine sender role
+                displayMessage(messageText, senderRole, true, true); // Call displayMessage with correct parameters
+            } else {
+                console.warn(`Invalid message structure for chat: ${selectedChat.name}`, msg);
+            }
+        });
+
+        alert(`Loaded chat: ${selectedChat.name}`);
+    } else {
+        alert('No chat found at this index.');
+    }
+}
+
+// Function to download a chat as JSON
+function downloadChatAsJSON() {
+    const chatName = prompt("Enter the name of the chat you want to download:");
+    const chatData = savedChats.find(chat => chat.name === chatName);
+
+    if (chatData) {
+        const jsonString = JSON.stringify(chatData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${chatData.name}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('Chat downloaded successfully!');
+    } else {
+        alert('Chat not found. Please ensure you entered the correct name.');
+    }
+}
+
+// Function to upload a chat from a JSON file
+function uploadChat(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const uploadedChat = JSON.parse(e.target.result);
+                if (uploadedChat.name && Array.isArray(uploadedChat.messages)) {
+                    savedChats.push(uploadedChat);
+                    localStorage.setItem('savedChats', JSON.stringify(savedChats));
+                    updateSavedChatsList();
+                    alert('Chat uploaded successfully!');
+                } else {
+                    alert('Invalid chat structure. Ensure it has a name and messages.');
+                }
+            } catch (error) {
+                alert('Error parsing JSON file. Please ensure it is a valid JSON.');
+            }
+        };
+        reader.readAsText(file);
+    } else {
+        alert('No file selected. Please choose a JSON file to upload.');
+    }
+}
+
+// Event listeners for buttons
+document.getElementById('save-button').onclick = saveChat;
+document.getElementById('download-button').onclick = downloadChatAsJSON;
+document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
+document.getElementById('upload-input').onchange = uploadChat;
+
+// Call this function initially to display saved chats on page load
 updateSavedChatsList();
