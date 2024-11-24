@@ -585,7 +585,31 @@ async function sendMessage() {
     // Add cooldown class for visual feedback
     document.getElementById("send-button").classList.add('cooldown');
     document.getElementById("regenerate-button").classList.add('cooldown');
+    // Create a countdown timer for 8 seconds
+let countdown = 8;
+
+const countdownInterval = setInterval(function() {
+    // Update button text to show the remaining countdown
+    sendButton.innerHTML = `Wait... ${countdown}s`;
+    regenerateButton.innerHTML = `Wait... ${countdown}s`;
     
+    countdown--;
+
+    if (countdown <= 0) {
+        // Re-enable the buttons when the countdown ends
+        clearInterval(countdownInterval);
+        sendButton.disabled = false;
+        regenerateButton.disabled = false;
+
+        // Reset button text and remove the cooldown class
+        sendButton.innerHTML = "Send";
+        regenerateButton.innerHTML = "Regenerate";
+
+        sendButton.classList.remove('cooldown');
+        regenerateButton.classList.remove('cooldown');
+    }
+}, 1000); // Update every second
+
     setTimeout(function() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
