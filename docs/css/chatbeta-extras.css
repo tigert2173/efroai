@@ -113,7 +113,6 @@ button.cooldown .countdown-text {
     z-index: 2; /* Ensure the text is above the spinner */
 }
 
-
 /* Spinner styles */
 button.cooldown-spinner {
     position: relative;  /* Ensure button is a positioned container */
@@ -144,6 +143,7 @@ button.cooldown {
     padding: 10px 20px;  /* Adjust padding as needed */
 }
 
+/* Countdown text styling */
 button.cooldown span {
     visibility: visible;  /* Ensure the text is visible when spinner is active */
     position: relative;  /* Make sure text appears above spinner */
