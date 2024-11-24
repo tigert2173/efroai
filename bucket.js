@@ -57,7 +57,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME, // Bucket name from .env
+        Bucket: process.env.IMG_S3_BUCKET_NAME, // Bucket name from .env
         Key: req.file.originalname, // File name in S3
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
