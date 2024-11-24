@@ -267,7 +267,54 @@
                     (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
                 </script>
             </div>
-        
+        <script>
+            window.addEventListener('resize', function() {
+    adjustAdSize();
+});
+
+function adjustAdSize() {
+    const ad = document.getElementById('1073770');
+    const adContainer = document.getElementById('juicy-ad-container');
+
+    if (!ad || !adContainer) return;
+
+    const containerWidth = adContainer.offsetWidth; // Get the container's width
+
+    // Define the base width and height (original size of the ad)
+    const baseWidth = 728;
+    const baseHeight = 90;
+
+    // Calculate the aspect ratio (width / height)
+    const aspectRatio = baseWidth / baseHeight;
+
+    // Calculate new width and height based on the container's width
+    let newWidth = containerWidth;
+    let newHeight = newWidth / aspectRatio;
+
+    // Apply minimum size limits (if necessary)
+    if (newWidth < 320) {
+        newWidth = 320;  // Minimum width
+        newHeight = newWidth / aspectRatio;
+    }
+
+    // Apply maximum size (ensure it does not exceed the original size)
+    if (newWidth > baseWidth) {
+        newWidth = baseWidth;
+        newHeight = newWidth / aspectRatio;
+    }
+
+    // Set the new width and height on the ad container
+    ad.setAttribute('data-width', newWidth);
+    ad.setAttribute('data-height', newHeight);
+
+    // Reload the ad to reflect the changes (if needed)
+    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
+}
+
+// Call the function initially to adjust size on page load
+adjustAdSize();
+
+        </script>
 
         <div id="chat-container">
         </div>
