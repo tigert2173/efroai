@@ -119,18 +119,14 @@ button.cooldown .countdown-text {
     z-index: 2; /* Ensure the text is above the spinner */
 }
 
-/* Spinner styles */
-button.cooldown {
-    position: relative; /* Ensure button is a positioned container */
-}
 
 button.cooldown:before {
     content: '';
     position: absolute; /* Position absolutely within the button */
     top: 50%;
     left: 50%;
-    width: 30px; /* Set width for spinner */
-    height: 30px; /* Set height for spinner */
+    width: 15px; /* Set width for spinner */
+    height: 15px; /* Set height for spinner */
     border: 3px solid #fff;
     border-top: 3px solid #32CD32; /* Green spinner color */
     border-radius: 50%;
