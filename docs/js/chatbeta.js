@@ -1312,38 +1312,35 @@ function escapeQuotes(str) {
 }
 
 function deleteMessage(index) {
-    // Ask for confirmation before deleting
+    // Ask for user confirmation before deleting
     const userConfirmed = confirm('Are you sure you want to delete this message?');
-    if (!userConfirmed) return;
+    if (!userConfirmed) {
+        return; // Exit if the user cancels
+    }
 
-    // Remove the message from the array
+    // Remove the message from the messages array
     messages.splice(index, 1);
 
-    // Remove the message element from the DOM
+    // Remove the corresponding message element from the UI
     const messageElements = document.querySelectorAll('.message');
     messageElements[index].remove();
 
-    // Re-index remaining messages
-    updateMessageIndexes();
+    // Update the botMessages array if the message was from the assistant
+    if (messages[index]?.role === 'assistant') {
+        botMessages.splice(index, 1);
+    }
 
+    // Re-index the remaining messages and update the display
+    updateMessageIndexes();
     console.log('Updated messages array after deletion:', messages);
 }
 
-
-// Update the header's Edit and Delete buttons with correct index after deletion or navigation
 function updateMessageIndexes() {
+    // Update the message indexes after deletion
     const messageElements = document.querySelectorAll('.message');
     messageElements.forEach((element, index) => {
-        const editButton = element.querySelector('.edit-btn');
-        const deleteButton = element.querySelector('.delete-btn');
-
-        // Update buttons' onclick handlers to pass the correct index
-        if (editButton) {
-            editButton.onclick = function() { enableEditMode(this, index); };
-        }
-        if (deleteButton) {
-            deleteButton.onclick = function() { deleteMessage(index); };
-        }
+        element.querySelector('.edit-btn').onclick = function() { enableEditMode(this, index); };
+        element.querySelector('.delete-btn').onclick = function() { deleteMessage(index); };
     });
 }
 
@@ -1375,35 +1372,36 @@ function updateArrowStates() {
     }
 }
 
-// Editing a message
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement;
-    const messageContentElement = messageElement.querySelector('.message-content');
+    const messageElement = button.parentElement; // The parent element of the button
+    const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
 
-    // Replace content with a textarea for inline editing
+    // Replace the message content with a textarea for inline editing
     messageContentElement.innerHTML = `<textarea class="edit-area" oninput="autoResize.call(this)" style="width: 100%;">${currentContent.replace(/<br>/g, '\n')}</textarea>`;
     
+    // Set the initial height to match the content
     const editArea = messageContentElement.querySelector('.edit-area');
     editArea.style.height = `${editArea.scrollHeight}px`;
 
-    // Change button to 'Save' for saving the edited content
+    // Replace the Edit button with a Save button
     button.textContent = 'Save';
     button.onclick = function() { saveEditedMessage(this, index); };
 
+    // Focus the edit area for immediate typing
     editArea.focus();
 }
 
-// Saving the edited message
+
 function saveEditedMessage(button, index) {
     const messageElement = button.parentElement;
     const editArea = messageElement.querySelector('.edit-area');
     const newContent = editArea.value.replace(/\n/g, '<br>');
 
-    // Update content in the messages array
+    // Update the message content in the array
     messages[index].content[0].text = newContent;
-
-    // Update the displayed content and reset button
+    
+    // Replace the textarea with the new content and restore the Edit button
     messageElement.querySelector('.message-content').innerHTML = newContent;
     button.textContent = 'Edit';
     button.onclick = function() { enableEditMode(this, index); };
