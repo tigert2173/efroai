@@ -144,22 +144,40 @@
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
         <!-- Left-side Ad -->
-        <div class="desktop-only-ad left-ad">
+        <div class="desktop-only-ad left-ad" id="leftAd">
             <!-- JuicyAds v3.0 -->
             <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
             <ins id="1073768" data-width="160" data-height="600"></ins>
-            <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});</script>
-            <!--JuicyAds END-->
+            <script type="text/javascript" data-cfasync="false" async>
+                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
+            </script>
+            <!-- JuicyAds END -->
+
+            <!-- Close button -->
+            <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
         </div>
-        
+
         <!-- Right-side Ad -->
-        <div class="desktop-only-ad right-ad">
+        <div class="desktop-only-ad right-ad" id="rightAd">
             <!-- JuicyAds v3.0 -->
             <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
             <ins id="1073768" data-width="160" data-height="600"></ins>
-            <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});</script>
-            <!--JuicyAds END-->
+            <script type="text/javascript" data-cfasync="false" async>
+                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
+            </script>
+            <!-- JuicyAds END -->
+
+            <!-- Close button -->
+            <button class="close-btn" onclick="closeAd('rightAd')">&times;</button>
         </div>
+
+        <script>
+            // Function to close the ad
+            function closeAd(adId) {
+                const ad = document.getElementById(adId);
+                ad.style.display = 'none'; // Hides the ad
+            }
+        </script>
 
         <label for="enter-send" class="send-on-enter-label">
             <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">

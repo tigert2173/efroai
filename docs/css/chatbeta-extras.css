@@ -34,6 +34,25 @@
             .mobile-only-ad {
                 display: none;
             }
+            /* Close button styles */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
             /* Style the label to align items in a modern way */
 .send-on-enter-label {
     display: flex;
