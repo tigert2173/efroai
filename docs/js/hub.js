@@ -195,7 +195,7 @@ function displayCharacters(characters, searchQuery) {
             // Check if ads should be displayed
             if (!adExempt) {
                 let adLoading = false; // Track if an ad is currently loading
-                if (cardCounter >= nextAdInterval && !adLoading) {
+                if (cardCounter >= nextAdInterval) {
                     adLoading = true;
 
                     // Create an ad container
@@ -210,7 +210,7 @@ function displayCharacters(characters, searchQuery) {
                     adContainer.appendChild(adDiv);
 
                     // Load the Adsterra script asynchronously only once
-                  
+                    if (!window.adScriptLoaded) {
                         const adScript = document.createElement('script');
                         adScript.async = true;
                         adScript.setAttribute('data-cfasync', 'false');
@@ -236,7 +236,7 @@ function displayCharacters(characters, searchQuery) {
 
                         // Append the script to the body (Adsterra will handle the ad rendering)
                         document.body.appendChild(adScript);
-              
+                    }
 
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);
