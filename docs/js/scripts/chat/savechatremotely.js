@@ -14,7 +14,7 @@ async function saveChat() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId: userID, chat: chatData }), 
+                body: JSON.stringify({ userId: userID, chat: chatData }),
             });
 
             const data = await response.json();
@@ -31,35 +31,35 @@ async function saveChat() {
         alert('Chat name is required.');
     }
 }
-// Function to update the list of saved chats
+
+// Function to update the list of saved chats for the current user
 async function updateSavedChatsList() {
     const savedChatsList = document.getElementById('saved-chats-list');
     savedChatsList.innerHTML = '';
 
     try {
-        // Fetch saved chats list from the backend (e.g., list files from S3)
-        const response = await fetch('https://bucket.efroai.net/files/efai-savedchats');
+        // Fetch saved chats list from the backend (fetch by user ID)
+        const response = await fetch(`https://bucket.efroai.net/files/efai-savedchats/${userID}`);
         const chats = await response.json();
 
         chats.forEach((chat, index) => {
             const listItem = document.createElement('li');
-            listItem.textContent = chat.Key;
-
-            listItem.onclick = () => loadChat(chat.Key); // Load chat on left click
+            listItem.textContent = chat.name; // Use chat's name
+            listItem.onclick = () => loadChat(chat.key); // Load chat on left click
 
             listItem.oncontextmenu = (e) => {
                 e.preventDefault();
-                showPopupMenu(e, chat.Key);
+                showPopupMenu(e, chat.key);
             };
 
             savedChatsList.appendChild(listItem);
 
             const deleteButton = document.createElement('button');
-            deleteButton.textContent = '';
-            deleteButton.className = 'delete-button'; 
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
             deleteButton.onclick = (e) => {
                 e.stopPropagation();
-                deleteChat(chat.Key);
+                deleteChat(chat.key);
             };
             listItem.appendChild(deleteButton);
         });
@@ -133,7 +133,7 @@ function closePopup() {
 async function deleteChat(key) {
     if (confirm('Are you sure you want to delete this chat?')) {
         try {
-            const response = await fetch(`/delete-chat/${key}`, { method: 'DELETE' });
+            const response = await fetch(`https://bucket.efroai.net/delete-chat/${key}`, { method: 'DELETE' });
             const data = await response.json();
             if (response.ok) {
                 updateSavedChatsList();
@@ -150,7 +150,7 @@ async function deleteChat(key) {
 // Function to load a selected chat
 async function loadChat(key) {
     try {
-        const response = await fetch(`https://bucket.efroai.net/file-url/efai-savedchats/${key}`);
+        const response = await fetch(`https://bucket.efroai.net/file-url/efai-savedchats/${userID}/${key}`);
         const { url } = await response.json();
 
         const chatResponse = await fetch(url);
@@ -172,6 +172,7 @@ async function loadChat(key) {
         alert('Error loading chat.');
     }
 }
+
 
 
 // Function to download a chat as JSON
