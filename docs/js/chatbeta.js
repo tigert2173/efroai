@@ -1318,7 +1318,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             `;
 
             // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+            chatContainer.insertBefore(messageHeader, messageElement);
         }
         // Update arrow states
         }
