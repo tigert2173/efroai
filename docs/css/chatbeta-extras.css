@@ -100,20 +100,24 @@ button:disabled {
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
 }
 
-/* Countdown Spinner */
+/* Cooldown spinner styles */
 button.cooldown {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px; /* Adjust padding to fit spinner and text */
+    width: auto;
+    height: auto;
 }
 
+/* Countdown Spinner inside the button */
 button.cooldown .countdown-text {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     font-size: 14px;
     color: white;
     font-weight: bold;
-    z-index: 2;
+    z-index: 2; /* Ensure the countdown text stays on top */
     animation: countdown-shrink 1s ease-in-out forwards;
 }
 
