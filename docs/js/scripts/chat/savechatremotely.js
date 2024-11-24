@@ -41,14 +41,6 @@ function saveChatToBackendWithBeacon(username, characterName, messages) {
     navigator.sendBeacon(url, data);
 }
 
-// Function to handle window unload (close)
-window.addEventListener('beforeunload', (event) => {
-    const username = "user123"; // Example user, replace with actual username
-    const characterName = "CharacterX"; // Replace with actual character name being chatted with
-    if (messages && messages.length > 0) {
-        saveChatToBackendWithBeacon(username, characterName, messages);
-    }
-});
 
     // Event listener for the "Save Chat" button
     document.getElementById('save-chat-button').addEventListener('click', () => {
