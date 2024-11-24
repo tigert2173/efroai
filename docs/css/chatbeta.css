@@ -770,6 +770,7 @@ input[type="checkbox"]:not(:checked) + label {
     align-items: center; /* Vertically align items */
     justify-content: space-between; /* Space between the two groups (arrows and buttons) */
     width: 100%; /* Ensure full width for the header */
+    flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -850,6 +851,38 @@ input[type="checkbox"]:not(:checked) + label {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+/* Responsive adjustments for shrinking font and button size */
+@media (max-width: 600px) {
+    /* Shrink navigation arrows */
+    .nav-arrows {
+        font-size: 1.2em; /* Smaller font size for arrows */
+    }
+
+    /* Shrink buttons */
+    .buttons button {
+        padding: 6px 10px; /* Smaller button size */
+        font-size: 12px; /* Smaller text inside buttons */
+    }
+
+    /* Adjust message header padding */
+    .message-header {
+        padding: 5px; /* Add padding to the header */
+    }
+}
+
+@media (max-width: 400px) {
+    /* Further shrink navigation arrows */
+    .nav-arrows {
+        font-size: 1em; /* Even smaller arrows */
+    }
+
+    /* Further shrink buttons */
+    .buttons button {
+        padding: 4px 8px; /* Even smaller buttons */
+        font-size: 10px; /* Smaller text inside buttons */
+    }
 }
 
 .likes-count {
