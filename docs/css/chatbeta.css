@@ -159,19 +159,6 @@ a:active {
     position: relative; /* Position relative for pseudo-elements */
 }
 
-.nav-arrows {
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 5px;
-    font-size: 1.2em;
-    color: #32CD32; /* Softer neon green */
-}
-
-.nav-arrows.disabled {
-    color: #555;
-    cursor: not-allowed;
-}
-
 #main-content {
     flex: 1;
     display: flex;
@@ -777,12 +764,32 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Button container styles */
+/* Button and arrows container styles */
 .message-header {
     display: flex;
-    align-items: center; /* Align buttons vertically */
-    justify-content: flex-start; /* Position buttons on the left */
-    gap: 10px; /* Add space between buttons */
+    align-items: center; /* Align buttons and arrows vertically */
+    justify-content: space-between; /* Position arrows on the left and buttons on the right */
+    gap: 10px; /* Add space between elements */
+}
+
+/* Navigation Arrows Styles */
+.nav-arrows {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 1.2em;
+    color: #32CD32; /* Softer neon green */
+}
+
+.nav-arrows.disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+/* Button styles (Edit, Delete, Audio) */
+.button-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
 }
 
 /* Edit Button Styles */
