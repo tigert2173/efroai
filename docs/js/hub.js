@@ -192,66 +192,60 @@ function displayCharacters(characters, searchQuery) {
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
 
+            // Check if ads should be displayed
             if (!adExempt) {
                 let adLoading = false; // Track if an ad is currently loading
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true;
-                    console.log("Loading ad..."); // Log when the ad starts loading
-            
+
                     // Create an ad container
                     const adContainer = document.createElement('div');
                     adContainer.className = 'ad-container';
-                    console.log("Created ad container"); // Log ad container creation
-            
-                    // Generate a unique ID for each ad container
-                    const uniqueAdId = 'container-' + cardCounter; // Use cardCounter or any unique identifier
+
+                    // Create a div for Adsterra to render the ad into (ID must match the Adsterra script's target)
                     const adDiv = document.createElement('div');
-                    adDiv.id = uniqueAdId; // Set unique ID for each ad div
-                    console.log("Created ad div with ID: " + uniqueAdId); // Log ad div creation
-            
+                    adDiv.id = 'container-7c80b8064dd18a028f4297f82a0c8ca4'; // Ensure the ID matches Adsterra's ID
+
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
-                    console.log("Appended ad div to ad container"); // Log append operation
-            
+
                     // Load the Adsterra script asynchronously only once
-                    const adScript = document.createElement('script');
-                    adScript.async = true;
-                    adScript.setAttribute('data-cfasync', 'false');
-                    adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
-            
-                    adScript.onload = function () {
-                        console.log("Ad script loaded successfully");
-                        if (window.AdProvider) {
-                            window.AdProvider.push({ "serve": {} });
-                            console.log("Ad loaded successfully");
-                        } else {
-                            console.error("AdProvider object is not available");
-                        }
-                        adLoading = false; // Reset flag after ad loads
-                    };
-            
-                    adScript.onerror = function () {
-                        console.error("Failed to load ad-provider.js");
-                        adLoading = false; // Reset flag on load failure
-                    };
-            
-                    // Mark the script as loaded
-                    window.adScriptLoaded = true;
-            
-                    // Append the script to the body (Adsterra will handle the ad rendering)
-                    document.body.appendChild(adScript);
-                    console.log("Ad script appended to body");
-            
+                    if (!window.adScriptLoaded) {
+                        const adScript = document.createElement('script');
+                        adScript.async = true;
+                        adScript.setAttribute('data-cfasync', 'false');
+                        adScript.src = '//pl24736297.profitablecpmrate.com/7c80b8064dd18a028f4297f82a0c8ca4/invoke.js';
+
+                        adScript.onload = function () {
+                            if (window.AdProvider) {
+                                window.AdProvider.push({ "serve": {} });
+                                console.log("Ad loaded successfully");
+                            } else {
+                                console.error("AdProvider object is not available");
+                            }
+                            adLoading = false; // Reset flag after ad loads
+                        };
+
+                        adScript.onerror = function () {
+                            console.error("Failed to load ad-provider.js");
+                            adLoading = false; // Reset flag on load failure
+                        };
+
+                        // Mark the script as loaded
+                        window.adScriptLoaded = true;
+
+                        // Append the script to the body (Adsterra will handle the ad rendering)
+                        document.body.appendChild(adScript);
+                    }
+
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);
-                    console.log("Ad container appended to character grid");
-            
+
                     // Update the next ad interval
                     nextAdInterval = cardCounter + getRandomAdInterval();
-                    console.log("Next ad interval set to: " + nextAdInterval);
                 }
             }
-                    }
+        }
     });
 }
 
