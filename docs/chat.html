@@ -114,8 +114,9 @@
     border-color: #FF9800; /* Change border color on hover */
 }
 
-/* Close button styles */
-.close-btn {
+
+        /* Close button styles */
+        .close-btn {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -127,13 +128,14 @@
             height: 30px;
             font-size: 18px;
             text-align: center;
+            line-height: 30px; /* Vertically centers the text */
             cursor: pointer;
+            z-index: 10000; /* Ensures button stays on top */
         }
 
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-
           </style>
     </styles>
 </head>
@@ -232,7 +234,7 @@
         <div id="chat-container">
         </div>
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-        
+
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
     <!-- JuicyAds v3.0 -->

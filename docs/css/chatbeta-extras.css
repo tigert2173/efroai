@@ -34,7 +34,8 @@
             .mobile-only-ad {
                 display: none;
             }
-            /* Close button styles */
+            
+        /* Close button styles */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -47,7 +48,9 @@
             height: 30px;
             font-size: 18px;
             text-align: center;
+            line-height: 30px; /* Vertically centers the text */
             cursor: pointer;
+            z-index: 10000; /* Ensures button stays on top */
         }
 
         .close-btn:hover {
