@@ -162,6 +162,6 @@ button.cooldown span {
 
 /* Countdown shrinking animation */
 @keyframes countdown-shrink {
-    0% { font-size: 14px; }
-    100% { font-size: 18px; }
+    0% { font-size: 20px; }
+    100% { font-size: 24px; }
 }
