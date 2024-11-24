@@ -17,6 +17,8 @@ const sslOptions = {
 
 // Enable CORS for all routes
 app.use(cors());
+// Enable parsing of JSON bodies
+app.use(express.json()); // This line is important
 
 // Allow all origins with custom headers and methods
 app.use((req, res, next) => {
