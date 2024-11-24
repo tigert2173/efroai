@@ -8,14 +8,17 @@
 
     <audio id="christmas-music">
         <source src="christmas_jingle.mp3" type="audio/mpeg">
+        </source>
     </audio>
     <audio id="santa-voice">
         <source src="ho_ho_ho.mp3" type="audio/mpeg">
+        </source>
     </audio>
 
     <link rel="stylesheet" href="css/chatbeta.css">
     <link rel="stylesheet" href="css/menu2.0.css">
     <link rel="stylesheet" href="css/chatbeta-extras.css">
+
 </head>
 
 <body>
@@ -273,7 +276,8 @@
         <button id="upload-button">Upload Chat</button>
         <div id="saved-chats">
             <h2 style="text-align: center;">Saved Chats</h2>
-            <div id="storage-notice" style="color: red; font-weight: bold;"> Note: Clearing your browser storage will delete all saved chats! </div>
+            <div id="storage-notice" style="color: red; font-weight: bold;"> Note: Clearing your browser storage will delete
+                all saved chats! </div>
             <ul id="saved-chats-list"></ul>
         </div>
         <div id="popup-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black; z-index: 1000;">
@@ -414,7 +418,8 @@
             <!-- Expert settings go here -->
             <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
             <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
-            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span> chat <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
+            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span> chat
+            <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
             <input type="range" id="ESettingsRandomNUMsentencesSlider" min="1" max="500" step="1" value="200">
             <span id="ESettingsRandomNUMsentencesValue">Select 200 Random Sentences</span>
             <br><i>Older Content has a lower and lower chance of being selected</i>
