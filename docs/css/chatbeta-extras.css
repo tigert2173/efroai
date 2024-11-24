@@ -125,14 +125,13 @@ button.cooldown:before {
     position: absolute; /* Position absolutely within the button */
     top: 50%;
     left: 50%;
-    left: 10px;
     width: 15px; /* Set width for spinner */
     height: 15px; /* Set height for spinner */
     border: 3px solid #fff;
     border-top: 3px solid #32CD32; /* Green spinner color */
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    transform: translate(-50%, -50%); /* Center the spinner */
+    transform: translate(-0%, -0%); /* Center the spinner */
 }
 
 /* Spin animation for the cooldown indicator */
