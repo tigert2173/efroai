@@ -895,7 +895,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 200px) {
+@media (max-width: 250px) {
     /* Even further shrink navigation arrows */
     .nav-arrows {
         font-size: 0.9em; /* Even smaller arrows */
