@@ -1,4 +1,7 @@
- // Save chat function
+// Get the save button and the saved chats list
+const saveButton = document.getElementById('save-button');
+const savedChatsList = document.getElementById('saved-chats-list');
+// Save chat function
  async function saveChat() {
     const chatData = { name: 'Chat1', messages: [{ role: 'user', content: 'Hello!' }] };
 
