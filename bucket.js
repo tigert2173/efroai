@@ -141,7 +141,7 @@ app.get('/files/:bucket', async (req, res) => {
     }
 });
 
-// Route to save user chats
+// Saving chat
 app.post('/save-chat', express.json(), async (req, res) => {
     const { userId, chat } = req.body;
 
@@ -150,13 +150,13 @@ app.post('/save-chat', express.json(), async (req, res) => {
     }
 
     const timestamp = Date.now();
-    const fileName = `${userId}/${timestamp}.json`; // Organize chats by user and timestamp
+    const fileName = `${userId}/${timestamp}.json`;
 
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats', // Use bucket name from .env or default
-        Key: fileName, // Unique file name in the bucket
-        Body: JSON.stringify(chat, null, 2), // Convert chat object to JSON
-        ContentType: 'application/json', // Set content type
+        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Key: fileName,
+        Body: JSON.stringify(chat, null, 2),
+        ContentType: 'application/json',
     };
 
     try {
@@ -166,6 +166,7 @@ app.post('/save-chat', express.json(), async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // Route to list saved chats for a user
 app.get('/files/efai-savedchats/:userId', async (req, res) => {
@@ -191,7 +192,7 @@ app.get('/files/efai-savedchats/:userId', async (req, res) => {
 });
 
 // Route to generate a pre-signed URL for a file
-app.get('/file-url/efai-savedchats/:key', async (req, res) => {
+app.get('/file-url/efai-savedchats/:userId/:key', async (req, res) => {
     const { userId, key } = req.params;
 
     const params = {

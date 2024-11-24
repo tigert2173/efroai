@@ -1,15 +1,13 @@
-let savedChats = JSON.parse(localStorage.getItem('savedChats')) || []; // Load saved chats from localStorage
-//const userID = sessionStorage.getItem('userID'); // Get the current user's ID
+// Get the userID correctly
+const userID = sessionStorage.getItem('userID'); // Use sessionStorage or localStorage depending on your app flow
 
-// Function to save the current chat
 async function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
     if (chatName) {
         const chatData = { name: chatName, messages: [...messages] };
 
         try {
-            // Send chat data to the backend to save it to S3
-            const response = await fetch('https://bucket.efroai.net/save-chat', {
+            const response = await fetch('/save-chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,36 +30,21 @@ async function saveChat() {
     }
 }
 
-// Function to update the list of saved chats for the current user
+// Load saved chats
 async function updateSavedChatsList() {
     const savedChatsList = document.getElementById('saved-chats-list');
     savedChatsList.innerHTML = '';
 
     try {
-        // Fetch saved chats list from the backend (fetch by user ID)
-        const response = await fetch(`https://bucket.efroai.net/files/efai-savedchats/${userID}`);
+        const response = await fetch(`/files/efai-savedchats/${userID}`);
         const chats = await response.json();
 
-        chats.forEach((chat, index) => {
+        chats.forEach((chat) => {
             const listItem = document.createElement('li');
             listItem.textContent = chat.name; // Use chat's name
-            listItem.onclick = () => loadChat(chat.key); // Load chat on left click
-
-            listItem.oncontextmenu = (e) => {
-                e.preventDefault();
-                showPopupMenu(e, chat.key);
-            };
+            listItem.onclick = () => loadChat(chat.key);
 
             savedChatsList.appendChild(listItem);
-
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
-            deleteButton.className = 'delete-button';
-            deleteButton.onclick = (e) => {
-                e.stopPropagation();
-                deleteChat(chat.key);
-            };
-            listItem.appendChild(deleteButton);
         });
     } catch (error) {
         alert('Error fetching saved chats.');
@@ -133,7 +116,7 @@ function closePopup() {
 async function deleteChat(key) {
     if (confirm('Are you sure you want to delete this chat?')) {
         try {
-            const response = await fetch(`https://bucket.efroai.net/delete-chat/${key}`, { method: 'DELETE' });
+            const response = await fetch(`/delete-chat/${key}`, { method: 'DELETE' });
             const data = await response.json();
             if (response.ok) {
                 updateSavedChatsList();
@@ -150,20 +133,19 @@ async function deleteChat(key) {
 // Function to load a selected chat
 async function loadChat(key) {
     try {
-        const response = await fetch(`https://bucket.efroai.net/file-url/efai-savedchats/${userID}/${key}`);
+        const response = await fetch(`/file-url/efai-savedchats/${userID}/${key}`);
         const { url } = await response.json();
 
         const chatResponse = await fetch(url);
         const chatData = await chatResponse.json();
 
-        messages = [];
+        // Clear and load the messages
         clearAllMessages();
-
         chatData.messages.forEach(msg => {
             if (msg.content && msg.content.length > 0 && msg.role) {
                 const messageText = msg.content[0].text;
                 const senderRole = msg.role;
-                displayMessage(messageText, senderRole, true, true);
+                displayMessage(messageText, senderRole);
             }
         });
 
@@ -172,8 +154,6 @@ async function loadChat(key) {
         alert('Error loading chat.');
     }
 }
-
-
 
 // Function to download a chat as JSON
 function downloadChatAsJSON() {
@@ -196,6 +176,7 @@ function downloadChatAsJSON() {
         alert('Chat not found. Please ensure you entered the correct name.');
     }
 }
+
 
 // Function to upload a chat from a JSON file
 function uploadChat(event) {
