@@ -764,15 +764,16 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Button and arrows container styles */
+
+/* Button container styles */
 .message-header {
     display: flex;
-    align-items: center; /* Align buttons and arrows vertically */
-    justify-content: space-between; /* Position arrows on the left and buttons on the right */
+    align-items: center; /* Align buttons vertically */
+    justify-content: space-between; /* Space out the arrows and buttons */
     gap: 10px; /* Add space between elements */
 }
 
-/* Navigation Arrows Styles */
+/* Adjust placement of navigation arrows (left side) */
 .nav-arrows {
     cursor: pointer;
     display: inline-block;
@@ -781,15 +782,17 @@ input[type="checkbox"]:not(:checked) + label {
     color: #32CD32; /* Softer neon green */
 }
 
+/* Disabled navigation arrows */
 .nav-arrows.disabled {
     color: #555;
     cursor: not-allowed;
 }
 
-/* Button styles (Edit, Delete, Audio) */
+/* Button container (right side) */
 .button-container {
     display: flex;
-    gap: 10px; /* Space between buttons */
+    gap: 10px; /* Add space between buttons */
+    align-items: center; /* Align buttons vertically */
 }
 
 /* Edit Button Styles */
@@ -848,7 +851,6 @@ button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
-
 
 .likes-count {
     position: absolute;
