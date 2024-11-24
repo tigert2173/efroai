@@ -1304,8 +1304,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Append message header to the chat container
             chatContainer.insertBefore(messageHeader, currentBotMessageElement);
         }
-        updateArrowStates();
-
     } else {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
@@ -1340,6 +1338,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
+        updateArrowStates();
+
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
