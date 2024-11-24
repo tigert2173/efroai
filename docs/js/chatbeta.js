@@ -594,12 +594,14 @@ async function sendMessage() {
     countdownElement.innerText = '8'; // Start countdown at 8 seconds
     sendButton.appendChild(countdownElement);
 
-    // Start countdown animation
+    // Start countdown animation inside spinner
     let countdownTime = 8;
     const countdownInterval = setInterval(() => {
         countdownTime -= 1;
         countdownElement.innerText = countdownTime;
-        countdownElement.style.fontSize = `${14 + (8 - countdownTime)}px`; // Shrink font as time goes down
+
+        // Shrink the font size dynamically as the countdown goes
+        countdownElement.style.fontSize = `${14 + (8 - countdownTime)}px`;
 
         if (countdownTime <= 0) {
             clearInterval(countdownInterval);
