@@ -1279,13 +1279,14 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                         <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
                     </div>
                 </div>
-
+            
                 `;
+                if (isResend)
+                {
+                    previousHeader.remove();
+                }
             }
 
-            if (isResend) {
-                previousHeader.remove();
-            }
             // Create a new message header with navigation arrows
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
