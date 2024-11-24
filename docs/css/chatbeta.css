@@ -793,7 +793,6 @@ input[type="checkbox"]:not(:checked) + label {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between buttons */
-    flex-shrink: 1; /* Allow buttons to shrink */
 }
 
 /* Edit Button Styles */
@@ -806,8 +805,6 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
-    flex-shrink: 1; /* Allow to shrink if necessary */
-    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .edit-btn:hover {
@@ -825,8 +822,6 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
-    flex-shrink: 1; /* Allow to shrink if necessary */
-    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .delete-btn:hover {
@@ -844,8 +839,6 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
-    flex-shrink: 1; /* Allow to shrink if necessary */
-    max-width: 100px; /* Limit the maximum width to prevent overflow */
 }
 
 .audio-btn:hover {
