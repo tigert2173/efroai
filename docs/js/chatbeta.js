@@ -1254,10 +1254,11 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         // Update the content of the existing bot message element
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
-        <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                    <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        <span class="message-content">${sanitizedContent}</span>
+
         `;
         }
         // If the message is final, update the navigation header
@@ -1277,9 +1278,6 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             const messageHeader = document.createElement('div');
             messageHeader.className = 'message-header';
             messageHeader.innerHTML = `
-                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
             <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
             <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
             `;
@@ -1293,10 +1291,11 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
-        <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
         <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+        <span class="message-content">${sanitizedContent}</span>
+       
         `;
         chatContainer.appendChild(messageElement);
     }
