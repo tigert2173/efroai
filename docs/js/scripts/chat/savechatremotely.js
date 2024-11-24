@@ -8,7 +8,7 @@ async function saveChat() {
 
         try {
             // Send chat data to the backend to save it to S3
-            const response = await fetch('/save-chat', {
+            const response = await fetch('https://bucket.efroai.net/save-chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ async function updateSavedChatsList() {
 
     try {
         // Fetch saved chats list from the backend (e.g., list files from S3)
-        const response = await fetch('/files/efai-savedchats');
+        const response = await fetch('https://bucket.efroai.net/files/efai-savedchats');
         const chats = await response.json();
 
         chats.forEach((chat, index) => {
@@ -149,7 +149,7 @@ async function deleteChat(key) {
 // Function to load a selected chat
 async function loadChat(key) {
     try {
-        const response = await fetch(`/file-url/efai-savedchats/${key}`);
+        const response = await fetch(`https://bucket.efroai.net/file-url/efai-savedchats/${key}`);
         const { url } = await response.json();
 
         const chatResponse = await fetch(url);
