@@ -793,6 +793,8 @@ input[type="checkbox"]:not(:checked) + label {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap to a new row if needed */
+    justify-content: flex-end; /* Align buttons to the right */
 }
 
 /* Edit Button Styles */
@@ -805,6 +807,7 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
+    flex-shrink: 1; /* Allow the button to shrink */
 }
 
 .edit-btn:hover {
@@ -822,6 +825,7 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
+    flex-shrink: 1; /* Allow the button to shrink */
 }
 
 .delete-btn:hover {
@@ -839,6 +843,7 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
+    flex-shrink: 1; /* Allow the button to shrink */
 }
 
 .audio-btn:hover {
@@ -850,6 +855,24 @@ input[type="checkbox"]:not(:checked) + label {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .message-header {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    /* Shrink buttons when on small screens */
+    .buttons {
+        justify-content: flex-start; /* Align buttons to the left on small screens */
+    }
+
+    .buttons button {
+        flex: 1 1 100%; /* Allow buttons to take up full width and shrink */
+        margin-bottom: 5px; /* Space between buttons */
+    }
 }
 
 .likes-count {
