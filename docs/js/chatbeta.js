@@ -1374,7 +1374,6 @@ function updateArrowStates() {
 
 function enableEditMode(button, index) {
     const messageElements = document.querySelectorAll('.message');
-
     const messageElement = messageElements[index];
     const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
@@ -1396,7 +1395,8 @@ function enableEditMode(button, index) {
 
 
 function saveEditedMessage(button, index) {
-    const messageElement = button.parentElement;
+    const messageElements = document.querySelectorAll('.message');
+    const messageElement = messageElements[index];
     const editArea = messageElement.querySelector('.edit-area');
     const newContent = editArea.value.replace(/\n/g, '<br>');
 
