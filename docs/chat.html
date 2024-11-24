@@ -137,69 +137,7 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-
-        /* Wrapper for the responsive ad container */
-.responsive-ad-container {
-    width: 100%; /* Make the container take full width of its parent */
-    max-width: 728px; /* Maximum width for the ad */
-    margin: 0 auto; /* Center it horizontally */
-    position: relative;
-    overflow: hidden; /* Prevent any content from overflowing */
-}
-
-/* Ad element with scaling */
-.responsive-ad {
-    position: absolute; /* Position it absolutely within the container */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1); /* Center the ad and scale it */
-    width: 100%; /* Start by making it fit the container width */
-    height: auto; /* Maintain aspect ratio for height */
-    max-width: 728px; /* Max width */
-    max-height: 90px; /* Max height */
-}
-
-/* Scale the ad as the container resizes */
-.responsive-ad-container {
-    width: 100%; /* Ensure full width */
-    max-width: 728px; /* Max width of the container */
-    position: relative;
-    padding-top: 12.3%; /* Set aspect ratio padding (90 / 728) * 100 */
-}
-
-.responsive-ad {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    width: 100%;
-    height: auto;
-    max-width: 728px;
-    max-height: 90px;
-    transition: transform 0.3s ease; /* Smooth transition when scaling */
-}
-
-/* Add scaling for different screen sizes (responsive scaling) */
-@media (max-width: 768px) {
-    .responsive-ad-container {
-        padding-top: 19.2%; /* Adjust aspect ratio for 468x60 */
-    }
-
-    .responsive-ad {
-        transform: translate(-50%, -50%) scale(0.8); /* Scale down the ad */
-    }
-}
-
-@media (max-width: 480px) {
-    .responsive-ad-container {
-        padding-top: 28.1%; /* Adjust aspect ratio for 320x90 */
-    }
-
-    .responsive-ad {
-        transform: translate(-50%, -50%) scale(0.6); /* Further scale down the ad */
-    }
-}
-
+        
           </style>
     </styles>
 </head>
@@ -294,21 +232,15 @@
 
 </nav>
     </header>
-      <!-- JuicyAds v3.0 -->
-<script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-<ins id="1073772" data-width="468" data-height="72"></ins>
-<script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073772});</script>
-<!--JuicyAds END-->
-<!-- Ad container that scales with the content -->
-<div id="juicy-ad-container" class="responsive-ad-container">
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073770" class="responsive-ad" data-width="728" data-height="90"></ins>
-    <script type="text/javascript" data-cfasync="false" async>
-        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073770});
-    </script>
-</div>
     <div id="main-content">
+        <div class="desktop-only-ad" id="leftAd">
 
+    <!-- JuicyAds v3.0 -->
+    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+    <ins id="1073770" data-width="728" data-height="102"></ins>
+    <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script>
+    <!--JuicyAds END-->
+    </div>
 
         <div id="chat-container">
         </div>
