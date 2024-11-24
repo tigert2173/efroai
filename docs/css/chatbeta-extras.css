@@ -98,36 +98,42 @@ button:disabled {
     cursor: not-allowed; /* Show a "not-allowed" cursor */
     opacity: 0.5; /* Reduce opacity to indicate the button is inactive */
     transition: background-color 0.3s, opacity 0.3s ease; /* Smooth transition */
-    position: relative;
 }
 
-/* Countdown Circle Styles */
+/* Countdown text styling */
 button.cooldown {
     position: relative;
+    font-size: 14px; /* Smaller font size for countdown */
 }
 
+/* Countdown Text */
+button.cooldown span.countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px; /* Make countdown text larger */
+    font-weight: bold;
+    color: #333;
+}
+
+/* Optional: Adding a spinner or indicator for cooldown */
 button.cooldown:before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 30px;
-    height: 30px;
-    border: 3px solid transparent;
-    border-top: 3px solid #32CD32; /* Green countdown */
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-top: 3px solid #32CD32; /* Green spinner color */
     border-radius: 50%;
-    animation: countdown 8s linear forwards; /* The countdown animation */
+    animation: spin 1s linear infinite;
     transform: translate(-50%, -50%);
 }
 
-/* Countdown animation */
-@keyframes countdown {
-    0% {
-        transform: rotate(0deg);
-        border-top-color: #32CD32; /* Initial green */
-    }
-    100% {
-        transform: rotate(360deg);
-        border-top-color: transparent; /* Fade out the green */
-    }
+/* Spin animation for the spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

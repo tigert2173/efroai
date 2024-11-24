@@ -568,11 +568,15 @@ document.getElementById('negativePrompt').addEventListener('change', updateNegat
 
 const isFirstMessage = true; 
 let isResend = false;
+
+let sendButtonDisabled = false;
+let countdownTimer;
+
 async function sendMessage() {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (message.trim() === "") return;  // Don't send empty messages
+    if (message === "") return;  // Don't send empty messages
 
     // Add logic to send the message
     console.log("Sending message:", message);
@@ -583,41 +587,32 @@ async function sendMessage() {
     document.getElementById("regenerate-button").disabled = true;
 
     // Add cooldown class for visual feedback
-    document.getElementById("send-button").classList.add('cooldown');
-    document.getElementById("regenerate-button").classList.add('cooldown');
-    // Create a countdown timer for 8 seconds
-let countdown = 8;
-
-const countdownInterval = setInterval(function() {
-    // Update button text to show the remaining countdown
-    sendButton.innerHTML = `Wait... ${countdown}s`;
-    regenerateButton.innerHTML = `Wait... ${countdown}s`;
+    const sendButton = document.getElementById("send-button");
+    sendButton.classList.add('cooldown');
+    sendButton.innerHTML = 'Cooldown: 8';  // Show initial countdown text
     
-    countdown--;
+    let countdown = 8;  // Start countdown from 8 seconds
 
-    if (countdown <= 0) {
-        // Re-enable the buttons when the countdown ends
-        clearInterval(countdownInterval);
-        sendButton.disabled = false;
-        regenerateButton.disabled = false;
+    // Start countdown animation
+    countdownTimer = setInterval(function() {
+        countdown--;
+        sendButton.innerHTML = `Cooldown: ${countdown}`;
 
-        // Reset button text and remove the cooldown class
-        sendButton.innerHTML = "Send";
-        regenerateButton.innerHTML = "Regenerate";
+        // When countdown reaches 0, re-enable the button and reset
+        if (countdown <= 0) {
+            clearInterval(countdownTimer);  // Stop the countdown
+            sendButtonDisabled = false;
+            sendButton.disabled = false;
+            sendButton.innerHTML = 'Send';  // Reset the button text
 
-        sendButton.classList.remove('cooldown');
-        regenerateButton.classList.remove('cooldown');
-    }
-}, 1000); // Update every second
+            // Remove the cooldown class to stop the spinner and restore the normal button state
+            sendButton.classList.remove('cooldown');
+        }
+    }, 1000); // Update countdown every second
 
+    // Remove cooldown class and re-enable buttons after 8 seconds
     setTimeout(function() {
-        sendButtonDisabled = false;
-        document.getElementById("send-button").disabled = false;
-        document.getElementById("regenerate-button").disabled = false;
-
-        // Remove the cooldown class to stop the spinner and restore the normal button state
-        document.getElementById("send-button").classList.remove('cooldown');
-        document.getElementById("regenerate-button").classList.remove('cooldown');
+        sendButton.classList.remove('cooldown');
     }, 8000); // 8-second delay
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
