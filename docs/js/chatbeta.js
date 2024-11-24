@@ -586,7 +586,7 @@ async function sendMessage() {
     const sendButton = document.getElementById("send-button");
     const regenerateButton = document.getElementById("regenerate-button");
     sendButton.classList.add('cooldown');
-    regenerateButton.classList.add('cooldown');
+    regenerateButton.classList.add('cooldown-spinner');
 
     // Create a countdown text element
     const countdownElement = document.createElement('span');
@@ -617,7 +617,7 @@ async function sendMessage() {
 
         // Remove the cooldown class to stop the spinner and restore the normal button state
         sendButton.classList.remove('cooldown');
-        regenerateButton.classList.remove('cooldown');
+        regenerateButton.classList.remove('cooldown-spinner');
     }, 8000); // 8-second delay
 
 

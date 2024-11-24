@@ -101,7 +101,7 @@ button:disabled {
 }
 
 /* Countdown spinner styles */
-button.cooldown .cooldown .countdown-text {
+button.cooldown .countdown-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -115,7 +115,7 @@ button.cooldown .cooldown .countdown-text {
 
 
 /* Spinner styles */
-button.cooldown {
+button.cooldown-spinner {
     position: relative;  /* Ensure button is a positioned container */
     display: flex;  /* Use flexbox to center content */
     align-items: center;  /* Vertically center content */
@@ -123,7 +123,7 @@ button.cooldown {
     padding: 10px 20px;  /* Adjust padding as needed */
 }
 
-button.cooldown:before {
+button.cooldown-spinner:before {
     content: '';
     position: absolute;  /* Position the spinner within the button */
     width: 30px;  /* Set width for spinner */
