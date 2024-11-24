@@ -167,13 +167,36 @@ app.post('/save-chat', express.json(), async (req, res) => {
     }
 });
 
+// Route to list saved chats for a user
+app.get('/files/efai-savedchats/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const params = {
+            Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+            Prefix: `${userId}/`, // Fetch only the chats for the specific user
+        };
+
+        const data = await s3.listObjectsV2(params).promise();
+
+        const chats = data.Contents.map(item => ({
+            key: item.Key,
+            name: item.Key.split('/')[1], // Assuming file name is part of the path
+        }));
+
+        res.json(chats);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Route to generate a pre-signed URL for a file
-app.get('/file-url/:bucket/:key', async (req, res) => {
-    const { bucket, key } = req.params;
+app.get('/file-url/efai-savedchats/:userId/:key', async (req, res) => {
+    const { userId, key } = req.params;
 
     const params = {
-        Bucket: bucket,
-        Key: key,
+        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Key: `${userId}/${key}`,
         Expires: 60 * 5, // URL expiration time (5 minutes)
     };
 
