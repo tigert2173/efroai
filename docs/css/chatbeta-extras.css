@@ -98,7 +98,7 @@ button:disabled {
     color: hsla(0, 0%, 100%, 0.15) !important;
     cursor: not-allowed; /* Show a "not-allowed" cursor */
     opacity: 1; /* Reduce opacity to indicate the button is inactive */
-    transition: background-color 1.0s, opacity 1.0s ease-in; /* Smooth transition */
+    transition: background-color 0s, opacity 0s ease-in; /* Smooth transition */
 }
 
 /* Countdown spinner styles */
