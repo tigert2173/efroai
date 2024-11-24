@@ -582,10 +582,18 @@ async function sendMessage() {
     document.getElementById("send-button").disabled = true;
     document.getElementById("regenerate-button").disabled = true;
 
+    // Add cooldown class for visual feedback
+    document.getElementById("send-button").classList.add('cooldown');
+    document.getElementById("regenerate-button").classList.add('cooldown');
+    
     setTimeout(function() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
         document.getElementById("regenerate-button").disabled = false;
+
+        // Remove the cooldown class to stop the spinner and restore the normal button state
+        document.getElementById("send-button").classList.remove('cooldown');
+        document.getElementById("regenerate-button").classList.remove('cooldown');
     }, 8000); // 8-second delay
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
