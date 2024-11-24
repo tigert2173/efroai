@@ -16,7 +16,7 @@ async function saveChat() {
         
         try {
             // Send the data to the server
-            const response = await fetch('/upload-chat', {
+            const response = await fetch('https://bucket.efroai.net/upload-chat', {
                 method: 'POST',
                 body: formData,
             });
