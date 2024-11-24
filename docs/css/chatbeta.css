@@ -764,12 +764,20 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Adjust the message header to space items correctly */
+/* Make sure the arrows are grouped together and placed at the left side */
 .message-header {
     display: flex;
     align-items: center; /* Vertically align items */
-    justify-content: space-between; /* Space between the two groups (arrows and buttons) */
-    width: 100%; /* Ensure full width for the header */
+    justify-content: flex-start; /* Align to the left */
+    gap: 0; /* Remove gap between the elements */
+}
+
+
+/* Button container styles */
+.message-header .buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -777,10 +785,11 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: pointer;
     display: inline-block;
     padding: 0; /* Remove padding to eliminate space between the arrows */
-    font-size: 2vw; /* Font size based on viewport width for responsiveness */
+    font-size: 1.5em; /* Slightly larger arrows */
     color: #32CD32; /* Softer neon green */
     margin: 0; /* No margin between arrows */
 }
+
 
 /* Disabled navigation arrows */
 .nav-arrows.disabled {
@@ -788,13 +797,6 @@ input[type="checkbox"]:not(:checked) + label {
     cursor: not-allowed;
 }
 
-/* Button container styles for buttons on the right side */
-.buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between buttons */
-    flex-shrink: 1; /* Allow buttons to shrink if needed */
-}
 
 /* Edit Button Styles */
 .edit-btn {
@@ -804,11 +806,8 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 1.5vw; /* Font size relative to viewport width */
+    font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
-    flex-shrink: 1; /* Allow the button to shrink */
-    min-width: 60px; /* Minimum width to prevent too small buttons */
-    max-width: 120px; /* Maximum width for larger screens */
 }
 
 .edit-btn:hover {
@@ -824,11 +823,8 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 1.5vw; /* Font size relative to viewport width */
+    font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
-    flex-shrink: 1; /* Allow the button to shrink */
-    min-width: 60px; /* Minimum width to prevent too small buttons */
-    max-width: 120px; /* Maximum width for larger screens */
 }
 
 .delete-btn:hover {
@@ -844,11 +840,8 @@ input[type="checkbox"]:not(:checked) + label {
     border-radius: 5px;
     padding: 8px 14px;
     cursor: pointer;
-    font-size: 1.5vw; /* Font size relative to viewport width */
+    font-size: 14px;
     transition: background-color 0.3s, transform 0.3s ease-in-out;
-    flex-shrink: 1; /* Allow the button to shrink */
-    min-width: 60px; /* Minimum width to prevent too small buttons */
-    max-width: 120px; /* Maximum width for larger screens */
 }
 
 .audio-btn:hover {
@@ -860,17 +853,6 @@ input[type="checkbox"]:not(:checked) + label {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-}
-
-/* Optional media query for larger screens */
-@media (min-width: 768px) {
-    .nav-arrows {
-        font-size: 1.5em; /* Fixed font size on larger screens */
-    }
-
-    .edit-btn, .delete-btn, .audio-btn {
-        font-size: 14px; /* Adjust font size for larger screens */
-    }
 }
 
 .likes-count {
