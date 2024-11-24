@@ -1314,6 +1314,8 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
        
         `;
         chatContainer.appendChild(messageElement);
+
+        if (sender !== 'assistant') {
         const messageHeader = document.createElement('div');
         
         messageHeader.className = 'message-header';
@@ -1332,9 +1334,10 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
     
         // Append message header to the chat container
         chatContainer.insertBefore(messageHeader, messageElement);
+        }
     }
 
-    if (isFinal || sender === 'user'){
+    if (isFinal || sender === 'user') {
         // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
