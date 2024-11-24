@@ -141,10 +141,9 @@ app.get('/files/:bucket', async (req, res) => {
     }
 });
 
-// Saving chat
-app.post('/save-chat', express.json(), async (req, res) => {
+// Route to save a chat
+app.post('/save-chat', async (req, res) => {
     const { userId, chat } = req.body;
-
     if (!userId || !chat) {
         return res.status(400).json({ error: 'Missing userId or chat data!' });
     }
@@ -160,29 +159,27 @@ app.post('/save-chat', express.json(), async (req, res) => {
     };
 
     try {
-        const data = await s3.upload(params).promise();
-        res.json({ message: 'Chat saved successfully!', data });
+        await s3.upload(params).promise();
+        res.status(200).json({ message: 'Chat saved successfully!', fileName });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-
 // Route to list saved chats for a user
-app.get('/files/efai-savedchats/:userId', async (req, res) => {
+app.get('/files/:userId', async (req, res) => {
     const { userId } = req.params;
 
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
+        Prefix: `${userId}/`,
+    };
+
     try {
-        const params = {
-            Bucket: process.env.S3_BUCKET_NAME || 'efai-savedchats',
-            Prefix: `${userId}/`, // Fetch only the chats for the specific user
-        };
-
         const data = await s3.listObjectsV2(params).promise();
-
         const chats = data.Contents.map(item => ({
             key: item.Key,
-            name: item.Key.split('/')[1], // Assuming file name is part of the path
+            name: item.Key.split('/')[1], // Extract file name
         }));
 
         res.json(chats);
@@ -192,7 +189,7 @@ app.get('/files/efai-savedchats/:userId', async (req, res) => {
 });
 
 // Route to generate a pre-signed URL for a file
-app.get('/file-url/efai-savedchats/:userId/:key', async (req, res) => {
+app.get('/file-url/:userId/:key', async (req, res) => {
     const { userId, key } = req.params;
 
     const params = {
