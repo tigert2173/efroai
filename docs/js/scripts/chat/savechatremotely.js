@@ -3,21 +3,20 @@ async function saveChat() {
     const chatName = prompt("Enter a name for this chat:");
     if (chatName) {
         const chatData = { name: chatName, messages: [...messages], timestamp: new Date().toISOString() };
-        
+
         // Prepare chat data for uploading
         const chatJSON = JSON.stringify(chatData);
         const blob = new Blob([chatJSON], { type: 'application/json' });
-        
+
         // Create a form data to send to the server
         const formData = new FormData();
         formData.append('file', blob, `${chatName}-${new Date().toISOString()}.json`);
         
         // Assuming userID is stored in a variable or session
-        const userID = getUserID();  // Add function or logic to retrieve userID
+        const userID = getUserID(); // Retrieve userID based on your app logic
         formData.append('userId', userID);
-        
+
         try {
-            // Send the data to the server
             const response = await fetch('https://bucket.efroai.net/upload-chat', {
                 method: 'POST',
                 body: formData,
@@ -37,6 +36,30 @@ async function saveChat() {
     }
 }
 
+// Function to upload a chat file
+async function uploadChat(event) {
+    const file = event.target.files[0];
+    if (file) {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('https://bucket.efroai.net/upload-chat', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert('Chat uploaded successfully!');
+                updateSavedChatsList(); // Refresh the chat list after upload
+            } else {
+                alert('Error uploading chat: ' + result.error);
+            }
+        } catch (error) {
+            alert('An error occurred while uploading the chat.');
+        }
+    }
+}
 
 // Function to update the list of saved chats from the bucket
 async function updateSavedChatsList() {
@@ -44,14 +67,12 @@ async function updateSavedChatsList() {
     savedChatsList.innerHTML = '';
 
     try {
-        // Fetch the list of saved chats from the server
         const response = await fetch('https://bucket.efroai.net/list-chats');
         const savedChats = await response.json();
         
-        savedChats.forEach((chat, index) => {
+        savedChats.forEach((chat) => {
             const listItem = document.createElement('li');
             listItem.textContent = chat.name;
-
             listItem.onclick = () => loadChat(chat); // Load chat on click
 
             // Right-click context menu
@@ -65,9 +86,9 @@ async function updateSavedChatsList() {
             // Create a delete button for each chat
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
-            deleteButton.className = 'delete-button'; // Apply class for styling
+            deleteButton.className = 'delete-button';
             deleteButton.onclick = (e) => {
-                e.stopPropagation(); // Prevent loading chat on button click
+                e.stopPropagation();
                 deleteChat(chat);
             };
             listItem.appendChild(deleteButton);
@@ -89,7 +110,7 @@ function showPopupMenu(event, chat) {
     // Create the Delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.className = 'popup-delete-button'; // Apply class for styling
+    deleteButton.className = 'popup-delete-button';
     deleteButton.onclick = (e) => {
         e.stopPropagation();
         deleteChat(chat);
@@ -99,7 +120,7 @@ function showPopupMenu(event, chat) {
     // Create the Download button
     const downloadButton = document.createElement('button');
     downloadButton.textContent = 'Download';
-    downloadButton.className = 'popup-download-button'; // Apply class for styling
+    downloadButton.className = 'popup-download-button';
     downloadButton.onclick = (e) => {
         e.stopPropagation();
         downloadChat(chat);
@@ -154,16 +175,15 @@ async function loadChat(chat) {
     try {
         const response = await fetch(`https://bucket.efroai.net/download-chat?name=${chat.name}`);
         const chatData = await response.json();
-
+        
         if (chatData && chatData.messages) {
-            console.log('Loaded chat data:', chatData); // Debug log
             messages = []; // Clear current messages array
             clearAllMessages();
 
             chatData.messages.forEach(msg => {
                 if (msg.content && msg.content.length > 0 && msg.role) {
-                    const messageText = msg.content[0].text; // Get the message text
-                    const senderRole = msg.role; // Determine sender role
+                    const messageText = msg.content[0].text;
+                    const senderRole = msg.role;
                     displayMessage(messageText, senderRole, true, true); // Call displayMessage with correct parameters
                 } else {
                     console.warn(`Invalid message structure for chat: ${chat.name}`, msg);
@@ -179,7 +199,6 @@ async function loadChat(chat) {
     }
 }
 
-
 // Function to close the popup menu
 function closePopup() {
     const popupMenu = document.getElementById('popup-menu');
@@ -187,11 +206,11 @@ function closePopup() {
     document.removeEventListener('click', closePopup);
 }
 
-// Function to get userID (you need to implement this based on your app's logic)
+// Function to get userID (implement as per your app's logic)
 function getUserID() {
-    // Example: fetch from sessionStorage or localStorage, or pass it via your app's context
-    return userID;
+    return localStorage.getItem('userID') || 'tigert2173'; // Example fallback
 }
+
 // Event listeners for buttons
 document.getElementById('save-button').onclick = saveChat;
 document.getElementById('upload-button').onclick = () => document.getElementById('upload-input').click();
