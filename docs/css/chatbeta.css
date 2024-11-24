@@ -771,6 +771,8 @@ input[type="checkbox"]:not(:checked) + label {
     justify-content: space-between; /* Space between the two groups (arrows and buttons) */
     width: 100%; /* Ensure full width for the header */
     flex-wrap: nowrap; /* Prevent wrapping */
+    padding: 2px; /* Add padding to the header */
+
 }
 
 /* Adjust placement of navigation arrows (left side) */
@@ -854,7 +856,7 @@ button:disabled {
 }
 
 /* Gradual resizing for smaller screens */
-@media (max-width: 900px) {
+@media (max-width: 600px) {
     /* Slightly shrink navigation arrows */
     .nav-arrows {
         font-size: 1.4em; /* Slightly smaller arrows */
@@ -867,7 +869,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 500px) {
     /* More noticeable shrink for navigation arrows */
     .nav-arrows {
         font-size: 1.2em; /* Noticeably smaller arrows */
@@ -880,7 +882,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 400px) {
     /* Further shrink navigation arrows */
     .nav-arrows {
         font-size: 1em; /* Smaller arrows */
@@ -893,7 +895,7 @@ button:disabled {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 300px) {
     /* Even further shrink navigation arrows */
     .nav-arrows {
         font-size: 0.9em; /* Even smaller arrows */
@@ -903,11 +905,6 @@ button:disabled {
     .buttons button {
         padding: 4px 8px; /* Even smaller buttons */
         font-size: 10px; /* Smallest font size */
-    }
-
-    /* Adjust message header padding for very small screens */
-    .message-header {
-        padding: 4px; /* Add padding to the header */
     }
 }
 
