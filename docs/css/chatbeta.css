@@ -777,15 +777,24 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Button styles */
+/* Button container styles */
+.message-header {
+    display: flex;
+    align-items: center; /* Align buttons vertically */
+    justify-content: flex-start; /* Position buttons on the left */
+    gap: 10px; /* Add space between buttons */
+}
+
+/* Edit Button Styles */
 .edit-btn {
     background-color: #007bff; /* Blue background */
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 8px 14px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
 }
 
 .edit-btn:hover {
@@ -793,18 +802,46 @@ input[type="checkbox"]:not(:checked) + label {
     transform: scale(1.05); /* Slight scale effect on hover */
 }
 
+/* Delete Button Styles */
 .delete-btn {
-    background-color: red;
+    background-color: #d9534f; /* Red background */
     color: white;
     border: none;
-    padding: 5px 10px;
+    border-radius: 5px;
+    padding: 8px 14px;
     cursor: pointer;
     font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
 }
 
 .delete-btn:hover {
-    background-color: darkred;
+    background-color: #c9302c; /* Darker red on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
 }
+
+/* Audio Button Styles */
+.audio-btn {
+    background-color: #5bc0de; /* Light blue background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+}
+
+.audio-btn:hover {
+    background-color: #31b0d5; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Disabled button styling */
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 
 .likes-count {
     position: absolute;
