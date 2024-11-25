@@ -204,8 +204,8 @@ function displayCharacters(characters, searchQuery) {
                     // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
                     const adDiv = document.createElement('ins');
                     adDiv.id = '1073761'; // Use your JuicyAds adzone ID
-                    adDiv.setAttribute('data-width', '288');  // Set the ad dimensions
-                    adDiv.setAttribute('data-height', '500');
+                    adDiv.setAttribute('data-width', '308');  // Set the ad dimensions
+                    adDiv.setAttribute('data-height', '528');
         
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
