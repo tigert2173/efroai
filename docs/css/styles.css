@@ -71,9 +71,10 @@ main {
 
 .ad-container {
     position: relative;
-    margin-top: 20px;
+    margin-top: 5px;
     display: flex;
-
+    justify-content: center;
+    align-items: center;
     width: 100%; /* Full width of the parent container */
     height: auto; /* Automatically adjust the height */
     overflow: hidden; /* Prevent overflow */
