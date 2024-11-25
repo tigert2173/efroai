@@ -71,10 +71,10 @@ main {
 
 .ad-container {
     position: relative;
-    margin-top: 5px;
+    margin-top: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* Align content to the top */
+    align-items: flex-start;    /* Align content to the top */
     width: 100%; /* Full width of the parent container */
     height: auto; /* Automatically adjust the height */
     overflow: hidden; /* Prevent overflow */
@@ -86,9 +86,6 @@ main {
     max-width: 336px; /* Original ad width */
     aspect-ratio: 336 / 620; /* Maintain the aspect ratio */
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     transform-origin: top left; /* Ensure proper scaling */
 }
 
@@ -97,7 +94,7 @@ main {
     height: 100%;
     display: block;
     transform: scale(0.8); /* Adjust the scale factor as needed */
-    transform-origin: center center; /* Scale proportionally */
+    transform-origin: top left; /* Align scaling to the top */
 }
 
 /* Filters Section */
