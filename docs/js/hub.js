@@ -205,7 +205,7 @@ function displayCharacters(characters, searchQuery) {
                     const adDiv = document.createElement('ins');
                     adDiv.id = '1073761'; // Use your JuicyAds adzone ID
                     adDiv.setAttribute('data-width', '288');  // Set the ad dimensions
-                    adDiv.setAttribute('data-height', '600');
+                    adDiv.setAttribute('data-height', '500');
         
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
