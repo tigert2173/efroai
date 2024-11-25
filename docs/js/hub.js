@@ -191,41 +191,41 @@ function displayCharacters(characters, searchQuery) {
             // Append the character card to the grid
             characterGrid.appendChild(card);
             cardCounter++; // Increment the counter after adding a card
-
             if (!adExempt) {
                 let adLoading = false; // Track if an ad is currently loading
                 if (cardCounter >= nextAdInterval && !adLoading) {
                     adLoading = true;
-        
+            
                     // Create an ad container
                     const adContainer = document.createElement('div');
                     adContainer.className = 'ad-container';
-        
+            
                     // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
                     const adDiv = document.createElement('ins');
                     adDiv.id = '1073761'; // Use your JuicyAds adzone ID
                     adDiv.setAttribute('data-width', '336');  // Set the ad dimensions
                     adDiv.setAttribute('data-height', '620');
-        
+            
                     // Append the div to the ad container
                     adContainer.appendChild(adDiv);
-        
+            
                     // Push the ad into the JuicyAds queue
                     (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
-        
+            
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);
-        
+            
                     // Update the next ad interval
                     nextAdInterval = cardCounter + getRandomAdInterval();
-        
+            
                     // Ensure we remove and reload the ad script
                     reloadAdScript();
-                    
+            
                     // Reset loading flag after ad load
                     adLoading = false;
                 }
             }
+            
         }
     });
 }
