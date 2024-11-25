@@ -69,6 +69,36 @@ main {
     padding: 40px 20px;
 }
 
+.ad-container {
+    position: relative;
+    margin-top: 20px; /* Adjust spacing if necessary */
+    width: 336px; /* Fixed container width */
+    height: 620px; /* Fixed container height */
+    overflow: hidden; /* Ensures content stays within bounds */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc; /* Optional border */
+    background-color: #fff; /* Optional background for ads */
+    box-sizing: border-box;
+}
+
+.ad-container ins {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* For ad images scaling proportionally */
+.ad-container img {
+    max-width: 100%; /* Prevents the image from exceeding container width */
+    max-height: 100%; /* Prevents the image from exceeding container height */
+    object-fit: contain; /* Ensures the image scales proportionally within the container */
+    display: block;
+}
+
 /* Filters Section */
 .filters {
     flex: 0 0 200px; /* Fixed width for filters */
