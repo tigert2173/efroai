@@ -62,10 +62,7 @@ a:hover {
 .cta-btn:hover {
     background-color: #3367d6;
 }
-.ad-container {
-    height: 600px;
-    width: 320px;
-}
+
 /* Main Content */
 main {
     display: flex; /* Use flexbox to position filters and main content side by side */
