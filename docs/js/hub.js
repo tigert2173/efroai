@@ -200,17 +200,24 @@ function displayCharacters(characters, searchQuery) {
                     const adContainer = document.createElement('div');
                     adContainer.className = 'ad-container';
             
+                    // Create a wrapper for scaling
+                    const scaleWrapper = document.createElement('div');
+                    scaleWrapper.className = 'scale-wrapper';
+            
                     // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
                     const adDiv = document.createElement('ins');
                     adDiv.id = '1073761'; // Use your JuicyAds adzone ID
-                    adDiv.setAttribute('data-width', '336');  // Set the ad dimensions
+                    adDiv.setAttribute('data-width', '336');  // Original dimensions
                     adDiv.setAttribute('data-height', '620');
             
-                    // Append the div to the ad container
-                    adContainer.appendChild(adDiv);
+                    // Append the ad div into the scale wrapper
+                    scaleWrapper.appendChild(adDiv);
+            
+                    // Append the scale wrapper into the ad container
+                    adContainer.appendChild(scaleWrapper);
             
                     // Push the ad into the JuicyAds queue
-                    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
+                    (adsbyjuicy = window.adsbyjuicy || []).push({ 'adzone': 1073761 });
             
                     // Append the ad container to the character grid
                     characterGrid.appendChild(adContainer);

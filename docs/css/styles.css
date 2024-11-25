@@ -71,32 +71,33 @@ main {
 
 .ad-container {
     position: relative;
-    margin-top: 20px; /* Adjust spacing if necessary */
-    width: 336px; /* Fixed container width */
-    height: 620px; /* Fixed container height */
-    overflow: hidden; /* Ensures content stays within bounds */
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #ccc; /* Optional border */
-    background-color: #fff; /* Optional background for ads */
-    box-sizing: border-box;
+    width: 100%; /* Full width of the parent container */
+    height: auto; /* Automatically adjust the height */
+    overflow: hidden; /* Prevent overflow */
 }
 
-.ad-container ins {
+.scale-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 336px; /* Original ad width */
+    aspect-ratio: 336 / 620; /* Maintain the aspect ratio */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: top left; /* Ensure proper scaling */
+}
+
+.scale-wrapper ins {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* For ad images scaling proportionally */
-.ad-container img {
-    max-width: 100%; /* Prevents the image from exceeding container width */
-    max-height: 100%; /* Prevents the image from exceeding container height */
-    object-fit: contain; /* Ensures the image scales proportionally within the container */
     display: block;
+    transform: scale(0.8); /* Adjust the scale factor as needed */
+    transform-origin: center center; /* Scale proportionally */
 }
 
 /* Filters Section */
