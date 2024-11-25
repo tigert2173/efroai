@@ -1,5 +1,5 @@
 {
     "maintenanceMode": false,
-    "maintenanceUpcoming": false,
-    "maintenanceMessage": "We will have schedule maintenance on Nov 21st from 12:00pm to 5:00pm EST \nWe be running at half capacity during this time."
+    "maintenanceUpcoming": true,
+    "maintenanceMessage": "𝗢𝘂𝘁 𝗼𝗳 𝗢𝗳𝗳𝗶𝗰𝗲 𝗡𝗼𝘁𝗶𝗰𝗲: \nPlease be aware that we will be out of the office until December 28th\n due to academic commitments, mental health considerations, and other personal matters.\n During this time, response times may be slower, and support may be limited.\n We appreciate your understanding and patience, and we look forward to assisting you upon our return.\n Thank you for your support!"
 }
