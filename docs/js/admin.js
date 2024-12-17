@@ -102,7 +102,7 @@ async function revokeCharacter(characterId, uploader) {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/characters/admin`, {
+        const response = await fetch(`${BACKEND_URL}/admin/characters/${uploader}/${characterId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `${token}`, // Use the token here
