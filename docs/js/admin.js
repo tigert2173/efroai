@@ -106,7 +106,8 @@ async function revokeCharacter(characterId, uploader) {
             method: 'GET',
             headers: {
                 'Authorization': `${token}` // Use the token here
-            }
+            },
+            body: JSON.stringify({ status: 'revoked' }) // New status
         });
     
         if (!response.ok) {
