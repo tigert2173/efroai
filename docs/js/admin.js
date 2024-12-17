@@ -62,7 +62,7 @@ function displayCharacters(characters) {
             <td><span class="status ${character.status}">${character.status}</span></td>
             <td>
                 <a class="view-btn" href="admin/view-character.html?uploader=${character.uploader}&id=${character.id}">View JSON</a>
-                ${character.status() === 'approved'
+                ${character.status === 'approved'
                     ? `<button class="revoke-btn">Revoke</button>`
                     : `<button class="approve-btn">Approve</button>`
                 }
