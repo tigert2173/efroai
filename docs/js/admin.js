@@ -42,16 +42,16 @@ function displayCharacters(characters) {
     const characterList = document.getElementById('character-list');
     characterList.innerHTML = ''; // Clear existing entries
 
-    // Sort characters: pending first, then approved
-    characters.sort((a, b) => {
-        if (a.status.toLowerCase() === 'pending' && b.status.toLowerCase() !== 'pending') {
-            return -1; // Move pending characters up
-        }
-        if (b.status.toLowerCase() === 'pending' && a.status.toLowerCase() !== 'pending') {
-            return 1; // Move approved characters down
-        }
-        return 0; // Keep the original order for others
-    });
+    // // Sort characters: pending first, then approved
+    // characters.sort((a, b) => {
+    //     if (a.status.toLowerCase() === 'pending' && b.status.toLowerCase() !== 'pending') {
+    //         return -1; // Move pending characters up
+    //     }
+    //     if (b.status.toLowerCase() === 'pending' && a.status.toLowerCase() !== 'pending') {
+    //         return 1; // Move approved characters down
+    //     }
+    //     return 0; // Keep the original order for others
+    // });
 
     characters.forEach(character => {
         const row = document.createElement('tr');
