@@ -93,6 +93,34 @@ function handleCharacterActions(event) {
     }
 }
 
+// // Function to revoke a character's approval
+// async function revokeCharacter(characterId, uploader) {
+//     const token = localStorage.getItem('token'); // Get token from local storage
+//     if (!token) {
+//         console.error('No token found. User may not be logged in.');
+//         return; // Exit if no token is found
+//     }
+
+//     try {
+//         const response = await fetch(`${BACKEND_URL}/characters/admin`, {
+//             method: 'GET',
+//             headers: {
+//                 'Authorization': `${token}` // Use the token here
+//             }
+//         });
+    
+//         if (!response.ok) {
+//             throw new Error(`Failed to load characters: ${response.statusText}`);
+//         }
+    
+//         const characters = await response.json(); // Make sure this is valid JSON
+//         console.log('Characters loaded:', characters); // Debugging: log the response
+//         displayCharacters(characters);
+//     } catch (error) {
+//         console.error('Error loading characters:', error);
+//     }
+// }    
+
 // Function to revoke a character's approval
 async function revokeCharacter(characterId, uploader) {
     const token = localStorage.getItem('token'); // Get token from local storage
@@ -102,24 +130,25 @@ async function revokeCharacter(characterId, uploader) {
     }
 
     try {
-        const response = await fetch(`${BACKEND_URL}/characters/admin`, {
-            method: 'GET',
+        const response = await fetch(`${BACKEND_URL}/admin/characters/${uploader}/${characterId}`, {
+            method: 'PATCH',
             headers: {
-                'Authorization': `${token}` // Use the token here
-            }
+                'Authorization': `${token}`, // Use the token here
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'revoked' }) // New status
         });
-    
+
         if (!response.ok) {
-            throw new Error(`Failed to load characters: ${response.statusText}`);
+            throw new Error(`Failed to revoke character: ${response.statusText}`);
         }
-    
-        const characters = await response.json(); // Make sure this is valid JSON
-        console.log('Characters loaded:', characters); // Debugging: log the response
-        displayCharacters(characters);
+
+        console.log(`Character ${characterId} revoked.`);
+        loadCharacters(); // Reload characters after revocation
     } catch (error) {
-        console.error('Error loading characters:', error);
+        console.error('Error revoking character:', error);
     }
-}    
+}
 
 // Function to approve a character
 async function approveCharacter(characterId, uploader) {
