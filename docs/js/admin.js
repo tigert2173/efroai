@@ -115,9 +115,7 @@ async function revokeCharacter(characterId, uploader) {
     
         const characters = await response.json(); // Make sure this is valid JSON
         console.log('Characters loaded:', characters); // Debugging: log the response
-        //loadCharacters();
         displayCharacters(characters);
-
     } catch (error) {
         console.error('Error loading characters:', error);
     }
