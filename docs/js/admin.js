@@ -105,7 +105,9 @@ async function revokeCharacter(characterId, uploader) {
         const response = await fetch(`${BACKEND_URL}/characters/admin`, {
             method: 'PATCH',
             headers: {
-                'Authorization': `${token}` // Use the token here
+                'Authorization': `${token}`, // Use the token here
+                'Content-Type': 'application/json'
+
             },
             body: JSON.stringify({ status: 'revoked' }) // New status
         });
