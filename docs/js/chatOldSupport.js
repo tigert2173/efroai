@@ -127,7 +127,7 @@ function populateCharacterSettings() {
   const characterUploader = sessionStorage.getItem('characterUploader');
 
   // Fetch the character data from the backend
-  const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
+  const url = `https://characters.efroai.net/api/chat/${characterUploader}/${selectedCharacterId}`;
   
   fetch(url)
       .then(response => {

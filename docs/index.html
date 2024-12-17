@@ -539,7 +539,7 @@ fetch('config.json')
         // Function to check the suspension status
         async function checkSuspension(username) {
             try {
-                const response = await fetch(`https://characters.efroai.net:3000/api/check-suspension/${username}`);
+                const response = await fetch(`https://characters.efroai.net/api/check-suspension/${username}`);
                 const data = await response.json();
                 
                 if (data.suspended) {

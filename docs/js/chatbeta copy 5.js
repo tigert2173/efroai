@@ -162,7 +162,7 @@ function populateCharacterSettings() {
     const token = localStorage.getItem('token'); // Retrieve the token
 
     // Fetch the character data from the backend
-    const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${selectedCharacterId}`;
+    const url = `https://characters.efroai.net/api/chat/${characterUploader}/${selectedCharacterId}`;
     
     fetch(url, {
         method: 'GET',
@@ -1454,7 +1454,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+const backendurl = 'https://characters.efroai.net'; // Ensure this points to your backend
 
 // Assuming you have the following variables available:
 const selectedCharacterId = sessionStorage.getItem('selectedCharacterId'); // Correct assignment
@@ -1518,7 +1518,7 @@ async function fetchCharacterLikes(characterId, characterUploader) {
 
     try {
         // Fetch the character data from the backend
-        const url = `https://characters.efroai.net:3000/api/chat/${characterUploader}/${characterId}`;
+        const url = `https://characters.efroai.net/api/chat/${characterUploader}/${characterId}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {

@@ -3,7 +3,7 @@ const characterGrid = document.querySelector('.character-grid');
 // Fetch characters for moderation
 async function fetchCharacters() {
     try {
-        const response = await fetch('https://characters.efroai.net:3000/api/characters/all'); // Assuming this endpoint fetches all characters
+        const response = await fetch('https://characters.efroai.net/api/characters/all'); // Assuming this endpoint fetches all characters
         if (response.ok) {
             const characters = await response.json();
             populateCharacterGrid(characters);
@@ -73,7 +73,7 @@ async function rejectCharacter(id) {
 // Update character status
 async function updateCharacterStatus(id, status) {
     try {
-        await fetch(`https://characters.efroai.net:3000/api/characters/user/${id}`, {
+        await fetch(`https://characters.efroai.net/api/characters/user/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status }),
@@ -88,7 +88,7 @@ async function updateCharacterStatus(id, status) {
 async function deleteCharacter(id) {
     if (confirm('Are you sure you want to delete this character?')) {
         try {
-            await fetch(`https://characters.efroai.net:3000/api/characters/user/${id}`, {
+            await fetch(`https://characters.efroai.net/api/characters/user/${id}`, {
                 method: 'DELETE',
             });
             fetchCharacters(); // Refresh the character list

@@ -2,7 +2,7 @@
 function fetchBots() {
     const token = localStorage.getItem('token');
 
-    fetch('https://characters.efroai.net:3000/api/bots/pending', {
+    fetch('https://characters.efroai.net/api/bots/pending', {
         method: 'GET',
         headers: {
             'Authorization': token
@@ -34,7 +34,7 @@ function fetchBots() {
 function approveBot(botId) {
     const token = localStorage.getItem('token');
 
-    fetch(`https://characters.efroai.net:3000/api/bots/${botId}/approve`, {
+    fetch(`https://characters.efroai.net/api/bots/${botId}/approve`, {
         method: 'POST',
         headers: {
             'Authorization': token
@@ -52,7 +52,7 @@ function approveBot(botId) {
 function denyBot(botId) {
     const token = localStorage.getItem('token');
 
-    fetch(`https://characters.efroai.net:3000/api/bots/${botId}/deny`, {
+    fetch(`https://characters.efroai.net/api/bots/${botId}/deny`, {
         method: 'POST',
         headers: {
             'Authorization': token

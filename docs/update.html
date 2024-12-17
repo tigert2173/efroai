@@ -125,7 +125,7 @@
 
         if (characterId) {
             // Fetch character data using the ID
-            axios.get(`https://characters.efroai.net:3000/api/characters/${characterId}`)
+            axios.get(`https://characters.efroai.net/api/characters/${characterId}`)
                 .then(response => {
                     const character = response.data;
                     document.getElementById('name').value = character.name;
@@ -155,7 +155,7 @@
                 greeting: document.getElementById('greeting').value,
             };
 
-            axios.put(`https://characters.efroai.net:3000/api/characters/${characterId}`, updatedCharacter)
+            axios.put(`https://characters.efroai.net/api/characters/${characterId}`, updatedCharacter)
                 .then(response => {
                     alert('Character updated successfully!');
                     // Optionally, redirect or reset the form

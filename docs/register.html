@@ -277,7 +277,7 @@
             errorMessage.textContent = 'Bot detected!';
             document.cookie = "botDetected=true; path=/; max-age=86400";
             try {
-                const response = await fetch('https://characters.efroai.net:3000/log-bot', {
+                const response = await fetch('https://characters.efroai.net/log-bot', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -305,7 +305,7 @@
             errorMessage.textContent = 'Bot detected!';
             document.cookie = "botDetected=true; path=/; max-age=86400";
             try {
-                const response = await fetch('https://characters.efroai.net:3000/log-bot', {
+                const response = await fetch('https://characters.efroai.net/log-bot', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -335,7 +335,7 @@
             document.cookie = "botDetected=true; path=/; max-age=900"; // Set a cookie for 15 minutes
             // Log bot detection
             try {
-            const response = await fetch('https://characters.efroai.net:3000/log-bot', {
+            const response = await fetch('https://characters.efroai.net/log-bot', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -416,7 +416,7 @@
         // Add your registration logic here
           // Sending data to the backend
           try {
-            const response = await fetch('https://characters.efroai.net:3000/register', {
+            const response = await fetch('https://characters.efroai.net/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

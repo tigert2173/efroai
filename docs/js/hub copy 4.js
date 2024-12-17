@@ -1,4 +1,4 @@
-const backendurl = 'https://characters.efroai.net:3000'; // Ensure this points to your backend
+const backendurl = 'https://characters.efroai.net'; // Ensure this points to your backend
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();

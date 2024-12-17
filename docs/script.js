@@ -1,4 +1,4 @@
-const apiBaseUrl = 'https://characters.efroai.net:3000'; // Adjust as needed
+const apiBaseUrl = 'https://characters.efroai.net'; // Adjust as needed
 let authToken = '';
 
 function register() {

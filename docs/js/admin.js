@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://characters.efroai.net:3000/api'; // Define your backend URL here
+const BACKEND_URL = 'https://characters.efroai.net/api'; // Define your backend URL here
 
 document.addEventListener('DOMContentLoaded', () => {
     // Load characters from the backend
