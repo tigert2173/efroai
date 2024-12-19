@@ -604,10 +604,41 @@
                 <label for="messages-sent">Messages Sent</label>
                 <input type="text" id="messages-sent" value="0" readonly>
             </div>
+            
             <div id="save-load-container">
-                <button onclick="saveCharacter()">Save Character</button>
-                <button onclick="updateSettings()">Update Settings</button>
+                <button id="saveSettings">Save Settings</button>
+                <button id="loadSettings">Load Settings</button>
             </div>
+            <script>
+                  // Function to save settings to local storage
+    function saveSettings() {
+        localStorage.setItem('temperature', document.getElementById('temperature').value);
+        localStorage.setItem('top_p', document.getElementById('top_p').value);
+        localStorage.setItem('top_k', document.getElementById('top_k').value);
+        localStorage.setItem('min_p', document.getElementById('min_p').value);
+        localStorage.setItem('prescence_penalty', document.getElementById('prescence_penalty').value);
+        localStorage.setItem('frequency_penalty', document.getElementById('frequency_penalty').value);
+        localStorage.setItem('repeat_penalty', document.getElementById('repeat_penalty').value);
+        alert('Settings saved');
+    }
+
+    // Function to load settings from local storage
+    function loadSettings() {
+        document.getElementById('temperature').value = localStorage.getItem('temperature');
+        document.getElementById('top_p').value = localStorage.getItem('top_p');
+        document.getElementById('top_k').value = localStorage.getItem('top_k');
+        document.getElementById('min_p').value = localStorage.getItem('min_p');
+        document.getElementById('prescence_penalty').value = localStorage.getItem('prescence_penalty');
+        document.getElementById('frequency_penalty').value = localStorage.getItem('frequency_penalty');
+        document.getElementById('repeat_penalty').value = localStorage.getItem('repeat_penalty');
+        alert('Settings loaded');
+    }
+
+    // Attach event listeners to buttons
+    document.getElementById('saveSettings').addEventListener('click', saveSettings);
+    document.getElementById('loadSettings').addEventListener('click', loadSettings);
+
+            </script>
             <div class="setting">
                 <label for="advanced-debugging">Debugging</label>
                 <textarea id="advanced-debugging" value="" rows="20" style="width: 100%;" readonly></textarea>
