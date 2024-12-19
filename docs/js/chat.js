@@ -355,6 +355,69 @@ function getAllMessagesExceptLast() {
             // Add any additional settings updates here
             break;
             
+        case 'Whispering Horizon':
+            // Disruptive config to force variation
+            settings.temperature = 0.35; // High randomness
+            settings.top_p = 0.70; // Broadens the range of token choices
+            settings.top_k = 35; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 1.05; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.15; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.3; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+
+                    
+        case 'Starlit Pulse':
+            // Disruptive config to force variation
+            settings.temperature = 0.32; // High randomness
+            settings.top_p = 0.72; // Broadens the range of token choices
+            settings.top_k = 38; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 1.08; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.12; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.25; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+
+                    
+        case 'Obsidian Flow':
+            // Disruptive config to force variation
+            settings.temperature = 0.34; // High randomness
+            settings.top_p = 0.74; // Broadens the range of token choices
+            settings.top_k = 36; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 1.07; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.13; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.25; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+
+                    
+        case 'Crimson Spark':
+            // Disruptive config to force variation
+            settings.temperature = 0.33; // High randomness
+            settings.top_p = 0.73; // Broadens the range of token choices
+            settings.top_k = 37; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 1.06; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.14; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.3; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+
+        case 'Echoed Reverie':
+            // Disruptive config to force variation
+            settings.temperature = 0.31; // High randomness
+            settings.top_p = 0.75; // Broadens the range of token choices
+            settings.top_k = 39; // Allows more token options for variety
+            settings.min_p = 0.0; // Keep zero to avoid limiting
+            settings.prescence_penalty = 1.09; // Forces the model to consider new topics
+            settings.frequency_penalty = 0.11; // Encourages less frequent tokens
+            settings.repeat_penalty = 1.2; // Strong penalty to prevent repetition
+            // Add any additional settings updates here
+            break;
+    
             case 'Llama 3 Default':
                 // Llama 3 Default config
                 settings.temperature = 1.22;
