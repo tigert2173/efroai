@@ -223,6 +223,13 @@ function updateSettings() {
     // settings.context = document.getElementById('context').value;
     // settings.greeting = document.getElementById('greeting').value;
     settings.temperature = parseFloat(document.getElementById('temperature').value);
+    settings.top_p = parseFloat(document.getElementById('top_p').value);
+    settings.top_k = parseFloat(document.getElementById('top_k').value);
+    settings.min_p = parseFloat(document.getElementById('min_p').value);
+    settings.prescence_penalty = parseFloat(document.getElementById('prescence_penalty').value);
+    settings.frequency_penalty = parseFloat(document.getElementById('frequency_penalty').value);
+    settings.repeat_penalty = parseFloat(document.getElementById('repeat_penalty').value);
+
     settings.model = document.getElementById('model').value;
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
 
