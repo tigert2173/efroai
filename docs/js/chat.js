@@ -574,12 +574,12 @@ function getAllMessagesExceptLast() {
 
         // Update the temperature input element based on the selected preset
         document.getElementById('temperature').value = settings.temperature;
-        document.getElementById('top_p').value = top_p.temperature;
-        document.getElementById('top_k').value = top_k.temperature;
-        document.getElementById('min_p').value = min_p.temperature;
-        document.getElementById('repeat_penalty').value = repeat_penalty.temperature;
-        document.getElementById('prescence_penalty').value = prescence_penalty.temperature;
-        document.getElementById('frequency_penalty').value = frequency_penalty.temperature;
+        document.getElementById('top_p').value = settings.top_p;
+        document.getElementById('top_k').value = settings.top_k;
+        document.getElementById('min_p').value = settings.min_p;
+        document.getElementById('repeat_penalty').value = settings.repeat_penalty;
+        document.getElementById('prescence_penalty').value = settings.prescence_penalty;
+        document.getElementById('frequency_penalty').value = settings.frequency_penalty;
 
         console.log('Updated settings:', settings);
     }
