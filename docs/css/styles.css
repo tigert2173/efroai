@@ -67,6 +67,7 @@ a:hover {
 main {
     display: flex; /* Use flexbox to position filters and main content side by side */
     padding: 40px 20px;
+    z-index: 10;
 }
 
 
