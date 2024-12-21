@@ -100,10 +100,25 @@ html { /*body*/
 }
 
 .nav-links a {
-    color: #66ff66; /* Matching green color for links */
+    color: #66ff66; /* Default green color for links */
     text-decoration: none; /* No underline */
     margin-left: 15px; /* Space between links */
     transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+}
+
+/* Alternate red and green colors */
+.nav-links a:nth-child(odd) {
+    color: #66ff66; /* Green for odd links */
+}
+
+.nav-links a:nth-child(even) {
+    color: #ff6666; /* Red for even links */
+}
+
+/* Hover effect */
+.nav-links a:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    color: #fff; /* Change text color to white on hover */
 }
 
 .nav-links a:hover {
