@@ -27,13 +27,10 @@ a:hover {
 
 /* Hero Section */
 .hero {
-    position: relative;
-
     background: linear-gradient(135deg, #34a853, #34a853, #fb0404, #fb0404);
     padding: 60px 20px;
     text-align: center;
     color: #fff;
-    z-index: 10;
 }
 
 .hero-content {
