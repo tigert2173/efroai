@@ -31,7 +31,7 @@ a:hover {
     padding: 60px 20px;
     text-align: center;
     color: #fff;
-    z-index: 100;
+    z-index: 1010;
 }
 
 .hero-content {
