@@ -217,7 +217,6 @@ function detectAdBlocker() {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div id="maintenance-warning" class="maintenance-warning">
             <p id="maintenance-message"></p>
@@ -226,108 +225,69 @@ function detectAdBlocker() {
         <nav class="navbar">
             <div class="left-content">
                 <a href="/" class="logo"> <!-- Make the logo clickable -->
-                <div class="logo">
-                    <img src="logo.png" alt=" ">
-                </div>
-            </a>
-            <a href="/" class="text">
-                <div class="text">
-                    <span class="letter letter-1">E</span>
-                    <span class="letter letter-2">F</span>
-                    <span class="letter letter-3">R</span>
-                    <span class="letter letter-4">O</span>
-                    <span class="letter letter-5">.</span>
-                    <span class="letter letter-6">A</span>
-                    <span class="letter letter-7">I</span>
-                </div>
-            </a>
+                    <div class="logo">
+                        <img src="logo.png" alt=" ">
+                    </div>
+                </a>
+                <a href="/" class="text">
+                    <div class="text">
+                        <span class="letter letter-1">E</span>
+                        <span class="letter letter-2">F</span>
+                        <span class="letter letter-3">R</span>
+                        <span class="letter letter-4">O</span>
+                        <span class="letter letter-5">.</span>
+                        <span class="letter letter-6">A</span>
+                        <span class="letter letter-7">I</span>
+                    </div>
+                </a>
             </div>
-    <div class="right-content">
-        <ul class="nav-links">
-            <!-- Characters with dropdown -->
-            <li class="dropdown">
-                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-                <div class="dropdown-content">
-                    <a href="index.html">Characters Hub</a>
-                    <a href="editor.html">Upload Character</a>
-                    <a href="mycharacters.html">My Characters</a>
-                </div>
-            </li>
-
-            <!-- Community with dropdown -->
-            <li class="dropdown">
-                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-                <div class="dropdown-content">
-                    <a href="rules.html">Rules</a>
-                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                    <a href="/EFROTales/">Old Stories Page</a>
-                </div>
-            </li>
-
-            <!-- Account with dropdown -->
-            <li class="dropdown">
-                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-                <div class="dropdown-content">
-                    <a href="myaccount.html">Account</a>
-                    <a href="mylikes.html">My Likes</a>
-                    <a href="login.html">Login</a>
-                </div>
-            </li>
-
-            <!-- Help with dropdown -->
-            <li class="dropdown">
-                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-                <div class="dropdown-content">
-                    <a href="documentation.html">Documentation</a>
-                    <a href="updates.html">Updates & Features</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-            </li>
-
-            <!-- Contribute Button -->
-            <li>
-                <a href="contribute.html" class="nav-btn">Contribute</a>
-            </li>
-        </ul>     
-
-        <!-- Search bar -->
-        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
-        <div id="login-status" class="login-status"></div>
-
-        <!-- Hamburger menu for mobile view -->
-        <div class="hamburger" onclick="toggleMenu()">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>  
-    </div>
-</nav>
-   
+            <div class="right-content">
+                <ul class="nav-links">
+                    <!-- Characters with dropdown -->
+                    <li class="dropdown">
+                        <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Characters Hub</a>
+                            <a href="editor.html">Upload Character</a>
+                            <a href="mycharacters.html">My Characters</a>
+                        </div>
+                    </li>
+                    <!-- Other dropdowns here -->
+                </ul>     
+    
+                <!-- Search bar -->
+                <div id="login-status" class="login-status"></div>
+    
+                <!-- Hamburger menu for mobile view -->
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>  
+            </div>
+        </nav>
     </header>
     <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    let snowContainer = document.createElement('div');
-    snowContainer.classList.add('snow');
-    document.body.appendChild(snowContainer);
-
-    // Generate a number of snowflakes
-    for (let i = 0; i < 100; i++) {
-        let flake = document.createElement('div');
-        flake.classList.add('flake');
-        
-        // Randomize initial position and animation delay
-        let randomX = Math.random() * 100; // Random horizontal start position
-        let randomDelay = Math.random() * 10; // Random animation delay
-        
-        // Apply random values as inline styles
-        flake.style.setProperty('--x-move', `${randomX}%`);
-        flake.style.setProperty('--flake-rand', `${randomDelay}s`);
-        
-        snowContainer.appendChild(flake);
-    }
-});
-
+    // Create snowflakes dynamically
+    document.addEventListener('DOMContentLoaded', function () {
+        let snowContainer = document.createElement('div');
+        snowContainer.classList.add('snow');
+        document.body.appendChild(snowContainer);
+    
+        // Generate a number of snowflakes
+        for (let i = 0; i < 100; i++) {
+            let flake = document.createElement('div');
+            flake.classList.add('flake');
+            // Randomize initial position and animation delay
+            let randomX = Math.random() * 100; // Random horizontal start
+            let randomDelay = Math.random() * 10; // Random animation delay
+            flake.style.setProperty('--x-move', `${randomX}%`);
+            flake.style.setProperty('--flake-rand', randomDelay);
+            snowContainer.appendChild(flake);
+        }
+    });
     </script>
+    
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
