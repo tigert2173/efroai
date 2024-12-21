@@ -1,22 +1,20 @@
-/* Reset box-sizing to ensure consistency */
-* {
+/* * {
     box-sizing: border-box;
-}
-
+} */
 @font-face {
     font-family: "Liberty";
     src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/907368/liberty.otf');
 }
 
-html {
+html { /*body*/
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif; /* Default font */
 }
 
 .header {
-    background-color: #D32F2F; /* Christmas Red for the header */
-    color: #F5B700; /* Gold text for a festive look */
+    background-color: #b30000; /* Festive red for the header */
+    color: #fff; /* White text */
 }
 
 /* Left content (logo and text) */
@@ -36,12 +34,16 @@ html {
 
 .navbar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #388E3C; /* Christmas Green */
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Space out items */
+    background-color: #2c3e50; /* Dark blue/gray */
     padding: 15px 20px;
     position: relative;
     z-index: 1000;
+    background-image: url('https://cdn.pixabay.com/photo/2016/11/18/16/14/snow-1834339_960_720.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100%;
 }
 
 .logo {
@@ -51,7 +53,7 @@ html {
 }
 
 .logo a {
-    color: #F5B700; /* Gold */
+    color: #fff; /* White text */
     text-decoration: none;
     font-size: 1.8em;
     font-weight: bold;
@@ -60,99 +62,99 @@ html {
 
 .logo img {
     width: 50px; /* Adjust the size as necessary */
-    height: auto;
-    vertical-align: middle;
+    height: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align with text */
 }
 
 .text {
-    display: flex;
-    font-family: 'Liberty', sans-serif;
-    font-size: 2rem;
-    letter-spacing: -0.05em;
-    color: #F5B700; /* Festive Gold */
-    position: relative;
-    animation: neonGlow 1.5s infinite alternate;
+    display: flex; /* Flexbox for letters */
+    font-family: 'Liberty', sans-serif; /* Unique font for heading */
+    font-size: 2rem; /* Adjust heading size */
+    letter-spacing: -0.05em; /* Slightly reduce spacing */
+    color: #ffcc00; /* Festive gold color */
+    position: relative; /* Position relative for pseudo-elements */
+    animation: neonGlow 1.5s infinite alternate; /* Added glow animation */
 }
 
-/* Puff effect for Christmas-themed cloud */
+/* Puff effect for fart cloud */
 .text::after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 70%);
-    filter: blur(1px);
-    top: -75%;
-    left: 0%;
+    width: 0px; /* Width of the puff */
+    height: 0px; /* Height of the puff */
+    background: radial-gradient(circle, rgba(255, 255, 0, 0.3), rgba(255, 255, 255, 0) 70%);
+    filter: blur(1px); /* Stronger blur for a softer look */
+    top: -75%; /* Adjusted position */
+    left: 0%; /* Adjusted position */
 }
 
 .nav-links {
-    list-style-type: none;
-    padding: 0;
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
     gap: 10px;
-    display: flex;
+    display: flex; /* Display items in a row */
 }
 
 .nav-links li {
-    position: relative;
-    margin-left: 0 20px;
+    position: relative; /* Relative positioning for dropdowns */
+    margin-left: 0 20px; /* Space between links */
     display: inline;
 }
 
 .nav-links a {
-    color: #F5B700; /* Gold for Christmas */
-    text-decoration: none;
-    margin-left: 15px;
-    transition: color 0.3s ease, transform 0.2s ease;
+    color: #fff; /* White color for links */
+    text-decoration: none; /* No underline */
+    margin-left: 15px; /* Space between links */
+    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
 }
 
 .nav-links a:hover {
-    color: #C2185B; /* Festive Pink on hover */
-    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 0, 255, 1);
-    transform: scale(1.1);
+    color: #ff0000; /* Bright red color on hover for contrast */
+    text-shadow: 0 0 5px rgba(255, 0, 0, 1), 0 0 10px rgba(255, 255, 255, 1); /* Fun glow effect on hover */
+    transform: scale(1.1); /* Scale up effect on hover */
 }
 
 /* Dropdown styles */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #388E3C; /* Christmas Green */
-    min-width: 160px;
-    z-index: 1;
+    display: none; /* Hidden by default */
+    position: absolute; /* Position dropdowns */
+    background-color: #2d3e50; /* Match background */
+    min-width: 160px; /* Minimum width */
+    z-index: 1; /* On top of other elements */
 }
 
 .dropdown:hover .dropdown-content {
-    display: block;
+    display: block; /* Show on hover */
 }
 
 .dropdown-content a {
-    color: #F5B700;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+    color: #66ff66; /* Matching green color for dropdown links */
+    padding: 12px 16px; /* Padding for dropdown items */
+    text-decoration: none; /* No underline */
+    display: block; /* Block display for full-width clickable area */
 }
 
 .dropdown-content a:hover {
-    background-color: #81C784; /* Light Green Hover */
+    background-color: #3a4a60; /* Darker background on hover */
 }
 
 /* Search bar styles */
 .search-bar {
-    margin-left: 20px;
-    padding: 10px;
-    border: 2px solid #F5B700; /* Gold border */
-    border-radius: 5px;
-    background-color: #388E3C; /* Green background */
-    color: #fff;
+    margin-left: 20px; /* Space to the left */
+    padding: 10px; /* Padding for input */
+    border: 2px solid #66ff66; /* Green border color */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #2d3e50; /* Input background */
+    color: #fff; /* Input text color */
 }
 
 .search-bar:focus {
-    box-shadow: 0 0 10px #4285f4;
+    box-shadow: 0 0 10px #ffcc00; /* Glow effect on focus */
     outline: none;
 }
 
 .search-bar::placeholder {
-    color: #F5B700; /* Gold placeholder */
+    color: #66ff66; /* Placeholder text color */
 }
 
 /* Hamburger Menu Styles */
@@ -161,17 +163,18 @@ html {
     flex-direction: column;
     cursor: pointer;
     transition: transform 0.3s ease;
-    z-index: 1001;
+    z-index: 1001; /* Ensure it's on top of other elements */   
 }
 
 .hamburger .bar {
-    width: 20px;
-    height: 3px;
-    background-color: #ecf0f1; /* Light color bars */
-    margin: 2px 0;
-    border-radius: 2px;
-    transition: all 0.1s ease;
+    width: 20px; /* Reduced width */
+    height: 3px; /* Reduced height */
+    background-color: #fff; /* White color for the bars */
+    margin: 2px 0; /* Adjusted margin */
+    border-radius: 2px; /* Rounded corners for bars */
+    transition: all 0.1s ease; /* Smooth transition */
 }
+
 
 /* Hamburger Menu Animation */
 .hamburger.active .bar:nth-child(1) {
@@ -179,23 +182,47 @@ html {
 }
 
 .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
+    opacity: 0; /* Hide the middle bar */
 }
 
 .hamburger.active .bar:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Responsive Media Queries */
+@keyframes puff {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.8); /* Larger scale */
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes neonGlow {
+    0% {
+        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00;
+    }
+    100% {
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00, 0 0 40px #ffcc00;
+    }
+}
+
+/* Media Query for Small Screens */
 @media (max-width: 950px) {
     .search-bar {
-        display: none;
+        display: none; /* Hide search bar on small screens */
     }
 }
 
 @media (max-width: 843px) {
     .search-bar {
-        display: none;
+        display: none; /* Hide search bar on small screens */
     }
     .right-content {
         padding-right: 0px;
@@ -203,13 +230,13 @@ html {
     .nav-links {
         display: none;
         flex-direction: column;
-        background-color: #388E3C; /* Christmas Green */
+        background-color: #34495e;
         position: absolute;
-        top: 60px;
+        top: 60px; /* Adjust this if needed */
         left: 0;
         width: 100%;
         padding: 20px 0;
-        z-index: 999;
+        z-index: 999; /* Ensure links are below the hamburger */
     }
     .nav-links.active {
         display: flex;
@@ -225,99 +252,45 @@ html {
     }
 }
 
+/* Responsive styles */
 @media (max-width: 512px) {
     .search-bar {
-        display: none;
+        display: none; /* Hide search bar on small screens */
     }
     .text {
         display: none;
     }
-
+    
     .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        background-color: #388E3C;
-        top: 70px;
-        right: 0;
-        width: 100%;
-        z-index: 1;
+        display: none; /* Hide links by default on mobile */
+        flex-direction: column; /* Stack links vertically */
+        position: absolute; /* Position dropdown */
+        background-color: #2d3e50; /* Match background */
+        top: 70px; /* Position below header */
+        right: 0; /* Align right */
+        width: 100%; /* Full width */
+        z-index: 1; /* On top */
     }
 
     .nav-links.active {
-        display: flex;
+        display: flex; /* Show links when active */
+    }
+
+    .mobile-menu.active {
+        display: flex; /* Show mobile menu when active */
+    }
+
+    .navbar.active {
+        background-color: #2d3e50; /* Maintain background color */
     }
 
     .hamburger {
-        display: flex;
+        display: flex; /* Show hamburger on mobile */
     }
 }
 
-/* Keyframe for Christmas neon glow */
-@keyframes neonGlow {
-    0% {
-        text-shadow: 0 0 5px #F5B700, 0 0 10px #F5B700, 0 0 20px #F5B700, 0 0 30px #F5B700;
-    }
-    100% {
-        text-shadow: 0 0 10px #F5B700, 0 0 20px #F5B700, 0 0 30px #F5B700, 0 0 40px #F5B700;
-    }
-}
-
-/* Login status styles */
-.login-status {
-    padding: 15px;
-    margin-top: 0px;
-    border-radius: 5px;
-    text-align: center;
-    min-width: 100px;
-}
-
-.login-status:not(:empty) {
-    display: block;
-}
-
-.login-status.hidden {
-    display: none;
-}
-
-.login-status.logged-in {
-    background: #e0f7fa;
-    color: #00695c;
-    border: 1px solid #4db6ac;
-}
-
-.login-status.logged-out {
-    background: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef5350;
-}
-
-/* Popup styles */
-.login-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: hsla(0, 0%, 0%, 0.50);
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-.popup-content {
-    background: rgba(0, 0, 0, 0.75);
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-#login-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #388E3C; /* Christmas Green */
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
+/* Responsive Transition */
+.nav-links,
+.hamburger {
+    transition: all 0.3s ease;
 }
