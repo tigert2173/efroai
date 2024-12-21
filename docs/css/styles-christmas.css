@@ -27,7 +27,7 @@ a:hover {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #34a853, #fb0404);
+    background: linear-gradient(135deg, #34a853, #34a853, #fb0404, #fb0404);
     padding: 60px 20px;
     text-align: center;
     color: #fff;
