@@ -443,13 +443,6 @@ html { /*body*/
     animation-duration: 7s;
 }
 
-/* Snowflake Sizes */
-.snow .flake {
-    width: 5px;
-    height: 5px;
-    animation-delay: calc(-10s * var(--flake-rand));
-}
-
 .snow .flake:nth-child(odd) {
     width: 4px;
     height: 4px;
@@ -511,9 +504,10 @@ html { /*body*/
 
 @keyframes drift {
     100% {
-        transform: translateX(var(--x-move));
+        transform: translateX(calc(var(--x-move) + 5vw)); /* Horizontal movement */
     }
 }
+
 
 /* Other navbar styles remain unchanged... */
 
