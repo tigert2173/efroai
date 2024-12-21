@@ -384,6 +384,7 @@ margin-left: 100px; /* Add space above recommendations */
 header {
     background-color: #20232a;
     padding: 20px;
+    z-index: -1;
 }
 
 /* Footer */
