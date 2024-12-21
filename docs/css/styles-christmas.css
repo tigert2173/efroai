@@ -81,6 +81,7 @@ main {
     display: flex; /* Make filters section a flex container */
     flex-direction: column; /* Stack filter categories vertically */
     justify-content: flex-start; /* Align items to start (top of the container) */
+    z-index: 10;
 }
 
 /* Filter Container - Will allow 2 rows */
