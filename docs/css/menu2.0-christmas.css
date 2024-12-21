@@ -15,7 +15,6 @@ html { /*body*/
 .header {
     background-color: #2d3e50; /* Dark background for the header */
     color: #66ff66; /* Bright green for text */
-    z-index: -1;
 }
 
 /* Left content (logo and text) */
