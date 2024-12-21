@@ -384,3 +384,103 @@ html { /*body*/
     cursor: pointer;
     border-radius: 3px;
 }
+
+/* Snowflakes Animation */
+.snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Don't interfere with interactions */
+    z-index: 9999; /* Ensure it's on top of all other elements */
+    overflow: hidden;
+}
+
+.snow .flake {
+    position: absolute;
+    top: -10px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: snow-fall 10s linear infinite;
+}
+
+@keyframes snow-fall {
+    0% {
+        transform: translateX(0) translateY(-10px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(var(--x-move)) translateY(100vh);
+        opacity: 0.3;
+    }
+}
+
+@keyframes snow-glow {
+    0% {
+        box-shadow: 0 0 2px white;
+    }
+    100% {
+        box-shadow: 0 0 15px white;
+    }
+}
+
+/* Snowfall Speed and Variations */
+.snow .flake:nth-child(odd) {
+    animation-duration: 12s;
+}
+
+.snow .flake:nth-child(even) {
+    animation-duration: 8s;
+}
+
+.snow .flake:nth-child(3n) {
+    animation-duration: 10s;
+}
+
+.snow .flake:nth-child(4n) {
+    animation-duration: 7s;
+}
+
+/* Snowflake Sizes */
+.snow .flake {
+    width: 5px;
+    height: 5px;
+    animation-delay: calc(-10s * var(--flake-rand));
+}
+
+.snow .flake:nth-child(odd) {
+    width: 4px;
+    height: 4px;
+}
+
+.snow .flake:nth-child(even) {
+    width: 8px;
+    height: 8px;
+}
+
+.snow .flake:nth-child(3n) {
+    width: 6px;
+    height: 6px;
+}
+
+.snow .flake:nth-child(4n) {
+    width: 3px;
+    height: 3px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2c3e50; /* Dark blue/gray */
+    padding: 15px 20px;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Other navbar styles remain unchanged... */
+
+/* JavaScript to dynamically generate snowflakes */

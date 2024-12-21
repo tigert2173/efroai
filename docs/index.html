@@ -304,6 +304,27 @@ function detectAdBlocker() {
 </nav>
    
     </header>
+    <script>
+        // Create snowflakes dynamically
+document.addEventListener('DOMContentLoaded', function () {
+    let snowContainer = document.createElement('div');
+    snowContainer.classList.add('snow');
+    document.body.appendChild(snowContainer);
+
+    // Generate a number of snowflakes
+    for (let i = 0; i < 100; i++) {
+        let flake = document.createElement('div');
+        flake.classList.add('flake');
+        // Randomize initial position and animation delay
+        let randomX = Math.random() * 100; // Random horizontal start
+        let randomDelay = Math.random() * 10; // Random animation delay
+        flake.style.setProperty('--x-move', `${randomX}%`);
+        flake.style.setProperty('--flake-rand', randomDelay);
+        snowContainer.appendChild(flake);
+    }
+});
+
+    </script>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
