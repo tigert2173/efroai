@@ -156,6 +156,7 @@ let settings = {
 };
 
 function populateCharacterSettings() {
+    document.getElementById('greeting').value = document.getElementById('greeting').value;
 }
 
 
