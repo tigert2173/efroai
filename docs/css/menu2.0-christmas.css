@@ -474,6 +474,8 @@ html { /*body*/
 .initial-snow > * {
 	font-size: 50px;
 	color: white;
+    position: absolute;
+
 	top: -5vh;
 }
 
