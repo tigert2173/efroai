@@ -469,7 +469,7 @@ html { /*body*/
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    opacity: 0.8;
+    opacity: 0.6;
 }
 
 .initial-snow > * {
