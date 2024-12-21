@@ -159,7 +159,6 @@ function populateCharacterSettings() {
     document.getElementById('greeting').value = document.getElementById('greeting').value;
 }
 
-
 function updateSettings() {
     checkAPIStatus();
     //processMessageDataImportance();
