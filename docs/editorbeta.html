@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Character</title>
+
+    <link rel="stylesheet" href="css/menu2.0.css">
+    <style>
+        /* Container and form styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1b1b1b;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.7);
+            max-width: 900px;
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #00ff66;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border: 1px solid #00ff66;
+        }
+
+        button {
+            background-color: #00ff66;
+            color: #1b1b1b;
+            padding: 12px 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            color: #ffffff;
+        }
+
+        .error {
+            color: #ff3300;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mode-switch {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 20px; /* Space between this input and the next element */
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border: 1px solid #00ff66; /* Highlight border on focus */
+        }
+
+        .char-count {
+            position: absolute;
+            top: -20px; /* Adjust as needed */
+            right: 10px; /* Adjust for spacing from the edge */
+            color: #bdbdbd; /* Change color as needed */
+            font-size: 0.9em; /* Slightly smaller font for count */
+        }
+        .upload-box {
+        width: 300px;
+        padding: 20px;
+        border: 2px dashed #007bff;
+        text-align: center;
+        margin: 20px auto;
+        border-radius: 8px;
+        cursor: pointer;
+        }
+        .upload-box input[type="file"] {
+        display: none;
+        }
+        .upload-box img {
+        max-width: 100%;
+        height: auto;
+        display: none;
+        margin-top: 10px;
+        border-radius: 8px;
+        }
+        .error-message {
+        color: red;
+        margin-top: 10px;
+        display: none;
+        }
+
+        .info-message {
+            margin-top: 10px;
+            font-size: 0.9em; /* Smaller font size */
+            color: #555; /* Gray color for less emphasis */
+        }
+
+        #customModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modalContent {
+    background: rgba(0, 0, 0, 0.715);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+    </style>
+    <!-- Import DOMPurify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"></script>
+
+</head>
+<body>
+
+     <!-- Header -->
+     <header>
+        <nav class="navbar">
+            <div class="left-content">
+                <a href="/" class="logo"> <!-- Make the logo clickable -->
+                <div class="logo">
+                    <img src="logo.png" alt=" ">
+                </div>
+            </a>
+            <a href="/" class="text">
+                <div class="text">
+                    <span class="letter letter-1">E</span>
+                    <span class="letter letter-2">F</span>
+                    <span class="letter letter-3">R</span>
+                    <span class="letter letter-4">O</span>
+                    <span class="letter letter-5">.</span>
+                    <span class="letter letter-6">A</span>
+                    <span class="letter letter-7">I</span>
+                </div>
+            </a>
+            </div>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
+    
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                    <a href="/EFROTales/">Old Stories Page</a>
+                </div>
+            </li>
+    
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
+    
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+    
+            <!-- Contribute Button -->
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
+    
+        <div id="login-status" class="login-status"></div>
+    
+        <!-- Hamburger menu for mobile view -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
+    </nav>
+
+    </header>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Create a New Character</h1>        
+        <div class="mode-switch">
+            <button id="toggleMode">Switch to Context Mode</button>
+            <small>Context mode, is not functional at this point, only scenario mode!</small>
+            <p id="modeExplanation">Only one of the two is required: general context or a guided scenario.</p>
+            
+            <div id="description">
+                <p id="generalContext" style="display: none;">
+                    <strong style="color: #00ff66;">Selected — General Context:</strong> 
+                    <br><span style="color: #ddd;">This mode offers a broad overview of the world or setting, detailing its atmosphere, culture, and rules, allowing for a more flexible interpretation of the character's actions and environment.</span>
+                </p>
+                <p id="guidedScenario" style="display: block;">
+                    <strong style="color: #00ff66;">Selected — Guided Scenario:</strong> 
+                    <br><span style="color: #ddd;">This option outlines a specific narrative or situation for the character to navigate, adhering to a defined timeline and set events that drive the story forward.</span>
+                </p>
+                <p id="summary" style="display: block; margin-top: 10px;">
+                    <span style="color: #fff;">In summary, <strong>General Context</strong> allows for creative freedom in a dynamic setting, while a <strong>Guided Scenario</strong> follows a structured timeline for more focused interactions.</span>
+                </p>
+            </div>
+        
+        <form id="characterForm">
+            
+            <label for="name">Character Name:</label>
+            <div class="input-container">
+                <input type="text" id="name" class="name-input" placeholder="Enter character name" required maxlength="64">
+                <span id="nameCharCount" class="char-count">0 / 64</span>
+            </div>
+            
+            <div class="upload-box" id="uploadBox">
+                <label for="imageUpload">Click to upload an image</label>
+                <input type="file" id="imageUpload" accept="image/*">
+                <img id="imagePreview" alt="Image Preview">
+                <p class="error-message" id="errorMessageimage"></p>
+              </div>
+
+            <p class="info-message">
+                We will be adding support for embedded links. This will allow you to use a higher quality image from an external source. 
+                <br>If this image isn't available, use the one uploaded here.
+            </p>
+        
+            <label for="status">Character Status:</label>
+            <select id="status" disabled>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="revoked">Revoked</option>
+                <option value="automod_approved">AutoMod Approved</option>
+                <option value="automod_rejected">AutoMod Rejected</option>
+                <option value="automod_revoked">AutoMod revoked</option>
+
+            </select>
+            
+            <label for="chardescription">Character Description:</label>
+            <div class="input-container">
+                <textarea id="chardescription" rows="4" placeholder="Enter a brief character description" required maxlength="512"></textarea>
+                <span id="chardescriptionCharCount" class="char-count">0 / 512</span>
+                <small><i>*Only so users know what the bot is. Not used by AI.*</i></small>
+            </div>
+            
+            <label for="tags">Tags (comma-separated):</label>
+            <input type="text" id="tags" placeholder="Enter tags" required>
+
+            <label for="persona">Persona:</label>
+            <textarea id="persona" rows="4" placeholder="Enter character persona" required></textarea>
+            
+            <div id="scenarioContainer">
+                <label for="scenario">Scenario:</label>
+                <textarea id="scenario" rows="4" placeholder="Enter scenario"></textarea>
+            </div>
+
+            <div id="contextContainer" style="display: none;">
+                <label for="context">Context:</label>
+                <textarea id="context" rows="4" placeholder="Enter world context"></textarea>
+            </div>
+
+            <label for="greeting">Greeting:</label>
+            <textarea id="greeting" rows="4" placeholder="Enter the first message" required></textarea>
+
+            <label for="exampledialogue">Example Dialogue:</label>
+            <textarea id="exampledialogue" rows="4" placeholder="Enter example dialogue"></textarea>
+
+            <button type="submit">Create Character</button>     
+            <br>      
+            <div class="error" id="errorMessage"></div>
+
+
+        </div>
+ 
+        <p id="totalCount" style="text-align: center; color: #ddd;">
+            Total Characters: 0/6144 (Max: 12888)
+        </p>
+            <div id="limitRecNotice" style="color: #ffae00; display: none; text-align: center;">
+            You have exceeded the character content recommendation of 6144! You can enter up to 12,888 characters.
+        </div>
+        </p>
+            <div id="limitNotice" style="color: #ff0000; display: none; text-align: center;">
+            You have exceeded the character limit of 12,888! You cannot enter more than 12,888 characters.
+        </div>
+        </form>
+        <form id="saveForm">
+            <button type="submit">Save Character</button>
+        </form>
+
+                
+        <br>
+        <br>
+        <button id="resetEditingButton">Reset Editing</button>
+
+        <br>
+        <br>
+        <button id="attemptRecoveryButton">Attempt To Recover</button>
+        <div id="customModal" style="display: none;">
+            <div id="modalContent">
+                <p id="modalMessage"></p>
+                <button id="modalYes">Yes</button>
+                <button id="modalNo">No</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- //for chat -->
+    <div id="chat-container">
+    </div>
+    <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+    <div id="input-container">
+        <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+        <button id="send-button" onclick="sendMessage()">Send</button>
+        <button onclick="regenerateMessage()">Regenerate Message</button>
+    </div>
+    
+    <label for="enter-send" class="send-on-enter-label">
+        <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+        <span class="checkbox-text">Send on Enter</span>
+    </label>
+    
+<script>
+        // Function to handle Enter key behavior
+        let sendOnEnter = true;
+        
+        function toggleEnterKey() {
+            sendOnEnter = document.getElementById("enter-send").checked;
+        }
+        
+        // Listen for the Enter key to send the message if enabled
+        document.getElementById("user-input").addEventListener("keydown", function(event) {
+            if (sendOnEnter && event.key === "Enter") {
+                event.preventDefault(); // Prevent default behavior (new line)
+                sendMessage();
+            }
+        });
+        
+        // Function to simulate sending the message
+        let sendButtonDisabled = false;
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+   document.getElementById('resetEditingButton').addEventListener('click', function () {
+    // Show confirmation prompt
+    const userConfirmed = confirm('Are you sure you want to reset the editing mode? All unsaved changes will be lost.');
+
+    if (userConfirmed) {
+        // Reset isEditing and clear session storage
+        isEditing = false; // Force isEditing to false
+        
+        // Clear relevant session storage items
+        sessionStorage.removeItem('editCharacter');
+
+        alert('Editing mode has been reset. You can now create a new character.'); // Notify the user
+        
+        // Reset the form fields
+        document.getElementById('characterForm').reset(); // Reset the form if needed
+        document.querySelector('button[type="submit"]').textContent = 'Create Character';
+    }
+});
+
+
+document.getElementById('attemptRecoveryButton').addEventListener('click', function () {
+    // Attempt to recover character creation data
+    const editCharacterData = localStorage.getItem('editCharacter');
+
+    if (editCharacterData) {
+        // Store the retrieved data in session storage
+        sessionStorage.setItem('editCharacter', editCharacterData);
+        loadCharacterData();
+        alert('Attempted Recovery, your character creation may be recovered.'); // Notify the user
+
+        // Use setTimeout to delay the confirmation prompt, allowing the user to see the loaded data
+        setTimeout(() => {
+            showModal('Is the recovered data correct?');
+        }, 1000); // Delay of 1 second before asking for confirmation
+    }
+});
+
+// Function to show the custom modal
+function showModal(message) {
+    document.getElementById('modalMessage').innerText = message;
+    document.getElementById('customModal').style.display = 'flex';
+
+    document.getElementById('modalYes').onclick = function() {
+        alert('Great! You can continue editing your character.'); // Notify the user
+        closeModal(); // Close the modal
+    };
+
+    document.getElementById('modalNo').onclick = function() {
+        // Ask if they want to try a deeper search
+        showDeeperSearchPrompt();
+        closeModal(); // Close the modal
+    };
+}
+
+// Function to close the modal
+function closeModal() {
+    document.getElementById('customModal').style.display = 'none';
+}
+
+// Function to show deeper search prompt
+function showDeeperSearchPrompt() {
+    const deeperSearch = confirm('No recovery data found. Would you like to try a deeper search?');
+
+    if (deeperSearch) {
+        // Implement your deeper search logic here
+        alert('Initiating deeper search...'); // Placeholder for deeper search logic
+        loadFormData(); // Call the function to populate the form
+    } else {
+        // User said "no"
+        alert("Okay, no deeper search will be attempted."); // Notify the user
+    }
+}
+
+
+
+// Function to save form data to localStorage
+function saveFormData() {
+    const formData = {
+        name: document.getElementById('name').value,
+        status: document.getElementById('status').value,
+        tags: document.getElementById('tags').value,
+        chardescription: document.getElementById('chardescription').value,
+        persona: document.getElementById('persona').value,
+        greeting: document.getElementById('greeting').value,
+        exampledialogue: document.getElementById('exampledialogue').value,
+        scenario: document.getElementById('scenario').value,
+        context: document.getElementById('context').value
+    };
+
+    // Save to localStorage
+    localStorage.setItem('characterFormData', JSON.stringify(formData));
+}
+
+// Add event listener for beforeunload
+window.addEventListener('beforeunload', saveFormData);
+
+// Function to load form data from localStorage
+function loadFormData() {
+    const savedData = localStorage.getItem('characterFormData');
+    if (savedData) {
+        const formData = JSON.parse(savedData);
+        document.getElementById('name').value = formData.name || '';
+        document.getElementById('status').value = formData.status || '';
+        document.getElementById('tags').value = formData.tags || '';
+        document.getElementById('chardescription').value = formData.chardescription || '';
+        document.getElementById('persona').value = formData.persona || '';
+        document.getElementById('greeting').value = formData.greeting || '';
+        document.getElementById('exampledialogue').value = formData.exampledialogue || '';
+        document.getElementById('scenario').value = formData.scenario || '';
+        document.getElementById('context').value = formData.context || '';
+    }
+}
+
+        document.getElementById('toggleMode').addEventListener('click', function() {
+            const scenarioContainer = document.getElementById('scenarioContainer');
+            const contextContainer = document.getElementById('contextContainer');
+            const toggleButton = document.getElementById('toggleMode');
+            const generalContext = document.getElementById('generalContext');
+            const guidedScenario = document.getElementById('guidedScenario');
+
+            if (scenarioContainer.style.display === 'none') {
+                scenarioContainer.style.display = 'block';
+                contextContainer.style.display = 'none';
+                toggleButton.textContent = 'Switch to Context Mode';
+                generalContext.style.display = 'none';
+                guidedScenario.style.display = 'block';
+            } else {
+                scenarioContainer.style.display = 'none';
+                contextContainer.style.display = 'block';
+                toggleButton.textContent = 'Switch to Scenario Mode';
+                generalContext.style.display = 'block';
+                guidedScenario.style.display = 'none';
+            }
+        });
+
+        document.getElementById('characterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = cleanInput(document.getElementById('name').value);
+    const status = document.getElementById('status').value;
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase());
+    const chardescription = cleanInput(document.getElementById('chardescription').value);
+    const persona = cleanInput(document.getElementById('persona').value);
+    const greeting = cleanInput(document.getElementById('greeting').value);
+    const exampledialogue = cleanInput(document.getElementById('exampledialogue').value);
+    const token = localStorage.getItem('token');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    errorMessage.textContent = ''; // Clear previous error messages
+
+    if (!token) {
+        errorMessage.textContent = 'Click to login.';
+        return;
+    }
+
+    const scenario = cleanInput(document.getElementById('scenario').value);
+    const context = cleanInput(document.getElementById('context').value);
+
+    if (scenario && context) {
+        errorMessage.textContent = 'Please choose either scenario or context, not both.';
+        alert('Please select either Scenario Mode or Context Mode, but not both. \nUse the switch to toggle and remove one of the options!');
+        return;
+    }
+
+    const totalChars = persona.length + scenario.length + context.length + greeting.length + exampledialogue.length;
+
+    if (totalChars > 12888) {
+        errorMessage.textContent = 'Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.';
+        alert("Character limit exceeded! Please reduce the total character count to 12,888 or less. If you would like to proceed anyway, please contact an admin.");
+        return;
+    }
+
+    const character = {
+        name,
+        status,
+        tags,
+        chardescription,
+        persona,
+        greeting,
+        exampledialogue,
+    };
+
+    if (scenario.trim() !== '') {
+        character.scenario = scenario;
+    } else if (context.trim() !== '') {
+        character.context = context;
+    } else {
+        errorMessage.textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    let apiUrl;
+    let method;
+
+    if (isEditing) {
+        apiUrl = `https://characters.efroai.net/api/characters/${editingCharacterId}`;
+        method = 'put'; // Update character
+    } else {
+        apiUrl = 'https://characters.efroai.net/api/characters';
+        method = 'post'; // Create new character
+    }
+
+    const imageInput = document.getElementById('imageUpload');
+    const imageFile = imageInput.files[0];
+  
+    const formData = new FormData();
+    if (!imageFile && !isEditing) {
+        errorMessage.textContent = 'An image is required to create a character!';
+        return;
+    }
+    if (imageFile) {
+        convertImageToJpeg(imageFile).then(jpegFile => {
+            formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
+
+            // Submit the character data first
+            return axios({
+                method: method,
+                url: apiUrl,
+                data: character,
+                headers: {
+                    Authorization: `${token}`
+                }
+            });
+        }).then(response => { // response now is defined here
+            alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+
+            // Now upload the image if it exists
+            const characterId = isEditing ? editingCharacterId : response.data.character.id; // Get character ID
+            const imageApiUrl = `https://characters.efroai.net/api/characters/${characterId}/image`;
+            return axios.post(imageApiUrl, formData, {
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(imageResponse => {
+                console.log('Image uploaded successfully!');
+
+                // Now request auto moderation
+                return axios.post('https://characters.efroai.net/api/automod', {
+                    characterId: isEditing ? editingCharacterId : response.data.character.id // Use character ID for moderation
+                }, {
+                    headers: {
+                        Authorization: `${token}`
+                    }
+                });
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            document.getElementById('characterForm').reset(); // Reset the form if needed
+            // Retrieve data from sessionStorage and store it in localStorage
+            const editCharacterData = sessionStorage.getItem('editCharacter');
+
+            if (editCharacterData) {
+                // Store the retrieved data in localStorage
+                localStorage.setItem('editCharacter', editCharacterData);
+                // Optionally, remove it from sessionStorage if you don't need it anymore
+                sessionStorage.removeItem('editCharacter');
+            }
+
+            
+            document.querySelector('button[type="submit"]').textContent = 'Create Character';
+        }).catch(error => {
+            console.error(error);
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system likely failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
+        });
+    } else {
+        // If no image is selected, just send character data
+        axios({
+            method: method,
+            url: apiUrl,
+            data: character,
+            headers: {
+                Authorization: `${token}`
+            }
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character created successfully!');
+
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${token}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            document.getElementById('characterForm').reset(); // Reset the form if needed
+            document.querySelector('button[type="submit"]').textContent = 'Create Character';
+                // Retrieve data from sessionStorage and store it in localStorage
+                const editCharacterData = sessionStorage.getItem('editCharacter');
+
+                if (editCharacterData) {
+                    // Store the retrieved data in localStorage
+                    localStorage.setItem('editCharacter', editCharacterData);
+                    // Optionally, remove it from sessionStorage if you don't need it anymore
+                    sessionStorage.removeItem('editCharacter');
+            }
+
+
+        }).catch(error => {
+            console.error(error);
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system likely failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
+        });
+    }
+});
+
+
+// Initialize the view to show only scenario mode initially
+document.getElementById('scenarioContainer').style.display = 'block';
+document.getElementById('contextContainer').style.display = 'none';
+
+const initialLimit = 6144;
+const maxTotalChars = 12888;
+
+function updateCharacterCount() {
+    const persona = document.getElementById('persona').value.length;
+    const scenario = document.getElementById('scenario').value.length;
+    const context = document.getElementById('context').value.length;
+    const greeting = document.getElementById('greeting').value.length;
+    const exampledialogue = document.getElementById('exampledialogue').value.length;
+
+    const totalChars = persona + scenario + context + greeting + exampledialogue;
+
+    document.getElementById('totalCount').textContent = `Total Characters: ${totalChars}/${initialLimit} (Max: ${maxTotalChars})`;
+
+    // Show or hide the notice based on character count
+    const limitRecNotice = document.getElementById('limitRecNotice');
+    const limitNotice = document.getElementById('limitNotice');
+
+    if (totalChars > maxTotalChars) {
+        limitNotice.style.display = 'block';
+        limitRecNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars > maxTotalChars ? '#ff3300' : '#ddd';
+
+    } else if (totalChars > initialLimit) {
+        limitRecNotice.style.display = 'block';
+        limitNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars > initialLimit ? '#ffae00' : '#ddd';
+
+    } else {
+        limitRecNotice.style.display = 'none';
+        limitNotice.style.display = 'none';
+        document.getElementById('totalCount').style.color = totalChars < initialLimit ? '#ffffff' : '#ddd';
+    }
+}
+
+// Add event listeners to update count on input
+document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.addEventListener('input', updateCharacterCount);
+});
+
+// Initialize the character count display
+updateCharacterCount();
+
+const nameInput = document.getElementById('name');
+    const nameCharCount = document.getElementById('nameCharCount');
+
+    nameInput.addEventListener('input', function() {
+        const currentLength = nameInput.value.length;
+        nameCharCount.textContent = `${currentLength} / 64`;
+    });
+
+const chardescriptionInput = document.getElementById('chardescription');
+    const chardescriptionCharCount = document.getElementById('chardescriptionCharCount');
+
+    chardescriptionInput.addEventListener('input', function() {
+        const currentLength = chardescriptionInput.value.length;
+        chardescriptionCharCount.textContent = `${currentLength} / 512`;
+    });
+
+    function autoResizeTextArea(textarea) {
+    // Reset the height to allow shrinking
+    textarea.style.height = 'auto';
+    // Set the height based on the scroll height
+    textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+// Add event listeners for auto-resizing
+document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.addEventListener('input', () => {
+        autoResizeTextArea(textarea);
+        updateCharacterCount(); // Keep character count updated
+    });
+});
+
+let isEditing = false; // Flag to check if we are in editing mode
+let editingCharacterId; // Variable to hold the ID of the character being edited
+
+// Check for existing character data on page load
+document.addEventListener("DOMContentLoaded", function() {
+   loadCharacterData();
+});
+
+function loadCharacterData() {
+    const characterData = sessionStorage.getItem('editCharacter');
+
+    if (characterData) {
+        const character = JSON.parse(characterData);
+        isEditing = true; // Set to editing mode
+        editingCharacterId = character.id; // Store the character ID
+        console.log(character.tags); // Check what character.tags is
+
+        // Populate the form fields with character data
+        document.getElementById('name').value = character.name;
+        document.getElementById('status').value = character.status;
+        document.getElementById('tags').value = character.tags.join(', ');
+        document.getElementById('chardescription').value = character.chardescription;
+        document.getElementById('persona').value = character.persona;
+        document.getElementById('greeting').value = character.greeting;
+        document.getElementById('exampledialogue').value = character.exampledialogue;
+
+        // Check for scenario or context and populate accordingly
+        if (character.scenario) {
+            document.getElementById('scenario').value = character.scenario;
+            document.getElementById('scenarioContainer').style.display = 'block';
+            document.getElementById('contextContainer').style.display = 'none'; // Hide context
+        } else {
+            document.getElementById('context').value = character.context || '';
+            document.getElementById('contextContainer').style.display = 'block';
+            document.getElementById('scenarioContainer').style.display = 'none'; // Hide scenario
+        }
+
+        // Change button text to 'Update Character'
+        document.querySelector('button[type="submit"]').textContent = 'Update Character';
+    }
+}
+
+
+document.getElementById('saveForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Check if we are in editing mode
+    if (!isEditing) {
+        document.getElementById('errorMessage').textContent = 'Character must already exist to be saved.';
+        return; // Exit early if not editing
+    }
+
+    const character = {
+        name: cleanInput(document.getElementById('name').value),
+        status: document.getElementById('status').value,
+        tags: document.getElementById('tags').value.split(',').map(tag => tag.trim().toLowerCase()),
+        chardescription: cleanInput(document.getElementById('chardescription').value),
+        persona: cleanInput(document.getElementById('persona').value),
+        greeting: cleanInput(document.getElementById('greeting').value),
+        exampledialogue: cleanInput(document.getElementById('exampledialogue').value),
+    };
+
+    // Include either scenario or context
+    if (document.getElementById('scenario').value.trim() !== '') {
+        character.scenario = cleanInput(document.getElementById('scenario').value);
+    } else if (document.getElementById('context').value.trim() !== '') {
+        character.context = cleanInput(document.getElementById('context').value);
+    } else {
+        document.getElementById('errorMessage').textContent = 'Please fill in either the scenario or context.';
+        return;
+    }
+
+    let apiUrl;
+    let method;
+
+    if (isEditing) {
+        apiUrl = `https://characters.efroai.net/api/characters/${editingCharacterId}`;
+        method = 'put'; // Update character
+    } else {
+        apiUrl = 'https://characters.efroai.net/api/characters';
+        method = 'post'; // Create new character
+    }
+
+    const imageInput = document.getElementById('imageUpload');
+    const imageFile = imageInput.files[0];
+
+    const formData = new FormData();
+
+    // Convert image to JPEG if a file is selected
+    if (imageFile) {
+        convertImageToJpeg(imageFile).then(jpegFile => {
+            formData.append('image', jpegFile, `${character.name}.jpg`); // Append converted image file
+
+            // First, submit the character data
+            return axios({
+                method: method,
+                url: apiUrl,
+                data: character,
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            });
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // Now upload the image if it exists
+            const characterId = isEditing ? editingCharacterId : response.data.id; // Get character ID
+            const imageApiUrl = `https://characters.efroai.net/api/characters/${characterId}/image`;
+            return axios.post(imageApiUrl, formData, {
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        }).then(imageResponse => {
+            console.log('Image uploaded successfully!');
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+            // Reset the form if needed
+        }).catch(error => {
+            console.error(error);
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system likely failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
+        });
+    } else {
+        // If no image is selected, just send character data
+        axios({
+            method: method,
+            url: apiUrl,
+            data: character,
+            headers: {
+                Authorization: `${localStorage.getItem('token')}`
+            }
+        }).then(response => {
+            alert(isEditing ? 'Character updated successfully!' : 'Character saved successfully!');
+            // Now request auto moderation
+            return axios.post('https://characters.efroai.net/api/automod', {
+                characterId: isEditing ? editingCharacterId : response.data.id // Use character ID for moderation
+            }, {
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            });
+        }).then(modResponse => {
+            console.log('Automod request sent successfully!', modResponse.data);
+        }).catch(error => {
+            console.error(error);
+                if (error.response && error.response.status === 500) {
+                    errorMessage.textContent = 'Automod system likely failed.';
+                } else {
+                    errorMessage.textContent = 'Failed to update character.';
+                }
+        });
+    }
+});
+
+// Convert image to JPEG using Canvas
+function convertImageToJpeg(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');    
+
+                // Calculate aspect ratio
+                const aspectRatio = img.width / img.height;
+                let newWidth, newHeight;
+
+                // Determine new dimensions while keeping the aspect ratio
+                if (aspectRatio > 1) {
+                    // Wider than tall
+                    newWidth = 300;
+                    newHeight = 300 / aspectRatio;
+                } else {
+                    // Taller than wide
+                    newWidth = 300 * aspectRatio;
+                    newHeight = 300;
+                }
+
+                // Set canvas dimensions to the new size
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+
+                // Draw the image on the canvas, resizing it
+                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+
+                // Convert to JPEG format
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        console.log('New image size in KB:', blob.size/1024); // Log the size of the blob
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Image conversion failed.'));
+                    }
+                }, 'image/jpeg', 0.6); // Adjust quality if needed
+            };
+
+            img.onerror = () => reject(new Error('Image loading error.'));
+        };
+
+        reader.onerror = () => reject(new Error('File reading error.'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// For photo upload
+const imageInput = document.getElementById('imageUpload');
+const imagePreview = document.getElementById('imagePreview');
+const errorMessage = document.getElementById('errorMessageimage');
+// const maxFileSize = 1 * 1024 * 256; // 256KB in bytes
+const maxFileSize = 4 * 1024 * 1024; // 4MB in bytes
+let selectedImageFile = null; // To store the selected image file
+
+imageInput.addEventListener('change', function() {
+    const file = this.files[0];
+
+    if (file) {
+       // const fileSizeKB = Math.round(file.size / 1024); // File size in KB
+        const fileSizeMB = Math.round(file.size / 1024 / 1024); // File size in MB
+
+        if (file.size > maxFileSize) {
+            errorMessage.style.display = 'block';
+            errorMessage.innerHTML = 
+                'Image larger than 4MB (' + fileSizeMB + ' MB). Please try shrinking your image using a tool like ' +
+                '<a href="https://tinypng.com/" target="_blank">TinyPNG</a>. <br><br><em>If you are still having issues, contact <a href="mailto:support@efroai.net">support@efroai.net</a>. </em>';
+            imagePreview.style.display = 'none';
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+            errorMessage.style.display = 'none';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            selectedImageFile = file; // Store the selected file
+        }
+    }
+});
+
+function cleanInput(input) {
+    // Sanitize the input with DOMPurify
+    let sanitizedInput = DOMPurify.sanitize(input);
+
+    // Replace curly quotes with straight quotes
+    sanitizedInput = sanitizedInput.replace(/“|”/g, '"').replace(/‘|’/g, "'");
+
+    // Optionally, you can also trim whitespace and handle other characters if needed
+    sanitizedInput = sanitizedInput.trim();
+
+    // Return the cleaned input
+    return sanitizedInput;
+}
+
+    </script>
+    <script src="js/scripts/checkbot.js"></script>
+    <script src="js/menu.js"></script>
+
+
+    <script>
+        const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+    
+        // Connection opened
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+    
+        // Listen for messages
+        socket.addEventListener('message', (event) => {
+            console.log('Message from server:', event.data);
+            // Handle ping or any other messages from the server
+            if (event.data === 'ping') {
+                // You can respond to pings if needed
+                socket.send('pong'); // Example response
+            }
+        });
+    
+        // Connection closed
+        socket.addEventListener('close', (event) => {
+            console.log('Disconnected from WebSocket server');
+        });
+    </script>
+    
+</body>
+</html>
