@@ -385,35 +385,6 @@ html { /*body*/
     border-radius: 3px;
 }
 
-.loader {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	overflow: hidden;
-	z-index: 0;
-	background: radial-gradient(
-		circle,
-		rgb(126, 223, 255) 0%,
-		rgba(71, 196, 255, 1) 68%,
-		rgba(0, 110, 239, 1) 100%
-	);
-}
-
-.loader-icon-1 {
-	font-size: 80px;
-	color: rgb(200, 241, 255, 0.8);
-	text-shadow: 1px 1px 1px rgba(71, 196, 255, 1), -1px -1px 1px white;
-	animation: snow-loader 0.5s 9 linear alternate-reverse forwards,
-		snow-loader-zoom 5s forwards;
-	animation-delay: 0s, 4.5s;
-}
-
 @keyframes snow-loader {
 	from {
 		transform: rotateY(0deg);
@@ -436,12 +407,7 @@ html { /*body*/
 	}
 }
 
-.loader-text {
-	font-size: 25px;
-	color: rgb(200, 241, 255);
-}
-
-.main {
+/* .main {
 	z-index: 1;
 	position: absolute;
 	top: 0;
@@ -452,7 +418,7 @@ html { /*body*/
 	opacity: 0;
 	animation: main-loadup 1s forwards linear, main-loadup-bg 10s forwards linear;
 	animation-delay: 7s, 8s;
-}
+} */
 
 @keyframes main-loadup {
 	from {
