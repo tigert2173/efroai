@@ -619,6 +619,7 @@
         localStorage.setItem('prescence_penalty', document.getElementById('prescence_penalty').value);
         localStorage.setItem('frequency_penalty', document.getElementById('frequency_penalty').value);
         localStorage.setItem('repeat_penalty', document.getElementById('repeat_penalty').value);
+        localStorage.setItem('repeat_last_n', document.getElementById('repeat_last_n').value);
         alert('Settings saved');
     }
 
@@ -631,6 +632,8 @@
         document.getElementById('prescence_penalty').value = localStorage.getItem('prescence_penalty');
         document.getElementById('frequency_penalty').value = localStorage.getItem('frequency_penalty');
         document.getElementById('repeat_penalty').value = localStorage.getItem('repeat_penalty');
+        document.getElementById('repeat_last_n').value = localStorage.getItem('repeat_last_n');
+
         alert('Settings loaded');
     }
 

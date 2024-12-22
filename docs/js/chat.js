@@ -148,6 +148,7 @@ let settings = {
     prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.07,
+    repeat_last_n: 512,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     context: "",
     enablePreload: false, // Default to false if not provided
@@ -229,6 +230,7 @@ function updateSettings() {
     settings.prescence_penalty = parseFloat(document.getElementById('prescence_penalty').value);
     settings.frequency_penalty = parseFloat(document.getElementById('frequency_penalty').value);
     settings.repeat_penalty = parseFloat(document.getElementById('repeat_penalty').value);
+    settings.repeat_last_n = parseFloat(document.getElementById('repeat_last_n').value);
 
     settings.model = document.getElementById('model').value;
     settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
@@ -585,6 +587,7 @@ function getAllMessagesExceptLast() {
         document.getElementById('top_k').value = settings.top_k;
         document.getElementById('min_p').value = settings.min_p;
         document.getElementById('repeat_penalty').value = settings.repeat_penalty;
+
         document.getElementById('prescence_penalty').value = settings.prescence_penalty;
         document.getElementById('frequency_penalty').value = settings.frequency_penalty;
 
@@ -726,7 +729,7 @@ async function sendMessage() {
                 min_p: settings.min_p,
                 top_k: settings.top_k,
                 top_p: settings.top_p,
-                repeat_last_n: 512,
+                repeat_last_n: settings.repeat_last_n,
                 cache_prompt: true,
                 t_max_predict_ms: 300000, // timeout after 5 minutes
             };
