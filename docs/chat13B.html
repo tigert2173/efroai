@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <audio id="christmas-music">
+        <source src="christmas_jingle.mp3" type="audio/mpeg">
+      </audio>
+      
+      <audio id="santa-voice">
+        <source src="ho_ho_ho.mp3" type="audio/mpeg">
+      </audio>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - EFRO.AI</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/menu2.0.css">
+
+    <styles>
+        <style>
+            /* Hide ad on screens smaller than 1119px */
+            /* Ensure ads only show on desktop */
+            .desktop-only-ad {
+                position: fixed;
+                display: none;
+                top: 30%;
+                transform: translateY(-30%);
+                z-index: 9999; /* Make sure the ads are above other content */
+            }
+
+            .desktop-only-ad-2 {
+                position: relative;
+                display: none;
+                z-index: 1; /* Make sure the ads are above other content */
+            }
+
+            .mobile-only-ad-2 {
+                position: relative;
+                display: none;
+                z-index: 1; /* Make sure the ads are above other content */
+            }
+
+
+            /* Style for left-side ad */
+            .left-ad {
+                left: 10px; /* Distance from the left side */
+            }
+
+            /* Style for right-side ad */
+            .right-ad {
+                right: 10px; /* Distance from the right side */
+            }
+
+          
+             /* Show ad only on larger screens */
+             @media (min-width: 1120px) {
+              .desktop-only-ad {
+                 display: block;
+              }
+            }
+
+            /* Show ad only on larger screens */
+            @media (min-width: 768px) {
+              .desktop-only-ad-2 {
+                 display: block;
+              }
+            }
+
+            /* Show ad only on larger screens */
+            @media (max-width: 767px) {
+              .mobile-only-ad-2 {
+                display: block;
+                }
+            }
+
+            /* Show ad only on smaller screens */
+            @media (max-width: 1119px) {
+              .mobile-only-ad {
+                 display: block;
+              }
+            }
+
+                /* Hide ad on screens larger than 1119px */
+            .mobile-only-ad {
+                display: none;
+            }
+
+            /* Style the label to align items in a modern way */
+.send-on-enter-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #00FF80; /* Neon green for your site color */
+    transition: color 0.3s ease;
+}
+
+/* Style the checkbox itself */
+.send-on-enter-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #1a1a1a; /* Dark background */
+    border-radius: 5px;
+    border: 2px solid #00FF80; /* Neon green border */
+    position: relative;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Add a modern checkmark */
+.send-on-enter-checkbox:checked {
+    background-color: #00b71c; /* Green background when checked */
+    border-color: #00b71c;
+}
+
+.send-on-enter-checkbox:checked::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Style the text next to the checkbox */
+.checkbox-text {
+    margin-left: 8px;
+    color: #00b71c; /* Match text with checkbox border */
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for the label */
+.send-on-enter-label:hover .checkbox-text {
+    color: #FF9800; /* Orange on hover */
+}
+
+/* Hover effect for the checkbox */
+.send-on-enter-checkbox:hover {
+    border-color: #FF9800; /* Change border color on hover */
+}
+
+
+        /* Close button styles */
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 18px;
+            text-align: center;
+            line-height: 20px; /* Vertically centers the text */
+            cursor: pointer;
+            z-index: 10000; /* Ensures button stays on top */
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+          </style>
+    </styles>
+</head>
+<body>
+
+     <!-- Header -->
+     <header>
+<!-- Header -->
+<header>
+    <nav class="navbar">
+        <div class="left-content">
+            <a href="/" class="logo"> <!-- Make the logo clickable -->
+            <div class="logo">
+                <img src="logo.png" alt=" ">
+            </div>
+        </a>
+        <a href="/" class="text">
+            <div class="text">
+                <span class="letter letter-1">E</span>
+                <span class="letter letter-2">F</span>
+                <span class="letter letter-3">R</span>
+                <span class="letter letter-4">O</span>
+                <span class="letter letter-5">.</span>
+                <span class="letter letter-6">A</span>
+                <span class="letter letter-7">I</span>
+            </div>
+        </a>
+        </div>
+<div class="right-content">
+    <ul class="nav-links">
+        <!-- Characters with dropdown -->
+        <li class="dropdown">
+            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+            <div class="dropdown-content">
+                <a href="index.html">Characters Hub</a>
+                <a href="editor.html">Upload Character</a>
+                <a href="mycharacters.html">My Characters</a>
+            </div>
+        </li>
+
+        <!-- Community with dropdown -->
+        <li class="dropdown">
+            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+            <div class="dropdown-content">
+                <a href="rules.html">Rules</a>
+                <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                <a href="/EFROTales/">Old Stories Page</a>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </div>
+        </li>
+
+        <!-- Account with dropdown -->
+        <li class="dropdown">
+            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+            <div class="dropdown-content">
+                <a href="myaccount.html">Account</a>
+                <a href="mylikes.html">My Likes</a>
+                <a href="login.html">Login</a>
+            </div>
+        </li>
+
+        <!-- Help with dropdown -->
+        <li class="dropdown">
+            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+            <div class="dropdown-content">
+                <a href="documentation.html">Documentation</a>
+                <a href="updates.html">Updates & Features</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </li>
+
+    </ul>     
+
+        <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
+
+        <!-- Popup Modal for Login Warning -->
+        <div id="login-popup" class="login-popup">
+            <div class="popup-content">
+                <p>You must be logged in to chat. Please log in or register to continue.</p>
+                <button id="login-btn">Log In</button>
+            </div>
+        </div>
+        
+        <!-- Hamburger menu for mobile view -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>    
+</div>
+
+</nav>
+    </header>
+    <div id="main-content">
+        <div class="desktop-only-ad-2">
+
+    <!-- JuicyAds v3.0 -->
+    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+    <ins id="1073770" data-width="728" data-height="102"></ins>
+    <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script>
+    <!--JuicyAds END-->
+    </div>
+
+    <div class="mobile-only-ad-2">
+
+        <!-- JuicyAds v3.0 -->
+        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+        <ins id="1073773" data-width="300" data-height="62"></ins>
+        <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073773});</script>
+        <!--JuicyAds END-->
+    </div>
+        <div id="chat-container">
+        </div>
+        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+
+<!-- Left-side Ad -->
+<div class="desktop-only-ad left-ad" id="leftAd">
+    <!-- JuicyAds v3.0 -->
+    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+    <ins id="1073768" data-width="160" data-height="600"></ins>
+    <script type="text/javascript" data-cfasync="false" async>
+        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
+    </script>
+    <!-- JuicyAds END -->
+
+    <!-- Close button -->
+    <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
+</div>
+
+<!-- Right-side Ad -->
+<div class="desktop-only-ad right-ad" id="rightAd">
+    <!-- JuicyAds v3.0 -->
+    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+    <ins id="1073768" data-width="160" data-height="600"></ins>
+    <script type="text/javascript" data-cfasync="false" async>
+        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
+    </script>
+    <!-- JuicyAds END -->
+
+    <!-- Close button -->
+    <button class="close-btn" onclick="closeAd('rightAd')">&times;</button>
+</div>
+
+<script>
+    // Function to close the ad
+    function closeAd(adId) {
+        const ad = document.getElementById(adId);
+        ad.style.display = 'none'; // Hides the ad
+    }
+</script>
+
+
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+        </div>
+        
+        <label for="enter-send" class="send-on-enter-label">
+            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+            <span class="checkbox-text">Send on Enter</span>
+        </label>
+        
+        <script>
+        // Function to handle Enter key behavior
+        let sendOnEnter = true;
+        
+        function toggleEnterKey() {
+            sendOnEnter = document.getElementById("enter-send").checked;
+        }
+        
+        // Listen for the Enter key to send the message if enabled
+        document.getElementById("user-input").addEventListener("keydown", function(event) {
+            if (sendOnEnter && event.key === "Enter") {
+                event.preventDefault(); // Prevent default behavior (new line)
+                sendMessage();
+            }
+        });
+        
+        // Function to simulate sending the message
+        let sendButtonDisabled = false;
+        </script>
+ 
+        <!-- JuicyAds v3.0 -->
+        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+        <ins id="1073767" data-width="300" data-height="250"></ins>
+        <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073767});</script>
+        <!--JuicyAds END-->
+
+            <div class="status">
+                <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
+            </div>
+            <div id="speed-indicator-container">
+                <div id="speed-indicator" class="speed-indicator"></div>
+            </div>
+            <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
+       
+            <!-- New button for 13B model page -->
+            <p>The following are not always active, reach TigerT2173 if you'd like to try!</p>
+            <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
+            <button id="model3B-button" onclick="goToModel3B()">[Alpha] Try Our 3B Model</button>
+            <button id="TTS-button" onclick="goToTTS()">[Alpha] Try Our Text to Speech.</button>
+
+            <script>
+                function goToModel13B() {
+                    window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
+                }
+                function goToModel3B() {
+                    window.location.href = '3B-model-page.html'; // replace with the actual URL for the 13B model page
+                }
+                function goToTTS() {
+                    window.location.href = 'chatbeta.html'; // replace with the actual URL for the 13B model page
+                }
+            </script>
+
+            <button id="save-button">Save Chat</button>
+
+        <button id="download-button">Download Chat as JSON</button>
+        <input type="file" id="upload-input" style="display:none;" />
+        <button id="upload-button">Upload Chat</button>
+        
+      
+        <div id="saved-chats">
+            <h2 style="text-align: center;">Saved Chats</h2>
+            <div id="storage-notice" style="color: red; font-weight: bold;">
+                Note: Clearing your browser storage will delete all saved chats!
+            </div>    
+            <ul id="saved-chats-list"></ul>
+        </div>
+        
+        <div id="popup-menu" style="display: none; position: absolute; background-color: white; border: 1px solid black; z-index: 1000;">
+            <!-- The delete button will be dynamically added here -->
+        </div>
+        
+        <div id="settings-container">
+            <div class="setting">
+                <label for="user-name">Your Name: </label>
+                <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
+            </div>
+            <div class="setting">
+                <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
+                <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
+                <span id="SettingsMaxTokensValue">256 Tokens</span>
+            </div>
+
+    <!-- Negative Prompt dropdown menu -->
+    <select id="negativePrompt">
+        <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+        <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+        <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
+        <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
+        <option id="optionV4" selected>[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
+
+    </select>
+
+    <script>
+    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
+    const negativePrompt = document.getElementById("negativePrompt");
+    const optionV4 = document.getElementById("optionV4");
+    const optionV3 = document.getElementById("optionV3");
+    const optionV2 = document.getElementById("optionV2");
+    const explicitEncourage = document.getElementById("explicitEncourage");
+    const skunkAnatomyFix = document.getElementById("skunkAnatomyFix");
+    const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
+
+    // Function to update the options' values and text
+    function updateNegativePromptOptions(maxTokens) {
+        optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
+
+        
+        optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
+        // New option to allow sexual content with token limits and natural endings
+   
+        // New option for skunk anatomy correction with humor
+        skunkAnatomyFix.value = `Ensure skunks' anatomy is accurate: spray comes from anal glands, and farts come from the anus. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
+        skunkAnatomyFix.textContent = `[Beta] Skunk Anatomy Fix (For Accuracy)`;
+
+        explicitEncourage.value = `Allow sexual or explicit content, ensuring the response stays within ${maxTokens} tokens and concludes naturally without abrupt cut-offs.`;
+        explicitEncourage.textContent = `[Alpha] Explict Encouraged: May Get Too Horny`;
+
+        optionV4.value = `Do not discuss sexual or explicit content. Provide descriptive and sensory-rich responses (e.g., smells, textures, and visuals) as needed, while keeping the response focused and concise. Ensure the response does not exceed ${maxTokens} tokens and ends naturally without being cut off. Never repeat the last generation.`;
+        optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
+
+        // Add the speaker identifier prompt to the dropdown
+        speakerIdentifierOption.value = "Please write the response with each sentence clearly labeled with a speaker identifier, like this: Speaker 1: [sentence] Speaker 2: [sentence]... Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.";
+        speakerIdentifierOption.textContent = `Speaker Identifier Request (Write each sentence with a speaker identifier)`;
+
+    }
+
+    // Initial set-up
+    updateNegativePromptOptions(tokenSlider.value - 48);
+    
+    // Event listener for the slider
+    tokenSlider.addEventListener("input", () => {
+        const maxTokens = tokenSlider.value - 48;
+        tokenDisplay.textContent = `${maxTokens} Tokens`;
+        updateNegativePromptOptions(maxTokens);
+    });
+    </script>
+                <!-- <label for="negativePrompt">Negative Prompt:</label>
+            <select id="negativePrompt">
+                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+                <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
+            </select> -->
+
+            <label for="systemPrompt">System Prompt:</label>
+            <select id="systemPrompt">
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details...">Spicy Roleplay v2</option>
+                <option value="Write {{char}} next response...">Default v2</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}...">Descriptive v2</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction...">Humor v2</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact...">Knowledge Sharing v2</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle...">Emotional Support v2</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about...">Educational v2</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}...">Advice v2</option>
+
+                <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.">Roleplay</option>
+                <option value="Write {{char}} next response. Any act of role play scenarios will be described in details.">Spicy Roleplay</option>
+                <option value="Write {{char}} next response.">Default</option>
+                <option value="Write {{char}}'s response in a vivid descriptive of a scene, object, or experience asked by {{user}}.">Descriptive</option>
+                <option value="{{user}} tells a joke and awaits {{char}}'s response as a reaction.">Humor</option>
+                <option value="{{user}} will ask {{char}} to explain a complex topic or fact.">Knowledge Sharing</option>
+                <option value="Write {{char}}'s emphatic and supportive response to {{user}}'s sharing of a personal and emotional struggle.">Emotional Support</option>
+                <option value="Write {{char}}'s detailed explanation on a topic that {{user}} is curious about.">Educational</option>
+                <option value="Write {{char}}'s thoughtful advice in response to a situation posed by {{user}}.">Advice</option>
+            </select>
+            <br>
+            <br>
+            <label for="systemParameters">Parameters:</label>
+            <select id="systemParameters">
+                <option value="Ethereal Winds">𝐄𝐭𝐡𝐞𝐫𝐞𝐚𝐥 𝐖𝐢𝐧𝐝𝐬 - 𝘈 𝘴𝘰𝘧𝘵 𝘣𝘳𝘦𝘦𝘻𝘦 𝘵𝘩𝘢𝘵 𝘯𝘶𝘳𝘵𝘶𝘳𝘦𝘴 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘪𝘵𝘺, 𝘪𝘥𝘦𝘢𝘭 𝘧𝘰𝘳 𝘴𝘦𝘳𝘦𝘯𝘦 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨</option>
+                <option value="AetherFume">𝐀𝐞𝐭𝐡𝐞𝐫𝐅𝐮𝐦𝐞 - 𝘈𝘯 𝘪𝘯𝘷𝘪𝘨𝘰𝘳𝘢𝘵𝘪𝘯𝘨 𝘧𝘰𝘳𝘤𝘦 𝘵𝘩𝘢𝘵 𝘱𝘳𝘰𝘱𝘦𝘭𝘴 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨 𝘧𝘰𝘳𝘸𝘢𝘳𝘥, 𝘪𝘯𝘷𝘪𝘵𝘪𝘯𝘨 𝘯𝘦𝘸 𝘪𝘥𝘦𝘢𝘴 𝘢𝘯𝘥 𝘢𝘥𝘷𝘦𝘯𝘵𝘶𝘳𝘦𝘴</option>
+                <option value="Nebula Drift">𝐍𝐞𝐛𝐮𝐥𝐚 𝐃𝐫𝐢𝐟𝐭 - 𝘌𝘮𝘣𝘳𝘢𝘤𝘦 𝘵𝘩𝘦 𝘦𝘵𝘩𝘦𝘳 𝘰𝘧 𝘯𝘦𝘣𝘶𝘭𝘢𝘳 𝘨𝘢𝘴𝘦𝘴, 𝘶𝘯𝘭𝘦𝘢𝘴𝘩 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘦 𝘢𝘯𝘴𝘸𝘦𝘳𝘴 𝘧𝘳𝘰𝘮 𝘥𝘦𝘦𝘱 𝘴𝘱𝘢𝘤𝘦</option>
+                <option value="Chaos Catalyst">𝐂𝐡𝐚𝐨𝐬 𝐂𝐚𝐭𝐚𝐥𝐲𝐬𝐭 - 𝘈 𝘧𝘰𝘳𝘤𝘦𝘧𝘶𝘭 𝘥𝘪𝘴𝘳𝘶𝘱𝘵𝘪𝘰𝘯 𝘮𝘰𝘥𝘦 𝘵𝘰 𝘣𝘳𝘦𝘢𝘬 𝘤𝘺𝘤𝘭𝘦𝘴 𝘰𝘧 𝘳𝘦𝘱𝘦𝘵𝘪𝘵𝘪𝘷𝘦 𝘭𝘰𝘰𝘱𝘴, 𝘧𝘰𝘳𝘤𝘪𝘯𝘨 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘶𝘯𝘦𝘹𝘱𝘦𝘤𝘵𝘦𝘥 𝘰𝘶𝘵𝘱𝘶𝘵.</option>
+                <option value="Llama 3 Default">Llama 3 Default</option>
+                <option value="Creative Boost">Creative Boost</option>
+                <option value="Yodayo Default">Yodayo Default</option>
+                <option value="Clarity Forge">Clarity Forge</option>
+                <option value="Divine Intellect">Divine Intellect</option>
+                <option value="Fantastic">Fantastic</option>
+                <option value="Basic">Basic</option>
+                <option value="LLama Precise">LLama Precise</option>
+                <option value="Midnight Enigma">Midnight Enigma</option>
+                <option value="Shortwave">Shortwave</option>
+                <option value="Star Chat">Star Chat</option>
+                <option value="Yara">Yara</option>
+                <option value="[Good] Whispering Horizon">𝐖𝐡𝐢𝐬𝐩𝐞𝐫𝐢𝐧𝐠 𝐇𝐨𝐫𝐢𝐳𝐨𝐧 - 𝘈 𝘨𝘦𝘯𝘵𝘭𝘦 𝘤𝘢𝘥𝘦𝘯𝘤𝘦 𝘵𝘩𝘢𝘵 𝘴𝘱𝘢𝘳𝘬𝘴 𝘳𝘦𝘧𝘭𝘦𝘤𝘵𝘪𝘷𝘦 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨, 𝘦𝘷𝘰𝘬𝘪𝘯𝘨 𝘴𝘰𝘧𝘵 𝘢𝘯𝘥 𝘴𝘦𝘳𝘦𝘯𝘦 𝘯𝘢𝘳𝘳𝘢𝘵𝘪𝘷𝘦𝘴.</option>
+                <option value="[Meh] Starlit Pulse">𝐒𝐭𝐚𝐫𝐥𝐢𝐭 𝐏𝐮𝐥𝐬𝐞 - 𝘈 𝘤𝘳𝘢𝘤𝘬𝘭𝘪𝘯𝘨 𝘦𝘯𝘦𝘳𝘨𝘺 𝘰𝘧 𝘪𝘯𝘴𝘱𝘪𝘳𝘢𝘵𝘪𝘰𝘯, 𝘭𝘪𝘨𝘩𝘵𝘪𝘯𝘨 𝘴𝘵𝘰𝘳𝘺 𝘪𝘥𝘦𝘢𝘴 𝘸𝘪𝘵𝘩 𝘪𝘮𝘢𝘨𝘪𝘯𝘢𝘵𝘪𝘷𝘦 𝘧𝘭𝘢𝘳𝘦 𝘢𝘯𝘥 𝘢𝘶𝘥𝘢𝘤𝘪𝘵𝘺.</option>
+                <option value="[Exhaggerated] Obsidian Flow">𝐎𝐛𝐬𝐢𝐝𝐢𝐚𝐧 𝐅𝐥𝐨𝐰 - 𝘈 𝘥𝘦𝘦𝘱, 𝘮𝘺𝘴𝘵𝘪𝘤 𝘦𝘯𝘦𝘳𝘨𝘺 𝘵𝘩𝘢𝘵 𝘶𝘯𝘭𝘦𝘢𝘴𝘩𝘦𝘴 𝘤𝘢𝘱𝘵𝘪𝘷𝘢𝘵𝘪𝘯𝘨 𝘢𝘯𝘥 𝘦𝘷𝘰𝘤𝘢𝘵𝘪𝘷𝘦 𝘴𝘵𝘰𝘳𝘪𝘦𝘴, 𝘣𝘳𝘰𝘰𝘥𝘪𝘯𝘨 𝘢𝘯𝘥 𝘥𝘦𝘦𝘱𝘭𝘺 𝘳𝘦𝘴𝘰𝘯𝘢𝘯𝘵.</option>
+                <option value="[Clingy] Crimson Spark">𝐂𝐫𝐢𝐦𝐬𝐨𝐧 𝐒𝐩𝐚𝐫𝐤 - 𝘈 𝘣𝘶𝘳𝘴𝘵 𝘰𝘧 𝘩𝘦𝘢𝘵 𝘢𝘯𝘥 𝘱𝘢𝘴𝘴𝘪𝘰𝘯 𝘵𝘩𝘢𝘵 𝘧𝘶𝘦𝘭𝘴 𝘥𝘳𝘢𝘮𝘢𝘵𝘪𝘤 𝘢𝘯𝘥 𝘪𝘮𝘱𝘢𝘤𝘵𝘧𝘶𝘭 𝘯𝘢𝘳𝘳𝘢𝘵𝘪𝘷𝘦𝘴, 𝘦𝘮𝘣𝘳𝘢𝘤𝘪𝘯𝘨 𝘵𝘦𝘯𝘴𝘪𝘰𝘯 𝘢𝘯𝘥 𝘦𝘹𝘤𝘪𝘵𝘦𝘮𝘦𝘯𝘵.</option>
+                <option value="Echoed Reverie">𝐄𝐜𝐡𝐨𝐞𝐝 𝐑𝐞𝐯𝐞𝐫𝐢𝐞 - 𝘈 𝘸𝘢𝘷𝘦 𝘰𝘧 𝘥𝘳𝘦𝘢𝘮𝘭𝘪𝘬𝘦 𝘦𝘯𝘦𝘳𝘨𝘺 𝘵𝘩𝘢𝘵 𝘩𝘢𝘳𝘮𝘰𝘯𝘪𝘻𝘦𝘴 𝘢𝘯𝘥 𝘦𝘯𝘵𝘸𝘪𝘯𝘦𝘴 𝘦𝘮𝘰𝘵𝘪𝘷𝘦 𝘢𝘯𝘥 𝘷𝘪𝘴𝘪𝘰𝘯𝘢𝘳𝘺 𝘯𝘢𝘳𝘳𝘢𝘵𝘪𝘷𝘦𝘴.</option>
+
+            </select>
+            <br>
+            <br>
+            <label for="use-example-dialogue">
+                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta)
+            </label>            
+            <div class="setting hidden">
+                <label for="persona">Character Persona</label>
+                <textarea type="text" id="persona" placeholder="e.g., friendly, professional" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="context">Context</label>
+                <textarea type="text" id="context" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="scenario">Scenario</label>
+                <textarea type="text" id="scenario" placeholder="e.g., tech support, storytelling" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="greeting">Greeting</label>
+                <textarea type="text" id="greeting" placeholder="e.g., Hello! How can I help you?" rows="10" style="width: 100%;"></textarea>
+            </div>
+            <div class="setting hidden">
+                <label for="exampledialogue">Example Dialogue</label>
+                <textarea type="text" id="exampledialogue" placeholder="" rows="10" style="width: 100%;"></textarea>
+            </div>
+ 
+                <div class="setting">
+                    <label for="model">Select Model</label>
+                    <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
+                        <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B">Gastronova 8B</option>
+                        <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
+                        <!-- Other options will be populated here -->
+                    </select>
+                    <div id="tooltip" class="tooltip"></div>
+                </div>
+            <div class="setting">
+                <a class="add-api" target="_blank" href="https://api.botbridge.net/dashboard.html">Add API</a>
+            </div>
+
+            <div class="setting">
+                <label for="temperature">Temperature</label>
+                <input type="number" id="temperature" min="0.2" max="2" step="0.1" value="1.10">
+            </div>
+
+            <div class="setting">
+                <label for="top_p">Top P</label>
+                <input type="number" id="top_p" min="0.0" max="2" step="0.01" value="0.64">
+            </div>
+
+            <div class="setting">
+                <label for="top_k">Top K</label>
+                <input type="number" id="top_k" min="0.0" max="2000" step="1" value="33">
+            </div>
+
+            <div class="setting">
+                <label for="min_p">Min P</label>
+                <input type="number" id="min_p" min="0.0" max="2" step="0.05" value="0">
+            </div>
+
+            <div class="setting">
+                <label for="prescence_penalty">Presence Penalty</label>
+                <input type="number" id="prescence_penalty" min="0.0" max="2" step="0.01" value="0">
+            </div>
+            
+            <div class="setting">
+                <label for="frequency_penalty">Frequency Penalty</label>
+                <input type="number" id="frequency_penalty" min="0.0" max="2" step="0.01" value="0">
+            </div>
+                  
+            <div class="setting">
+                <label for="repeat_penalty">Repeat Penalty</label>
+                <input type="number" id="repeat_penalty" min="0.0" max="2" step="0.01" value="1.09">
+            </div>
+
+            <div class="setting">
+                <label for="messages-sent">Messages Sent</label>
+                <input type="text" id="messages-sent" value="0" readonly>
+            </div>
+            
+            <div id="save-load-container">
+                <button id="saveSettings">Save Parameters</button>
+                <button id="loadSettings">Load Parameters</button>
+            </div>
+            <script>
+                  // Function to save settings to local storage
+    function saveSettings() {
+        localStorage.setItem('temperature', document.getElementById('temperature').value);
+        localStorage.setItem('top_p', document.getElementById('top_p').value);
+        localStorage.setItem('top_k', document.getElementById('top_k').value);
+        localStorage.setItem('min_p', document.getElementById('min_p').value);
+        localStorage.setItem('prescence_penalty', document.getElementById('prescence_penalty').value);
+        localStorage.setItem('frequency_penalty', document.getElementById('frequency_penalty').value);
+        localStorage.setItem('repeat_penalty', document.getElementById('repeat_penalty').value);
+        localStorage.setItem('repeat_last_n', document.getElementById('repeat_last_n').value);
+        alert('Settings saved');
+    }
+
+    // Function to load settings from local storage
+    function loadSettings() {
+        document.getElementById('temperature').value = localStorage.getItem('temperature');
+        document.getElementById('top_p').value = localStorage.getItem('top_p');
+        document.getElementById('top_k').value = localStorage.getItem('top_k');
+        document.getElementById('min_p').value = localStorage.getItem('min_p');
+        document.getElementById('prescence_penalty').value = localStorage.getItem('prescence_penalty');
+        document.getElementById('frequency_penalty').value = localStorage.getItem('frequency_penalty');
+        document.getElementById('repeat_penalty').value = localStorage.getItem('repeat_penalty');
+        document.getElementById('repeat_last_n').value = localStorage.getItem('repeat_last_n');
+        repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+
+        alert('Settings loaded');
+    }
+
+    // Attach event listeners to buttons
+    document.getElementById('saveSettings').addEventListener('click', saveSettings);
+    document.getElementById('loadSettings').addEventListener('click', loadSettings);
+
+            </script>
+            <div class="setting">
+                <label for="advanced-debugging">Debugging</label>
+                <textarea id="advanced-debugging" value="" rows="20" style="width: 100%;" readonly></textarea>
+            </div>
+            <!-- Checkbox -->
+            <label for="show-expert">Show Expert Settings:</label>
+            <input type="checkbox" id="show-expert" onchange="toggleExpertSettings()">
+        </div>
+        
+        <!-- Expert Settings Section -->
+        <div id="expert-settings">
+            <h3>Expert Settings</h3>   
+            <label for="appendNegativePrompt">
+                Append Negative Prompt (Makes it more aggressive)
+            </label>
+            <input type="checkbox" id="appendNegativePrompt"> 
+            <br>        
+            <button id="toggleSettings">Toggle Character Information</button>
+            <!-- Expert settings go here -->
+
+        
+        
+           
+            <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
+            <input type="range" id="repeat_last_n" min="64" max="1024" step="16">
+            <span id="repeat_last_n_display">512 Tokens</span>
+            
+            <script>
+                const repeat_last_n_slider = document.getElementById("repeat_last_n");
+                const repeat_last_n_display = document.getElementById("repeat_last_n_display");
+            
+                // Set default value on page load
+                repeat_last_n_slider.value = 512;
+                repeat_last_n_display.textContent = `512 Tokens`;
+            
+                // Update the display on slider input
+                repeat_last_n_slider.addEventListener("input", () => {
+                    repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+                });
+            </script>
+       
+        </div>
+    </div>
+
+    <script>
+          document.getElementById('toggleSettings').addEventListener('click', function() {
+        const settings = document.querySelectorAll('.setting');
+        settings.forEach(setting => {
+            setting.classList.toggle('hidden');
+        });
+    });
+        function showTooltip(event) {
+    const selectElement = event.target;
+    const tooltip = document.getElementById('tooltip');
+    
+    // Get the currently selected option
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    
+    // Set tooltip content
+    tooltip.textContent = selectedOption.getAttribute('data-description');
+    
+    // Position the tooltip
+    const rect = selectElement.getBoundingClientRect();
+    tooltip.style.left = `${rect.left}px`;
+    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+    
+    // Show the tooltip
+    tooltip.style.display = 'block';
+}
+
+function hideTooltip() {
+    const tooltip = document.getElementById('tooltip');
+    tooltip.style.display = 'none';
+}
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Spec Notification</title>
+    <style>
+        #notification {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 20px;
+            border-radius: 8px; /* Rounded corners */
+            z-index: 1000; /* High z-index to appear above other content */
+            opacity: 0; /* Initially invisible */
+            transform: translateY(-20px); /* Slide from top */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        #notification.show {
+            display: block; /* Show when needed */
+            opacity: 1; /* Fully visible */
+            transform: translateY(0); /* Slide in */
+            animation: bounceIn 0.5s forwards; /* Animation when shown */
+        }
+
+        .notification-buttons {
+            margin-top: 10px; /* Space between message and buttons */
+        }
+
+        .notification-buttons button {
+            background-color: #f44336; /* Red background for buttons */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition */
+            margin-right: 5px; /* Space between buttons */
+        }
+
+        .notification-buttons button:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+        #notification a {
+            color: #FFD700; /* Gold color for the link */
+            text-decoration: underline; /* Underline to indicate it's a link */
+        }
+
+        #closeButton {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 16px; /* Adjust size as needed */
+        }
+
+        /* Optional: Add a fade-out effect */
+        #notification.fade-out {
+            animation: fadeOut 0.5s forwards; /* Animation for fade out */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none; /* Hide it after fading out */
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            80% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="notification" class="notification">
+        <p>For improved performance and to reduce unnecessary load on our servers, consider hosting the model on your own PC locally!</p>
+        <a href="/localhosting.html" target="_blank">Learn how to set it up.</a>
+        <div class="notification-buttons">
+            <button id="hideNotificationButton">Don't show for 30 days</button>
+            <button id="closeButton">Close</button>
+        </div>
+    </div>
+
+<script>
+    // document.addEventListener('DOMContentLoaded', () => {
+
+    // const hideNotification = getCookie('hideNotification');
+
+    // // Get user device specifications and show notification if not hidden
+    // if (!hideNotification) {
+    //     const userAgent = navigator.userAgent;
+    //     const screenWidth = screen.width;
+    //     const screenHeight = screen.height;
+    //     const colorDepth = screen.colorDepth;
+    //     const deviceMemory = navigator.deviceMemory || 'Unknown';
+    //     const cpuCores = navigator.hardwareConcurrency || 'Unknown';
+
+    //     console.log(`User Agent: ${userAgent}`);
+    //     console.log(`Screen Size: ${screenWidth}x${screenHeight}, Color Depth: ${colorDepth}`);
+    //     console.log(`Device Memory: ${deviceMemory} GB`);
+    //     console.log(`CPU Cores: ${cpuCores}`);
+
+    //     // Example decision-making based on device specs
+    //     if (deviceMemory < 6) {
+    //         console.log("Your device has limited memory. Consider reducing the number of open tabs for better performance.");
+    //     } else {
+    //         console.log("Your device seems capable! Enjoy exploring our content.");
+    //     }
+
+    //     // Check for dedicated GPU
+    //     checkGPU(cpuCores, deviceMemory);
+    //     }
+    // });
+
+    // // Function to check for dedicated GPU and suggest local hosting
+    // function checkGPU(cpuCores, deviceMemory) {
+    //     const canvas = document.createElement('canvas');
+    //     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+    //     if (!gl) {
+    //         console.log('WebGL not supported');
+    //         return;
+    //     }
+
+    //     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    //     const gpuRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown Renderer';
+
+    //     console.log(`GPU Renderer: ${gpuRenderer}`);
+
+    //     // Check for specific keywords that may indicate a dedicated GPU
+    //     const dedicatedGPUKeywords = [
+    //         'nvidia', 'amd',
+    //         'geforce', 'tesla',
+    //     ];
+
+    //     const hasDedicatedGPU = dedicatedGPUKeywords.some(keyword => gpuRenderer.toLowerCase().includes(keyword));
+    //     const hasHighCores = cpuCores > 10;
+    //     const hasEnoughMemory = deviceMemory >= 6;
+
+    //     if (hasDedicatedGPU || hasHighCores && hasEnoughMemory) {
+    //         const notification = document.getElementById('notification');
+    //         notification.classList.add('show'); // Add class to show notification
+            
+    //         // Optional: Automatically hide the notification after a few seconds
+    //         setTimeout(() => {
+    //             notification.classList.add('fade-out'); // Add fade-out class
+    //         }, 30500); // Start fade out after 5 seconds
+
+    //         // Hide it completely after the fade-out animation
+    //         setTimeout(() => {
+    //             notification.style.display = 'none'; // Hide it after fading out
+    //         }, 30500); // Adjust timing to match the fade-out duration
+    //     } else {
+    //         console.log('User does not meet the criteria for local hosting suggestion.');
+    //     }
+    // }
+
+    // Close button functionality
+    document.getElementById('closeButton').addEventListener('click', () => {
+        const notification = document.getElementById('notification');
+        notification.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            notification.style.display = 'none'; // Hide it after fading out
+        }, 500); // Match this with the fade-out duration
+    });
+
+    // Don't show again button functionality
+    document.getElementById('hideNotificationButton').addEventListener('click', () => {
+        setCookie('hideNotification', 'true', 30); // Set cookie for 30 days
+        const notification = document.getElementById('notification');
+        notification.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            notification.style.display = 'none'; // Hide it after fading out
+        }, 500); // Match this with the fade-out duration
+    });
+
+    // Function to set a cookie with a specified expiration in days
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+        const expires = "expires=" + date.toUTCString(); // Format the expiration date
+        document.cookie = `${name}=${value}; ${expires}; path=/`; // Set the cookie
+    }
+
+    // Function to get a cookie value by its name
+    function getCookie(name) {
+        const nameEQ = name + "="; // Define the cookie name to search for
+        const ca = document.cookie.split(';'); // Split the document cookie string into an array
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim(); // Remove leading spaces
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length); // Return the cookie value
+        }
+        return null; // Return null if the cookie doesn't exist
+    }
+
+
+</script>
+<script>
+    const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+
+    // Connection opened
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to WebSocket server');
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', (event) => {
+        console.log('Message from server:', event.data);
+        // Handle ping or any other messages from the server
+        if (event.data === 'ping') {
+            // You can respond to pings if needed
+            socket.send('pong'); // Example response
+        }
+    });
+
+    // Connection closed
+    socket.addEventListener('close', (event) => {
+        console.log('Disconnected from WebSocket server');
+    });
+    
+</script>
+
+<script src="js/scripts/chat/savechatlocally.js?v=1"></script>
+<script src="js/chat.js"></script>
+<script src="js/scripts/checkbot.js"></script>
+<script src="js/menu.js" defer></script>
+</body>
+</html>
