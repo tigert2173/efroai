@@ -665,19 +665,24 @@
         
         
            
-                <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
-                <input type="range" id="repeat_last_n" min="64" max="1024" step="16" value="512">
-                <span id="repeat_last_n_display">512 Tokens</span>
-
-                <script>
-                const repeat_last_n_slider = document.getElementById("repeat_last_n");
-                const repeat_last_n_display = document.getElementById("repeat_last_n_display");
-
-                // Update the display when the slider value changes
-                repeat_last_n_slider.addEventListener("input", () => {
-                    repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+            <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
+            <input type="range" id="repeat_last_n" min="64" max="1024" step="16">
+            <span id="repeat_last_n_display">512 Tokens</span>
+            
+            <script>
+                const slider = document.getElementById("repeat_last_n");
+                const display = document.getElementById("repeat_last_n_display");
+            
+                // Set default value on page load
+                slider.value = 512;
+                display.textContent = `512 Tokens`;
+            
+                // Update the display on slider input
+                slider.addEventListener("input", () => {
+                    display.textContent = `${slider.value} Tokens`;
                 });
-                </script>
+            </script>
+       
         </div>
     </div>
 
