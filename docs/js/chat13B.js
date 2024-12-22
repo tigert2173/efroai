@@ -764,15 +764,24 @@ console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
-        
-        const response = await fetch("https://api.botbridge.net/api/send", {
+
+        const response = await fetch("https://13b-apibridge1.botbridgeai.net/v1/chat/completions", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+                // Add any other headers that were in axios
             },
             body: JSON.stringify(requestData)
         });
+        
+        // const response = await fetch("https://api.botbridge.net/api/send", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
         
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
         //     method: 'POST',
