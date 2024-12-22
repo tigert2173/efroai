@@ -726,7 +726,7 @@ async function sendMessage() {
                 min_p: settings.min_p,
                 top_k: settings.top_k,
                 top_p: settings.top_p,
-                repeat_last_n: 512,
+                repeat_last_n: 256,
                 cache_prompt: true,
                 t_max_predict_ms: 300000, // timeout after 5 minutes
             };
