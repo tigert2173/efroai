@@ -633,6 +633,7 @@
         document.getElementById('frequency_penalty').value = localStorage.getItem('frequency_penalty');
         document.getElementById('repeat_penalty').value = localStorage.getItem('repeat_penalty');
         document.getElementById('repeat_last_n').value = localStorage.getItem('repeat_last_n');
+        repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
 
         alert('Settings loaded');
     }
@@ -670,16 +671,16 @@
             <span id="repeat_last_n_display">512 Tokens</span>
             
             <script>
-                const slider = document.getElementById("repeat_last_n");
-                const display = document.getElementById("repeat_last_n_display");
+                const repeat_last_n_slider = document.getElementById("repeat_last_n");
+                const repeat_last_n_display = document.getElementById("repeat_last_n_display");
             
                 // Set default value on page load
-                slider.value = 512;
-                display.textContent = `512 Tokens`;
+                repeat_last_n_slider.value = 512;
+                repeat_last_n_display.textContent = `512 Tokens`;
             
                 // Update the display on slider input
-                slider.addEventListener("input", () => {
-                    display.textContent = `${slider.value} Tokens`;
+                repeat_last_n_slider.addEventListener("input", () => {
+                    repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
                 });
             </script>
        
