@@ -669,6 +669,15 @@
                 <input type="range" id="repeat_last_n" min="64" max="1024" step="16" value="512">
                 <span id="repeat_last_n:">512 Tokens</span>
 
+                <script>
+                const repeat_last_n_slider = document.getElementById("repeat_last_n");
+                const repeat_last_n_display = document.getElementById("repeat_last_n_display");
+
+                // Update the display when the slider value changes
+                repeat_last_n_slider.addEventListener("input", () => {
+                    repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+                });
+                </script>
         </div>
     </div>
 
