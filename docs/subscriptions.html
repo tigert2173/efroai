@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFRO.AI - Subscriptions</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header, .hero, .container {
+            padding: 20px;
+        }
+        .hero {
+            text-align: center;
+            background-color: #2980b9;
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #e67e22;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7f50, #4682b4);
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header {
+            margin: 20px 0;
+        }
+        .subscriptions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .subscription-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .subscription-card:hover {
+            transform: scale(1.05);
+        }
+        .title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .description {
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        .buy-button {
+            background: #fff;
+            color: #4682b4;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .buy-button:hover {
+            background: #ff7f50;
+            color: #fff;
+        }
+    </style>
+        <link rel="stylesheet" href="css/menu2.0.css">
+
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <nav class="navbar">
+        <div class="left-content">
+            <a href="/" class="logo"> <!-- Make the logo clickable -->
+            <div class="logo">
+                <img src="logo.png" alt=" ">
+            </div>
+        </a>
+        <a href="/" class="text">
+            <div class="text">
+                <span class="letter letter-1">E</span>
+                <span class="letter letter-2">F</span>
+                <span class="letter letter-3">R</span>
+                <span class="letter letter-4">O</span>
+                <span class="letter letter-5">.</span>
+                <span class="letter letter-6">A</span>
+                <span class="letter letter-7">I</span>
+            </div>
+        </a>
+        </div>
+<div class="right-content">
+    <ul class="nav-links">
+        <!-- Characters with dropdown -->
+        <li class="dropdown">
+            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+            <div class="dropdown-content">
+                <a href="index.html">Characters Hub</a>
+                <a href="editor.html">Upload Character</a>
+                <a href="mycharacters.html">My Characters</a>
+            </div>
+        </li>
+
+        <!-- Community with dropdown -->
+        <li class="dropdown">
+            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+            <div class="dropdown-content">
+                <a href="rules.html">Rules</a>
+                <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                <a href="/EFROTales/">Old Stories Page</a>
+            </div>
+        </li>
+
+        <!-- Account with dropdown -->
+        <li class="dropdown">
+            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+            <div class="dropdown-content">
+                <a href="myaccount.html">Account</a>
+                <a href="mylikes.html">My Likes</a>
+                <a href="login.html">Login</a>
+            </div>
+        </li>
+
+        <!-- Help with dropdown -->
+        <li class="dropdown">
+            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+            <div class="dropdown-content">
+                <a href="documentation.html">Documentation</a>
+                <a href="updates.html">Updates & Features</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </li>
+
+        <!-- Contribute Button -->
+        <li>
+            <a href="contribute.html" class="nav-btn">Contribute</a>
+        </li>
+    </ul>     
+
+    <div id="login-status" class="login-status"></div>
+
+    <!-- Hamburger menu for mobile view -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>  
+</div>
+</nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Support EFRO.AI</h1>
+    <p>Help keep our services free and accessible by contributing through donations or by partnering with us to host an API server.</p>
+</section>
+
+<!-- Main Content -->
+<main>
+    <div class="container">
+        <h1 class="header">EFROAI Subscriptions</h1>
+        <p>Choose the plan that best suits your needs and elevate your AI experience today!</p>
+        
+        <div class="subscriptions">
+            <div class="subscription-card">
+                <div class="title">Basic Plan</div>
+                <div class="price">$5/month</div>
+                <div class="description">Perfect for individuals just getting started with EFROAI.</div>
+                <button class="buy-button" onclick="location.href='/buy/basic'">Buy Now</button>
+            </div>
+            <div class="subscription-card">
+                <div class="title">Pro Plan</div>
+                <div class="price">$15/month</div>
+                <div class="description">Designed for professionals seeking more power and flexibility.</div>
+                <button class="buy-button" onclick="location.href='/buy/pro'">Buy Now</button>
+            </div>
+            <div class="subscription-card">
+                <div class="title">Enterprise Plan</div>
+                <div class="price">Custom Pricing</div>
+                <div class="description">Tailored solutions for businesses and organizations.</div>
+                <button class="buy-button" onclick="location.href='/buy/enterprise'">Contact Us</button>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="js/menu.js"></script>
+
+</body>
+</html>
