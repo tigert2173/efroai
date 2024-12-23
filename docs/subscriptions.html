@@ -188,6 +188,82 @@
 
 <!-- Main Content -->
 <main>
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFROAI Subscriptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7f50, #4682b4);
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+        .header {
+            margin: 20px 0;
+        }
+        .subscriptions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .subscription-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .subscription-card:hover {
+            transform: scale(1.05);
+        }
+        .title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .description {
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        .features {
+            font-size: 0.9em;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .buy-button {
+            background: #fff;
+            color: #4682b4;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .buy-button:hover {
+            background: #ff7f50;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
     <div class="container">
         <h1 class="header">EFROAI Subscriptions</h1>
         <p>Choose the plan that best suits your needs and elevate your AI experience today!</p>
@@ -195,20 +271,38 @@
         <div class="subscriptions">
             <div class="subscription-card">
                 <div class="title">Basic Plan</div>
-                <div class="price">$5/month</div>
+                <div class="price">$12/month</div>
                 <div class="description">Perfect for individuals just getting started with EFROAI.</div>
+                <ul class="features">
+                    <li>Access to basic AI features</li>
+                    <li>500 API calls per month</li>
+                    <li>Email support</li>
+                </ul>
                 <button class="buy-button" onclick="location.href='/buy/basic'">Buy Now</button>
             </div>
             <div class="subscription-card">
                 <div class="title">Pro Plan</div>
                 <div class="price">$15/month</div>
                 <div class="description">Designed for professionals seeking more power and flexibility.</div>
+                <ul class="features">
+                    <li>Access to advanced AI features</li>
+                    <li>5,000 API calls per month</li>
+                    <li>Priority email support</li>
+                    <li>Customizable AI settings</li>
+                </ul>
                 <button class="buy-button" onclick="location.href='/buy/pro'">Buy Now</button>
             </div>
             <div class="subscription-card">
                 <div class="title">Enterprise Plan</div>
                 <div class="price">Custom Pricing</div>
                 <div class="description">Tailored solutions for businesses and organizations.</div>
+                <ul class="features">
+                    <li>Unlimited API calls</li>
+                    <li>Dedicated account manager</li>
+                    <li>24/7 support</li>
+                    <li>Customized AI solutions</li>
+                    <li>Team access with role management</li>
+                </ul>
                 <button class="buy-button" onclick="location.href='/buy/enterprise'">Contact Us</button>
             </div>
         </div>
