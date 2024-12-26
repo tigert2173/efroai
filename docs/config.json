@@ -1,5 +1,5 @@
 {
     "maintenanceMode": false,
-    "maintenanceUpcoming": true,
+    "maintenanceUpcoming": false,
     "maintenanceMessage": "We are upgrading our servers, preformace will be more limited"
 }
