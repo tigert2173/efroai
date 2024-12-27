@@ -605,16 +605,23 @@
                     <div id="tooltip"></div>
                 
                     <script>
-                        // Function to decode JWT and check for the Ad-Exempt claim
+                      // Function to decode JWT and get the Subscription Tier number
                         function getUserSubscriptionTier(token) {
-                            if (!token) return false; // If there's no token, assume not exempt
-                        
-                            // Decode the JWT (assuming it's a standard JWT with 3 parts)
-                            const payload = token.split('.')[1]; // Get the payload part
-                            const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
-                        
-                            return decodedPayload['SubscriptionTier'] === true; // Check the Ad-Exempt claim
+                            if (!token) return null; // If there's no token, return null
+
+                            try {
+                                // Decode the JWT (assuming it's a standard JWT with 3 parts)
+                                const payload = token.split('.')[1]; // Get the payload part
+                                const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+
+                                // Return the Subscription Tier, or null if not present
+                                return decodedPayload['SubscriptionTier'] || null;
+                            } catch (error) {
+                                console.error("Failed to decode token:", error);
+                                return null; // Return null on error
+                            }
                         }
+
                         
                         let subscriptionTier = 0; // Check if the user is Ad-Exempt
                         
