@@ -608,7 +608,7 @@
                         // Simulate paying users and levels
                         const payingUsers = {
                             userToken: "123abc", // Example token
-                            userLevel: "Standard" // Example level
+                            userLevel: "1" // Example level
                         };
                 
                         // Function to handle model changes
@@ -623,7 +623,7 @@
                 
                             // Check for user token
                             const userToken = "123abc"; // Example token for the current user
-                            if (userToken !== payingUsers.userToken) {
+                            if (userLevel < 1) {
                                 alert("You do not have the required token to access this model.");
                                 return;
                             }
