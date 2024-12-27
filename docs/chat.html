@@ -625,13 +625,9 @@
                         
                         let subscriptionTier = 0; // Check if the user is Ad-Exempt
                         
-                        subscriptionTier = getUserSubscriptionTier(userToken);
                 
-                        // Simulate paying users and levels
-                        const payingUsers = {
-                            userToken: "123abc", // Example token
-                            userLevel: "0" // Example level
-                        };
+                
+                
                 
                         // Function to handle model changes
                         function handleModelChange() {
@@ -644,7 +640,7 @@
                             document.body.style.backgroundColor = bgColor;
                 
                             // Check for user token
-                            const userToken = "123abc"; // Example token for the current user
+                            subscriptionTier = getUserSubscriptionTier(userToken);
                             console.log(subscriptionTier);
                             if (subscriptionTier < 1) {
                                 alert("You do not have the required token to access this model.");
