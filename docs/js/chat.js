@@ -18,7 +18,7 @@ function isAdExempt(token) {
     return decodedPayload['AdExempt'] === true; // Check the Ad-Exempt claim
 }
 
-let adExempt = false // Check if the user is Ad-Exempt
+let adExempt = true; // Check if the user is Ad-Exempt
 
 const userID = getCookie('userID');
 
