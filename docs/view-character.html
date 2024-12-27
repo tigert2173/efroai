@@ -126,7 +126,23 @@
     </style>
 </head>
 <body>
-
+        <script>
+            // Function to decode JWT and check for the Ad-Exempt claim
+            function isAdExempt(token) {
+                if (!token) return false; // If there's no token, assume not exempt
+            
+                // Decode the JWT (assuming it's a standard JWT with 3 parts)
+                const payload = token.split('.')[1]; // Get the payload part
+                const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+            
+                return decodedPayload['AdExempt'] === true; // Check the Ad-Exempt claim
+            }
+            
+            let adExempt = false; // Check if the user is Ad-Exempt
+            const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
+            
+            adExempt = isAdExempt(userToken);
+        </script>
     <div id="character-details-container">
         <h1 id="character-name"></h1>
         <img id="character-image" alt="Character Image">
@@ -138,7 +154,13 @@
             <!-- JuicyAds v3.0 -->
             <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
             <ins id="1073766" data-width="300" data-height="100"></ins>
-            <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073766});</script>
+            <script type="text/javascript" data-cfasync="false" async>
+                if (!adExempt) {
+                    (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073766});
+                } else {
+                    document.getElementById("rightAd").style.display = "none";
+                }
+            </script>
             <!--JuicyAds END-->
         </div>
     
