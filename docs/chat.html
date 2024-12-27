@@ -696,9 +696,13 @@
                     
                                 if (storedModel) {
                                     select.value = storedModel; // Restore previously selected model
-                                }
-                                if (storedBgColor) {
-                                    document.body.style.backgroundColor = storedBgColor; // Restore background color
+                                    const selectedOption = select.options[select.selectedIndex];
+                                    const bgColor = selectedOption.getAttribute("data-bgcolor");
+                                    document.body.style.backgroundColor = bgColor; // Restore background color
+                                } else {
+                                    // If no model stored, set a default model and background color
+                                    select.value = "gastronova"; // Default to "Gastronova"
+                                    document.body.style.backgroundColor = "#1e272e"; // Default background color
                                 }
                             }
                         }
