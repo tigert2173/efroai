@@ -179,6 +179,66 @@
             <p>Email: <a href="mailto:support@efroai.net">support@efroai.net</a></p>
             <p>More account management features are coming soon!</p>
         </div>
+
+        <div class="account-settings">
+            <h2>Account Settings - Manage Banned Tags</h2>
+            
+            <!-- List of currently banned tags -->
+            <div>
+              <h3>Currently Banned Tags:</h3>
+              <ul id="banned-tags-list">
+                <!-- Dynamically populated list of banned tags -->
+              </ul>
+            </div>
+            
+            <!-- Form to add a new banned tag -->
+            <div>
+              <h3>Ban a New Tag:</h3>
+              <input type="text" id="new-tag" placeholder="Enter tag to ban" />
+              <button id="ban-tag-button">Ban Tag</button>
+            </div>
+          
+            <p id="message"></p>
+          </div>
+
+          <script>
+            // Example list of banned tags (this could be loaded dynamically from the server)
+            let bannedTags = []; 
+
+            // Update the list of banned tags on the page
+            function updateBannedTags() {
+            const bannedTagsList = document.getElementById("banned-tags-list");
+            bannedTagsList.innerHTML = ''; // Clear current list
+            bannedTags.forEach(tag => {
+                const listItem = document.createElement("li");
+                listItem.textContent = tag;
+                bannedTagsList.appendChild(listItem);
+            });
+            }
+
+            // Add a new tag to the banned list
+            function banTag() {
+            const newTag = document.getElementById("new-tag").value.trim();
+
+            if (newTag && !bannedTags.includes(newTag)) {
+                bannedTags.push(newTag); // Add to the banned tags array
+                updateBannedTags(); // Re-render the banned tags list
+                document.getElementById("message").textContent = `Successfully banned the tag: ${newTag}`;
+                document.getElementById("new-tag").value = ''; // Clear input field
+            } else if (bannedTags.includes(newTag)) {
+                document.getElementById("message").textContent = `Tag "${newTag}" is already banned.`;
+            } else {
+                document.getElementById("message").textContent = "Please enter a valid tag.";
+            }
+            }
+
+            // Event listener for the "Ban Tag" button
+            document.getElementById("ban-tag-button").addEventListener("click", banTag);
+
+            // Initialize the page with the current banned tags
+            updateBannedTags();
+
+          </script>
     </main>
 
     <!-- Footer -->
