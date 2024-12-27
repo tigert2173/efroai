@@ -786,12 +786,6 @@ console.log("RequestData: ", requestData);
             apiUrl = "https://13b-apibridge1.botbridgeai.net/v1/chat/completions"; // Example for Aetherius model (adjust URL as needed)
         }
 
-        // Request data (can also adjust this based on the model if necessary)
-        const requestData = {
-            model: selectedModel,
-            // other request parameters as needed
-        };
-
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
