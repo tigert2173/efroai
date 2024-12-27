@@ -7,6 +7,19 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+// Function to decode JWT and check for the Ad-Exempt claim
+function isAdExempt(token) {
+    if (!token) return false; // If there's no token, assume not exempt
+
+    // Decode the JWT (assuming it's a standard JWT with 3 parts)
+    const payload = token.split('.')[1]; // Get the payload part
+    const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+
+    return decodedPayload['AdExempt'] === true; // Check the Ad-Exempt claim
+}
+
+let adExempt = false // Check if the user is Ad-Exempt
+
 const userID = getCookie('userID');
 
 document.addEventListener('DOMContentLoaded', () => {
