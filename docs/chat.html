@@ -654,6 +654,10 @@
                             // Change background color
                             document.body.style.backgroundColor = bgColor;
                     
+                            // Store selected model and background color in localStorage
+                            localStorage.setItem('selectedModel', model);
+                            localStorage.setItem('backgroundColor', bgColor);
+                    
                             // Update API send command
                             let apiCommand;
                             if (model === "gastronova") {
@@ -681,10 +685,21 @@
                     
                             // Force "Gastronova" if the user is not premium
                             const select = document.getElementById("model");
-                            if (subscriptionTier < 2) {
+                            if (subscriptionTier < 1) {
                                 console.log("User is not premium, forcing 'Gastronova' selection.");
                                 select.value = "gastronova"; // Force "Gastronova"
                                 alert("You are not a premium user. Access to this model is restricted.");
+                            } else {
+                                // Retrieve stored model and background color if available
+                                const storedModel = localStorage.getItem('selectedModel');
+                                const storedBgColor = localStorage.getItem('backgroundColor');
+                    
+                                if (storedModel) {
+                                    select.value = storedModel; // Restore previously selected model
+                                }
+                                if (storedBgColor) {
+                                    document.body.style.backgroundColor = storedBgColor; // Restore background color
+                                }
                             }
                         }
                     </script>
