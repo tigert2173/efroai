@@ -644,7 +644,7 @@
                             console.log(subscriptionTier);
                     
                             // Force "Gastronova" if the user is not premium
-                            if (subscriptionTier < 2) {
+                            if (subscriptionTier < 1) {
                                 // Automatically select "Gastronova" if not premium
                                 select.value = "gastronova"; // Set the model selection to "Gastronova"
                                 alert("You are not a premium user. Access to this model is restricted.");
@@ -666,15 +666,24 @@
                     
                         // Check subscription tier on window load
                         window.onload = function() {
+                            console.log("Window loaded, checking subscription tier...");
                             const userToken = localStorage.getItem('token'); // Get the token on page load
-                            subscriptionTier = getUserSubscriptionTier(userToken);
-                            console.log(subscriptionTier);
+                            console.log("User token:", userToken);
                     
-                            // Check if the user is premium or not and force "Gastronova" if not
-                            if (subscriptionTier < 2) {
-                                // Force model selection to "Gastronova" and alert the user
-                                const select = document.getElementById("model");
-                                select.value = "gastronova"; // Set the model to "gastronova"
+                            if (!userToken) {
+                                console.log("No token found.");
+                                return; // Exit if no token is found
+                            }
+                    
+                            // Retrieve the subscription tier
+                            subscriptionTier = getUserSubscriptionTier(userToken);
+                            console.log("User subscription tier:", subscriptionTier);
+                    
+                            // Force "Gastronova" if the user is not premium
+                            const select = document.getElementById("model");
+                            if (subscriptionTier < 1) {
+                                console.log("User is not premium, forcing 'Gastronova' selection.");
+                                select.value = "gastronova"; // Force "Gastronova"
                                 alert("You are not a premium user. Access to this model is restricted.");
                             }
                         }
