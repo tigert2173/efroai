@@ -608,6 +608,8 @@
                         
                         // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
+                            if (!token) return null; // If there's no token, return null
+
                             try {
                                 // Decode the JWT (assuming it's a standard JWT with 3 parts)
                                 const payload = token.split('.')[1]; // Get the payload part
@@ -644,7 +646,7 @@
                 
                             // Check for user token
                             const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
-
+                            console.log(userToken);
                             subscriptionTier = getUserSubscriptionTier(userToken);
                             console.log(subscriptionTier);
                             if (subscriptionTier < 1) {
