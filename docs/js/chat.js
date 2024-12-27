@@ -786,22 +786,14 @@ console.log("RequestData: ", requestData);
             apiUrl = "https://13b-apibridge1.botbridgeai.net/v1/chat/completions"; // Example for Aetherius model (adjust URL as needed)
         }
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
-                },
-                body: JSON.stringify(requestData)
-            });
-
-            // Handle the response here (you can add success/error handling)
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error("Error sending request:", error);
-        }
+      const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+            },
+            body: JSON.stringify(requestData)
+        });
 
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
         //     method: 'POST',
