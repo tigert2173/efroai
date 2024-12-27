@@ -409,12 +409,12 @@
        
             <!-- New button for 13B model page -->
             <p>The following are not always active, reach TigerT2173 if you'd like to try!</p>
-            <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
+            <button id="model13B-button" onclick="goToModel12B()">[Alpha] Try Our 12B Model (may be slower)</button>
             <button id="model3B-button" onclick="goToModel3B()">[Alpha] Try Our 3B Model</button>
             <button id="TTS-button" onclick="goToTTS()">[Alpha] Try Our Text to Speech.</button>
 
             <script>
-                function goToModel13B() {
+                function goToModel12B() {
                     window.location.href = 'chat13B.html'; // replace with the actual URL for the 13B model page
                 }
                 function goToModel3B() {
@@ -600,7 +600,7 @@
                     <label for="model">Select Model</label>
                     <select id="model" onchange="handleModelChange()" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
                         <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B" data-bgcolor="#1e272e">Gastronova 8B</option>
-                        <option value="NemoMix-Unleashed" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions" data-bgcolor="#0a1f15">NemoMix-Unleashed 13B (conceptual)</option>
+                        <option value="NemoMix" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions" data-bgcolor="#0a1f15">NemoMix 12B (conceptual)</option>
                     </select>
                     <div id="tooltip"></div>
                 
@@ -662,8 +662,8 @@
                             let apiCommand;
                             if (model === "gastronova") {
                                 apiCommand = "sendToGastronovaAPI";
-                            } else if (model === "NemoMix-Unleashed") {
-                                apiCommand = "sendToNemoMix-UnleashedAPI";
+                            } else if (model === "NemoMix") {
+                                apiCommand = "sendToNemoMixAPI";
                             }
                             console.log(`Using API command: ${apiCommand}`);
                         }
