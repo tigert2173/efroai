@@ -668,45 +668,45 @@
                             console.log(`Using API command: ${apiCommand}`);
                         }
                     
-                        // Check subscription tier on window load
-                        window.onload = function() {
-                            console.log("Window loaded, checking subscription tier...");
-                            const userToken = localStorage.getItem('token'); // Get the token on page load
-                            console.log("User token:", userToken);
-                    
-                            if (!userToken) {
-                                console.log("No token found.");
-                                return; // Exit if no token is found
-                            }
-                    
-                            // Retrieve the subscription tier
-                            subscriptionTier = getUserSubscriptionTier(userToken);
-                            console.log("User subscription tier:", subscriptionTier);
-                    
-                            // Force "Gastronova" if the user is not premium
-                            const select = document.getElementById("model");
-                            if (subscriptionTier < 1) {
-                                console.log("User is not premium, forcing 'Gastronova' selection.");
-                                select.value = "gastronova"; // Force "Gastronova"
-                                alert("You are not a premium user. Access to this model is restricted.");
-                            } else {
-                                // Retrieve stored model and background color if available
-                                const storedModel = localStorage.getItem('selectedModel');
-                                const storedBgColor = localStorage.getItem('backgroundColor');
-                    
-                                if (storedModel) {
-                                    select.value = storedModel; // Restore previously selected model
-                                    const selectedOption = select.options[select.selectedIndex];
-                                    const bgColor = selectedOption.getAttribute("data-bgcolor");
-                                    document.body.style.backgroundColor = bgColor; // Restore background color
-                                } else {
-                                    // If no model stored, set a default model and background color
-                                    select.value = "gastronova"; // Default to "Gastronova"
-                                    const defaultBgColor = "#1e272e"; // Default background color
-                                    document.body.style.backgroundColor = defaultBgColor; // Apply default background color
-                                }
-                            }
-                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+    console.log("Window loaded, checking subscription tier...");
+    const userToken = localStorage.getItem('token'); // Get the token on page load
+    console.log("User token:", userToken);
+
+    if (!userToken) {
+        console.log("No token found.");
+        return; // Exit if no token is found
+    }
+
+    // Retrieve the subscription tier
+    subscriptionTier = getUserSubscriptionTier(userToken);
+    console.log("User subscription tier:", subscriptionTier);
+
+    // Force "Gastronova" if the user is not premium
+    const select = document.getElementById("model");
+    if (subscriptionTier < 1) {
+        console.log("User is not premium, forcing 'Gastronova' selection.");
+        select.value = "gastronova"; // Force "Gastronova"
+        alert("You are not a premium user. Access to this model is restricted.");
+    } else {
+        // Retrieve stored model and background color if available
+        const storedModel = localStorage.getItem('selectedModel');
+        const storedBgColor = localStorage.getItem('backgroundColor');
+
+        if (storedModel) {
+            select.value = storedModel; // Restore previously selected model
+            const selectedOption = select.options[select.selectedIndex];
+            const bgColor = selectedOption.getAttribute("data-bgcolor");
+            document.body.style.backgroundColor = bgColor; // Restore background color
+        } else {
+            // If no model stored, set a default model and background color
+            select.value = "gastronova"; // Default to "Gastronova"
+            const defaultBgColor = "#1e272e"; // Default background color
+            document.body.style.backgroundColor = defaultBgColor; // Apply default background color
+        }
+    }
+});
+
                     </script>
                     
                     <div id="tooltip" class="tooltip"></div>
