@@ -605,7 +605,8 @@
                     <div id="tooltip"></div>
                 
                     <script>
-                        
+                        let subscriptionTier = 0; // Check if the user is Ad-Exempt
+
                         // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
                             if (!token) return null; // If there's no token, return null
@@ -628,7 +629,6 @@
                         }
 
                         
-                        let subscriptionTier = 0; // Check if the user is Ad-Exempt
                         
                 
                 
