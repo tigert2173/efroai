@@ -600,7 +600,7 @@
                     <label for="model">Select Model</label>
                     <select id="model" onchange="handleModelChange()" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
                         <option value="gastronova" data-description="EFROAI original model trained from LLAMA 7B and Nephra 8B" data-bgcolor="#1e272e">Gastronova 8B</option>
-                        <option value="aetherius" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions" data-bgcolor="#0a1f15">Aetherius 13B (conceptual)</option>
+                        <option value="NemoMix-Unleashed" data-description="A conceptual model that blends advanced AI capabilities with the whimsical essence of skunk traits. Planned for development, it promises unique and engaging interactions" data-bgcolor="#0a1f15">NemoMix-Unleashed 13B (conceptual)</option>
                     </select>
                     <div id="tooltip"></div>
                 
@@ -662,8 +662,8 @@
                             let apiCommand;
                             if (model === "gastronova") {
                                 apiCommand = "sendToGastronovaAPI";
-                            } else if (model === "aetherius") {
-                                apiCommand = "sendToAetheriusAPI";
+                            } else if (model === "NemoMix-Unleashed") {
+                                apiCommand = "sendToNemoMix-UnleashedAPI";
                             }
                             console.log(`Using API command: ${apiCommand}`);
                         }
