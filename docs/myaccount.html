@@ -200,43 +200,95 @@
           
             <p id="message"></p>
           </div>
-
+          
           <script>
             // Example list of banned tags (this could be loaded dynamically from the server)
-            let bannedTags = []; 
+let bannedTags = [];
 
-            // Update the list of banned tags on the page
-            function updateBannedTags() {
-            const bannedTagsList = document.getElementById("banned-tags-list");
-            bannedTagsList.innerHTML = ''; // Clear current list
-            bannedTags.forEach(tag => {
-                const listItem = document.createElement("li");
-                listItem.textContent = tag;
-                bannedTagsList.appendChild(listItem);
-            });
-            }
+// Update the list of banned tags on the page
+function updateBannedTags() {
+  const bannedTagsList = document.getElementById("banned-tags-list");
+  bannedTagsList.innerHTML = ''; // Clear current list
+  bannedTags.forEach(tag => {
+    const listItem = document.createElement("li");
+    listItem.textContent = tag;
+    
+    // Create remove button
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.onclick = () => removeTag(tag); // Bind the remove function to this tag
+    listItem.appendChild(removeButton);
+    
+    bannedTagsList.appendChild(listItem);
+  });
+}
 
-            // Add a new tag to the banned list
-            function banTag() {
-            const newTag = document.getElementById("new-tag").value.trim();
+// Add a new tag to the banned list
+async function banTag() {
+  const newTag = document.getElementById("new-tag").value.trim();
+  const userId = 'user123'; // Replace with actual user ID
 
-            if (newTag && !bannedTags.includes(newTag)) {
-                bannedTags.push(newTag); // Add to the banned tags array
-                updateBannedTags(); // Re-render the banned tags list
-                document.getElementById("message").textContent = `Successfully banned the tag: ${newTag}`;
-                document.getElementById("new-tag").value = ''; // Clear input field
-            } else if (bannedTags.includes(newTag)) {
-                document.getElementById("message").textContent = `Tag "${newTag}" is already banned.`;
-            } else {
-                document.getElementById("message").textContent = "Please enter a valid tag.";
-            }
-            }
+  if (newTag && !bannedTags.includes(newTag)) {
+    const response = await fetch(`/api/user/${userId}/banned-tags`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newTag })
+    });
 
-            // Event listener for the "Ban Tag" button
-            document.getElementById("ban-tag-button").addEventListener("click", banTag);
+    const data = await response.json();
+    if (response.ok) {
+      bannedTags.push(newTag);
+      updateBannedTags();
+      document.getElementById("message").textContent = `Successfully banned the tag: ${newTag}`;
+      document.getElementById("new-tag").value = '';
+    } else {
+      document.getElementById("message").textContent = data.message;
+    }
+  } else if (bannedTags.includes(newTag)) {
+    document.getElementById("message").textContent = `Tag "${newTag}" is already banned.`;
+  } else {
+    document.getElementById("message").textContent = "Please enter a valid tag.";
+  }
+}
 
-            // Initialize the page with the current banned tags
+        // Remove a banned tag from the list
+        async function removeTag(tagToRemove) {
+        const userId = 'user123'; // Replace with actual user ID
+
+        const response = await fetch(`/api/user/${userId}/banned-tags`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tagToRemove })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            bannedTags = bannedTags.filter(tag => tag !== tagToRemove);
             updateBannedTags();
+            document.getElementById("message").textContent = `Successfully removed the tag: ${tagToRemove}`;
+        } else {
+            document.getElementById("message").textContent = data.message;
+        }
+        }
+
+        // Initialize the page with current banned tags from the server
+        async function getBannedTagsFromServer() {
+        const userId = 'user123'; // Replace with actual user ID
+        const response = await fetch(`/api/user/${userId}/banned-tags`);
+        if (response.ok) {
+            const tags = await response.json();
+            bannedTags = tags;
+            updateBannedTags();
+        } else {
+            console.error('Failed to load banned tags');
+        }
+        }
+
+        // Event listener for the "Ban Tag" button
+        document.getElementById("ban-tag-button").addEventListener("click", banTag);
+
+        // Initialize the page
+        getBannedTagsFromServer();
 
           </script>
     </main>
