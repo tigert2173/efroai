@@ -774,7 +774,7 @@ console.log("RequestData: ", requestData);
         //     body: JSON.stringify(requestData)
         // });
         
-        const selectedModel = localStorage.getItem('selectedModel'); // Retrieve selected model from localStorage
+        const selectedModel = localStorage.getItem('selectedModel') || "gastronova"; // Retrieve selected model from localStorage
 
         // Set the API URL based on the selected model
         let apiUrl = "https://api.botbridge.net/api/send"; // Default API URL
