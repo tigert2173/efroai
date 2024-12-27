@@ -335,6 +335,11 @@ html { /*body*/
     min-width: 100px;
 }
 
+.login-status:hover {
+    background-color: #4CAF50; /* Change background on hover */
+    transform: scale(1.05); /* Slightly scale up the element */
+}
+
 .login-status:not(:empty) {
     display: block; /* Ensure the element is block when not empty */
 }
