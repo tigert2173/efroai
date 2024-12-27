@@ -605,6 +605,7 @@
                     <div id="tooltip"></div>
                 
                     <script>
+                        
                         // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
                             if (!token) return null; // If there's no token, return null
@@ -614,8 +615,12 @@
                                 const payload = token.split('.')[1]; // Get the payload part
                                 const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
 
-                                // Return the SubscriptionTier value (assuming it's a number)
-                                return decodedPayload['SubscriptionTier'] || 0; // Return 0 if no tier is found
+                                // Check for 'SubscriptionTier' and return its value
+                                if (decodedPayload && decodedPayload['SubscriptionTier'] !== undefined) {
+                                    return decodedPayload['SubscriptionTier']; // Return the SubscriptionTier value
+                                } else {
+                                    return null; // Return null if 'SubscriptionTier' is not present
+                                }
                             } catch (error) {
                                 console.error("Invalid token:", error);
                                 return null; // Return null if decoding fails
