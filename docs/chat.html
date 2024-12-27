@@ -606,18 +606,18 @@
                 
                     <script>
                         let subscriptionTier = 0; // Check if the user is Ad-Exempt
-
-                      // Function to decode JWT and get the Subscription Tier
+                    
+                        // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
                             if (!token) return null; // If there's no token, return null
-
+                    
                             try {
                                 // Decode the JWT (assuming it's a standard JWT with 3 parts)
                                 const payload = token.split('.')[1]; // Get the payload part
                                 const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
-
+                    
                                 console.log(decodedPayload); // Log the decoded payload to check the structure
-
+                    
                                 // Check for 'SubscriptionTier' and return its value
                                 if (decodedPayload && decodedPayload['SubscriptionTier'] !== undefined) {
                                     return decodedPayload['SubscriptionTier']; // Return the SubscriptionTier value
@@ -629,34 +629,31 @@
                                 return null; // Return null if decoding fails
                             }
                         }
-
-
-                        
-                        
-                
-                
-                
-                
+                    
                         // Function to handle model changes
                         function handleModelChange() {
                             const select = document.getElementById("model");
                             const selectedOption = select.options[select.selectedIndex];
                             const model = selectedOption.value;
                             const bgColor = selectedOption.getAttribute("data-bgcolor");
-                
-                            // Change background color
-                            document.body.style.backgroundColor = bgColor;
-                
+                    
                             // Check for user token
                             const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
                             console.log(userToken);
                             subscriptionTier = getUserSubscriptionTier(userToken);
                             console.log(subscriptionTier);
+                    
+                            // Force "Gastronova" if the user is not premium
                             if (subscriptionTier < 1) {
-                                alert("You do not have the required token to access this model.");
-                                return;
+                                // Automatically select "Gastronova" if not premium
+                                select.value = "gastronova"; // Set the model selection to "Gastronova"
+                                alert("You are not a premium user. Access to this model is restricted.");
+                                return; // Prevent further actions if not premium
                             }
-                
+                    
+                            // Change background color
+                            document.body.style.backgroundColor = bgColor;
+                    
                             // Update API send command
                             let apiCommand;
                             if (model === "gastronova") {
@@ -667,6 +664,7 @@
                             console.log(`Using API command: ${apiCommand}`);
                         }
                     </script>
+                    
                     <div id="tooltip" class="tooltip"></div>
                 </div>
             <div class="setting">
