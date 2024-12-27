@@ -613,7 +613,7 @@
                             const payload = token.split('.')[1]; // Get the payload part
                             const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
                         
-                            return decodedPayload['SubscriptionTier']; // Check the Ad-Exempt claim
+                            return decodedPayload['SubscriptionTier'] === true; // Check the Ad-Exempt claim
                         }
                         
                         let subscriptionTier = 0; // Check if the user is Ad-Exempt
