@@ -607,7 +607,7 @@
                     <script>
                         let subscriptionTier = 0; // Check if the user is Ad-Exempt
 
-                        // Function to decode JWT and get the Subscription Tier
+                      // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
                             if (!token) return null; // If there's no token, return null
 
@@ -615,6 +615,8 @@
                                 // Decode the JWT (assuming it's a standard JWT with 3 parts)
                                 const payload = token.split('.')[1]; // Get the payload part
                                 const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+
+                                console.log(decodedPayload); // Log the decoded payload to check the structure
 
                                 // Check for 'SubscriptionTier' and return its value
                                 if (decodedPayload && decodedPayload['SubscriptionTier'] !== undefined) {
@@ -627,6 +629,7 @@
                                 return null; // Return null if decoding fails
                             }
                         }
+
 
                         
                         
