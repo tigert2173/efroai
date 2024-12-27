@@ -275,7 +275,10 @@ function isAdExempt(token) {
 }
 
 let adExempt = false; // Check if the user is Ad-Exempt
-isAdExempt();
+const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
+
+adExempt = isAdExempt(userToken);
+
     </script>
     <!-- JuicyAds v3.0 -->
     <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
