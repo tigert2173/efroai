@@ -765,15 +765,50 @@ console.log("RequestData: ", requestData);
        // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
-        const response = await fetch("https://api.botbridge.net/api/send", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
-            },
-            body: JSON.stringify(requestData)
-        });
+        // const response = await fetch("https://api.botbridge.net/api/send", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
         
+        const selectedModel = localStorage.getItem('selectedModel'); // Retrieve selected model from localStorage
+
+        // Set the API URL based on the selected model
+        let apiUrl = "https://api.botbridge.net/api/send"; // Default API URL
+
+        // Customize API request based on selected model
+        if (selectedModel === "gastronova") {
+            apiUrl = "https://api.botbridge.net/api/send"; // Example for Gastonova model (adjust URL as needed)
+        } else if (selectedModel === "NemoMix") {
+            apiUrl = "https://13b-apibridge1.botbridgeai.net/v1/chat/completions"; // Example for Aetherius model (adjust URL as needed)
+        }
+
+        // Request data (can also adjust this based on the model if necessary)
+        const requestData = {
+            model: selectedModel,
+            // other request parameters as needed
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            // Handle the response here (you can add success/error handling)
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error("Error sending request:", error);
+        }
+
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
         //     method: 'POST',
         //     headers: {
