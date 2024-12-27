@@ -605,7 +605,7 @@
                     <div id="tooltip"></div>
                 
                     <script>
-                        let subscriptionTier = 0; // Check if the user is Ad-Exempt
+                        let subscriptionTier = 0; // Default to 0 if no token or tier is found
                     
                         // Function to decode JWT and get the Subscription Tier
                         function getUserSubscriptionTier(token) {
@@ -662,6 +662,21 @@
                                 apiCommand = "sendToAetheriusAPI";
                             }
                             console.log(`Using API command: ${apiCommand}`);
+                        }
+                    
+                        // Check subscription tier on window load
+                        window.onload = function() {
+                            const userToken = localStorage.getItem('token'); // Get the token on page load
+                            subscriptionTier = getUserSubscriptionTier(userToken);
+                            console.log(subscriptionTier);
+                    
+                            // Check if the user is premium or not and force "Gastronova" if not
+                            if (subscriptionTier < 1) {
+                                // Force model selection to "Gastronova" and alert the user
+                                const select = document.getElementById("model");
+                                select.value = "gastronova"; // Set the model to "gastronova"
+                                alert("You are not a premium user. Access to this model is restricted.");
+                            }
                         }
                     </script>
                     
