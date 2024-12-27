@@ -640,6 +640,8 @@
                             document.body.style.backgroundColor = bgColor;
                 
                             // Check for user token
+                            const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
+
                             subscriptionTier = getUserSubscriptionTier(userToken);
                             console.log(subscriptionTier);
                             if (subscriptionTier < 1) {
