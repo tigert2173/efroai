@@ -10,12 +10,19 @@ const {
     BUCKET_NAME,
 } = process.env;
 
-// Configure AWS SDK for iDrive e2
+// // Configure AWS SDK for iDrive e2
+// const s3 = new AWS.S3({
+//     endpoint: IDRIVE_E2_ENDPOINT,
+//     accessKeyId: IDRIVE_E2_ACCESS_KEY,
+//     secretAccessKey: IDRIVE_E2_SECRET_KEY,
+//     s3ForcePathStyle: true, // Necessary for iDrive e2
+// });
+// Configure AWS SDK for IDrive e2 using environment variables
 const s3 = new AWS.S3({
-    endpoint: IDRIVE_E2_ENDPOINT,
-    accessKeyId: IDRIVE_E2_ACCESS_KEY,
-    secretAccessKey: IDRIVE_E2_SECRET_KEY,
-    s3ForcePathStyle: true, // Necessary for iDrive e2
+    endpoint: process.env.AWS_ENDPOINT,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    s3ForcePathStyle: true, // Needed for non-AWS S3 providers
 });
 
 const router = express.Router();
