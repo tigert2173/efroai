@@ -5,10 +5,14 @@ const cors = require('cors');
 const path = require('path');
 const WebSocket = require('ws'); // Import WebSocket library
 const compression = require('compression'); // Import compression middleware
+const imageStorage = require('./routes/imageStorage'); // Path to your secondary file
 
 const app = express();
 // Use CORS middleware
 app.use(cors());
+
+// Use the image storage routes
+app.use('/images', imageStorage); // Mount the imageStorage module under `/images`
 
 const blockedIps = [
   '128.14.173.117', // /internal_forms_authentication && /identity  <<-- suspicious request 
