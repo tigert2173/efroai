@@ -41,7 +41,7 @@
     <header>
         <nav class="navbar">
             <div class="left-content">
-                <a href="/" class="logo"> <!-- Make the logo clickable -->
+                <a href="/" class="logo">
                 <div class="logo">
                     <img src="logo.png" alt=" ">
                 </div>
@@ -58,52 +58,58 @@
                 </div>
             </a>
             </div>
-        <div class="right-content">
-            <ul class="nav-links">
-                <li class="dropdown">
-                    <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-                    <div class="dropdown-content">
-                        <a href="index.html">Characters Hub</a>
-                        <a href="editor.html">Upload Character</a>
-                        <a href="mycharacters.html">My Characters</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-                    <div class="dropdown-content">
-                        <a href="rules.html">Rules</a>
-                        <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
-                        <a href="/EFROTales/">Old Stories Page</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-                    <div class="dropdown-content">
-                        <a href="myaccount.html">Account</a>
-                        <a href="mylikes.html">My Likes</a>
-                        <a href="login.html">Login</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-                    <div class="dropdown-content">
-                        <a href="documentation.html">Documentation</a>
-                        <a href="updates.html">Updates & Features</a>
-                        <a href="contact.html">Contact</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="contribute.html" class="nav-btn">Contribute</a>
-                </li>
-            </ul>     
-            <div id="login-status" class="login-status"></div>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>  
-        </div>
-        </nav>
+    <div class="right-content">
+        <ul class="nav-links">
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
+    
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Fetish Scene</a>
+                    <a href="/EFROTales/">Old Stories Page</a>
+                </div>
+            </li>
+    
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
+    
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+    
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
+    
+        <div id="login-status" class="login-status"></div>
+    
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
+    </nav>
     </header>
 
     <!-- Hero Section -->
@@ -127,31 +133,46 @@
             </ul>
         </div>
 
-        <!-- Bug Fixes Section (Completed) -->
-        <section id="recent-fixes" class="fixes-section">
-            <h2>Bug Fixes</h2>
-            <div class="fix-grid">
-                <div class="fix-card-container" data-tags="bug-fixes">
-                    <div class="fix-card">
+        <!-- Completed Updates Section (Completed features and fixes) -->
+        <section id="completed-updates" class="updates-section">
+            <h2>Completed Updates & Features</h2>
+            <div class="update-grid" id="update-grid">
+                <!-- Container for completed update cards -->
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
                         <div class="card-header">
-                            <h3>Unicode Replacement Bug</h3>
+                            <h3>Feedback Button</h3>
                         </div>
                         <div class="card-body">
-                            <p>Random unicode characters such as u2019 (single quotation) were showing up in generations. This has been fixed.</p>
+                            <p>While we do not provide or store comments, users will be able to leave feedback and praises to a creator. Submitting this will share your platform username and send a notification to the creator if their account is connected Discord.</p>
                             <p><strong>Released:</strong> October 2024</p>
-                            <div class="tags">Tags: bug-fixes</div>
+                            <div class="tags">Tags: feature-updates</div>
                         </div>
                     </div>
                 </div>
-                <!-- Additional Completed Fixes can be added here -->
+
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Character Pages</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Shows more information about a character—it's the view character button.</p>
+                            <p><strong>Released:</strong> October 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add more completed update cards here -->
             </div>
         </section>
 
-        <!-- Updates Section (Upcoming) -->
+        <!-- Upcoming Updates Section (Still to be released) -->
         <section id="updates" class="updates-section">
             <h2>Upcoming Updates & New Features</h2>
             <div class="update-grid" id="update-grid">
-                <!-- Update cards go here, including feature updates -->
+                <!-- Container for update cards -->
                 <div class="update-card-container" data-tags="feature-updates">
                     <div class="update-card">
                         <div class="card-header">
@@ -164,10 +185,32 @@
                         </div>
                     </div>
                 </div>
-                <!-- More upcoming updates and features -->
+
+                <!-- More upcoming updates here -->
             </div>
         </section>
-        
+
+        <!-- Bug Fixes Section (Completed and upcoming fixes) -->
+        <section id="recent-fixes" class="fixes-section">
+            <h2>Bug Fixes</h2>
+            <div class="fix-grid">
+                <!-- Container for fix cards -->
+                <div class="fix-card-container" data-tags="bug-fixes">
+                    <div class="fix-card">
+                        <div class="card-header">
+                            <h3>Fixed Chat History Issues</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Resolved an issue where chat history would not properly save or load in some cases.</p>
+                            <p><strong>Released:</strong> September 2024</p>
+                            <div class="tags">Tags: bug-fixes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add more fix cards here -->
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
