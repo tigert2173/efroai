@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Some Useful Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        #logoutButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #ff4b5c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #logoutButton:hover {
+            background-color: #ff3a47;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Some Useful Tools</h1>
+        <p>Here you can find various tools. Click below to log out.</p>
+        <button id="logoutButton">Logout</button>
+    </div>
+
+    <script>
+        // Get the logout button element
+        const logoutButton = document.getElementById('logoutButton');
+
+        // Add an event listener to the button
+        logoutButton.addEventListener('click', function() {
+            // Clear the token from localStorage
+            localStorage.removeItem('token');
+
+            // Optionally, you can redirect the user to the login page or any other page
+            window.location.href = '/login'; // replace '/login' with your desired URL
+        });
+    </script>
+    
+</body>
+</html>
