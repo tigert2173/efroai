@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const IDrive = require('idrive2n'); // Ensure idrive2n is properly configured
 
 // Configure iDrive instance using .env variables
 const iDriveConfig = {
