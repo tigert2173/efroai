@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const WebSocket = require('ws'); // Import WebSocket library
 const compression = require('compression'); // Import compression middleware
-const imageStorage = require('./routes/imageStorage'); // Path to your secondary file
+const imageStorage = require('routes/imageStorage'); // Path to your secondary file
 
 const app = express();
 // Use CORS middleware
