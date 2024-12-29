@@ -21,6 +21,9 @@
         th {
             background-color: #f4f4f4;
         }
+        .upload-form {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +43,14 @@
             </tr>
         </tbody>
     </table>
+
+    <h2>Upload Image for User and Character</h2>
+    <form id="upload-form" class="upload-form" enctype="multipart/form-data">
+        <input type="text" id="user" placeholder="User" required><br>
+        <input type="text" id="characterid" placeholder="Character ID" required><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br>
+        <button type="submit">Upload Image</button>
+    </form>
 
     <script>
         async function fetchBucketContents() {
@@ -70,6 +81,34 @@
                 document.getElementById('bucket-contents').innerHTML = '<tr><td colspan="4">Error loading files</td></tr>';
             }
         }
+
+        // Handle upload form submission
+        document.getElementById('upload-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('image', document.getElementById('image').files[0]);
+            const user = document.getElementById('user').value;
+            const characterid = document.getElementById('characterid').value;
+
+            try {
+                const response = await fetch(`/bucket/${user}/${characterid}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Image uploaded successfully!');
+                    fetchBucketContents(); // Refresh file list
+                } else {
+                    alert(`Error: ${result.error}`);
+                }
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert('Error uploading image');
+            }
+        });
 
         fetchBucketContents();
     </script>
