@@ -2,6 +2,7 @@ require('dotenv').config();
 const AWS = require('aws-sdk');
 const express = require('express');
 
+// Load environment variables
 const {
     IDRIVE_E2_ACCESS_KEY,
     IDRIVE_E2_SECRET_KEY,
@@ -14,7 +15,7 @@ const s3 = new AWS.S3({
     endpoint: IDRIVE_E2_ENDPOINT,
     accessKeyId: IDRIVE_E2_ACCESS_KEY,
     secretAccessKey: IDRIVE_E2_SECRET_KEY,
-    s3ForcePathStyle: true,
+    s3ForcePathStyle: true, // Necessary for iDrive e2
 });
 
 const router = express.Router();
@@ -40,8 +41,8 @@ router.get('/list/files', async (req, res) => {
 
         res.json(files);
     } catch (error) {
-        console.error('Error listing bucket contents:', error); // Log the full error for debugging
-        res.status(500).json({ error: 'Failed to list bucket contents', message: error.message });
+        console.error('Error listing bucket contents:', error);
+        res.status(500).json({ error: 'Failed to list bucket contents' });
     }
 });
 
