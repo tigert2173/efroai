@@ -2,6 +2,9 @@ require('dotenv').config();
 const AWS = require('aws-sdk');
 const express = require('express');
 
+// Serve the static webpage from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Load environment variables
 const {
     IDRIVE_E2_ACCESS_KEY,
