@@ -130,4 +130,24 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
     }
 });
 
+// Remove an image for a user and character
+router.delete('/:user/:characterid/:imagename', async (req, res) => {
+    const { user, characterid, imagename } = req.params;
+    const key = `${user}/${characterid}/${imagename}`;
+
+    try {
+        // Delete the image from the bucket
+        const params = {
+            Bucket: BUCKET_NAME,
+            Key: key,
+        };
+
+        await s3.deleteObject(params).promise();
+        res.status(200).json({ message: `Image ${imagename} deleted successfully` });
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        res.status(500).json({ error: `Failed to delete image ${imagename}` });
+    }
+});
+
 module.exports = router;
