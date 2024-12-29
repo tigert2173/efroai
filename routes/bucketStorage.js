@@ -2,9 +2,6 @@ require('dotenv').config();
 const AWS = require('aws-sdk');
 const express = require('express');
 
-// Serve the static webpage from the 'public' directory
-router.use(express.static(path.join(__dirname, 'public')));
-
 // Load environment variables
 const {
     IDRIVE_E2_ACCESS_KEY,
@@ -23,8 +20,13 @@ const s3 = new AWS.S3({
 
 const router = express.Router();
 
+// Serve the test webpage for /bucket/list
+router.get('/list', (req, res) => {
+    res.sendFile('index.html', { root: './public' });
+});
+
 // List contents of the bucket
-router.get('/list', async (req, res) => {
+router.get('/list/files', async (req, res) => {
     try {
         const params = {
             Bucket: BUCKET_NAME,
