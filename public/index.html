@@ -44,7 +44,7 @@
     <script>
         async function fetchBucketContents() {
             try {
-                const response = await fetch('/bucket/list');
+                const response = await fetch('/bucket/list/files');
                 if (!response.ok) throw new Error('Failed to fetch bucket contents');
                 const files = await response.json();
                 
