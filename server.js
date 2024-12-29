@@ -13,7 +13,6 @@ const bucketStorageApp = require('./routes/bucketStorage');
 // });
 
 // Or integrate routes into the main server
-const express = require('express');
 const mainApp = express();
 
 // Example route
