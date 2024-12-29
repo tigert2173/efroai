@@ -31,6 +31,11 @@ router.get('/list', (req, res) => {
     res.sendFile('index.html', { root: './public' });
 });
 
+// Serve the test webpage for /bucket/list
+router.get('/list/upload', (req, res) => {
+    res.sendFile('upload.html', { root: './public' });
+});
+
 // List contents of the bucket
 router.get('/list/files', async (req, res) => {
     try {
