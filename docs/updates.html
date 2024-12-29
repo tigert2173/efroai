@@ -10,30 +10,32 @@
 
     <style>
         /* Styling the card containers */
-        .update-card-container, .fix-card-container {
-            background-color: rgba(63, 62, 0, 0.8); /* Clear white background */
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+/* Styling the card containers */
+.update-card-container, .fix-card-container {
+    background-color: rgba(63, 62, 0, 0.8); /* Clear white background */
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Additional padding for the cards */
-        .update-card, .fix-card {
-            padding: 10px;
-        }
+/* Additional padding for the cards */
+.update-card, .fix-card {
+    padding: 10px;
+}
 
-        /* Adjust card spacing within the grid */
-        .update-grid, .fix-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
+/* Adjust card spacing within the grid */
+.update-grid, .fix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
 
-        /* Hide the section container when empty */
-        .updates-section, .fixes-section {
-            display: block;
-        }
+/* Hide the section container when empty */
+.updates-section, .fixes-section {
+    display: block;
+}
+
     </style>
 </head>
 <body>
@@ -41,7 +43,7 @@
     <header>
         <nav class="navbar">
             <div class="left-content">
-                <a href="/" class="logo">
+                <a href="/" class="logo"> <!-- Make the logo clickable -->
                 <div class="logo">
                     <img src="logo.png" alt=" ">
                 </div>
@@ -60,6 +62,7 @@
             </div>
     <div class="right-content">
         <ul class="nav-links">
+            <!-- Characters with dropdown -->
             <li class="dropdown">
                 <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
                 <div class="dropdown-content">
@@ -69,6 +72,7 @@
                 </div>
             </li>
     
+            <!-- Community with dropdown -->
             <li class="dropdown">
                 <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
                 <div class="dropdown-content">
@@ -78,6 +82,7 @@
                 </div>
             </li>
     
+            <!-- Account with dropdown -->
             <li class="dropdown">
                 <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
                 <div class="dropdown-content">
@@ -87,6 +92,7 @@
                 </div>
             </li>
     
+            <!-- Help with dropdown -->
             <li class="dropdown">
                 <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
                 <div class="dropdown-content">
@@ -96,6 +102,7 @@
                 </div>
             </li>
     
+            <!-- Contribute Button -->
             <li>
                 <a href="contribute.html" class="nav-btn">Contribute</a>
             </li>
@@ -103,6 +110,7 @@
     
         <div id="login-status" class="login-status"></div>
     
+        <!-- Hamburger menu for mobile view -->
         <div class="hamburger" onclick="toggleMenu()">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -130,45 +138,11 @@
                 <li><input type="checkbox" id="feature-updates" name="filter"><label for="feature-updates">New Features</label></li>
                 <li><input type="checkbox" id="bug-fixes" name="filter"><label for="bug-fixes">Bug Fixes</label></li>
                 <li><input type="checkbox" id="performance" name="filter"><label for="performance">Performance Enhancements</label></li>
+                <!-- More Filter Categories -->
             </ul>
         </div>
 
-        <!-- Completed Updates Section (Completed features and fixes) -->
-        <section id="completed-updates" class="updates-section">
-            <h2>Completed Updates & Features</h2>
-            <div class="update-grid" id="update-grid">
-                <!-- Container for completed update cards -->
-                <div class="update-card-container" data-tags="feature-updates">
-                    <div class="update-card">
-                        <div class="card-header">
-                            <h3>Feedback Button</h3>
-                        </div>
-                        <div class="card-body">
-                            <p>While we do not provide or store comments, users will be able to leave feedback and praises to a creator. Submitting this will share your platform username and send a notification to the creator if their account is connected Discord.</p>
-                            <p><strong>Released:</strong> October 2024</p>
-                            <div class="tags">Tags: feature-updates</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="update-card-container" data-tags="feature-updates">
-                    <div class="update-card">
-                        <div class="card-header">
-                            <h3>Character Pages</h3>
-                        </div>
-                        <div class="card-body">
-                            <p>Shows more information about a character—it's the view character button.</p>
-                            <p><strong>Released:</strong> October 2024</p>
-                            <div class="tags">Tags: feature-updates</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Add more completed update cards here -->
-            </div>
-        </section>
-
-        <!-- Upcoming Updates Section (Still to be released) -->
+        <!-- Updates Section -->
         <section id="updates" class="updates-section">
             <h2>Upcoming Updates & New Features</h2>
             <div class="update-grid" id="update-grid">
@@ -185,17 +159,105 @@
                         </div>
                     </div>
                 </div>
+           
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Transfer to another device chat button</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>This will store the users chat in a section of storage in our server for an hour or so allowing the user to open the chat on another device with ease.</p>
+                            <p><strong>Expected Release:</strong> Early Novemeber 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Character Pages</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Shows more information about a character—it's the view character button.</p>
+                            <p><strong>Expected Release:</strong> Late October 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- More upcoming updates here -->
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Feedback Button</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>While we do not provide or store comments, users will be able to leave feedback and praises to a creator. Submitting this will share your platform username and send a notification to the creator if their account is connected Discord.</p>
+                            <p><strong>Expected Release:</strong> Late October 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Chat Storage, using Tokenizations + Dictionary Mapping and LZMA</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Users will be able to store up to <b>10 chats</b> permanently as long as they login at least once every <b>3 months</b>. To provide additinal flexiblity, any chats beyond this limit can be stored up to <b>3 days</b> if storage is available. We encourage users to regularly review and save important conversations to avoid any potential data loss.</p>
+                            <p><strong>Expected Release:</strong> Late Novemeber 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Improved Fetish Tagging System</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>We’re enhancing our tagging system to make it easier to search and categorize characters based on user-specific interests.</p>
+                            <p><strong>Expected Release:</strong> November 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
 
-        <!-- Bug Fixes Section (Completed and upcoming fixes) -->
+            <div class="update-card-container" data-tags="feature-updates">
+                <div class="update-card">
+                    <div class="card-header">
+                        <h3>Interactions Counter</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Counter for how many people have messaged your bots and the total # of interactions.</p>
+                        <p><strong>Expected Release:</strong> November 2024</p>
+                        <div class="tags">Tags: feature-updates</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+        
         <section id="recent-fixes" class="fixes-section">
             <h2>Bug Fixes</h2>
             <div class="fix-grid">
+                <div class="update-card-container" data-tags="feature-updates">
+                    <div class="update-card">
+                        <div class="card-header">
+                            <h3>Unicode Replacement Bug</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>random unicode characters such as u2019 which means single quotation are showing up in the generations this should be fixed similar in the way of const fixedText = text.replace(/u2019/g, "'"); to remove these from appearing in the bot responses.</p>
+                            <p><strong>Expected Release:</strong> October 2024</p>
+                            <div class="tags">Tags: feature-updates</div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Container for fix cards -->
-                <div class="fix-card-container" data-tags="bug-fixes">
+                <!-- <div class="fix-card-container" data-tags="bug-fixes">
                     <div class="fix-card">
                         <div class="card-header">
                             <h3>Fixed Chat History Issues</h3>
@@ -207,15 +269,96 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Add more fix cards here -->
+        
+                <div class="fix-card-container" data-tags="performance">
+                    <div class="fix-card">
+                        <div class="card-header">
+                            <h3>Improved AI Response Times</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>We’ve improved server performance, leading to faster response times during conversations.</p>
+                            <p><strong>Released:</strong> September 2024</p>
+                            <div class="tags">Tags: performance</div>
+                        </div>
+                    </div>
+                </div> -->
             </div>
         </section>
+        
     </main>
 
     <!-- Footer -->
     <footer>
         <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="admin.html">Admin</a></li>
+        </ul>
     </footer>
+
+    <!-- Scripts -->
+    <script src="js/menu.js"></script>
+    <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    const filters = document.querySelectorAll('.filters input[type="checkbox"]');
+    const updateCards = document.querySelectorAll('.update-card-container, .fix-card-container');
+    const updateSection = document.querySelector('.updates-section');
+    const fixesSection = document.querySelector('.fixes-section');
+
+    filters.forEach(filter => {
+        filter.addEventListener('change', () => {
+            let activeFilters = Array.from(filters).filter(f => f.checked).map(f => f.id);
+            
+            let updateMatchCount = 0;
+            let fixMatchCount = 0;
+
+            // Filter the update and fix cards
+            updateCards.forEach(card => {
+                let cardTags = card.getAttribute('data-tags');
+                let matches = activeFilters.every(tag => cardTags.includes(tag));
+
+                if (matches || activeFilters.length === 0) {
+                    card.style.display = 'block';
+                    if (card.closest('.updates-section')) updateMatchCount++;
+                    if (card.closest('.fixes-section')) fixMatchCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide entire sections if no cards match
+            updateSection.style.display = updateMatchCount > 0 ? 'block' : 'none';
+            fixesSection.style.display = fixMatchCount > 0 ? 'block' : 'none';
+        });
+    });
+});
+    </script>
+    
+    <script>
+        const socket = new WebSocket('wss://efroai.net'); // Update with your domain
+    
+        // Connection opened
+        socket.addEventListener('open', (event) => {
+            console.log('Connected to WebSocket server');
+        });
+    
+        // Listen for messages
+        socket.addEventListener('message', (event) => {
+            console.log('Message from server:', event.data);
+            // Handle ping or any other messages from the server
+            if (event.data === 'ping') {
+                // You can respond to pings if needed
+                socket.send('pong'); // Example response
+            }
+        });
+    
+        // Connection closed
+        socket.addEventListener('close', (event) => {
+            console.log('Disconnected from WebSocket server');
+        });
+    </script>
+    
 </body>
 </html>
