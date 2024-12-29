@@ -75,6 +75,32 @@ app.get('/:user/:characterid/:imagename', async (req, res) => {
     }
 });
 
+// List contents of the bucket
+app.get('/list', async (req, res) => {
+    try {
+        const params = {
+            Bucket: BUCKET_NAME,
+        };
+
+        const data = await s3.listObjectsV2(params).promise();
+        const files = data.Contents.map(item => ({
+            key: item.Key,
+            lastModified: item.LastModified,
+            size: item.Size,
+        }));
+
+        res.json(files);
+    } catch (error) {
+        console.error('Error listing bucket contents:', error);
+        res.status(500).json({ error: 'Failed to list bucket contents' });
+    }
+});
+
+const path = require('path');
+
+// Serve the test webpage
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Start server
 const PORT = 3001; // Adjust the port if needed
 app.listen(PORT, () => {
