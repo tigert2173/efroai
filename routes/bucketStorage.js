@@ -1,6 +1,8 @@
 require('dotenv').config();
 const AWS = require('aws-sdk');
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 
 // Load environment variables
 const {
@@ -19,6 +21,10 @@ const s3 = new AWS.S3({
 });
 
 const router = express.Router();
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage(); // Store file in memory (can use diskStorage if needed)
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Max 10MB file size
 
 // Serve the test webpage for /bucket/list
 router.get('/list', (req, res) => {
@@ -63,6 +69,37 @@ router.get('/:user/:characterid/:imagename', async (req, res) => {
     } catch (error) {
         console.error('Error retrieving file:', error);
         res.status(404).json({ error: 'File not found' });
+    }
+});
+
+// Upload an image for a user and character
+router.post('/:user/:characterid/upload', upload.single('image'), async (req, res) => {
+    const { user, characterid } = req.params;
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const key = `${user}/${characterid}/${file.originalname}`;
+
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+        ACL: 'public-read', // Make file publicly accessible (adjust as needed)
+    };
+
+    try {
+        const uploadResult = await s3.upload(params).promise();
+        res.status(200).json({
+            message: 'File uploaded successfully',
+            file: uploadResult,
+        });
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: 'Failed to upload file' });
     }
 });
 
