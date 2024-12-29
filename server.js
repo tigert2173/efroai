@@ -5,8 +5,21 @@ const cors = require('cors');
 const path = require('path');
 const WebSocket = require('ws'); // Import WebSocket library
 const compression = require('compression'); // Import compression middleware
+const bucketStorageApp = require('./routes/bucketStorage');
 
+// // Use as a standalone service
+// bucketStorageApp.listen(3001, () => {
+//     console.log('Bucket storage service is running.');
+// });
+
+// Or integrate routes into the main server
+const express = require('express');
+const mainApp = express();
+
+// Example route
+mainApp.use('/bucket', bucketStorageApp);
 const app = express();
+
 // Use CORS middleware
 app.use(cors());
 
