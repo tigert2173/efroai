@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .upload-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bucket Contents</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Last Modified</th>
+                <th>Size (Bytes)</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody id="bucket-contents">
+            <tr>
+                <td colspan="4">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Upload Image for User and Character</h2>
+    <form id="upload-form" class="upload-form" enctype="multipart/form-data">
+        <input type="text" id="user" placeholder="User" required><br>
+        <input type="text" id="characterid" placeholder="Character ID" required><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br>
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <script>
+        async function fetchBucketContents() {
+            try {
+                const response = await fetch('/bucket/list/files');
+                if (!response.ok) throw new Error('Failed to fetch bucket contents');
+                const files = await response.json();
+                
+                const tableBody = document.getElementById('bucket-contents');
+                tableBody.innerHTML = '';
+
+                files.forEach(file => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${file.key}</td>
+                        <td>${new Date(file.lastModified).toLocaleString()}</td>
+                        <td>${file.size}</td>
+                        <td><a href="/bucket/${file.key}" target="_blank">View</a></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                if (files.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="4">No files in the bucket</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error fetching bucket contents:', error);
+                document.getElementById('bucket-contents').innerHTML = '<tr><td colspan="4">Error loading files</td></tr>';
+            }
+        }
+
+        // Handle upload form submission
+        document.getElementById('upload-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('image', document.getElementById('image').files[0]);
+            const user = document.getElementById('user').value;
+            const characterid = document.getElementById('characterid').value;
+
+            try {
+                const response = await fetch(`/bucket/${user}/${characterid}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Image uploaded successfully!');
+                    fetchBucketContents(); // Refresh file list
+                } else {
+                    alert(`Error: ${result.error}`);
+                }
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert('Error uploading image');
+            }
+        });
+
+        fetchBucketContents();
+    </script>
+</body>
+</html>
