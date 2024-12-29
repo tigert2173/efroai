@@ -12,14 +12,13 @@ const bucketStorageRoutes = require('./routes/bucketStorage'); // Import your bu
 //     console.log('Bucket storage service is running.');
 // });
 
+const app = express();
+
 // Serve the static webpage from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use bucketStorage routes
 app.use('/bucket', bucketStorageRoutes);
-
-const app = express();
-
 // Use CORS middleware
 app.use(cors());
 
