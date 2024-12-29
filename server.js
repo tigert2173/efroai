@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const WebSocket = require('ws'); // Import WebSocket library
 const compression = require('compression'); // Import compression middleware
-const bucketStorageRoutes = require('./bucketStorage'); // Import your bucketStorage.js route file
+const bucketStorageRoutes = require('./routes/bucketStorage'); // Import your bucketStorage.js route file
 
 // // Use as a standalone service
 // bucketStorageApp.listen(3001, () => {
