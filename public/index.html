@@ -44,7 +44,7 @@
     <script>
         async function fetchBucketContents() {
             try {
-                const response = await fetch('/list');
+                const response = await fetch('/bucket/list');
                 if (!response.ok) throw new Error('Failed to fetch bucket contents');
                 const files = await response.json();
                 
@@ -57,7 +57,7 @@
                         <td>${file.key}</td>
                         <td>${new Date(file.lastModified).toLocaleString()}</td>
                         <td>${file.size}</td>
-                        <td><a href="/${file.key}" target="_blank">View</a></td>
+                        <td><a href="/bucket/${file.key}" target="_blank">View</a></td>
                     `;
                     tableBody.appendChild(row);
                 });
