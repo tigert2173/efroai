@@ -96,8 +96,6 @@ app.get('/list', async (req, res) => {
     }
 });
 
-const path = require('path');
-
 // Serve the test webpage
 app.use(express.static(path.join(__dirname, 'public')));
 
