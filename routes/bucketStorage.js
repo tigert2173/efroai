@@ -96,8 +96,10 @@ app.get('/list', async (req, res) => {
     }
 });
 
-// Serve the test webpage
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve the test webpage (index.html) for viewing bucket contents
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Start server
 const PORT = 3001; // Adjust the port if needed
