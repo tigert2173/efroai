@@ -64,7 +64,5 @@ router.get('/:user/:characterid/:imagename', async (req, res) => {
         res.status(404).json({ error: 'File not found' });
     }
 });
-const data = await s3.listObjectsV2(params).promise();
-console.log('Bucket Contents:', data); // Log the data to see the structure and check for any issues
 
 module.exports = router;
