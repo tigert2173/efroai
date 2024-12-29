@@ -12,12 +12,12 @@ const {
     BUCKET_NAME,
 } = process.env;
 
-// Configure AWS SDK for iDrive e2
+// Configure AWS SDK for iDrive E2
 const s3 = new AWS.S3({
     endpoint: IDRIVE_E2_ENDPOINT,
     accessKeyId: IDRIVE_E2_ACCESS_KEY,
     secretAccessKey: IDRIVE_E2_SECRET_KEY,
-    s3ForcePathStyle: true, // Necessary for iDrive e2
+    s3ForcePathStyle: true, // Necessary for iDrive E2
 });
 
 const router = express.Router();
@@ -29,11 +29,6 @@ const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 }
 // Serve the test webpage for /bucket/list
 router.get('/list', (req, res) => {
     res.sendFile('index.html', { root: './public' });
-});
-
-// Serve the test webpage for /bucket/list
-router.get('/list/upload', (req, res) => {
-    res.sendFile('upload.html', { root: './public' });
 });
 
 // List contents of the bucket
@@ -77,7 +72,7 @@ router.get('/:user/:characterid/:imagename', async (req, res) => {
     }
 });
 
-// Upload an image for a user and character
+// Upload an image for a user and character with automatic numbering
 router.post('/:user/:characterid/upload', upload.single('image'), async (req, res) => {
     const { user, characterid } = req.params;
     const file = req.file;
@@ -86,18 +81,45 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
         return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const key = `${user}/${characterid}/${file.originalname}`;
-
-    const params = {
-        Bucket: BUCKET_NAME,
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-        ACL: 'public-read', // Make file publicly accessible (adjust as needed)
-    };
-
     try {
-        const uploadResult = await s3.upload(params).promise();
+        // List files for this user and character
+        const params = {
+            Bucket: BUCKET_NAME,
+            Prefix: `${user}/${characterid}/`,
+        };
+
+        const data = await s3.listObjectsV2(params).promise();
+
+        // Find the highest numbered image for the character
+        const imageFiles = data.Contents.filter(item => item.Key.endsWith('.jpg') || item.Key.endsWith('.png'));
+        let highestNumber = 0;
+
+        imageFiles.forEach(file => {
+            const match = file.Key.match(/(\d+)\.(jpg|png)$/); // Match file names like 1.jpg, 2.png, etc.
+            if (match) {
+                const number = parseInt(match[1]);
+                if (number > highestNumber) {
+                    highestNumber = number;
+                }
+            }
+        });
+
+        // Set the next number
+        const nextNumber = highestNumber + 1;
+        const fileExtension = path.extname(file.originalname);
+        const key = `${user}/${characterid}/${nextNumber}${fileExtension}`;
+
+        // Upload the new image
+        const uploadParams = {
+            Bucket: BUCKET_NAME,
+            Key: key,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+            ACL: 'public-read', // Make file publicly accessible (adjust as needed)
+        };
+
+        const uploadResult = await s3.upload(uploadParams).promise();
+
         res.status(200).json({
             message: 'File uploaded successfully',
             file: uploadResult,
