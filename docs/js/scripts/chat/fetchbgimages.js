@@ -3,6 +3,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     e.preventDefault();
 
     const bucketName = document.getElementById('bucketName').value.trim();
+    const userId = 'tigert2173'; // Replace with dynamic user ID if required
+    const charId = '1'; // Replace with dynamic character ID if required
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -16,14 +18,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     }
 
     try {
-        // Fetch the pre-signed URL for the image
-        const response = await fetch(`https://efroai.net/bucket/${encodeURIComponent(bucketName)}/1/${encodeURIComponent(objectKey)}`);
-        if (!response.ok) throw new Error('Error generating URL.');
-
-        const responseData = await response.json();
-        if (!responseData || !responseData.url) throw new Error('URL generation failed.');
-
-        const url = responseData.url;
+        // Construct direct link to the image
+        const url = `https://efroai.net/bucket/${userId}/${charId}/${encodeURIComponent(objectKey)}`;
 
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
