@@ -80,12 +80,34 @@ toggleMenuBtn.addEventListener("click", () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
+// Function to check if the image exists by attempting to fetch it
+async function imageExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok; // If the response status is 200-299, the image exists
+    } catch (error) {
+        console.error("Error checking image existence:", error);
+        return false; // If there's an error, assume the image doesn't exist
+    }
+}
+
 // Function to fetch and set the image based on the current slot
-function setImage(slot) {
+async function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
     const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
+
+    // Check if the image exists (not a 404)
+    const imageValid = await imageExists(url);
+
+    if (!imageValid) {
+        // If the image doesn't exist (404), skip this slot and move to the next
+        console.log(`Slot ${slot} does not exist. Skipping to next slot.`);
+        currentSlot = (currentSlot < 10) ? currentSlot + 1 : 1; // Loop to next slot
+        setImage(currentSlot); // Recursively call setImage with the new slot
+        return; // Exit the current function
+    }
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -153,3 +175,4 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
 window.addEventListener('load', () => {
     setImage(1); // Show slot 1 by default
 });
+
