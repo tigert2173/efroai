@@ -246,18 +246,6 @@ code {
     max-width: 700px;
     margin-bottom: 10px;
 }
-/* Fade-in and slide-up animation */
-@keyframes slideFadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px); /* Initial position */
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0); /* Final position */
-    }
-}
-
 
 #input-container input {
     flex: 1;
@@ -274,10 +262,10 @@ code {
     color: #f9f9fc;
 }
 
-/* Change placeholder text color */
-#user-input::placeholder {
-    color: #a0a0a0; /* Light gray placeholder */
-}
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
@@ -732,58 +720,5 @@ input[type="checkbox"]:not(:checked) + label {
 .like-btn:hover {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
-}
-
-
-/* For images */
-/* Button styling */
-.menu-btn {
-    background-color: #4CAF50; /* Green button */
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-
-.menu-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-/* Form and opacity slider styling */
-.menu-container {
-    display: none; /* Hidden by default */
-    background-color: #242424;
-    padding: 20px;
-    position: absolute;
-    z-index: 10000;
-    margin-top: 60px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.menu-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.menu-container label {
-    margin: 8px 0;
-}
-
-#opacity-slider {
-    margin-top: 10px;
-}
-
-/* Show the menu when the button is clicked */
-.show-menu {
-    display: block;
 }
 
