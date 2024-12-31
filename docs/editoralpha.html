@@ -371,7 +371,7 @@
             <!-- Slots will be dynamically populated here -->
         </div>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/5.0.0/pica.min.js"></script>  <!-- Pica CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/5.0.0/pica.min.js"></script>  <!-- Correct Version -->
         
         <script>
             let user = '';
@@ -472,9 +472,13 @@
                     const targetWidth = 800;  // You can adjust the target width
                     const targetHeight = (img.height / img.width) * targetWidth;
         
-                    // Resize the image using Pica
+                    // Resize the image using Pica's recommended API
                     try {
-                        await pica.resize(img, canvas); // Resize using Pica
+                        // Initialize Pica
+                        const picaInstance = new Pica();
+        
+                        // Resize image using Pica's `resize` method
+                        await picaInstance.resize(img, canvas);
                         // Convert canvas to JPG format (default quality: 0.92)
                         canvas.toBlob(function(blob) {
                             const formData = new FormData();
