@@ -83,7 +83,7 @@ router.post('/:user/:characterid/slot:slot/upload', upload.single('image'), asyn
 
     try {
         const fileExtension = path.extname(file.originalname);
-        const key = `${user}/${characterid}/${slot}${fileExtension}`; // Save with slot number
+        const key = `${user}/${characterid}/slot${slot}${fileExtension}`; // Save with slot number
 
         // Check if there's an existing file to delete
         const existingFileParams = {
@@ -124,7 +124,7 @@ router.post('/:user/:characterid/slot:slot/upload', upload.single('image'), asyn
 // Remove an image for a user and character
 router.delete('/:user/:characterid/slot:slot/delete', async (req, res) => {
     const { user, characterid, slot } = req.params;
-    const key = `${user}/${characterid}/${slot}.jpg`; // The key for the slot image
+    const key = `${user}/${characterid}/slot${slot}.jpg`; // The key for the slot image
 
     try {
         // Delete the image from the bucket
