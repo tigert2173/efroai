@@ -312,11 +312,12 @@
     <div id="main-content">
         <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
         <div id="imageMenu" class="menu-container">
-                <!-- Navigation arrows to cycle through images -->
-                <div class="image-navigation">
-                    <button id="prevImageBtn">← Previous</button>
-                    <button id="nextImageBtn">Next →</button>
-                </div>
+            <!-- Navigation arrows to cycle through images -->
+            <div class="image-navigation">
+                <button id="prevImageBtn">← Previous</button>
+                <button id="nextImageBtn">Next →</button>
+            </div>
+
             <form id="fetchImageForm">
                 <!-- <label for="bucketName">Bucket Name:</label>
                 <input type="text" id="bucketName" name="bucketName" required> -->
@@ -339,22 +340,23 @@
         <button id="save-chat-button">Save Chat</button>
         <!-- Parent container for chat and images -->
         <div id="chat-wrapper">
-            <div id="left-image-container"></div> <!-- Left side image container -->
-            <!-- Navigation arrows to cycle through images -->
-            <div class="image-navigation">
-                <button id="prevImageBtn">← Previous</button>
-                <button id="nextImageBtn">Next →</button>
+            <!-- Left Image Section -->
+            <div id="left-image-container" class="image-container">
+                <!-- The image will be dynamically inserted here -->
+                <div id="left-arrow-container" class="arrow-container">
+                    <button id="prevImageBtn" class="arrow-button">←</button>
+                </div>
             </div>
             <div id="chat-container">
                 <!-- Chat content will go here -->
             </div>
-            <div id="right-image-container">
-                <!-- Navigation arrows to cycle through images -->
-                <div class="image-navigation">
-                    <button id="prevImageBtn">← Previous</button>
-                    <button id="nextImageBtn">Next →</button>
+           <!-- Right Image Section -->
+            <div id="right-image-container" class="image-container">
+                <!-- The image will be dynamically inserted here -->
+                <div id="right-arrow-container" class="arrow-container">
+                    <button id="nextImageBtn" class="arrow-button">→</button>
                 </div>
-            </div> <!-- Right side image container -->
+            </div>
         </div>
         <div id="input-wrapper">
             <div id="input-container">
