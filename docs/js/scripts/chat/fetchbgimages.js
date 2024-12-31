@@ -51,15 +51,6 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             inputWrapper.classList.add('has-right-image');
         }
 
-        // Add image navigation buttons dynamically
-        const navigationButtons = `
-            <div class="image-navigation">
-                <button id="prevImageBtn">Previous</button>
-                <button id="nextImageBtn">Next</button>
-            </div>
-        `;
-        inputWrapper.innerHTML += navigationButtons; // Appending to the inputWrapper
-
     } catch (error) {
         console.error("Error setting image:", error);
         alert('Failed to set image: ' + error.message);
@@ -146,5 +137,13 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', () => {
+    // Create the image navigation buttons outside the image content
+    const navigationButtons = `
+        <div class="image-navigation">
+            <button id="prevImageBtn">Previous</button>
+            <button id="nextImageBtn">Next</button>
+        </div>
+    `;
+    document.getElementById('input-wrapper').innerHTML += navigationButtons; // Add buttons once on page load
     setImage(1); // Show slot1 by default
 });
