@@ -124,7 +124,7 @@ router.post('/:user/:characterid/slot:slot/upload', upload.single('image'), asyn
 // Remove an image for a user and character
 router.delete('/:user/:characterid/slot:slot/delete', async (req, res) => {
     const { user, characterid, slot } = req.params;
-    const key = `${user}/${characterid}/slot${slot}.jpg`; // The key for the slot image
+    const key = `${user}/${characterid}/slot${slot}.webp`; // The key for the slot image
 
     try {
         // Delete the image from the bucket
@@ -152,7 +152,7 @@ router.get('/:user/:characterid/images', async (req, res) => {
 
         // Filter the images by slot numbers
         const imageFiles = data.Contents.filter(item => {
-            const match = item.Key.match(/(\d+)\.(jpg|png)$/);
+            const match = item.Key.match(/(\d+)\.(webp)$/); // removed jpg|png|
             return match && parseInt(match[1]) <= 10;
         });
 
