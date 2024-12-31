@@ -435,17 +435,17 @@
             // Initialize the image slots on page load
             initializeImageSlots();
         
-            // Handle image upload for each slot
+          // Handle image upload for each slot
             function uploadImage(event, slot) {
                 const file = event.target.files[0];
                 if (!file) return; // No file selected, exit
-        
+
                 const img = new Image();
                 const reader = new FileReader();
                 
                 reader.onload = function (e) {
                     img.src = e.target.result;
-        
+
                     img.onload = function() {
                         // Create a canvas element
                         const canvas = document.createElement('canvas');
@@ -454,15 +454,15 @@
                         // Set canvas size to the image size
                         canvas.width = img.width;
                         canvas.height = img.height;
-        
+
                         // Draw the image on the canvas
                         ctx.drawImage(img, 0, 0);
-        
+
                         // Convert canvas to JPG format (default quality: 0.92)
                         canvas.toBlob(function(blob) {
                             const formData = new FormData();
                             formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
-        
+
                             // Send the converted image to the server
                             fetch(`/bucket/${user}/${characterNumber}/upload`, {
                                 method: 'POST',
@@ -477,15 +477,16 @@
                         }, 'image/jpeg'); // Convert to 'image/jpeg'
                     };
                 };
-        
+
                 // Read the selected file as data URL
                 reader.readAsDataURL(file);
             }
+
         
-           // Update the image in the corresponding slot
+         // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/${imageKey}`;  // Make sure imageKey includes the full path
+                const imgUrl = `/bucket/${user}/${characterNumber}/${imageKey}`;  // Ensure this matches the backend path
                 imgSlot.src = imgUrl; // Set the image source to the new image URL
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
