@@ -133,3 +133,8 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
     }
     setImage(currentSlot);
 });
+
+// Display slot 1 by default when the page loads
+window.addEventListener('load', () => {
+    setImage(1); // Show slot1 by default
+});
