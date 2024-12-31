@@ -371,8 +371,6 @@
             <!-- Slots will be dynamically populated here -->
         </div>
         
-        <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.1.1/dist/compressor.min.js"></script>
-        
         <script>
             let user = '';
             let characterNumber = '';
@@ -456,21 +454,31 @@
         
                 if (!file) return; // No file selected, exit
         
-                // Compress the image before uploading using Compressor.js
-                new Compressor(file, {
-                    quality: 0.8, // Set the desired quality (0 to 1 scale)
-                    maxWidth: 800, // Optional: Resize image width to a max of 800px (maintains aspect ratio)
-                    maxHeight: 800, // Optional: Resize image height to a max of 800px
-                    success(result) {
-                        // Preview the compressed image in the same spot as the retrieved image
-                        const imgSlot = document.getElementById(`img-slot-${slot}`);
-                        imgSlot.src = URL.createObjectURL(result); // Preview the compressed image
+                // Preview the image in the same spot as the retrieved image
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
         
-                        // Create a FormData object to send the image to the server
+                // Convert image to WebP using canvas (for better compression)
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                
+                img.onload = function() {
+                    // Create a canvas element
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set canvas size to the image size
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+        
+                    // Draw the image on the canvas
+                    ctx.drawImage(img, 0, 0);
+        
+                    // Convert canvas to WebP format with high quality (80% by default)
+                    canvas.toBlob(function(blob) {
                         const formData = new FormData();
-                        formData.append('image', result, 'image.jpg'); // Append the compressed image as 'image.jpg'
+                        formData.append('image', blob, 'image.webp'); // Append the blob as 'image.webp'
         
-                        // Send the compressed image to the server
+                        // Send the compressed WebP image to the server
                         fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
                             method: 'POST',
                             body: formData,
@@ -481,12 +489,8 @@
                             updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
                         })
                         .catch(err => alert('Failed to upload image'));
-                    },
-                    error(err) {
-                        console.error('Image compression failed:', err);
-                        alert('Failed to compress image');
-                    }
-                });
+                    }, 'image/webp', 0.8); // Convert to WebP with 80% quality (adjust as needed)
+                };
             }
         
             // Update the image in the corresponding slot
