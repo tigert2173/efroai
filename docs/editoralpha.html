@@ -417,6 +417,8 @@
             // Handle image upload for each slot
             function uploadImage(event, slot) {
                 const file = event.target.files[0];
+                if (!file) return; // If no file is selected, exit
+        
                 const formData = new FormData();
                 formData.append('image', file);
         
@@ -458,6 +460,36 @@
                 })
                 .catch(err => alert('Failed to delete image'));
             }
+        
+            // Auto-upload new image when it's ready (e.g., via drag-and-drop or URL fetch)
+            function autoUploadImage(imageFile) {
+                const formData = new FormData();
+                formData.append('image', imageFile);
+        
+                // Send auto-upload request to the backend with user and character data
+                fetch(`/bucket/${user}/${characterNumber}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Image uploaded automatically!');
+                    // Suppose slot 1 gets the new uploaded image by default
+                    updateSlotImage(1, data.file.Key);  // Update image slot with the new image
+                })
+                .catch(err => alert('Failed to auto-upload image'));
+            }
+        
+            // Simulate auto-uploading an image (example: fetch or drag-and-drop)
+            // Example: Fetch an image file from a URL or other source to trigger auto-upload
+            // Here, you can replace this with any method to get an image (like a drag-and-drop event or URL fetch)
+            fetch('https://example.com/path/to/image.jpg')
+                .then(response => response.blob())
+                .then(blob => {
+                    // Simulate auto-upload
+                    autoUploadImage(blob);
+                })
+                .catch(err => console.log('Failed to fetch image for auto-upload'));
         </script>
         
     </div>
