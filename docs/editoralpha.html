@@ -440,7 +440,7 @@
                 const file = event.target.files[0];
                 if (!file) return; // No file selected, exit
         
-                // Preview the selected image before upload
+                // Preview the selected image
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imgSlot = document.getElementById(`img-slot-${slot}`);
