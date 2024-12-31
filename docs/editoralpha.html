@@ -366,6 +366,19 @@
             </div>
         </div>
         
+
+        <form id="upload-form" action="/your-route" method="POST" enctype="multipart/form-data">
+            <label for="slotNumber">Select Slot (1-10):</label>
+            <select id="slotNumber" name="slotNumber">
+                <option value="1">Slot 1</option>
+                <option value="2">Slot 2</option>
+                <option value="3">Slot 3</option>
+                <!-- More options until Slot 10 -->
+            </select>
+            <input type="file" name="image" accept="image/*" required />
+            <button type="submit">Upload Image</button>
+        </form>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
