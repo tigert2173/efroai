@@ -414,7 +414,7 @@
         
             // Function to fetch the existing image for each slot
             function fetchExistingImage(slot) {
-                fetch(`/bucket/${user}/${characterNumber}/image${slot}.jpg`) // Assuming images are named like image1.jpg, image2.jpg, etc.
+                fetch(`/bucket/${user}/${characterNumber}/${slot}.jpg`) // Assuming images are named like image1.jpg, image2.jpg, etc.
                     .then(response => {
                         if (response.ok) {
                             return response.blob(); // If image exists, get the image as a blob
