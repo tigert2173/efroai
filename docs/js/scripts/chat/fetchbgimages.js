@@ -18,7 +18,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
     try {
         // Fetch the pre-signed URL for the image
-        const response = await fetch(`https://efroai.net/bucket/tigert2173/${encodeURIComponent(objectKey)}`);
+        const response = await fetch(`https://efroai.net/bucket/tigert2173/1/${encodeURIComponent(objectKey)}`);
         if (!response.ok) throw new Error('Error generating URL.');
 
         const { url } = await response.json();
