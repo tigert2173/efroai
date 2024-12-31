@@ -3,7 +3,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     e.preventDefault();
 
     // Assume the JSON data is stored in local storage under the key 'characterData'
-    const characterData = JSON.parse(localStorage.getItem('characterData'));
+    const characterData = JSON.parse(localStorage.getItem('editCharacter'));
 
     if (characterData) {
         const uploader = characterData.uploader;
