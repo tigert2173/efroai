@@ -78,3 +78,27 @@ const imageMenu = document.getElementById("imageMenu");
 toggleMenuBtn.addEventListener("click", () => {
     imageMenu.classList.toggle("show-menu");
 });
+
+
+
+let currentImageIndex = 1; // Starts with slot1
+
+const totalImages = 10; // Total number of images
+
+// Function to update the image
+function updateImage() {
+    const imageElement = document.getElementById('image');
+    imageElement.src = `slot${currentImageIndex}.jpg`; // Change the source to the current image
+}
+
+// Next button functionality
+document.getElementById('next').addEventListener('click', () => {
+    currentImageIndex = (currentImageIndex % totalImages) + 1; // Cycle to the next image
+    updateImage();
+});
+
+// Previous button functionality
+document.getElementById('prev').addEventListener('click', () => {
+    currentImageIndex = (currentImageIndex - 2 + totalImages) % totalImages + 1; // Cycle to the previous image
+    updateImage();
+});
