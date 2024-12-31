@@ -2,32 +2,33 @@
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Assume the JSON data is stored in local storage under the key 'characterData'
+    // Retrieve character data from local storage
     const characterData = JSON.parse(localStorage.getItem('editCharacter'));
 
-    if (characterData) {
-
-        const bucketName = document.getElementById('bucketName').value.trim();
-        const userId = characterData.uploader; // Replace with dynamic user ID if required
-        const charId = characterData.id; // Replace with dynamic character ID if required
-        const objectKey = document.getElementById('objectKey').value.trim();
-        const chatContainer = document.getElementById('chat-container');
-        const leftImageContainer = document.getElementById('left-image-container');
-        const rightImageContainer = document.getElementById('right-image-container');
-        const chatWrapper = document.getElementById('chat-wrapper');
-        const inputWrapper = document.getElementById('input-wrapper');
-    
-        console.log("Uploader:", uploader);
-        console.log("Character ID:", characterId);
-        
-    } else {
-        console.log("Character data not found in local storage.");
+    if (!characterData) {
+        console.error("Character data not found in local storage.");
+        alert("Character data not found. Please ensure a character is selected.");
+        return;
     }
+
+    const bucketName = document.getElementById('bucketName').value.trim();
+    const userId = characterData.uploader; // Dynamic user ID from character data
+    const charId = characterData.id; // Dynamic character ID from character data
+    const objectKey = document.getElementById('objectKey').value.trim();
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
         return;
     }
+
+    const chatContainer = document.getElementById('chat-container');
+    const leftImageContainer = document.getElementById('left-image-container');
+    const rightImageContainer = document.getElementById('right-image-container');
+    const chatWrapper = document.getElementById('chat-wrapper');
+    const inputWrapper = document.getElementById('input-wrapper');
+
+    console.log("Uploader:", userId);
+    console.log("Character ID:", charId);
 
     try {
         // Construct direct link to the image
@@ -36,7 +37,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
 
-        // Clear side images and reset chat wrapper class before applying new image
+        // Clear side images and reset chat wrapper class before applying the new image
         leftImageContainer.innerHTML = '';
         rightImageContainer.innerHTML = '';
         chatWrapper.classList.remove('has-left-image', 'has-right-image');
@@ -60,22 +61,22 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             inputWrapper.classList.add('has-right-image');
         }
     } catch (error) {
-        console.error(error);
+        console.error("Error setting image:", error);
         alert('Failed to set image: ' + error.message);
     }
 });
 
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
-    const opacityValue = e.target.value;
+    const opacityValue = e.target.value / 100;
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
 
     // Update the opacity for background or side images
-    chatContainer.style.setProperty('--bg-opacity', opacityValue / 100);
-    leftImageContainer.style.opacity = opacityValue / 100;
-    rightImageContainer.style.opacity = opacityValue / 100;
+    chatContainer.style.setProperty('--bg-opacity', opacityValue);
+    leftImageContainer.style.opacity = opacityValue;
+    rightImageContainer.style.opacity = opacityValue;
 });
 
 // Toggle menu visibility
