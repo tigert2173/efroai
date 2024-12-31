@@ -2,18 +2,10 @@
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Retrieve character data from local storage
-    const characterData = JSON.parse(localStorage.getItem('editCharacter'));
-
-    if (!characterData) {
-        console.error("Character data not found in local storage.");
-        alert("Character data not found. Please ensure a character is selected.");
-        return;
-    }
-
     const bucketName = document.getElementById('bucketName').value.trim();
-    const userId = characterData.uploader; // Dynamic user ID from character data
-    const charId = characterData.id; // Dynamic character ID from character data
+
+    const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
+    const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
     const objectKey = document.getElementById('objectKey').value.trim();
 
     if (!bucketName || !objectKey) {
