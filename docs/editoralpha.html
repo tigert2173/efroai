@@ -373,8 +373,26 @@
     
         <script>
             // Define the user and character number variables
-            const user = 'exampleUser';  // This should be set dynamically (e.g., from a session or URL)
-            const characterNumber = 1;  // This should also be set dynamically based on context
+            // Retrieve the stored data from session storage
+            const characterData = sessionStorage.getItem('editCharacter');
+
+            // Check if the data exists in session storage
+            if (characterData) {
+                // Parse the JSON string into an object
+                const parsedData = JSON.parse(characterData);
+                
+                // Extract the uploader and characterId (id) from the parsed data
+                const user = parsedData.uploader;
+                const characterNumber = parsedData.id;
+
+                // Log the values to check
+                console.log('Uploader:', uploader);
+                console.log('Character ID:', characterId);
+            } else {
+                console.log('No character data found in session storage');
+            }
+            // const user = 'exampleUser';  // This should be set dynamically (e.g., from a session or URL)
+            // const characterNumber = 1;  // This should also be set dynamically based on context
     
             // Function to initialize the slots for image upload
             function initializeImageSlots() {
