@@ -438,7 +438,7 @@
             initializeImageSlots();
         
             // Handle image upload for each slot
-            function uploadImage(event, slot) {
+            async function uploadImage(event, slot) {
                 const file = event.target.files[0];
                 
                 // Check for file size (max 4MB)
@@ -463,7 +463,7 @@
                 const img = new Image();
                 img.src = URL.createObjectURL(file);
                 
-                img.onload = function() {
+                img.onload = async function() {
                     // Create a canvas element for resizing
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -473,29 +473,28 @@
                     const targetHeight = (img.height / img.width) * targetWidth;
         
                     // Resize the image using Pica
-                    pica.resize(img, canvas, { unsharpAmount: 80, unsharpThreshold: 2 })
-                        .then(() => {
-                            // Convert canvas to JPG format (default quality: 0.92)
-                            canvas.toBlob(function(blob) {
-                                const formData = new FormData();
-                                formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
+                    try {
+                        await pica.resize(img, canvas, { unsharpAmount: 80, unsharpThreshold: 2 });
+                        // Convert canvas to JPG format (default quality: 0.92)
+                        canvas.toBlob(function(blob) {
+                            const formData = new FormData();
+                            formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
         
-                                // Send the converted image to the server
-                                fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
-                                    method: 'POST',
-                                    body: formData,
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    alert('Image uploaded successfully!');
-                                    updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
-                                })
-                                .catch(err => alert('Failed to upload image'));
-                            }, 'image/jpeg'); // Convert to 'image/jpeg'
-                        })
-                        .catch((error) => {
-                            alert('Error resizing image: ' + error);
-                        });
+                            // Send the converted image to the server
+                            fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
+                                method: 'POST',
+                                body: formData,
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                alert('Image uploaded successfully!');
+                                updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
+                            })
+                            .catch(err => alert('Failed to upload image'));
+                        }, 'image/jpeg'); // Convert to 'image/jpeg'
+                    } catch (error) {
+                        alert('Error resizing image: ' + error);
+                    }
                 };
             }
         
