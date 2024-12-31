@@ -308,87 +308,51 @@
     </div>
 
     <!-- Audio Players for Each Generated Clip -->
-<div id="audioPlayersContainer"></div>
-
-<div id="main-content">
-    <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
-    <div id="imageMenu" class="menu-container">
-        <form id="fetchImageForm">
-            <label for="objectKey">Object Key:</label>
-            <input type="text" id="objectKey" name="objectKey" required>
-            <label>Image Position:</label>
-            <label for="background">
-                <input type="radio" id="background" name="imagePosition" value="background" checked> Background
-            </label>
-            <label for="left">
-                <input type="radio" id="left" name="imagePosition" value="left"> Left
-            </label>
-            <label for="right">
-                <input type="radio" id="right" name="imagePosition" value="right"> Right
-            </label>
-            <button type="submit">Fetch Image</button>
-        </form>
-        <label for="opacity-slider">Opacity:</label>
-        <input type="range" id="opacity-slider" min="0" max="100" value="100">
-    </div>
-    <script src="js/scripts/chat/fetchbgimages.js"></script>
-
-    <!-- Button to manually trigger saving chat messages -->
-    <button id="save-chat-button">Save Chat</button>
-
-    <!-- Parent container for chat and images -->
-    <div id="chat-wrapper">
-        <div id="left-image-container"></div> <!-- Left side image container -->
-        <div id="chat-container">
-            <!-- Chat content will go here -->
+    <div id="audioPlayersContainer"></div>
+    <div id="main-content">
+        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
+        <div id="imageMenu" class="menu-container">
+            <form id="fetchImageForm">
+                <!-- <label for="bucketName">Bucket Name:</label>
+                <input type="text" id="bucketName" name="bucketName" required> -->
+                <label for="objectKey">Object Key:</label>
+                <input type="text" id="objectKey" name="objectKey" required>
+                <label>Image Position:</label>
+                <label for="background">
+                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background </label>
+                <label for="left">
+                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
+                <label for="right">
+                    <input type="radio" id="right" name="imagePosition" value="right"> Right </label>
+                <button type="submit">Fetch Image</button>
+            </form>
+            <label for="opacity-slider">Opacity:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="100">
         </div>
-        <div id="right-image-container"></div> <!-- Right side image container -->
-    </div>
-
-    <div id="input-wrapper">
-        <div id="input-container">
-            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
-        </div>
-    </div>
-
-    <div id="navigation-controls">
-        <!-- Navigation buttons for image slots -->
-        <button id="prev-image" onclick="navigateImages(-1)">&#8592; Prev</button>
-        <button id="next-image" onclick="navigateImages(1)">Next &#8594;</button>
-    </div> 
-
-    <!-- Slot images container -->
-    <div id="image-slot-container">
-        <img id="image-slot" src="" alt="Image Slot" />
-    </div>
+        <script src="js/scripts/chat/fetchbgimages.js"></script>
+        <!-- Button to manually trigger saving chat messages -->
+        <button id="save-chat-button">Save Chat</button>
+        <!-- Parent container for chat and images -->
+        <div id="chat-wrapper">
+            <!-- Navigation controls for image swiping -->
+<div id="image-navigation-controls">
+    <button id="prev-image-btn" onclick="navigateImages(-1)">&#8592; Prev</button>
+    <button id="next-image-btn" onclick="navigateImages(1)">Next &#8594;</button>
 </div>
-
-<script>
-// JavaScript for navigating between images
-
-let currentImageIndex = 1; // Start at image slot#1
-
-function navigateImages(direction) {
-    currentImageIndex += direction;
-
-    // Ensure the image index stays within bounds (1 to 10)
-    if (currentImageIndex < 1) {
-        currentImageIndex = 10; // Loop back to slot#10
-    } else if (currentImageIndex > 10) {
-        currentImageIndex = 1; // Loop back to slot#1
-    }
-
-    // Update the image slot source
-    document.getElementById("image-slot").src = `path/to/your/images/slot${currentImageIndex}.jpg`;
-}
-
-// Initial image load
-document.addEventListener("DOMContentLoaded", function() {
-    navigateImages(0); // Load the first image when the page loads
-});
-</script>
+            <div id="left-image-container"></div> <!-- Left side image container -->
+            <div id="chat-container">
+                <!-- Chat content will go here -->
+            </div>
+            <div id="right-image-container"></div> <!-- Right side image container -->
+        </div>
+        <div id="input-wrapper">
+            <div id="input-container">
+                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+                <button id="send-button" onclick="sendMessage()">Send</button>
+                <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
+            </div>
+        </div>        
+        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
@@ -407,7 +371,59 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- Close button -->
     <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
 </div>
+<!-- Images stored as slots -->
+<script>
+    const imageSlots = [
+        "slot1.jpg", "slot2.jpg", "slot3.jpg", "slot4.jpg", "slot5.jpg",
+        "slot6.jpg", "slot7.jpg", "slot8.jpg", "slot9.jpg", "slot10.jpg"
+    ];
+    let currentIndex = 0;
 
+    // Function to update the displayed image based on the currentIndex
+    function updateImage() {
+        const imageElement = document.getElementById('current-image');
+        imageElement.src = imageSlots[currentIndex];  // Set the source of the image
+    }
+
+    // Function to navigate images
+    function navigateImages(direction) {
+        // Update the currentIndex based on direction (-1 for prev, 1 for next)
+        currentIndex = (currentIndex + direction + imageSlots.length) % imageSlots.length;
+        updateImage();  // Update the image displayed
+    }
+
+    // Initial image load
+    updateImage();
+</script>
+
+<!-- CSS for styling the navigation and image -->
+<style>
+    #image-navigation-controls {
+        display: flex;
+        justify-content: center;
+        margin: 10px;
+    }
+    #prev-image-btn, #next-image-btn {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+    #prev-image-btn:hover, #next-image-btn:hover {
+        background-color: #ddd;
+    }
+    #image-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+    #current-image {
+        width: 80%;  /* Adjust the image width as needed */
+        max-width: 600px;
+        height: auto;
+    }
+</style>
 <!-- Right-side Ad -->
 <div class="desktop-only-ad right-ad" id="rightAd">
     <!-- JuicyAds v3.0 -->
