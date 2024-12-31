@@ -367,18 +367,53 @@
         </div>
         
 
-        <form id="upload-form" action="/your-route" method="POST" enctype="multipart/form-data">
-            <label for="slotNumber">Select Slot (1-10):</label>
-            <select id="slotNumber" name="slotNumber">
-                <option value="1">Slot 1</option>
-                <option value="2">Slot 2</option>
-                <option value="3">Slot 3</option>
-                <!-- More options until Slot 10 -->
-            </select>
-            <input type="file" name="image" accept="image/*" required />
-            <button type="submit">Upload Image</button>
-        </form>
-        
+        <h1>Character Image Upload</h1>
+        <div id="image-slots">
+            <!-- Slots will be dynamically populated here -->
+        </div>
+    
+        <script>
+            // Fetch images for slots 1-10
+            fetch('/bucket/:user/:characterid/images')
+                .then(response => response.json())
+                .then(data => {
+                    const slotsContainer = document.getElementById('image-slots');
+                    data.forEach(image => {
+                        const imgSlot = document.createElement('div');
+                        imgSlot.innerHTML = `
+                            <h3>Slot ${image.slot}</h3>
+                            <img src="${image.url}" alt="Image for Slot ${image.slot}" width="100">
+                            <input type="file" onchange="uploadImage(event, ${image.slot})">
+                            <button onclick="deleteImage(${image.slot})">Delete</button>
+                        `;
+                        slotsContainer.appendChild(imgSlot);
+                    });
+                });
+    
+            // Handle image upload
+            function uploadImage(event, slot) {
+                const formData = new FormData();
+                formData.append('image', event.target.files[0]);
+    
+                fetch(`/bucket/:user/:characterid/upload`, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => alert('Image uploaded successfully!'))
+                .catch(err => alert('Failed to upload image'));
+            }
+    
+            // Handle image delete
+            function deleteImage(slot) {
+                fetch(`/bucket/:user/:characterid/${slot}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => alert('Image deleted successfully!'))
+                .catch(err => alert('Failed to delete image'));
+            }
+        </script>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

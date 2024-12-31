@@ -72,7 +72,7 @@ router.get('/:user/:characterid/:imagename', async (req, res) => {
     }
 });
 
-// Upload or Replace an image in a slot (1-10)
+// Upload an image for a user and character with automatic numbering
 router.post('/:user/:characterid/upload', upload.single('image'), async (req, res) => {
     const { user, characterid } = req.params;
     const file = req.file;
@@ -81,17 +81,35 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
         return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const slotNumber = req.body.slotNumber; // The slot to replace, should be from 1 to 10
-
-    if (slotNumber < 1 || slotNumber > 10) {
-        return res.status(400).json({ error: 'Slot number must be between 1 and 10' });
-    }
-
     try {
-        const fileExtension = path.extname(file.originalname);
-        const key = `${user}/${characterid}/${slotNumber}${fileExtension}`;
+        // List files for this user and character
+        const params = {
+            Bucket: BUCKET_NAME,
+            Prefix: `${user}/${characterid}/`,
+        };
 
-        // Upload or replace the image
+        const data = await s3.listObjectsV2(params).promise();
+
+        // Find the highest numbered image for the character
+        const imageFiles = data.Contents.filter(item => item.Key.endsWith('.jpg') || item.Key.endsWith('.png'));
+        let highestNumber = 0;
+
+        imageFiles.forEach(file => {
+            const match = file.Key.match(/(\d+)\.(jpg|png)$/); // Match file names like 1.jpg, 2.png, etc.
+            if (match) {
+                const number = parseInt(match[1]);
+                if (number > highestNumber) {
+                    highestNumber = number;
+                }
+            }
+        });
+
+        // Set the next number
+        const nextNumber = highestNumber + 1;
+        const fileExtension = path.extname(file.originalname);
+        const key = `${user}/${characterid}/${nextNumber}${fileExtension}`;
+
+        // Upload the new image
         const uploadParams = {
             Bucket: BUCKET_NAME,
             Key: key,
@@ -112,30 +130,57 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
     }
 });
 
-// Retrieve the images in slots 1 to 10
-router.get('/:user/:characterid/slots', async (req, res) => {
-    const { user, characterid } = req.params;
-    const slotImages = [];
+// Remove an image for a user and character
+router.delete('/:user/:characterid/:imagename', async (req, res) => {
+    const { user, characterid, imagename } = req.params;
+    const key = `${user}/${characterid}/${imagename}`;
 
     try {
-        for (let slot = 1; slot <= 10; slot++) {
-            const key = `${user}/${characterid}/${slot}.jpg`; // Or .png based on your requirements
+        // Delete the image from the bucket
+        const params = {
+            Bucket: BUCKET_NAME,
+            Key: key,
+        };
 
-            try {
-                const params = { Bucket: BUCKET_NAME, Key: key };
-                const file = await s3.getObject(params).promise();
-                const imageUrl = `https://s3.amazonaws.com/${BUCKET_NAME}/${key}`;
-                slotImages.push({ slot, imageUrl });
-            } catch (error) {
-                // If image not found, skip the slot
-                slotImages.push({ slot, imageUrl: null });
-            }
-        }
-
-        res.status(200).json(slotImages); // Return the list of images in slots
+        await s3.deleteObject(params).promise();
+        res.status(200).json({ message: `Image ${imagename} deleted successfully` });
     } catch (error) {
-        console.error('Error retrieving slot images:', error);
-        res.status(500).json({ error: 'Failed to retrieve slot images' });
+        console.error('Error deleting file:', error);
+        res.status(500).json({ error: `Failed to delete image ${imagename}` });
+    }
+});
+
+// Retrieve a list of all uploaded images for a user and character (slots 1-10)
+router.get('/:user/:characterid/images', async (req, res) => {
+    const { user, characterid } = req.params;
+    const params = {
+        Bucket: BUCKET_NAME,
+        Prefix: `${user}/${characterid}/`,
+    };
+
+    try {
+        const data = await s3.listObjectsV2(params).promise();
+
+        // Filter the images by slot numbers
+        const imageFiles = data.Contents.filter(item => {
+            const match = item.Key.match(/(\d+)\.(jpg|png)$/);
+            return match && parseInt(match[1]) <= 10;
+        });
+
+        // Sort files by the number in the file name (slot number)
+        const sortedFiles = imageFiles.sort((a, b) => {
+            const numA = parseInt(a.Key.match(/(\d+)\./)[1]);
+            const numB = parseInt(b.Key.match(/(\d+)\./)[1]);
+            return numA - numB;
+        });
+
+        res.json(sortedFiles.map(file => ({
+            slot: parseInt(file.Key.match(/(\d+)\./)[1]),
+            url: `/bucket/${user}/${characterid}/${file.Key.split('/')[2]}`,
+        })));
+    } catch (error) {
+        console.error('Error retrieving images:', error);
+        res.status(500).json({ error: 'Failed to retrieve images' });
     }
 });
 
