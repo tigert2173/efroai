@@ -371,8 +371,7 @@
             <!-- Slots will be dynamically populated here -->
         </div>
         
-        <!-- Pica CDN (ensure it's loaded before your custom script) -->
-        <script src="https://cdn.jsdelivr.net/npm/pica@5.0.0/dist/pica.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.1.1/dist/compressor.min.js"></script>
         
         <script>
             let user = '';
@@ -389,13 +388,6 @@
                 console.log('Character ID:', characterNumber);
             } else {
                 console.log('No character data found in session storage');
-            }
-        
-            // Ensure Pica is loaded before calling it
-            if (typeof Pica !== 'undefined') {
-                console.log("Pica is loaded successfully.");
-            } else {
-                console.error("Pica failed to load.");
             }
         
             // Function to initialize the slots for image upload
@@ -446,7 +438,7 @@
             initializeImageSlots();
         
             // Handle image upload for each slot
-            async function uploadImage(event, slot) {
+            function uploadImage(event, slot) {
                 const file = event.target.files[0];
                 
                 // Check for file size (max 4MB)
@@ -464,50 +456,37 @@
         
                 if (!file) return; // No file selected, exit
         
-                // Preview the image in the same spot as the retrieved image
-                const imgSlot = document.getElementById(`img-slot-${slot}`);
+                // Compress the image before uploading using Compressor.js
+                new Compressor(file, {
+                    quality: 0.8, // Set the desired quality (0 to 1 scale)
+                    maxWidth: 800, // Optional: Resize image width to a max of 800px (maintains aspect ratio)
+                    maxHeight: 800, // Optional: Resize image height to a max of 800px
+                    success(result) {
+                        // Preview the compressed image in the same spot as the retrieved image
+                        const imgSlot = document.getElementById(`img-slot-${slot}`);
+                        imgSlot.src = URL.createObjectURL(result); // Preview the compressed image
         
-                // Create an image element for resizing
-                const img = new Image();
-                img.src = URL.createObjectURL(file);
-                
-                img.onload = async function() {
-                    // Create a canvas element for resizing
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
+                        // Create a FormData object to send the image to the server
+                        const formData = new FormData();
+                        formData.append('image', result, 'image.jpg'); // Append the compressed image as 'image.jpg'
         
-                    // Set target width and height for resizing (adjust as needed)
-                    const targetWidth = 800;  // You can adjust the target width
-                    const targetHeight = (img.height / img.width) * targetWidth;
-        
-                    // Resize the image using Pica's recommended API
-                    try {
-                        // Initialize Pica
-                        const picaInstance = new Pica();
-        
-                        // Resize image using Pica's `resize` method
-                        await picaInstance.resize(img, canvas);
-                        // Convert canvas to JPG format (default quality: 0.92)
-                        canvas.toBlob(function(blob) {
-                            const formData = new FormData();
-                            formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
-        
-                            // Send the converted image to the server
-                            fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
-                                method: 'POST',
-                                body: formData,
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                alert('Image uploaded successfully!');
-                                updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
-                            })
-                            .catch(err => alert('Failed to upload image'));
-                        }, 'image/jpeg'); // Convert to 'image/jpeg'
-                    } catch (error) {
-                        alert('Error resizing image: ' + error);
+                        // Send the compressed image to the server
+                        fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
+                            method: 'POST',
+                            body: formData,
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert('Image uploaded successfully!');
+                            updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
+                        })
+                        .catch(err => alert('Failed to upload image'));
+                    },
+                    error(err) {
+                        console.error('Image compression failed:', err);
+                        alert('Failed to compress image');
                     }
-                };
+                });
             }
         
             // Update the image in the corresponding slot
