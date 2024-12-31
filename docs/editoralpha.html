@@ -367,34 +367,46 @@
         </div>
         
 
+        <title>Character Image Upload</title>
+        <style>
+            .slot {
+                margin-bottom: 20px;
+            }
+            .slot img {
+                display: block;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
         <h1>Character Image Upload</h1>
         <div id="image-slots">
             <!-- Slots will be dynamically populated here -->
         </div>
     
         <script>
-            // Fetch images for slots 1-10
-            fetch('/bucket/:user/:characterid/images')
-                .then(response => response.json())
-                .then(data => {
-                    const slotsContainer = document.getElementById('image-slots');
-                    
-                    // Dynamically create slots (1-10)
-                    for (let i = 1; i <= 10; i++) {
-                        const imgSlot = document.createElement('div');
-                        imgSlot.classList.add('slot');
-                        const imageData = data.find(item => item.slot === i);
+            // Function to initialize the slots for image upload
+            function initializeImageSlots() {
+                const slotsContainer = document.getElementById('image-slots');
     
-                        // Create slot HTML
-                        imgSlot.innerHTML = `
-                            <h3>Slot ${i}</h3>
-                            <img src="${imageData ? imageData.url : ''}" alt="Image for Slot ${i}" width="100" id="img-slot-${i}">
-                            <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
-                            ${imageData ? `<button onclick="deleteImage(${i})">Delete</button>` : ''}
-                        `;
-                        slotsContainer.appendChild(imgSlot);
-                    }
-                });
+                // Create 10 empty image slots (1-10)
+                for (let i = 1; i <= 10; i++) {
+                    const imgSlot = document.createElement('div');
+                    imgSlot.classList.add('slot');
+                    
+                    // Create slot HTML (empty at first)
+                    imgSlot.innerHTML = `
+                        <h3>Slot ${i}</h3>
+                        <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
+                        <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
+                        <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
+                    `;
+                    slotsContainer.appendChild(imgSlot);
+                }
+            }
+    
+            // Initialize the image slots on page load
+            initializeImageSlots();
     
             // Handle image upload for each slot
             function uploadImage(event, slot) {
@@ -402,6 +414,7 @@
                 const formData = new FormData();
                 formData.append('image', file);
     
+                // Send image upload request to backend
                 fetch(`/bucket/:user/:characterid/upload`, {
                     method: 'POST',
                     body: formData,
@@ -419,6 +432,7 @@
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
                 const imgUrl = `/bucket/:user/:characterid/${imageKey}`;
                 imgSlot.src = imgUrl;
+                document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
     
             // Handle image delete for each slot
@@ -426,6 +440,7 @@
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
                 const imageKey = imgSlot.src.split('/').pop();  // Extract file name
     
+                // Send delete request to backend
                 fetch(`/bucket/:user/:characterid/${imageKey}`, {
                     method: 'DELETE',
                 })
@@ -433,6 +448,7 @@
                 .then(data => {
                     alert('Image deleted successfully!');
                     imgSlot.src = ''; // Clear the image in the slot
+                    document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
                 })
                 .catch(err => alert('Failed to delete image'));
             }
