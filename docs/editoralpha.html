@@ -467,7 +467,7 @@
                 .then(data => {
                     // Image uploaded successfully, update the image URL
                     const imgSlot = document.getElementById(`img-slot-${slot}`);
-                    const imgUrl = `${data.file.Key}`;
+                    const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}`; ///${data.file.Key}
                     imgSlot.src = imgUrl; // Set the uploaded image URL
                     alert('Image uploaded successfully!');
                 })
