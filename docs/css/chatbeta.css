@@ -997,3 +997,27 @@ button:disabled {
     display: block;
 }
 
+/* Ensure the image navigation buttons appear below the images */
+#left-image-container, #right-image-container {
+    position: relative;
+    padding-bottom: 20px; /* Adds space for the navigation buttons */
+}
+
+.image-navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.image-navigation button {
+    margin: 0 5px;
+    padding: 5px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.image-navigation button:hover {
+    background-color: #45a049;
+}
