@@ -489,7 +489,7 @@
                             updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
                         })
                         .catch(err => alert('Failed to upload image'));
-                    }, 'image/webp', 1); // Convert to WebP with 80% quality (adjust as needed)
+                    }, 'image/webp', 0.9); // Convert to WebP with 80% quality (adjust as needed)
                 };
             }
         
