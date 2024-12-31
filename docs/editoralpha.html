@@ -413,7 +413,7 @@
         
             // Function to fetch the existing image for each slot
             function fetchExistingImage(slot) {
-                fetch(`/bucket/${user}/${characterNumber}/slot${slot}.jpg`) // Adjust the path based on slot number
+                fetch(`/bucket/${user}/${characterNumber}/slot${slot}.webp`) // Adjust the path based on slot number
                     .then(response => {
                         if (response.ok) {
                             return response.blob(); // If image exists, get the image as a blob
@@ -446,7 +446,7 @@
                 }
         
                 // Check for valid image format (only allow images)
-                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
                 if (!allowedTypes.includes(file.type)) {
                     alert('Invalid file format. Only JPEG, PNG, and GIF images are allowed.');
                     return;
