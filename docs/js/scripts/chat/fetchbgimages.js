@@ -92,12 +92,14 @@ function setImage(slot) {
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
+    const imageNavigation = document.getElementById('image-navigation');
 
     // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
     rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
+    imageNavigation.classList.remove('has-left-image', 'has-right-image');
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
