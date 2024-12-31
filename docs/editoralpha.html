@@ -403,10 +403,6 @@
                         <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
                         <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
                         <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
-                        <div id="preview-slot-${i}" style="display:none;">
-                            <p>Preview:</p>
-                            <img id="preview-img-${i}" width="100" alt="Preview">
-                        </div>
                     `;
                     slotsContainer.appendChild(imgSlot);
         
@@ -444,17 +440,8 @@
                 const file = event.target.files[0];
                 if (!file) return; // No file selected, exit
         
-                // Preview the image
-                const previewContainer = document.getElementById(`preview-slot-${slot}`);
-                const previewImage = document.getElementById(`preview-img-${slot}`);
-                previewContainer.style.display = 'block'; // Show the preview container
-                const reader = new FileReader();
-        
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result; // Set the preview image source
-                };
-        
-                reader.readAsDataURL(file); // Read the file as a data URL
+                // Preview the image in the same spot as the retrieved image
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
         
                 // Convert image to JPG using canvas
                 const img = new Image();
@@ -514,7 +501,6 @@
                     alert('Image deleted successfully!');
                     imgSlot.src = ''; // Clear the image in the slot
                     document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
-                    document.getElementById(`preview-slot-${slot}`).style.display = 'none'; // Hide preview
                 })
                 .catch(err => alert('Failed to delete image'));
             }
