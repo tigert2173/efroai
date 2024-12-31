@@ -85,7 +85,7 @@ function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.jpg`; // Example slot-based image URL
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -132,4 +132,9 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
         currentSlot = 1; // Loop back to slot 1
     }
     setImage(currentSlot);
+});
+
+// Display slot 1 by default when the page loads
+window.addEventListener('load', () => {
+    setImage(1); // Show slot1 by default
 });
