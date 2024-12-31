@@ -519,7 +519,7 @@
             // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
+                const imgUrl = `/bucket/${imageKey}`;  // Ensure this matches the backend path
                 imgSlot.src = imgUrl; // Set the image source to the new image URL
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
