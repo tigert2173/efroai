@@ -378,39 +378,62 @@
                 .then(response => response.json())
                 .then(data => {
                     const slotsContainer = document.getElementById('image-slots');
-                    data.forEach(image => {
+                    
+                    // Dynamically create slots (1-10)
+                    for (let i = 1; i <= 10; i++) {
                         const imgSlot = document.createElement('div');
+                        imgSlot.classList.add('slot');
+                        const imageData = data.find(item => item.slot === i);
+    
+                        // Create slot HTML
                         imgSlot.innerHTML = `
-                            <h3>Slot ${image.slot}</h3>
-                            <img src="${image.url}" alt="Image for Slot ${image.slot}" width="100">
-                            <input type="file" onchange="uploadImage(event, ${image.slot})">
-                            <button onclick="deleteImage(${image.slot})">Delete</button>
+                            <h3>Slot ${i}</h3>
+                            <img src="${imageData ? imageData.url : ''}" alt="Image for Slot ${i}" width="100" id="img-slot-${i}">
+                            <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
+                            ${imageData ? `<button onclick="deleteImage(${i})">Delete</button>` : ''}
                         `;
                         slotsContainer.appendChild(imgSlot);
-                    });
+                    }
                 });
     
-            // Handle image upload
+            // Handle image upload for each slot
             function uploadImage(event, slot) {
+                const file = event.target.files[0];
                 const formData = new FormData();
-                formData.append('image', event.target.files[0]);
+                formData.append('image', file);
     
                 fetch(`/bucket/:user/:characterid/upload`, {
                     method: 'POST',
                     body: formData,
                 })
                 .then(response => response.json())
-                .then(data => alert('Image uploaded successfully!'))
+                .then(data => {
+                    alert('Image uploaded successfully!');
+                    updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
+                })
                 .catch(err => alert('Failed to upload image'));
             }
     
-            // Handle image delete
+            // Update the image in the corresponding slot
+            function updateSlotImage(slot, imageKey) {
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
+                const imgUrl = `/bucket/:user/:characterid/${imageKey}`;
+                imgSlot.src = imgUrl;
+            }
+    
+            // Handle image delete for each slot
             function deleteImage(slot) {
-                fetch(`/bucket/:user/:characterid/${slot}`, {
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
+                const imageKey = imgSlot.src.split('/').pop();  // Extract file name
+    
+                fetch(`/bucket/:user/:characterid/${imageKey}`, {
                     method: 'DELETE',
                 })
                 .then(response => response.json())
-                .then(data => alert('Image deleted successfully!'))
+                .then(data => {
+                    alert('Image deleted successfully!');
+                    imgSlot.src = ''; // Clear the image in the slot
+                })
                 .catch(err => alert('Failed to delete image'));
             }
         </script>
