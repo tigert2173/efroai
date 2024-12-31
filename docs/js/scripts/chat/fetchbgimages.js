@@ -77,29 +77,29 @@ toggleMenuBtn.addEventListener("click", () => {
     imageMenu.classList.toggle("show-menu");
 });
 
-let currentSlot = 1;  // Default slot
+// Image cycling logic
+let currentSlot = 1; // Starting from slot 1
 
+// Function to fetch and set the image based on the current slot
 function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`;
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
-    const imageNavigation = document.querySelector('.image-navigation');
 
-    // Clear side images and reset chat wrapper class before applying the new image
+    // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
     rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
 
-    // Apply image based on selected position
+    // Apply the image based on the selected position
     if (imagePosition === 'background') {
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
         chatContainer.style.setProperty('--bg-opacity', 1);
@@ -111,13 +111,6 @@ function setImage(slot) {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
-    }
-
-    // Show or hide the navigation based on the images
-    if (leftImageContainer.innerHTML || rightImageContainer.innerHTML) {
-        imageNavigation.style.display = 'block';
-    } else {
-        imageNavigation.style.display = 'none';
     }
 }
 
