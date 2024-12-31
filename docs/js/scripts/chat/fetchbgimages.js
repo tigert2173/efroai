@@ -6,10 +6,10 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
-    const objectKey = document.getElementById('objectKey').value.trim();
+    const objectKeyBase = document.getElementById('objectKey').value.trim(); // Base name without extension
 
-    if (!bucketName || !objectKey) {
-        alert('Please enter both bucket name and object key.');
+    if (!bucketName || !objectKeyBase) {
+        alert('Please enter both bucket name and base name.');
         return;
     }
 
@@ -23,8 +23,15 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     console.log("Character ID:", charId);
 
     try {
-        // Construct direct link to the image
-        const url = `https://efroai.net/bucket/${userId}/${charId}/${encodeURIComponent(objectKey)}`;
+        // Fetch all matching images for the given base name
+        const searchUrl = `https://efroai.net/bucket/${userId}/${charId}/${encodeURIComponent(objectKeyBase)}.*`;
+        const response = await fetch(searchUrl);
+        if (!response.ok) {
+            throw new Error('Image not found or invalid search query');
+        }
+
+        // Assume the server responds with the first matching file URL
+        const url = await response.text(); // The server should return the URL of the found image
 
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
