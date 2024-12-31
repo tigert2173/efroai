@@ -490,23 +490,32 @@
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
         
-            // Handle image delete for each slot
-            function deleteImage(slot) {
-                const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imageKey = imgSlot.src.split('/').pop();  // Extract file name
-        
-                // Send delete request to backend
-                fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
-                    method: 'DELETE',
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Image deleted successfully!');
-                    imgSlot.src = ''; // Clear the image in the slot
-                    document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
-                })
-                .catch(err => alert('Failed to delete image'));
+      // Handle image delete for each slot
+        function deleteImage(slot) {
+            const imgSlot = document.getElementById(`img-slot-${slot}`);
+            const imgUrl = imgSlot.src;
+
+            // Extract the key by removing the bucket URL part
+            const imageKey = imgUrl.split('/bucket/')[1];  // This assumes the URL is in the format /bucket/user/characterid/imagename
+
+            if (!imageKey) {
+                alert('Failed to extract image key.');
+                return;
             }
+
+            // Send delete request to backend
+            fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Image deleted successfully!');
+                imgSlot.src = ''; // Clear the image in the slot
+                document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
+            })
+            .catch(err => alert('Failed to delete image'));
+        }
+
         </script>
         
         
