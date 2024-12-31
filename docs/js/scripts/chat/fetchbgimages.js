@@ -77,22 +77,15 @@ toggleMenuBtn.addEventListener("click", () => {
     imageMenu.classList.toggle("show-menu");
 });
 
+// Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
 // Function to fetch and set the image based on the current slot
 function setImage(slot) {
-    console.log('Setting image for slot', slot); // Debugging
-
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
-    const imagePosition = document.querySelector('input[name="imagePosition"]:checked')?.value;
-
-    if (!imagePosition) {
-        console.error("No image position selected.");
-        return;
-    }
-
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.jpg`; // Example slot-based image URL
+    const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -100,15 +93,11 @@ function setImage(slot) {
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
 
-    // Reset the containers
+    // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
     rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
-
-    // Hide arrows initially
-    document.getElementById('left-arrow-container').style.display = 'none';
-    document.getElementById('right-arrow-container').style.display = 'none';
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
@@ -118,18 +107,15 @@ function setImage(slot) {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
-        document.getElementById('left-arrow-container').style.display = 'block'; // Show left arrows
     } else if (imagePosition === 'right') {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
-        document.getElementById('right-arrow-container').style.display = 'block'; // Show right arrows
     }
 }
 
 // Handle "Previous" button click
-document.getElementById('prevImageBtn')?.addEventListener('click', () => {
-    console.log('Previous button clicked'); // Debugging
+document.getElementById('prevImageBtn').addEventListener('click', () => {
     if (currentSlot > 1) {
         currentSlot--;
     } else {
@@ -139,8 +125,7 @@ document.getElementById('prevImageBtn')?.addEventListener('click', () => {
 });
 
 // Handle "Next" button click
-document.getElementById('nextImageBtn')?.addEventListener('click', () => {
-    console.log('Next button clicked'); // Debugging
+document.getElementById('nextImageBtn').addEventListener('click', () => {
     if (currentSlot < 10) {
         currentSlot++;
     } else {
@@ -151,6 +136,5 @@ document.getElementById('nextImageBtn')?.addEventListener('click', () => {
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', () => {
-    console.log('Page loaded, displaying slot 1'); // Debugging
     setImage(1); // Show slot1 by default
 });
