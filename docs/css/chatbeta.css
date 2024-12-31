@@ -997,10 +997,14 @@ button:disabled {
     display: block;
 }
 
-/* Ensure the image navigation buttons appear below the images */
+/* Styling for the image container and buttons */
 #left-image-container, #right-image-container {
     position: relative;
-    padding-bottom: 20px; /* Adds space for the navigation buttons */
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    padding-bottom: 40px; /* Make room for navigation buttons */
 }
 
 .image-navigation {
@@ -1010,14 +1014,39 @@ button:disabled {
 }
 
 .image-navigation button {
-    margin: 0 5px;
-    padding: 5px 15px;
+    padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
 }
 
 .image-navigation button:hover {
     background-color: #45a049;
+}
+
+/* Style for images */
+#left-image-container img, #right-image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* General chat layout */
+#chat-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+#chat-container {
+    flex: 1;
+    margin: 0 20px;
+}
+
+/* Style for menu container */
+.menu-container {
+    margin-top: 20px;
 }
