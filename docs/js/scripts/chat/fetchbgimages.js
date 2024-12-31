@@ -108,6 +108,8 @@ function setImage(slot) {
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-left-image');
+        imageNavigation.classList.add('has-left-image');
+
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
