@@ -465,21 +465,15 @@
                     throw new Error('Image upload failed');
                 })
                 .then(data => {
-                    // After successful upload, we don't clear the preview, just ensure the backend is updated
-                    console.log('Image uploaded successfully!');
-                    updateSlotImage(slot, data.file.Key);  // Update the image slot with the new image URL
+                    // Image uploaded successfully, update the image URL
+                    const imgSlot = document.getElementById(`img-slot-${slot}`);
+                    const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${data.file.Key}`;
+                    imgSlot.src = imgUrl; // Set the uploaded image URL
+                    alert('Image uploaded successfully!');
                 })
                 .catch(error => {
                     alert('Failed to upload image: ' + error.message);
                 });
-            }
-        
-            // Update the image in the corresponding slot after upload
-            function updateSlotImage(slot, imageKey) {
-                const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
-                imgSlot.src = imgUrl; // Set the image source to the new image URL
-                document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
         
             // Handle image delete for each slot
