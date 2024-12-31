@@ -80,18 +80,25 @@ toggleMenuBtn.addEventListener("click", () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
-// Function to fetch and check if the image exists
-async function checkImageExists(url) {
+let currentSlot = 1; // Starting from slot 1
+let validSlots = []; // To store valid slots
+
+// Function to check if a slot is valid by fetching it
+async function checkSlotValidity(slot) {
+    const userId = sessionStorage.getItem('characterUploader');
+    const charId = sessionStorage.getItem('selectedCharacterId');
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`;
+
     try {
-        const response = await fetch(url, { method: 'HEAD' });
+        const response = await fetch(url, { method: 'HEAD' }); // Use HEAD request to check existence
         if (response.ok) {
-            return true;  // Image exists
+            return true; // Slot is valid
         } else {
-            return false; // Image doesn't exist (404 or other errors)
+            return false; // Slot is invalid (404 or other error)
         }
     } catch (error) {
-        console.error("Error checking image:", error);
-        return false;
+        console.error("Error checking slot:", error);
+        return false; // Assume invalid if there's an error
     }
 }
 
@@ -101,13 +108,6 @@ async function setImage(slot) {
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
     const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
-
-    // Check if the image exists before proceeding
-    const imageExists = await checkImageExists(url);
-    if (!imageExists) {
-        console.log(`Slot ${slot} does not exist. Skipping.`);
-        return; // Skip if the image doesn't exist
-    }
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -134,72 +134,74 @@ async function setImage(slot) {
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
+
+    // Add click event listeners to cycle the image slots when clicked
+    const cycleImages = document.querySelectorAll('.cycle-image');
+    cycleImages.forEach((img) => {
+        img.addEventListener('click', () => {
+            if (img.closest('#left-image-container')) {
+                // If the left image was clicked, cycle left
+                currentSlot = getNextSlot('prev');
+            } else if (img.closest('#right-image-container')) {
+                // If the right image was clicked, cycle right
+                currentSlot = getNextSlot('next');
+            }
+            setImage(currentSlot);
+        });
+    });
 }
 
-// Function to cycle through available slots only
-async function cycleImages() {
-    let availableSlots = [];
-    const userId = sessionStorage.getItem('characterUploader');
-    const charId = sessionStorage.getItem('selectedCharacterId');
+// Function to get the next valid slot (or previous)
+async function getNextSlot(direction) {
+    let newSlot = currentSlot;
+    if (direction === 'next') {
+        do {
+            newSlot = newSlot === validSlots[validSlots.length - 1] ? validSlots[0] : validSlots[validSlots.indexOf(newSlot) + 1];
+        } while (!validSlots.includes(newSlot)); // Loop until valid slot found
+    } else if (direction === 'prev') {
+        do {
+            newSlot = newSlot === validSlots[0] ? validSlots[validSlots.length - 1] : validSlots[validSlots.indexOf(newSlot) - 1];
+        } while (!validSlots.includes(newSlot)); // Loop until valid slot found
+    }
+    return newSlot;
+}
 
-    // Check for all slots (1 to 10)
-    for (let i = 1; i <= 10; i++) {
-        const url = `https://efroai.net/bucket/${userId}/${charId}/slot${i}.webp`;
-        const imageExists = await checkImageExists(url);
-        if (imageExists) {
-            availableSlots.push(i); // Add available slot to the list
+// Function to initialize the valid slots and update the available ones
+async function initializeSlots() {
+    validSlots = []; // Reset valid slots array
+    const maxSlots = 10; // Assuming max slots are 10
+
+    // Check which slots are valid (not 404)
+    for (let slot = 1; slot <= maxSlots; slot++) {
+        const isValid = await checkSlotValidity(slot);
+        if (isValid) {
+            validSlots.push(slot);
         }
     }
 
-    if (availableSlots.length > 0) {
-        // If there are available slots, set the first available slot as the default
-        currentSlot = availableSlots[0];
-        setImage(currentSlot); // Display the first available image
+    // Display the first valid slot
+    if (validSlots.length > 0) {
+        currentSlot = validSlots[0]; // Start with the first valid slot
+        setImage(currentSlot);
+    } else {
+        console.warn("No valid slots available.");
     }
 }
 
+// Initialize valid slots on page load
+window.addEventListener('load', () => {
+    initializeSlots(); // Initialize and set the first valid image
+});
+
 // Handle "Previous" button click
-document.getElementById('prevImageBtn').addEventListener('click', async () => {
-    let availableSlots = await getAvailableSlots();
-    const currentIndex = availableSlots.indexOf(currentSlot);
-    if (currentIndex > 0) {
-        currentSlot = availableSlots[currentIndex - 1]; // Go to the previous available slot
-    } else {
-        currentSlot = availableSlots[availableSlots.length - 1]; // Loop to the last available slot
-    }
+document.getElementById('prevImageBtn').addEventListener('click', () => {
+    currentSlot = getNextSlot('prev');
     setImage(currentSlot);
 });
 
 // Handle "Next" button click
-document.getElementById('nextImageBtn').addEventListener('click', async () => {
-    let availableSlots = await getAvailableSlots();
-    const currentIndex = availableSlots.indexOf(currentSlot);
-    if (currentIndex < availableSlots.length - 1) {
-        currentSlot = availableSlots[currentIndex + 1]; // Go to the next available slot
-    } else {
-        currentSlot = availableSlots[0]; // Loop to the first available slot
-    }
+document.getElementById('nextImageBtn').addEventListener('click', () => {
+    currentSlot = getNextSlot('next');
     setImage(currentSlot);
-});
-
-// Function to get all available slots for cycling
-async function getAvailableSlots() {
-    let availableSlots = [];
-    const userId = sessionStorage.getItem('characterUploader');
-    const charId = sessionStorage.getItem('selectedCharacterId');
-    // Check for all slots (1 to 10)
-    for (let i = 1; i <= 10; i++) {
-        const url = `https://efroai.net/bucket/${userId}/${charId}/slot${i}.webp`;
-        const imageExists = await checkImageExists(url);
-        if (imageExists) {
-            availableSlots.push(i); // Add available slot to the list
-        }
-    }
-    return availableSlots;
-}
-
-// Display the first available slot when the page loads
-window.addEventListener('load', async () => {
-    await cycleImages(); // Load the first available image
 });
 
