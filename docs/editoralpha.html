@@ -406,7 +406,31 @@
                         <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
                     `;
                     slotsContainer.appendChild(imgSlot);
+        
+                    // Check if there is an existing image for the slot
+                    fetchExistingImage(i);
                 }
+            }
+        
+            // Function to fetch the existing image for each slot
+            function fetchExistingImage(slot) {
+                fetch(`/bucket/${user}/${characterNumber}/image${slot}.jpg`) // Assuming images are named like image1.jpg, image2.jpg, etc.
+                    .then(response => {
+                        if (response.ok) {
+                            return response.blob(); // If image exists, get the image as a blob
+                        } else {
+                            throw new Error('Image not found');
+                        }
+                    })
+                    .then(blob => {
+                        const imgUrl = URL.createObjectURL(blob); // Convert blob to a URL
+                        const imgSlot = document.getElementById(`img-slot-${slot}`);
+                        imgSlot.src = imgUrl; // Set the image source to the retrieved image
+                        document.getElementById(`delete-slot-${slot}`).style.display = 'inline'; // Show delete button
+                    })
+                    .catch(err => {
+                        console.log(`No image found for Slot ${slot}:`, err); // If image not found, do nothing
+                    });
             }
         
             // Initialize the image slots on page load
