@@ -308,46 +308,87 @@
     </div>
 
     <!-- Audio Players for Each Generated Clip -->
-    <div id="audioPlayersContainer"></div>
-    <div id="main-content">
-        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
-        <div id="imageMenu" class="menu-container">
-            <form id="fetchImageForm">
-                <label for="bucketName">Bucket Name:</label>
-                <input type="text" id="bucketName" name="bucketName" required>
-                <label for="objectKey">Object Key:</label>
-                <input type="text" id="objectKey" name="objectKey" required>
-                <label>Image Position:</label>
-                <label for="background">
-                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background </label>
-                <label for="left">
-                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
-                <label for="right">
-                    <input type="radio" id="right" name="imagePosition" value="right"> Right </label>
-                <button type="submit">Fetch Image</button>
-            </form>
-            <label for="opacity-slider">Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+<div id="audioPlayersContainer"></div>
+
+<div id="main-content">
+    <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
+    <div id="imageMenu" class="menu-container">
+        <form id="fetchImageForm">
+            <label for="objectKey">Object Key:</label>
+            <input type="text" id="objectKey" name="objectKey" required>
+            <label>Image Position:</label>
+            <label for="background">
+                <input type="radio" id="background" name="imagePosition" value="background" checked> Background
+            </label>
+            <label for="left">
+                <input type="radio" id="left" name="imagePosition" value="left"> Left
+            </label>
+            <label for="right">
+                <input type="radio" id="right" name="imagePosition" value="right"> Right
+            </label>
+            <button type="submit">Fetch Image</button>
+        </form>
+        <label for="opacity-slider">Opacity:</label>
+        <input type="range" id="opacity-slider" min="0" max="100" value="100">
+    </div>
+    <script src="js/scripts/chat/fetchbgimages.js"></script>
+
+    <!-- Button to manually trigger saving chat messages -->
+    <button id="save-chat-button">Save Chat</button>
+
+    <!-- Parent container for chat and images -->
+    <div id="chat-wrapper">
+        <div id="left-image-container"></div> <!-- Left side image container -->
+        <div id="chat-container">
+            <!-- Chat content will go here -->
         </div>
-        <script src="js/scripts/chat/fetchbgimages.js"></script>
-        <!-- Button to manually trigger saving chat messages -->
-        <button id="save-chat-button">Save Chat</button>
-        <!-- Parent container for chat and images -->
-        <div id="chat-wrapper">
-            <div id="left-image-container"></div> <!-- Left side image container -->
-            <div id="chat-container">
-                <!-- Chat content will go here -->
-            </div>
-            <div id="right-image-container"></div> <!-- Right side image container -->
+        <div id="right-image-container"></div> <!-- Right side image container -->
+    </div>
+
+    <div id="input-wrapper">
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
         </div>
-        <div id="input-wrapper">
-            <div id="input-container">
-                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
-        </div>        
-        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+    </div>
+
+    <div id="navigation-controls">
+        <!-- Navigation buttons for image slots -->
+        <button id="prev-image" onclick="navigateImages(-1)">&#8592; Prev</button>
+        <button id="next-image" onclick="navigateImages(1)">Next &#8594;</button>
+    </div> 
+
+    <!-- Slot images container -->
+    <div id="image-slot-container">
+        <img id="image-slot" src="" alt="Image Slot" />
+    </div>
+</div>
+
+<script>
+// JavaScript for navigating between images
+
+let currentImageIndex = 1; // Start at image slot#1
+
+function navigateImages(direction) {
+    currentImageIndex += direction;
+
+    // Ensure the image index stays within bounds (1 to 10)
+    if (currentImageIndex < 1) {
+        currentImageIndex = 10; // Loop back to slot#10
+    } else if (currentImageIndex > 10) {
+        currentImageIndex = 1; // Loop back to slot#1
+    }
+
+    // Update the image slot source
+    document.getElementById("image-slot").src = `path/to/your/images/slot${currentImageIndex}.jpg`;
+}
+
+// Initial image load
+document.addEventListener("DOMContentLoaded", function() {
+    navigateImages(0); // Load the first image when the page loads
+});
+</script>
 
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
