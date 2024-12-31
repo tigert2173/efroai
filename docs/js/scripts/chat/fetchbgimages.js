@@ -92,7 +92,7 @@ function setImage(slot) {
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
-    const imageNavigation = document.getElementById('image-navigation');
+    const imageNavigation = document.getElementById('prevImageBtn');
 
     // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
