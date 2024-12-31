@@ -401,7 +401,7 @@
                     imgSlot.innerHTML = `
                         <h3>Slot ${i}</h3>
                         <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
-                        <input type="file" onchange="previewImage(event, ${i})" id="upload-slot-${i}">
+                        <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
                         <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
                     `;
                     slotsContainer.appendChild(imgSlot);
@@ -434,21 +434,6 @@
         
             // Initialize the image slots on page load
             initializeImageSlots();
-        
-            // Handle image preview for each slot
-            function previewImage(event, slot) {
-                const file = event.target.files[0];
-                if (!file) return; // No file selected, exit
-        
-                // Preview the selected image
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgSlot = document.getElementById(`img-slot-${slot}`);
-                    imgSlot.src = e.target.result;  // Set the preview image source
-                    document.getElementById(`delete-slot-${slot}`).style.display = 'inline'; // Show delete button
-                };
-                reader.readAsDataURL(file);  // Read the file as data URL to preview it
-            }
         
             // Handle image upload for each slot
             function uploadImage(event, slot) {
@@ -497,7 +482,7 @@
                 reader.readAsDataURL(file);
             }
         
-            // Update the image in the corresponding slot after upload
+            // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
                 const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
