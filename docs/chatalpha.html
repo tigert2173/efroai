@@ -347,7 +347,7 @@
             </div>
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-        
+
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
     <!-- JuicyAds v3.0 -->
@@ -393,19 +393,6 @@
         ad.style.display = 'none'; // Hides the ad
     }
 </script>
-
-
-        <div id="input-container">
-            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button onclick="regenerateMessage()">Regenerate Message</button>
-        </div>
-        
-        <label for="enter-send" class="send-on-enter-label">
-            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
-            <span class="checkbox-text">Send on Enter</span>
-        </label>
-        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = true;
