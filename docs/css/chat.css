@@ -246,13 +246,24 @@ code {
     max-width: 700px;
     margin-bottom: 10px;
 }
+/* Fade-in and slide-up animation */
+@keyframes slideFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); /* Initial position */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Final position */
+    }
+}
 
 
 #input-container input {
     flex: 1;
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: e 0 0 e;
+    border-radius: 5px 0 0 5px;
     /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
