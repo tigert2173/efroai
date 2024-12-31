@@ -247,11 +247,12 @@ code {
     margin-bottom: 10px;
 }
 
+
 #input-container input {
     flex: 1;
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: 5px 0 0 5px;
+    border-radius: e 0 0 e;
     /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
@@ -262,10 +263,10 @@ code {
     color: #f9f9fc;
 }
 
-    /* Change placeholder text color */
-    #user-input::placeholder {
-        color: #a0a0a0; /* Light gray placeholder */
-    }
+/* Change placeholder text color */
+#user-input::placeholder {
+    color: #a0a0a0; /* Light gray placeholder */
+}
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
