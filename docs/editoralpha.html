@@ -462,54 +462,57 @@
                 img.src = URL.createObjectURL(file);
                 
                 img.onload = function() {
-                    // Create a canvas element
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-                    // Set canvas size to the image size
-                    canvas.width = img.width;
-                    canvas.height = img.height;
+    // Set canvas size to the image size
+    canvas.width = img.width;
+    canvas.height = img.height;
 
-                    // Draw the image on the canvas
-                    ctx.drawImage(img, 0, 0);
+    // Draw the image on the canvas
+    ctx.drawImage(img, 0, 0);
 
-                    // Get the original file size
-                    const imageSize = file.size; // This is the uploaded file size in bytes
+    // Get the original file size (assuming 'file' is the file input)
+    const imageSize = file.size; // This is the uploaded file size in bytes
 
-                    // Set the maximum image size for compression scaling (4MB for example)
-                    const maxSize = 8 * 1024 * 1024;  // 4MB in bytes
-                    const minQuality = 0.1;  // Minimum quality (for very large images)
-                    const maxQuality = 0.8;  // Maximum quality (for small images)
+    // Set the maximum image size for compression scaling (4MB for example)
+    const maxSize = 8 * 1024 * 1024;  // 4MB in bytes
+    const minQuality = 0.2;  // Minimum quality (for very large images)
+    const maxQuality = 0.8;  // Maximum quality (for small images)
 
-                    // Calculate the compression quality dynamically based on image size
-                    let quality = maxQuality; // Default to max quality
+    // Calculate the compression quality dynamically based on image size
+    let quality = maxQuality; // Default to max quality
 
-                    if (imageSize > maxSize) {
-                        // For large images (above maxSize), reduce quality gradually
-                        quality = minQuality + (1 - minQuality) * (maxSize / imageSize);
-                    } else {
-                        // For smaller images, keep high quality
-                        quality = maxQuality;
-                    }
+    if (imageSize > maxSize) {
+        // For large images (above maxSize), reduce quality gradually
+        quality = minQuality + (1 - minQuality) * (maxSize / imageSize);
+        console.log(`Image size: ${imageSize} bytes. Compression factor: ${(maxSize / imageSize).toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+    } else {
+        // For smaller images, keep high quality
+        quality = maxQuality;
+        console.log(`Image size: ${imageSize} bytes. No compression needed. Quality: ${quality.toFixed(2)}`);
+    }
 
-                    // Convert canvas to WebP format with the calculated quality
-                    canvas.toBlob(function(blob) {
-                        const formData = new FormData();
-                        formData.append('image', blob, 'image.webp'); // Append the blob as 'image.webp'
+    // Convert canvas to WebP format with the calculated quality
+    canvas.toBlob(function(blob) {
+        const formData = new FormData();
+        formData.append('image', blob, 'image.webp'); // Append the blob as 'image.webp'
 
-                        // Send the compressed WebP image to the server
-                        fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
-                            method: 'POST',
-                            body: formData,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert('Image uploaded successfully!');
-                            updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
-                        })
-                        .catch(err => alert('Failed to upload image'));
-                    }, 'image/webp', quality);  // Use the dynamically calculated compression quality
-                };
+        // Send the compressed WebP image to the server
+        fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Image uploaded successfully!');
+            updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
+        })
+        .catch(err => alert('Failed to upload image'));
+    }, 'image/webp', quality);  // Use the dynamically calculated compression quality
+};
+
 
             }
         
