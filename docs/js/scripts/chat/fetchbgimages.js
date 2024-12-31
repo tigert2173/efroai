@@ -50,7 +50,6 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             chatWrapper.classList.add('has-right-image');
             inputWrapper.classList.add('has-right-image');
         }
-
     } catch (error) {
         console.error("Error setting image:", error);
         alert('Failed to set image: ' + error.message);
@@ -105,14 +104,29 @@ function setImage(slot) {
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
         chatContainer.style.setProperty('--bg-opacity', 1);
     } else if (imagePosition === 'left') {
-        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
+        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="cycle-image">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
-        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
+        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;" class="cycle-image">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
+
+    // Add click event listeners to cycle the image slots when clicked
+    const cycleImages = document.querySelectorAll('.cycle-image');
+    cycleImages.forEach((img) => {
+        img.addEventListener('click', () => {
+            if (img.closest('#left-image-container')) {
+                // If the left image was clicked, cycle left
+                currentSlot = (currentSlot > 1) ? currentSlot - 1 : 10; // Loop back to slot 10
+            } else if (img.closest('#right-image-container')) {
+                // If the right image was clicked, cycle right
+                currentSlot = (currentSlot < 10) ? currentSlot + 1 : 1; // Loop back to slot 1
+            }
+            setImage(currentSlot);
+        });
+    });
 }
 
 // Handle "Previous" button click
@@ -137,13 +151,5 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', () => {
-    // Create the image navigation buttons outside the image content
-    const navigationButtons = `
-        <div class="image-navigation">
-            <button id="prevImageBtn">Previous</button>
-            <button id="nextImageBtn">Next</button>
-        </div>
-    `;
-    document.getElementById('input-wrapper').innerHTML += navigationButtons; // Add buttons once on page load
-    setImage(1); // Show slot1 by default
+    setImage(1); // Show slot 1 by default
 });
