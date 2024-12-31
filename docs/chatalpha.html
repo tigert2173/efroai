@@ -334,11 +334,6 @@
         <button id="save-chat-button">Save Chat</button>
         <!-- Parent container for chat and images -->
         <div id="chat-wrapper">
-            <!-- Navigation controls for image swiping -->
-<div id="image-navigation-controls">
-    <button id="prev-image-btn" onclick="navigateImages(-1)">&#8592; Prev</button>
-    <button id="next-image-btn" onclick="navigateImages(1)">Next &#8594;</button>
-</div>
             <div id="left-image-container"></div> <!-- Left side image container -->
             <div id="chat-container">
                 <!-- Chat content will go here -->
@@ -353,10 +348,6 @@
             </div>
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-<!-- Parent container for images -->
-<div id="image-container">
-    <img id="current-image" src="" alt="Current Slot Image" />
-</div>
 
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
@@ -375,59 +366,7 @@
     <!-- Close button -->
     <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
 </div>
-<!-- Images stored as slots -->
-<script>
-    const imageSlots = [
-        "slot1.jpg", "slot2.jpg", "slot3.jpg", "slot4.jpg", "slot5.jpg",
-        "slot6.jpg", "slot7.jpg", "slot8.jpg", "slot9.jpg", "slot10.jpg"
-    ];
-    let currentIndex = 0;
 
-    // Function to update the displayed image based on the currentIndex
-    function updateImage() {
-        const imageElement = document.getElementById('current-image');
-        imageElement.src = imageSlots[currentIndex];  // Set the source of the image
-    }
-
-    // Function to navigate images
-    function navigateImages(direction) {
-        // Update the currentIndex based on direction (-1 for prev, 1 for next)
-        currentIndex = (currentIndex + direction + imageSlots.length) % imageSlots.length;
-        updateImage();  // Update the image displayed
-    }
-
-    // Initial image load
-    updateImage();
-</script>
-
-<!-- CSS for styling the navigation and image -->
-<style>
-    #image-navigation-controls {
-        display: flex;
-        justify-content: center;
-        margin: 10px;
-    }
-    #prev-image-btn, #next-image-btn {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 16px;
-        margin: 0 10px;
-    }
-    #prev-image-btn:hover, #next-image-btn:hover {
-        background-color: #ddd;
-    }
-    #image-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-    #current-image {
-        width: 80%;  /* Adjust the image width as needed */
-        max-width: 600px;
-        height: auto;
-    }
-</style>
 <!-- Right-side Ad -->
 <div class="desktop-only-ad right-ad" id="rightAd">
     <!-- JuicyAds v3.0 -->
