@@ -40,13 +40,13 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         } else if (imagePosition === 'left') {
             // Set the left side image
             chatContainer.style.setProperty('--background-image', 'none');
-            leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
+            leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="cycle-image">`;
             chatWrapper.classList.add('has-left-image');
             inputWrapper.classList.add('has-left-image');
         } else if (imagePosition === 'right') {
             // Set the right side image
             chatContainer.style.setProperty('--background-image', 'none');
-            rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
+            rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;" class="cycle-image">`;
             chatWrapper.classList.add('has-right-image');
             inputWrapper.classList.add('has-right-image');
         }
@@ -104,11 +104,11 @@ function setImage(slot) {
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
         chatContainer.style.setProperty('--bg-opacity', 1);
     } else if (imagePosition === 'left') {
-        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
+        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="cycle-image">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
-        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
+        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;" class="cycle-image">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
@@ -134,7 +134,20 @@ document.getElementById('nextImageBtn').addEventListener('click', () => {
     setImage(currentSlot);
 });
 
+// Click to cycle images
+document.querySelectorAll('.cycle-image').forEach((image) => {
+    image.addEventListener('click', () => {
+        // Cycle through the images when clicked
+        if (currentSlot < 10) {
+            currentSlot++;
+        } else {
+            currentSlot = 1; // Loop back to slot 1
+        }
+        setImage(currentSlot);
+    });
+});
+
 // Display slot 1 by default when the page loads
 window.addEventListener('load', () => {
-    setImage(1); // Show slot1 by default
+    setImage(1); // Show slot 1 by default
 });
