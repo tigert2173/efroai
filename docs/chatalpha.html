@@ -307,10 +307,30 @@
         <!--JuicyAds END-->
     </div>
 
+<!-- Image Containers with Navigation Below -->
+<div id="chat-wrapper">
+    <div id="left-image-container">
+        <!-- Left Image Content -->
+        <div class="image-navigation" id="left-nav-container">
+            <button id="prevImageBtn">← Previous</button>
+            <button id="nextImageBtn">Next →</button>
+        </div>
+    </div> <!-- Left side image container -->
 
-<!-- Audio Players for Each Generated Clip -->
-<div id="audioPlayersContainer"></div>
+    <div id="chat-container">
+        <!-- Chat content will go here -->
+    </div>
 
+    <div id="right-image-container">
+        <!-- Right Image Content -->
+        <div class="image-navigation" id="right-nav-container">
+            <button id="prevImageBtnRight">← Previous</button>
+            <button id="nextImageBtnRight">Next →</button>
+        </div>
+    </div> <!-- Right side image container -->
+</div>
+
+<!-- Main Content -->
 <div id="main-content">
     <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
     <div id="imageMenu" class="menu-container">
@@ -333,27 +353,21 @@
         <input type="range" id="opacity-slider" min="0" max="100" value="100">
     </div>
     <script src="js/scripts/chat/fetchbgimages.js"></script>
-
-    <button id="save-chat-button">Save Chat</button>
-
-    <div id="chat-wrapper">
-        <div id="left-image-container"></div> <!-- Left side image container -->
-        <div id="chat-container">
-            <!-- Chat content will go here -->
-        </div>
-        <div id="right-image-container"></div> <!-- Right side image container -->
-    </div>
-
-    <div id="input-wrapper">
-        <div id="input-container">
-            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
-        </div>
-    </div>        
-
-    <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 </div>
+
+<div id="input-wrapper">
+    <div id="input-container">
+        <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+        <button id="send-button" onclick="sendMessage()">Send</button>
+        <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
+    </div>
+</div>
+
+<!-- Button to manually trigger saving chat messages -->
+<button id="save-chat-button">Save Chat</button>
+
+<!-- Controls will be rendered here -->
+<div id="navigation-controls"></div>
 
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
