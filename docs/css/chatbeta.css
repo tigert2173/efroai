@@ -997,29 +997,3 @@ button:disabled {
     display: block;
 }
 
-.arrow-container {
-    display: none; /* Hide arrows by default */
-    text-align: center;
-    margin-top: 10px;
-}
-
-.arrow-button {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.image-container img {
-    width: 100%; /* Ensure image is responsive */
-    height: auto;
-}
-
-/* Show arrows when an image is present */
-.has-left-image #left-arrow-container {
-    display: block;
-}
-
-.has-right-image #right-arrow-container {
-    display: block;
-}
