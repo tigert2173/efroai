@@ -465,7 +465,8 @@
                     throw new Error('Image upload failed');
                 })
                 .then(data => {
-                    alert('Image uploaded successfully!');
+                    // After successful upload, we don't clear the preview, just ensure the backend is updated
+                    console.log('Image uploaded successfully!');
                     updateSlotImage(slot, data.file.Key);  // Update the image slot with the new image URL
                 })
                 .catch(error => {
