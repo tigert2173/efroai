@@ -413,7 +413,7 @@
         
             // Function to fetch the existing image for each slot
             function fetchExistingImage(slot) {
-                fetch(`/bucket/${user}/${characterNumber}/slot${slot}.jpg`) // Adjust the path based on slot number
+                fetch(`/bucket/${user}/${characterNumber}/${slot}.jpg`) // Adjust the path based on slot number
                     .then(response => {
                         if (response.ok) {
                             return response.blob(); // If image exists, get the image as a blob
@@ -464,7 +464,7 @@
                             formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
         
                             // Send the converted image to the server
-                            fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
+                            fetch(`/bucket/${user}/${characterNumber}/${slot}/upload`, {  // Adjust the URL for upload path
                                 method: 'POST',
                                 body: formData,
                             })
@@ -485,7 +485,7 @@
             // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
+                const imgUrl = `/bucket/${user}/${characterNumber}/${slot}/${imageKey}`;  // Ensure this matches the backend path
                 imgSlot.src = imgUrl; // Set the image source to the new image URL
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
@@ -496,7 +496,7 @@
                 const imageKey = imgSlot.src.split('/').pop();  // Extract file name
         
                 // Send delete request to backend
-                fetch(`/bucket/${user}/${characterNumber}/slot${slot}/delete`, { // Adjust URL for delete request
+                fetch(`/bucket/${user}/${characterNumber}/${slot}/delete`, { // Adjust URL for delete request
                     method: 'DELETE',
                 })
                 .then(response => response.json())
