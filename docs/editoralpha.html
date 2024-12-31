@@ -372,21 +372,13 @@
         </div>
         
         <script>
-            // Define the user and character number variables
+            // Retrieve user and character number from session storage
             const characterData = sessionStorage.getItem('editCharacter');
-        
-            // Check if the data exists in session storage
+            
             if (characterData) {
-                // Parse the JSON string into an object
                 const parsedData = JSON.parse(characterData);
-                
-                // Extract the uploader and characterId (id) from the parsed data
-                const user = parsedData.uploader;
-                const characterNumber = parsedData.id;
-        
-                // Log the values to check
-                console.log('Uploader:', user);
-                console.log('Character ID:', characterNumber);
+                const user = parsedData.uploader; // User uploading the image
+                const characterNumber = parsedData.id; // Character ID for the image
             } else {
                 console.log('No character data found in session storage');
             }
@@ -417,12 +409,12 @@
             // Handle image upload for each slot
             function uploadImage(event, slot) {
                 const file = event.target.files[0];
-                if (!file) return; // If no file is selected, exit
+                if (!file) return; // No file selected, exit
         
                 const formData = new FormData();
                 formData.append('image', file);
         
-                // Send image upload request to backend with user and character data
+                // Send image upload request to backend
                 fetch(`/bucket/${user}/${characterNumber}/upload`, {
                     method: 'POST',
                     body: formData,
@@ -448,7 +440,7 @@
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
                 const imageKey = imgSlot.src.split('/').pop();  // Extract file name
         
-                // Send delete request to backend with user and character data
+                // Send delete request to backend
                 fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
                     method: 'DELETE',
                 })
@@ -460,36 +452,6 @@
                 })
                 .catch(err => alert('Failed to delete image'));
             }
-        
-            // Auto-upload new image when it's ready (e.g., via drag-and-drop or URL fetch)
-            function autoUploadImage(imageFile) {
-                const formData = new FormData();
-                formData.append('image', imageFile);
-        
-                // Send auto-upload request to the backend with user and character data
-                fetch(`/bucket/${user}/${characterNumber}/upload`, {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Image uploaded automatically!');
-                    // Suppose slot 1 gets the new uploaded image by default
-                    updateSlotImage(1, data.file.Key);  // Update image slot with the new image
-                })
-                .catch(err => alert('Failed to auto-upload image'));
-            }
-        
-            // Simulate auto-uploading an image (example: fetch or drag-and-drop)
-            // Example: Fetch an image file from a URL or other source to trigger auto-upload
-            // Here, you can replace this with any method to get an image (like a drag-and-drop event or URL fetch)
-            fetch('https://example.com/path/to/image.jpg')
-                .then(response => response.blob())
-                .then(blob => {
-                    // Simulate auto-upload
-                    autoUploadImage(blob);
-                })
-                .catch(err => console.log('Failed to fetch image for auto-upload'));
         </script>
         
     </div>
