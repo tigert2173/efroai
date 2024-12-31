@@ -401,9 +401,8 @@
                     imgSlot.innerHTML = `
                         <h3>Slot ${i}</h3>
                         <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
-                        <input type="file" onchange="previewImage(event, ${i})" id="upload-slot-${i}">
+                        <input type="file" onchange="previewAndUploadImage(event, ${i})" id="upload-slot-${i}">
                         <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
-                        <button onclick="uploadImage(${i})" id="upload-button-${i}" style="display:none;">Upload</button>
                     `;
                     slotsContainer.appendChild(imgSlot);
         
@@ -436,8 +435,8 @@
             // Initialize the image slots on page load
             initializeImageSlots();
         
-            // Handle image preview for each slot
-            function previewImage(event, slot) {
+            // Handle image preview and upload for each slot
+            function previewAndUploadImage(event, slot) {
                 const file = event.target.files[0];
                 if (!file) return; // No file selected, exit
         
@@ -447,18 +446,10 @@
                     const imgSlot = document.getElementById(`img-slot-${slot}`);
                     imgSlot.src = e.target.result;  // Set the preview image source
                     document.getElementById(`delete-slot-${slot}`).style.display = 'inline'; // Show delete button
-                    document.getElementById(`upload-button-${slot}`).style.display = 'inline'; // Show upload button
                 };
                 reader.readAsDataURL(file);  // Read the file as data URL to preview it
-            }
         
-            // Handle image upload for each slot
-            function uploadImage(slot) {
-                const fileInput = document.getElementById(`upload-slot-${slot}`);
-                const file = fileInput.files[0];
-                if (!file) return; // No file selected, exit
-        
-                // Prepare the image for upload
+                // Automatically upload the image once selected
                 const formData = new FormData();
                 formData.append('image', file); // Append the image to the form data
         
@@ -488,7 +479,6 @@
                 const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
                 imgSlot.src = imgUrl; // Set the image source to the new image URL
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
-                document.getElementById(`upload-button-${slot}`).style.display = 'none';  // Hide upload button
             }
         
             // Handle image delete for each slot
