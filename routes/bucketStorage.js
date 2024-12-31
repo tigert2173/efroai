@@ -73,6 +73,7 @@ router.get('/:user/:characterid/:imagename', async (req, res) => {
 });
 
 // Upload an image for a user and character with automatic numbering
+// Upload an image for a user and character, replacing if it already exists
 router.post('/:user/:characterid/upload', upload.single('image'), async (req, res) => {
     const { user, characterid } = req.params;
     const file = req.file;
@@ -82,32 +83,42 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
     }
 
     try {
-        // List files for this user and character
         const params = {
             Bucket: BUCKET_NAME,
             Prefix: `${user}/${characterid}/`,
         };
 
         const data = await s3.listObjectsV2(params).promise();
-
-        // Find the highest numbered image for the character
         const imageFiles = data.Contents.filter(item => item.Key.endsWith('.jpg') || item.Key.endsWith('.png'));
         let highestNumber = 0;
+        let existingImageKey = null;
 
+        // Find the highest numbered image for the character and check if any existing image should be replaced
         imageFiles.forEach(file => {
-            const match = file.Key.match(/(\d+)\.(jpg|png)$/); // Match file names like 1.jpg, 2.png, etc.
+            const match = file.Key.match(/(\d+)\.(jpg|png)$/);
             if (match) {
                 const number = parseInt(match[1]);
                 if (number > highestNumber) {
                     highestNumber = number;
                 }
+                if (file.Key.includes(req.file.originalname)) { // Check if a file with same name exists
+                    existingImageKey = file.Key; // Set key to delete old image
+                }
             }
         });
 
-        // Set the next number
         const nextNumber = highestNumber + 1;
         const fileExtension = path.extname(file.originalname);
         const key = `${user}/${characterid}/${nextNumber}${fileExtension}`;
+
+        // If the image exists already, delete it before uploading the new one
+        if (existingImageKey) {
+            const deleteParams = {
+                Bucket: BUCKET_NAME,
+                Key: existingImageKey,
+            };
+            await s3.deleteObject(deleteParams).promise();
+        }
 
         // Upload the new image
         const uploadParams = {
@@ -115,20 +126,21 @@ router.post('/:user/:characterid/upload', upload.single('image'), async (req, re
             Key: key,
             Body: file.buffer,
             ContentType: file.mimetype,
-            ACL: 'public-read', // Make file publicly accessible (adjust as needed)
+            ACL: 'public-read',
         };
 
         const uploadResult = await s3.upload(uploadParams).promise();
-
         res.status(200).json({
             message: 'File uploaded successfully',
             file: uploadResult,
         });
+
     } catch (error) {
         console.error('Error uploading file:', error);
         res.status(500).json({ error: 'Failed to upload file' });
     }
 });
+
 
 // Remove an image for a user and character
 router.delete('/:user/:characterid/:imagename', async (req, res) => {
@@ -136,12 +148,19 @@ router.delete('/:user/:characterid/:imagename', async (req, res) => {
     const key = `${user}/${characterid}/${imagename}`;
 
     try {
-        // Delete the image from the bucket
+        // Check if the image exists before attempting to delete
         const params = {
             Bucket: BUCKET_NAME,
             Key: key,
         };
 
+        const fileExists = await s3.headObject(params).promise().catch(() => false);
+
+        if (!fileExists) {
+            return res.status(404).json({ error: 'Image not found' });
+        }
+
+        // Delete the image from the bucket
         await s3.deleteObject(params).promise();
         res.status(200).json({ message: `Image ${imagename} deleted successfully` });
     } catch (error) {
@@ -149,6 +168,7 @@ router.delete('/:user/:characterid/:imagename', async (req, res) => {
         res.status(500).json({ error: `Failed to delete image ${imagename}` });
     }
 });
+
 
 // Retrieve a list of all uploaded images for a user and character (slots 1-10)
 router.get('/:user/:characterid/images', async (req, res) => {
