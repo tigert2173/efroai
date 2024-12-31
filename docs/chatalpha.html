@@ -307,52 +307,58 @@
         <!--JuicyAds END-->
     </div>
 
-          <!-- Navigation arrows to cycle through images -->
-          <div class="image-navigation">
-            <button id="prevImageBtn">← Previous</button>
-            <button id="nextImageBtn">Next →</button>
+     <!-- Navigation arrows to cycle through images -->
+<div class="image-navigation">
+    <button id="prevImageBtn">← Previous</button>
+    <button id="nextImageBtn">Next →</button>
+</div>
+
+<!-- Audio Players for Each Generated Clip -->
+<div id="audioPlayersContainer"></div>
+
+<div id="main-content">
+    <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
+    <div id="imageMenu" class="menu-container">
+        <form id="fetchImageForm">
+            <label for="objectKey">Object Key:</label>
+            <input type="text" id="objectKey" name="objectKey" required>
+            <label>Image Position:</label>
+            <label for="background">
+                <input type="radio" id="background" name="imagePosition" value="background" checked> Background
+            </label>
+            <label for="left">
+                <input type="radio" id="left" name="imagePosition" value="left"> Left
+            </label>
+            <label for="right">
+                <input type="radio" id="right" name="imagePosition" value="right"> Right
+            </label>
+            <button type="submit">Fetch Image</button>
+        </form>
+        <label for="opacity-slider">Opacity:</label>
+        <input type="range" id="opacity-slider" min="0" max="100" value="100">
+    </div>
+    <script src="js/scripts/chat/fetchbgimages.js"></script>
+
+    <button id="save-chat-button">Save Chat</button>
+
+    <div id="chat-wrapper">
+        <div id="left-image-container"></div> <!-- Left side image container -->
+        <div id="chat-container">
+            <!-- Chat content will go here -->
         </div>
-    <!-- Audio Players for Each Generated Clip -->
-    <div id="audioPlayersContainer"></div>
-    <div id="main-content">
-        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
-        <div id="imageMenu" class="menu-container">
-            <form id="fetchImageForm">
-                <!-- <label for="bucketName">Bucket Name:</label>
-                <input type="text" id="bucketName" name="bucketName" required> -->
-                <label for="objectKey">Object Key:</label>
-                <input type="text" id="objectKey" name="objectKey" required>
-                <label>Image Position:</label>
-                <label for="background">
-                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background </label>
-                <label for="left">
-                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
-                <label for="right">
-                    <input type="radio" id="right" name="imagePosition" value="right"> Right </label>
-                <button type="submit">Fetch Image</button>
-            </form>
-            <label for="opacity-slider">Opacity:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="100">
+        <div id="right-image-container"></div> <!-- Right side image container -->
+    </div>
+
+    <div id="input-wrapper">
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
         </div>
-        <script src="js/scripts/chat/fetchbgimages.js"></script>
-        <!-- Button to manually trigger saving chat messages -->
-        <button id="save-chat-button">Save Chat</button>
-        <!-- Parent container for chat and images -->
-        <div id="chat-wrapper">
-            <div id="left-image-container"></div> <!-- Left side image container -->
-            <div id="chat-container">
-                <!-- Chat content will go here -->
-            </div>
-            <div id="right-image-container"></div> <!-- Right side image container -->
-        </div>
-        <div id="input-wrapper">
-            <div id="input-container">
-                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
-        </div>        
-        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+    </div>        
+
+    <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+</div>
 
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
