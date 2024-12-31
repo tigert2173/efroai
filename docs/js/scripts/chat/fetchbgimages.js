@@ -115,6 +115,8 @@ function setImage(slot) {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
+        imageNavigation.classList.add('has-right-image');
+
     }
 }
 
