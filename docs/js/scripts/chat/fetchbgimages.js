@@ -50,6 +50,16 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             chatWrapper.classList.add('has-right-image');
             inputWrapper.classList.add('has-right-image');
         }
+
+        // Add image navigation buttons dynamically
+        const navigationButtons = `
+            <div class="image-navigation">
+                <button id="prevImageBtn">Previous</button>
+                <button id="nextImageBtn">Next</button>
+            </div>
+        `;
+        inputWrapper.innerHTML += navigationButtons; // Appending to the inputWrapper
+
     } catch (error) {
         console.error("Error setting image:", error);
         alert('Failed to set image: ' + error.message);
@@ -92,14 +102,12 @@ function setImage(slot) {
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
-    const imageNavigation = document.getElementById('prevImageBtn');
 
     // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
     rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
-    imageNavigation.classList.remove('has-left-image', 'has-right-image');
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
@@ -108,15 +116,11 @@ function setImage(slot) {
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-left-image');
-        imageNavigation.classList.add('has-left-image');
-
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
-        imageNavigation.classList.add('has-right-image');
-
     }
 }
 
