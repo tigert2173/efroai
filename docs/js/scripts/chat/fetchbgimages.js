@@ -8,7 +8,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
     const objectKey = document.getElementById('objectKey').value.trim();
 
-    if (!bucketName || !objectKey) {
+    if (!objectKey) {
         alert('Please enter both bucket name and object key.');
         return;
     }
