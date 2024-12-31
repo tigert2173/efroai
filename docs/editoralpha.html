@@ -367,12 +367,14 @@
         </div>
         
         <h1>Character Image Upload</h1>
-        <div id="image-slots"></div>
+        <div id="image-slots">
+            <!-- Slots will be dynamically populated here -->
+        </div>
         
         <script>
             let user = '';
             let characterNumber = '';
-        
+            
             // Retrieve user and character number from session storage
             const characterData = sessionStorage.getItem('editCharacter');
             
@@ -386,13 +388,16 @@
                 console.log('No character data found in session storage');
             }
         
-            // Initialize image slots
+            // Function to initialize the slots for image upload
             function initializeImageSlots() {
                 const slotsContainer = document.getElementById('image-slots');
         
+                // Create 10 empty image slots (1-10)
                 for (let i = 1; i <= 10; i++) {
                     const imgSlot = document.createElement('div');
                     imgSlot.classList.add('slot');
+                    
+                    // Create slot HTML (empty at first)
                     imgSlot.innerHTML = `
                         <h3>Slot ${i}</h3>
                         <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
@@ -400,96 +405,108 @@
                         <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
                     `;
                     slotsContainer.appendChild(imgSlot);
+        
+                    // Check if there is an existing image for the slot
                     fetchExistingImage(i);
                 }
             }
         
-            // Fetch existing image for each slot
+            // Function to fetch the existing image for each slot
             function fetchExistingImage(slot) {
-                fetch(`/bucket/${user}/${characterNumber}/${slot}.jpg`)
+                fetch(`/bucket/${user}/${characterNumber}/slot${slot}.jpg`) // Adjust the path based on slot number
                     .then(response => {
                         if (response.ok) {
-                            return response.blob();
+                            return response.blob(); // If image exists, get the image as a blob
                         } else {
                             throw new Error('Image not found');
                         }
                     })
                     .then(blob => {
-                        const imgUrl = URL.createObjectURL(blob);
+                        const imgUrl = URL.createObjectURL(blob); // Convert blob to a URL
                         const imgSlot = document.getElementById(`img-slot-${slot}`);
-                        imgSlot.src = imgUrl;
-                        document.getElementById(`delete-slot-${slot}`).style.display = 'inline';
+                        imgSlot.src = imgUrl; // Set the image source to the retrieved image
+                        document.getElementById(`delete-slot-${slot}`).style.display = 'inline'; // Show delete button
                     })
                     .catch(err => {
-                        console.log(`No image found for Slot ${slot}:`, err);
+                        console.log(`No image found for Slot ${slot}:`, err); // If image not found, do nothing
                     });
             }
+        
+            // Initialize the image slots on page load
+            initializeImageSlots();
         
             // Handle image upload for each slot
             function uploadImage(event, slot) {
                 const file = event.target.files[0];
-                if (!file) return;
+                if (!file) return; // No file selected, exit
         
                 const img = new Image();
                 const reader = new FileReader();
                 
                 reader.onload = function (e) {
                     img.src = e.target.result;
+        
                     img.onload = function() {
+                        // Create a canvas element
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
+                        
+                        // Set canvas size to the image size
                         canvas.width = img.width;
                         canvas.height = img.height;
+        
+                        // Draw the image on the canvas
                         ctx.drawImage(img, 0, 0);
         
+                        // Convert canvas to JPG format (default quality: 0.92)
                         canvas.toBlob(function(blob) {
                             const formData = new FormData();
-                            formData.append('image', blob, 'image.jpg');
+                            formData.append('image', blob, 'image.jpg'); // Append the blob as 'image.jpg'
         
-                            fetch(`/bucket/${user}/${characterNumber}/upload`, {
+                            // Send the converted image to the server
+                            fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
                                 method: 'POST',
                                 body: formData,
                             })
                             .then(response => response.json())
                             .then(data => {
                                 alert('Image uploaded successfully!');
-                                updateSlotImage(slot, data.file.Key);
+                                updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
                             })
                             .catch(err => alert('Failed to upload image'));
-                        }, 'image/jpeg');
+                        }, 'image/jpeg'); // Convert to 'image/jpeg'
                     };
                 };
         
+                // Read the selected file as data URL
                 reader.readAsDataURL(file);
             }
         
-            // Update image in the corresponding slot
+            // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/${imageKey}`;
-                imgSlot.src = imgUrl;
-                document.getElementById(`delete-slot-${slot}`).style.display = 'inline';
+                const imgUrl = `/bucket/${user}/${characterNumber}/slot${slot}/${imageKey}`;  // Ensure this matches the backend path
+                imgSlot.src = imgUrl; // Set the image source to the new image URL
+                document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
         
-            // Handle image deletion
+            // Handle image delete for each slot
             function deleteImage(slot) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imageKey = imgSlot.src.split('/').pop();
+                const imageKey = imgSlot.src.split('/').pop();  // Extract file name
         
-                fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
+                // Send delete request to backend
+                fetch(`/bucket/${user}/${characterNumber}/slot${slot}/delete`, { // Adjust URL for delete request
                     method: 'DELETE',
                 })
                 .then(response => response.json())
                 .then(data => {
                     alert('Image deleted successfully!');
-                    imgSlot.src = '';
-                    document.getElementById(`delete-slot-${slot}`).style.display = 'none';
+                    imgSlot.src = ''; // Clear the image in the slot
+                    document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
                 })
                 .catch(err => alert('Failed to delete image'));
             }
-        
-            // Initialize slots when the page loads
-            initializeImageSlots();
         </script>
         
         
