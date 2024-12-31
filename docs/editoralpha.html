@@ -438,6 +438,20 @@
             // Handle image upload for each slot
             function uploadImage(event, slot) {
                 const file = event.target.files[0];
+                
+                // Check for file size (max 4MB)
+                if (file.size > 4 * 1024 * 1024) {
+                    alert('File size exceeds 4MB. Please upload a smaller image.');
+                    return;
+                }
+        
+                // Check for valid image format (only allow images)
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file format. Only JPEG, PNG, and GIF images are allowed.');
+                    return;
+                }
+        
                 if (!file) return; // No file selected, exit
         
                 // Preview the image in the same spot as the retrieved image
