@@ -390,6 +390,13 @@
                 console.log('No character data found in session storage');
             }
         
+            // Ensure Pica is loaded before calling it
+            if (typeof Pica !== 'undefined') {
+                console.log("Pica is loaded successfully.");
+            } else {
+                console.error("Pica failed to load.");
+            }
+        
             // Function to initialize the slots for image upload
             function initializeImageSlots() {
                 const slotsContainer = document.getElementById('image-slots');
