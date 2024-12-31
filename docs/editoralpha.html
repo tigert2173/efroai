@@ -482,31 +482,37 @@
                 reader.readAsDataURL(file);
             }
         
-            // Update the image in the corresponding slot
+           // Update the image in the corresponding slot
             function updateSlotImage(slot, imageKey) {
                 const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imgUrl = `/bucket/${user}/${characterNumber}/${imageKey}`;
+                const imgUrl = `/bucket/${user}/${characterNumber}/${imageKey}`;  // Make sure imageKey includes the full path
                 imgSlot.src = imgUrl; // Set the image source to the new image URL
                 document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
             }
+
         
-            // Handle image delete for each slot
-            function deleteImage(slot) {
-                const imgSlot = document.getElementById(`img-slot-${slot}`);
-                const imageKey = imgSlot.src.split('/').pop();  // Extract file name
-        
-                // Send delete request to backend
-                fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
-                    method: 'DELETE',
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Image deleted successfully!');
-                    imgSlot.src = ''; // Clear the image in the slot
-                    document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
-                })
-                .catch(err => alert('Failed to delete image'));
+          // Handle image delete for each slot
+        function deleteImage(slot) {
+            const imgSlot = document.getElementById(`img-slot-${slot}`);
+            const imageKey = imgSlot.src.split('/').pop();  // Extract filename with extension
+
+            if (!imageKey || imageKey === 'No image uploaded') {
+                alert('No image to delete');
+                return;
             }
+
+            // Send delete request to backend (use the correct imageKey)
+            fetch(`/bucket/${user}/${characterNumber}/${imageKey}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Image deleted successfully!');
+                imgSlot.src = ''; // Clear the image in the slot
+                document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
+            })
+            .catch(err => alert('Failed to delete image'));
+        }
         </script>
         
         
