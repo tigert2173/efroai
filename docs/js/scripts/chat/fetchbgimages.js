@@ -6,24 +6,23 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     const characterData = JSON.parse(localStorage.getItem('editCharacter'));
 
     if (characterData) {
-        const uploader = characterData.uploader;
-        const characterId = characterData.id;
 
+        const bucketName = document.getElementById('bucketName').value.trim();
+        const userId = characterData.uploader; // Replace with dynamic user ID if required
+        const charId = characterData.id; // Replace with dynamic character ID if required
+        const objectKey = document.getElementById('objectKey').value.trim();
+        const chatContainer = document.getElementById('chat-container');
+        const leftImageContainer = document.getElementById('left-image-container');
+        const rightImageContainer = document.getElementById('right-image-container');
+        const chatWrapper = document.getElementById('chat-wrapper');
+        const inputWrapper = document.getElementById('input-wrapper');
+    
         console.log("Uploader:", uploader);
         console.log("Character ID:", characterId);
+        
     } else {
         console.log("Character data not found in local storage.");
     }
-
-    const bucketName = document.getElementById('bucketName').value.trim();
-    const userId = uploader; // Replace with dynamic user ID if required
-    const charId = characterId; // Replace with dynamic character ID if required
-    const objectKey = document.getElementById('objectKey').value.trim();
-    const chatContainer = document.getElementById('chat-container');
-    const leftImageContainer = document.getElementById('left-image-container');
-    const rightImageContainer = document.getElementById('right-image-container');
-    const chatWrapper = document.getElementById('chat-wrapper');
-    const inputWrapper = document.getElementById('input-wrapper');
 
     if (!bucketName || !objectKey) {
         alert('Please enter both bucket name and object key.');
