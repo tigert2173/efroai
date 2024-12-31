@@ -372,13 +372,19 @@
         </div>
         
         <script>
+            // Declare the variables at the top, outside of the sessionStorage block
+            let user = '';
+            let characterNumber = '';
+        
             // Retrieve user and character number from session storage
             const characterData = sessionStorage.getItem('editCharacter');
             
             if (characterData) {
                 const parsedData = JSON.parse(characterData);
-                const user = parsedData.uploader; // User uploading the image
-                const characterNumber = parsedData.id; // Character ID for the image
+                user = parsedData.uploader; // User uploading the image
+                characterNumber = parsedData.id; // Character ID for the image
+                console.log('Uploader:', user); // Debugging: Check if 'user' is being set
+                console.log('Character ID:', characterNumber); // Debugging: Check if 'characterNumber' is being set
             } else {
                 console.log('No character data found in session storage');
             }
