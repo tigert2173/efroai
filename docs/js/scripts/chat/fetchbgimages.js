@@ -2,9 +2,22 @@
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Assume the JSON data is stored in local storage under the key 'characterData'
+    const characterData = JSON.parse(localStorage.getItem('characterData'));
+
+    if (characterData) {
+        const uploader = characterData.uploader;
+        const characterId = characterData.id;
+
+        console.log("Uploader:", uploader);
+        console.log("Character ID:", characterId);
+    } else {
+        console.log("Character data not found in local storage.");
+    }
+
     const bucketName = document.getElementById('bucketName').value.trim();
-    const userId = 'tigert2173'; // Replace with dynamic user ID if required
-    const charId = '1'; // Replace with dynamic character ID if required
+    const userId = uploader; // Replace with dynamic user ID if required
+    const charId = characterId; // Replace with dynamic character ID if required
     const objectKey = document.getElementById('objectKey').value.trim();
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
