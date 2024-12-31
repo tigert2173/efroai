@@ -85,7 +85,7 @@ function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.jpg`; // Example slot-based image URL
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -93,15 +93,11 @@ function setImage(slot) {
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
 
-    // Clear side images and reset the arrow containers before applying the new image
+    // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
     rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
-
-    // Clear the previous arrow visibility
-    document.getElementById('left-arrow-container').style.display = 'none';
-    document.getElementById('right-arrow-container').style.display = 'none';
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
@@ -111,39 +107,12 @@ function setImage(slot) {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
-        document.getElementById('left-arrow-container').style.display = 'block'; // Show left arrows
     } else if (imagePosition === 'right') {
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
-        document.getElementById('right-arrow-container').style.display = 'block'; // Show right arrows
     }
 }
-
-// Handle "Previous" button click
-document.getElementById('prevImageBtn').addEventListener('click', () => {
-    if (currentSlot > 1) {
-        currentSlot--;
-    } else {
-        currentSlot = 10; // Loop back to slot 10
-    }
-    setImage(currentSlot);
-});
-
-// Handle "Next" button click
-document.getElementById('nextImageBtn').addEventListener('click', () => {
-    if (currentSlot < 10) {
-        currentSlot++;
-    } else {
-        currentSlot = 1; // Loop back to slot 1
-    }
-    setImage(currentSlot);
-});
-
-// Display slot 1 by default when the page loads
-window.addEventListener('load', () => {
-    setImage(1); // Show slot1 by default
-});
 
 // Handle "Previous" button click
 document.getElementById('prevImageBtn').addEventListener('click', () => {
