@@ -2,7 +2,7 @@
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const bucketName = document.getElementById('bucketName').value.trim();
+    // const bucketName = document.getElementById('bucketName').value.trim();
 
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
