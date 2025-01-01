@@ -119,7 +119,7 @@ html { /*body*/
 
 .nav-links a:hover {
     color: #ec722b; /* Yellow color on hover for contrast */
-    text-shadow: 0 0 5px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 0, 255, 1); /* Fun glow effect on hover */
+    text-shadow: 0 0 4px rgba(255, 204, 0, 1), 0 0 10px rgba(255, 0, 255, 1); /* Fun glow effect on hover */
     transform: scale(1.1); /* Scale up effect on hover */
 }
 
