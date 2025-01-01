@@ -80,6 +80,9 @@ toggleMenuBtn.addEventListener("click", () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
+// Initialize a set to store unavailable slots for fast access
+let unavailableSlots = new Set();
+
 // Utility function to check if an image URL is valid (returns 200)
 async function isImageValid(url) {
     try {
@@ -101,6 +104,7 @@ async function setImage(slot) {
     const isValid = await isImageValid(url);
     if (!isValid) {
         console.log(`Image for slot ${slot} is not valid.`);
+        unavailableSlots.add(slot); // Mark this slot as unavailable for future use
         return false;
     }
 
@@ -139,7 +143,7 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
     do {
         currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
         attempts++;
-    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
     setImage(currentSlot);
 });
@@ -150,7 +154,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
     do {
         currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
         attempts++;
-    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
     setImage(currentSlot);
 });
@@ -161,7 +165,7 @@ window.addEventListener('load', async () => {
     do {
         currentSlot = currentSlot <= 10 ? currentSlot : 1; // Default to slot 1
         attempts++;
-    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
     setImage(currentSlot);
 });
@@ -189,6 +193,10 @@ document.addEventListener('click', (event) => {
                 const isValid = await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`);
                 if (isValid) {
                     validSlotFound = true; // A valid slot was found, break the loop
+                } else if (!unavailableSlots.has(currentSlot)) {
+                    unavailableSlots.add(currentSlot); // Add to unavailable slots if not already marked
+                    // Skip to the next or previous slot
+                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                 } else {
                     // Skip to the next or previous slot
                     currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
