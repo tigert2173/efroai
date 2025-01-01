@@ -77,15 +77,33 @@ toggleMenuBtn.addEventListener("click", () => {
     imageMenu.classList.toggle("show-menu");
 });
 
-// Image cycling logic
+// Image cycling logic with click-to-advance
 let currentSlot = 1; // Starting from slot 1
 
+// Function to check if an image exists
+async function checkImageExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok; // True if the image exists
+    } catch (error) {
+        console.error("Error checking image:", error);
+        return false; // Assume false on error
+    }
+}
+
 // Function to fetch and set the image based on the current slot
-function setImage(slot) {
+async function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
     const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
+
+    // Check if the image exists
+    const exists = await checkImageExists(url);
+    if (!exists) {
+        console.warn(`Slot ${slot} does not exist. Skipping.`);
+        return false; // Return false to indicate the image was not set
+    }
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -112,29 +130,37 @@ function setImage(slot) {
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
+    return true; // Image successfully set
 }
 
+// Handle clicking on the image to advance to the next slot
+document.getElementById('chat-container').addEventListener('click', async () => {
+    do {
+        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+    } while (!(await setImage(currentSlot))); // Skip slots that don't exist
+});
+
 // Handle "Previous" button click
-document.getElementById('prevImageBtn').addEventListener('click', () => {
-    if (currentSlot > 1) {
-        currentSlot--;
-    } else {
-        currentSlot = 10; // Loop back to slot 10
-    }
-    setImage(currentSlot);
+document.getElementById('prevImageBtn').addEventListener('click', async () => {
+    do {
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+    } while (!(await setImage(currentSlot))); // Skip slots that don't exist
 });
 
 // Handle "Next" button click
-document.getElementById('nextImageBtn').addEventListener('click', () => {
-    if (currentSlot < 10) {
-        currentSlot++;
-    } else {
-        currentSlot = 1; // Loop back to slot 1
-    }
-    setImage(currentSlot);
+document.getElementById('nextImageBtn').addEventListener('click', async () => {
+    do {
+        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+    } while (!(await setImage(currentSlot))); // Skip slots that don't exist
 });
 
 // Display slot 1 by default when the page loads
-window.addEventListener('load', () => {
-    setImage(1); // Show slot1 by default
+window.addEventListener('load', async () => {
+    let success = await setImage(1); // Try slot 1 by default
+    if (!success) {
+        console.warn("Slot 1 not available. Searching for the next available slot.");
+        while (!(await setImage(currentSlot))) {
+            currentSlot++;
+        }
+    }
 });
