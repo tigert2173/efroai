@@ -1,0 +1,716 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 10;
+    background-color: #1d1f21; /* Dark background */
+    color: #f5f5f5;
+}
+
+h1, h2, h3 {
+    color: #fbbc04; /* Bright Orange */
+    margin-bottom: 15px;
+}
+
+a {
+    color: #4285f4; /* Bright Blue */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #34a853; /* Hover Green */
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #4f9fc9, #1c8b9e, #9cc4d5, #a8d0e3);
+    padding: 60px 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    z-index: 10;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.cta-btn {
+    padding: 15px 30px;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: #3367d6;
+}
+
+/* Main Content */
+main {
+    display: flex; /* Use flexbox to position filters and main content side by side */
+    padding: 40px 20px;
+    z-index: 10;
+}
+
+
+/* Filters Section */
+.filters {
+    flex: 0 0 200px; /* Fixed width for filters */
+    margin-right: 20px; /* Space between filters and character grid */
+    background-color: rgb(30, 50, 50);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex; /* Make filters section a flex container */
+    flex-direction: column; /* Stack filter categories vertically */
+    justify-content: flex-start; /* Align items to start (top of the container) */
+    z-index: 10;
+}
+
+/* Filter Container - Will allow 2 rows */
+.filters ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(1, 1fr); /* Split into 2 equal columns */
+    gap: 10px; /* Space between filter items */
+}
+
+/* Centering search and search order */
+.filter-search {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin-bottom: 20px; /* Space below search section */
+}
+
+.filter-search input,
+.filter-search select {
+    padding: 8px;
+    margin: 0 10px; /* Space between the search field and order dropdown */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.filter-search button {
+    background-color: #ff9800; /* Orange button color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-search button:hover {
+    background-color: #fb8c00; /* Darker orange on hover */
+}
+
+/* Character Grid */
+#characters {
+    padding: 15px; /* Optional padding around the section */
+}
+
+.character-grid {
+    flex: 1; /* Take up remaining space */
+    display: grid;
+    width: 133.33333%;
+    /* grid-template-columns: repeat(5, 1fr); 4 columns */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: minmax(180px, auto); /* Minimum height for each item */
+    gap: 10px; /* Space between grid items */
+    box-sizing: border-box; /* Include padding and border in width */
+    /* overflow: hidden; Prevent overflow */
+    transform: scale(0.75); /* Scale down the entire grid */
+    transform-origin: top left; /* Set the origin for the scaling */
+}
+
+/* Character Card Styles */
+.character-card, .recommendation-card {
+    background-color: #2f3136;
+    border-radius: 15px;
+    padding: 20px; /* Padding inside the card */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Initial box shadow */
+    display: flex; /* Use flexbox for the card */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 280px; /* Set a minimum height for cards */
+    position: relative; /* Allow absolute positioning of tooltip */
+    transition: transform 0.2s ease-in, box-shadow 0.5s ease-in; /* Ensure box-shadow eases in on hover */
+    z-index: 5;
+}
+
+/* Hover Effect */
+.character-card:hover, .recommendation-card:hover {
+    transform: translateX(-5px) translateY(-20px) scale(1.05); /* Lift card up and scale */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover with increased opacity */
+    z-index: 10; /* Ensure it appears above other cards */
+}
+
+/* Reset Transition for Non-Hover Effect */
+.character-card:not(:hover), .recommendation-card:not(:hover) {
+    transition: transform 0.5s ease-out, box-shadow 0.5s ease-out; /* Smooth ease-out for box-shadow */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Reset shadow */
+}
+
+
+/* Image Styles */
+.character-card img {
+    max-width: 100%; /* Set a fixed width for the image */
+    height: auto; /* Allow height to scale automatically */
+    max-height: 300px; /* Limit the maximum height to prevent overflow */
+    object-fit: cover; /* Ensure the image covers the box without stretching */
+    margin: 0 auto; /* Center the image horizontally */
+    display: block; /* Ensure the image behaves like a block element */
+}
+
+/* Additional styles for buttons (if needed) */
+.character-card .button-container {
+    display: flex; /* Ensure buttons are in a row */
+    justify-content: center; /* Center buttons horizontally */
+    margin-top: auto; /* Push buttons to the bottom of the card */
+}
+
+
+.card-header {
+    border-bottom: 2px solid #28a745; /* Green bottom border for modern look */
+    padding-bottom: 10px; /* Space below header */
+}
+.card-header h3 {
+    color: #28a745; /* Bright green for the name */
+    font-size: 1.6em; /* Slightly larger font size */
+    margin: 0; /* Remove default margin */
+    font-weight: 600; /* Bold header */
+}
+
+.card-body {
+    position: relative; /* Make it relative for absolute positioning of the overlay */
+    flex-grow: 1; /* Allow card body to take up available space */
+    font-size: 0.8em; /* Decrease font size for card body text */
+}
+.tags {
+    display: flex; /* Use flexbox for alignment */
+    flex-wrap: wrap; /* Allow tags to wrap to the next line */
+    margin: 10px 0; /* Margin for spacing */
+}
+
+.tag {
+    background-color: rgba(255, 140, 0, 0.2); /* Light orange background */
+    border: 1px solid #ff8c00; /* Orange border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 3px 6px; /* Reduced padding for smaller tags */
+    margin: 2px; /* Margin between tags */
+    font-size: 12px; /* Smaller font size */
+    display: inline-block; /* Inline block for proper layout */
+}
+
+.full-tags-overlay {
+    display: none;           /* Hidden by default */
+    position: absolute;      /* Absolute positioning for overlay */
+    background-color: #2f3136; /* Dark background for visibility */
+    color: #ffffff;            /* Text color */
+    padding: 10px;           /* Padding for overlay */
+    border-radius: 5px;      /* Rounded corners */
+    transform: translateX(-4%); /* Adjust to center the overlay */
+    z-index: 100;            /* Ensure it overlays */
+    width: 85%;              /* Limit width to avoid overflow */
+    height: 50px;       /* Set a maximum height */
+    line-height: 1;
+
+    overflow-y: auto;        /* Enable vertical scroll if content exceeds max height */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+/* Style for the full tags in overlay */
+.full-tags-overlay span {
+    background-color: rgba(255, 140, 0, 0.1); /* Light orange background */
+    border: 1px solid #ff8c00; /* Orange border */
+    border-radius: 5px;      /* Rounded corners */
+    padding: 3px 6px;        /* Reduced padding for smaller tags */
+    margin: 2px;             /* Margin between tags */
+    font-size: 12px;         /* Smaller font size */
+    line-height: 1;
+    display: inline-block;    /* Inline block for proper layout */
+}
+
+.tags:hover .full-tags-overlay {
+    display: block;          /* Show overlay on hover */
+}
+
+.creator {
+    color: #666;            /* Softer color for creator */
+    margin-top: auto;       /* Push creator to the bottom */
+    font-size: 0.9em;       /* Smaller font size */
+}
+
+.view-btn {
+    background-color: #ff9800; /* Bright orange background for button */
+    color: white;              /* White text */
+    border: none;              /* No border */
+    padding: 12px 20px;       /* Padding for the button */
+    border-radius: 5px;       /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    align-self: flex-end;      /* Align button to the end of the card */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover */
+    flex: 1; /* Take remaining space */
+    align-items: center; /* Center horizontally */
+
+    margin-top: 10px;
+}
+
+.view-btn:hover {
+    background-color: #e68a00; /* Darker orange on hover */
+    transform: scale(1.05);    /* Slightly enlarge button on hover */
+}
+
+.likes-count {
+    position: absolute;
+    top: -2px; /* Shift up further */
+    /* transform: translate(-50%, -50%); Centers the number over the heart */
+    color: white; /* White text for better visibility */
+    font-size: 0.6em; /* Adjust size of the number */
+    font-weight: bold; /* Makes the number stand out */
+}
+
+/* Recommendations Section */
+.recommendation-grid {
+    flex: 0 0 250px; /* Fixed width for recommendations */
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    min-height: 300px; /* Set a minimum height to maintain layout */
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column; /* Stack filters above the character grid */
+    }
+
+    .filters {
+        margin-right: 0; /* Remove right margin */
+        margin-bottom: 20px; /* Add margin below filters */
+    }
+
+    /* .character-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+    /* } */
+
+    .recommendation-grid {
+        margin-top: 20px; /* Add space above recommendations */
+        min-height: auto; /* Reset for small screens */
+    }
+}
+
+/* Character Cards */
+.card-header h3 {
+    margin: 0;
+    color: #fbbc04;
+}
+
+.card-body {
+    margin-top: 10px;
+}
+
+.tags {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.view-btn, .chat-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 30px;
+    background-color: #34a853;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-btn:hover, .chat-btn:hover {
+    background-color: #0f9d58;
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+    background-color: #3367d6;
+}
+
+/* AI Recommendations */
+#recommendations .recommendation-card {
+background-color: #3a3f47;
+}
+
+#recommendations .chat-btn {
+background-color: #ff9800;
+}
+
+#recommendations .chat-btn:hover {
+background-color: #fb8c00;
+}
+#recommendations {
+margin-left: 100px; /* Add space above recommendations */
+}
+
+/* Footer */
+footer {
+    background-color: #20232a;
+    padding: 20px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+a {
+    color: #4285f4; /* Bright Blue */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #34a853; /* Hover Green */
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1d1f21; /* Dark background */
+    color: #f5f5f5;
+}
+
+/* Main Content */
+main {
+    display: flex; /* Use flexbox for layout */
+    padding: 40px 20px;
+}
+
+/* Chat Area */
+.chat-area {
+    flex: 1; /* Take up remaining space */
+    background-color: #2f3136; /* Darker area for chat */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    margin-left: 20px; /* Space between navbar and chat area */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+/* Message Styling */
+.message {
+    background-color: #3c4043; /* Message background */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.message:hover {
+    background-color: #4a4e54; /* Darker on hover */
+}
+
+/* Input Area */
+.input-area {
+    display: flex; /* Flexbox for input layout */
+    margin-top: 20px;
+}
+
+.input-area input {
+    flex: 1; /* Take up available space */
+    padding: 10px;
+    border-radius: 25px;
+    border: none;
+    background-color: #3c4043; /* Dark input background */
+    color: #fff;
+}
+
+.input-area button {
+    padding: 10px 20px;
+    background-color: #4285f4; /* Button color */
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px; /* Space between input and button */
+}
+
+.input-area button:hover {
+    background-color: #3367d6; /* Darker button on hover */
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column; /* Stack layout on smaller screens */
+    }
+    .chat-area {
+        margin-left: 0; /* Remove left margin */
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #20232a;
+    padding: 20px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    
+}
+.like-btn {
+    background-color: #00000000; /* Transparent background */
+    color: white;              /* White text */
+    border: none;              /* No border */
+    padding: 0;                /* Remove padding for size control */
+    border-radius: 5px;        /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    align-self: flex-end;      /* Align button to the end of the card */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover */
+    margin-top: 10px;
+    width: 40px;               /* Fixed width */
+    height: 40px;              /* Fixed height */
+    font-size: 24px;           /* Maximize font size */
+    line-height: 40px;         /* Vertically center the text */
+    display: flex;             /* Flex display to center content */
+    align-items: center;       /* Center vertically */
+    position: relative;
+    justify-content: center;    /* Center horizontally */
+}
+
+.like-btn:hover {
+    background-color: #da070060; /* Darker color on hover */
+    transform: scale(1.25);    /* Slightly enlarge button on hover */
+}
+
+.liked {
+    background-color: wheat;
+}
+/* Media Query for super small screens */
+@media (max-width: 768px) {
+    /* Additional styles for main content */
+    main {
+        padding: 20px; /* Padding for the main content */
+        color: #ffffff; /* Text color for main content */
+        text-align: center; /* Center align main text */
+    }
+}
+.loading-spinner {
+    border: 6px solid #333333; /* Dark gray background */
+    border-top: 6px solid #34db39; /* Green for the top of the spinner */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: #FFA500; /* Orange dot for EFROAI branding */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.5;
+    }
+}
+/* Container for both columns */
+.sort-search-container {
+    display: flex;
+    flex-wrap: wrap;  /* Allow the items to wrap onto new lines if necessary */
+    gap: 16px;
+    width: 100%;
+    max-width: 500px;  /* Prevent the container from stretching too wide */
+    margin: 0 auto;  /* Center the container horizontally */
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    margin-bottom: 20px;      /* Space below search section */
+}
+
+/* Styling for each column */
+.column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 250px;  /* Limit the width of each column */
+}
+
+/* Custom select styling */
+.custom-select {
+    padding: 12px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 2px solid #33cc33;  /* Green border */
+    background-color: #1e2a33;  /* Darker background to match the theme */
+    color: #ffffff;  /* White text */
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Select hover/focus effects */
+.custom-select:hover, .custom-select:focus {
+    border-color: #ff6600;  /* Orange hover border */
+    background-color: #33cc33;  /* Green hover background */
+    color: black;
+    outline: none;
+}
+
+/* Custom input styling */
+.custom-input {
+    padding: 12px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 2px solid #33cc33;  /* Green border */
+    background-color: #1e2a33;  /* Dark background */
+    color: white;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Placeholder text color */
+.custom-input::placeholder {
+    color: #66ff66;  /* Lighter green placeholder text */
+}
+
+/* Input hover/focus effects */
+.custom-input:hover, .custom-input:focus {
+    border-color: #ff6600;  /* Orange hover border */
+    background-color: #33cc33;  /* Green hover background */
+    color: black;
+    outline: none;
+}
+.filter-container {
+    position: relative;
+    margin: 20px;
+    z-index: 10;
+}
+
+.minimize-btn {
+    background-color: #32CD32; /* Neon green shade */
+    color: #ffffff; /* White text for contrast */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding for a button look */
+    font-size: 1rem; /* Adjust font size for readability */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+    box-shadow: 0 4px 8px rgba(50, 205, 50, 0.3); /* Soft shadow */
+}
+
+.minimize-btn:hover {
+    background-color: #28a428; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Small zoom effect */
+    box-shadow: 0 6px 10px rgba(50, 205, 50, 0.5); /* Emphasized shadow on hover */
+}
+
+.minimize-btn:active {
+    background-color: #228b22; /* Even darker green for active state */
+    transform: scale(0.95); /* Slightly smaller on click */
+}
+
+
+#filterList {
+    margin-top: 10px;
+    padding-left: 0px;
+    display: none; /* Hide by default */
+}
+
+#filterList li {
+    list-style-type: none;
+}
+
+.filter-container.minimized #filterList {
+    display: none;
+}
+
+.filter-container:not(.minimized) #filterList {
+    display: block; /* Show when not minimized */
+}
+
+.filter-container.minimized #minimizeBtn {
+    transform: rotate(180deg); /* Flip the button when minimized */
+}
+
+.search-hint {
+    color: #6e6e6e; /* Theme color */
+    font-size: 0.65em;
+    margin-top: -10px;
+    display: block;
+    text-align: center;
+}
