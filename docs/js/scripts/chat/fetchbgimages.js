@@ -79,25 +79,13 @@ toggleMenuBtn.addEventListener("click", () => {
 
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
-// Handle image click for cycling
-document.addEventListener('click', async (e) => {
-    const clickedElement = e.target;
-    const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-
-    if (clickedElement.tagName === 'IMG' && 
-        (clickedElement.parentElement.id === 'left-image-container' || clickedElement.parentElement.id === 'right-image-container')) {
-        await cycleImage(imagePosition);
-    }
-});
-
-// Function to check if the image URL returns 200
-async function checkImage(url) {
+// Utility function to check if an image URL is valid (returns 200)
+async function isImageValid(url) {
     try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.status === 200;
-    } catch (error) {
-        console.error("Error checking image:", error);
-        return false;
+        const response = await fetch(url, { method: 'HEAD' }); // Only fetch the headers
+        return response.ok; // Return true if status is 200
+    } catch {
+        return false; // Return false if fetch fails
     }
 }
 
@@ -106,20 +94,20 @@ async function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`;
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Slot-based image URL
+
+    // Check if the image URL is valid
+    const isValid = await isImageValid(url);
+    if (!isValid) {
+        console.log(`Image for slot ${slot} is not valid.`);
+        return;
+    }
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
-
-    // Check if the image exists
-    const imageExists = await checkImage(url);
-    if (!imageExists) {
-        console.log(`Image at slot ${slot} not found.`);
-        return false;
-    }
 
     // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
@@ -140,31 +128,37 @@ async function setImage(slot) {
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
-    return true;
 }
 
-// Function to cycle through images
-async function cycleImage(imagePosition) {
+// Handle "Previous" button click
+document.getElementById('prevImageBtn').addEventListener('click', async () => {
     let attempts = 0;
-    let success = false;
-
-    // Try up to 10 slots to find the next valid image
-    while (attempts < 10) {
-        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Cycle to the next slot
-        success = await setImage(currentSlot);
-        if (success) break;
+    do {
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
         attempts++;
-    }
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
 
-    if (!success) {
-        alert("No valid images found in the available slots.");
-    }
-}
+    setImage(currentSlot);
+});
+
+// Handle "Next" button click
+document.getElementById('nextImageBtn').addEventListener('click', async () => {
+    let attempts = 0;
+    do {
+        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+        attempts++;
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+
+    setImage(currentSlot);
+});
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', async () => {
-    let success = await setImage(1); // Show slot1 by default
-    if (!success) {
-        console.log("No valid images found in slot 1.");
-    }
+    let attempts = 0;
+    do {
+        currentSlot = currentSlot <= 10 ? currentSlot : 1; // Default to slot 1
+        attempts++;
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+
+    setImage(currentSlot);
 });
