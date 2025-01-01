@@ -80,34 +80,18 @@ toggleMenuBtn.addEventListener("click", () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
-// Utility function to check if an image URL is valid
-async function isImageAvailable(url) {
-    try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.ok; // True if the status is 200-299
-    } catch {
-        return false;
-    }
-}
-
 // Function to fetch and set the image based on the current slot
-async function setImage(slot) {
+function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`;
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
-
-    // Check if the image exists
-    if (!(await isImageAvailable(url))) {
-        console.warn(`Image for slot ${slot} not found.`);
-        return false; // Skip this slot
-    }
 
     // Clear side images before applying the new image
     leftImageContainer.innerHTML = '';
@@ -128,32 +112,86 @@ async function setImage(slot) {
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
-    return true; // Image set successfully
 }
 
-// Function to cycle through slots
-async function cycleImage(direction) {
-    const maxSlots = 10; // Total number of slots
-    let attempts = maxSlots;
-
-    while (attempts > 0) {
-        currentSlot = direction === 'next' ? (currentSlot % maxSlots) + 1 : (currentSlot - 2 + maxSlots) % maxSlots + 1;
-        if (await setImage(currentSlot)) {
-            break; // Stop cycling if a valid image is found
-        }
-        attempts--;
+// Handle "Previous" button click
+document.getElementById('prevImageBtn').addEventListener('click', () => {
+    if (currentSlot > 1) {
+        currentSlot--;
+    } else {
+        currentSlot = 10; // Loop back to slot 10
     }
-}
+    setImage(currentSlot);
+});
 
-// Handle "Previous" and "Next" clicks
-document.getElementById('prevImageBtn').addEventListener('click', () => cycleImage('prev'));
-document.getElementById('nextImageBtn').addEventListener('click', () => cycleImage('next'));
-
-// Add click listeners for the left and right containers
-document.getElementById('left-image-container').addEventListener('click', () => cycleImage('prev'));
-document.getElementById('right-image-container').addEventListener('click', () => cycleImage('next'));
+// Handle "Next" button click
+document.getElementById('nextImageBtn').addEventListener('click', () => {
+    if (currentSlot < 10) {
+        currentSlot++;
+    } else {
+        currentSlot = 1; // Loop back to slot 1
+    }
+    setImage(currentSlot);
+});
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', () => {
-    setImage(1); // Show slot 1 by default
+    setImage(1); // Show slot1 by default
 });
+
+// Valid slots array to store verified slots
+let validSlots = [];
+
+// Function to check if the image exists
+async function isImageAvailable(slot) {
+    const userId = sessionStorage.getItem('characterUploader');
+    const charId = sessionStorage.getItem('selectedCharacterId');
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`;
+
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.status === 200;
+    } catch (error) {
+        console.error(`Error checking image for slot ${slot}:`, error);
+        return false;
+    }
+}
+
+// Initialize valid slots on page load
+async function initializeValidSlots() {
+    for (let slot = 1; slot <= 10; slot++) {
+        if (await isImageAvailable(slot)) {
+            validSlots.push(slot);
+        }
+    }
+    if (validSlots.length > 0) {
+        setImage(validSlots[0]); // Set the first valid image
+    } else {
+        console.warn("No valid images found.");
+    }
+}
+
+// Handle image cycling
+async function cycleImage(direction) {
+    if (validSlots.length === 0) return;
+
+    const currentIndex = validSlots.indexOf(currentSlot);
+    let newIndex;
+
+    if (direction === 'next') {
+        newIndex = (currentIndex + 1) % validSlots.length;
+    } else if (direction === 'prev') {
+        newIndex = (currentIndex - 1 + validSlots.length) % validSlots.length;
+    }
+
+    currentSlot = validSlots[newIndex];
+    setImage(currentSlot);
+}
+
+// Add click event listeners to cycle images
+document.getElementById('left-image-container').addEventListener('click', () => cycleImage('next'));
+document.getElementById('right-image-container').addEventListener('click', () => cycleImage('next'));
+
+// Initialize valid slots and display the first image on page load
+window.addEventListener('load', initializeValidSlots);
+
