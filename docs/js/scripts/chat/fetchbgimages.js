@@ -77,14 +77,23 @@ toggleMenuBtn.addEventListener("click", () => {
     imageMenu.classList.toggle("show-menu");
 });
 
+// SFW Toggle functionality
+const sfwToggle = document.getElementById('sfwToggle');
+let isSFW = sfwToggle.checked;
+
+// Update SFW mode whenever the toggle is changed
+sfwToggle.addEventListener('change', () => {
+    isSFW = sfwToggle.checked;
+    // Update the image slot display based on the SFW mode
+    currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
+    setImage(currentSlot); // Show the first valid image
+});
+
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
 // Initialize a set to store unavailable slots for fast access
 let unavailableSlots = new Set();
-
-// Checkbox for restricting slots to 1-3
-const allowSFWCheckbox = document.getElementById('allowSFWCheckbox');
 
 // Utility function to check if an image URL is valid (returns 200)
 async function isImageValid(url) {
@@ -144,7 +153,7 @@ async function setImage(slot) {
 document.getElementById('prevImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10); // Restrict to 1-3 if checkbox is checked
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Loop back to slot 3 if SFW is enabled
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -155,7 +164,7 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1; // Restrict to 1-3 if checkbox is checked
+        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : (isSFW ? 1 : 1); // Loop back to slot 1 if SFW is enabled
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -166,7 +175,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
 window.addEventListener('load', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot <= (allowSFWCheckbox.checked ? 3 : 10) ? currentSlot : 1; // Default to slot 1
+        currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -184,9 +193,9 @@ document.addEventListener('click', (event) => {
 
         // Determine the next slot number based on direction
         if (direction === 'prev') {
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10); // Restrict to 1-3 if checkbox is checked
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
         } else {
-            currentSlot = currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1; // Restrict to 1-3 if checkbox is checked
+            currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
         }
 
         // Skip unavailable slots
@@ -201,11 +210,11 @@ document.addEventListener('click', (event) => {
                     } else {
                         // Mark it as unavailable and skip to the next slot
                         unavailableSlots.add(currentSlot);
-                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10) : currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1;
+                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                     }
                 } else {
                     // Skip unavailable slots if already marked
-                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10) : currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1;
+                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                 }
             }
 
@@ -213,3 +222,4 @@ document.addEventListener('click', (event) => {
         })();
     }
 });
+
