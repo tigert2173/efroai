@@ -1161,7 +1161,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
  // Prepare message object in the desired format
     const messageObject = {
         role: sender,
-        content: [{ type: 'text', text: content }]
+        content: [{ type: "text", "text": sanitizedContent }]
     };
 
     if (isLoading) {
@@ -1180,8 +1180,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
         <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+
         `;
         }
         // If the message is final, update the navigation header
@@ -1194,41 +1193,91 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
-                previousHeader.remove();
+                if (isResend) {
+                    previousHeader.remove();
+                } else {
+                    previousHeader.innerHTML = `
+                    <div class="message-header">
+                        <div class="nav-arrows-container">
+                        </div>
+                        <div class="buttons">
+                            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                        </div>
+                    </div>
+                
+                    `;
+                }
             }
 
-            // Create a new message header with navigation arrows
-            const messageHeader = document.createElement('div');
-            messageHeader.className = 'message-header';
-            messageHeader.innerHTML = `
-            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            `;
+            if (!isResend) {
+                // Create a new message header with navigation arrows
+                const messageHeader = document.createElement('div');
+                messageHeader.className = 'message-header';
+                messageHeader.innerHTML = `
+                <div class="message-header">
+                    <div class="nav-arrows-container">
+                        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+                        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+                    </div>
+                    <div class="buttons">
+                        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+                    </div>
+                </div>
 
-            // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+                `;
+
+                // Append message header to the chat container
+                chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+            }
         }
-
         updateArrowStates();
+
     } else {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
         <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+       
         `;
         chatContainer.appendChild(messageElement);
+
+        const messageHeader = document.createElement('div');
+        
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+         <div class="message-header">
+            <div class="nav-arrows-container">
+            </div>
+            <div class="buttons">
+                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+            </div>
+        </div>
+
+        `;
+    
+        // Append message header to the chat container
+        chatContainer.insertBefore(messageHeader, messageElement);
     }
 
-    if (isFinal || sender === 'user'){
+    if (isFinal || sender === 'user') {
         // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
+        
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function escapeQuotes(str) {
+    return str.replace(/'/g, "\\'");
 }
 
 function deleteMessage(index) {
@@ -1241,9 +1290,17 @@ function deleteMessage(index) {
     // Remove the message from the messages array
     messages.splice(index, 1);
 
-    // Remove the corresponding message element from the UI
+    // Remove the corresponding message element and header from the UI
     const messageElements = document.querySelectorAll('.message');
-    messageElements[index].remove();
+    const messageHeaderElements = document.querySelectorAll('.message-header');
+
+    // Remove both message body and header
+    if (messageElements[index]) {
+        messageElements[index].remove();
+    }
+    if (messageHeaderElements[index]) {
+        messageHeaderElements[index].remove();
+    }
 
     // Update the botMessages array if the message was from the assistant
     if (messages[index]?.role === 'assistant') {
@@ -1254,6 +1311,7 @@ function deleteMessage(index) {
     updateMessageIndexes();
     console.log('Updated messages array after deletion:', messages);
 }
+
 
 function updateMessageIndexes() {
     // Update the message indexes after deletion
@@ -1281,6 +1339,7 @@ function navigateBotMessages(direction) {
 }
 
 function updateArrowStates() {
+    console.log("updating arrow states");
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
     const rightArrow = document.querySelector('.nav-arrows:last-of-type');
 
@@ -1293,7 +1352,8 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // The parent element of the button
+    const messageElements = document.querySelectorAll('.message');
+    const messageElement = messageElements[index];
     const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
 
@@ -1314,7 +1374,8 @@ function enableEditMode(button, index) {
 
 
 function saveEditedMessage(button, index) {
-    const messageElement = button.parentElement;
+    const messageElements = document.querySelectorAll('.message');
+    const messageElement = messageElements[index];
     const editArea = messageElement.querySelector('.edit-area');
     const newContent = editArea.value.replace(/\n/g, '<br>');
 
@@ -1356,6 +1417,7 @@ function autoResize() {
     // Set the height to the scrollHeight to expand it to fit content
     this.style.height = `${this.scrollHeight}px`; 
 }
+
 
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
