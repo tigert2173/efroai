@@ -195,9 +195,9 @@ document.addEventListener('click', (event) => {
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
             if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 1; // Loop back to slot 3 if we're in SFW mode
             } else {
-                currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
+                currentSlot = currentSlot < 1 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
             }
         } else {
             // Otherwise, continue with the normal slot behavior
@@ -222,7 +222,7 @@ document.addEventListener('click', (event) => {
                         unavailableSlots.add(currentSlot);
                         if (isSFWModeEnabled()) {
                             // Stay within 1-3 slots if SFW mode is on
-                            currentSlot = currentSlot < 3 ? currentSlot + 1 : 1;
+                            currentSlot = currentSlot < 1 ? currentSlot + 1 : 1;
                         } else {
                             currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                         }
@@ -230,7 +230,7 @@ document.addEventListener('click', (event) => {
                 } else {
                     // Skip unavailable slots if already marked
                     if (isSFWModeEnabled()) {
-                        currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
+                        currentSlot = currentSlot < 1 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
                     } else {
                         currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                     }
