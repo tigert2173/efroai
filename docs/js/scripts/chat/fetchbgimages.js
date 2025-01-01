@@ -155,21 +155,33 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
     do {
         currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Loop back to slot 3 if SFW is enabled
         attempts++;
-    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
-    setImage(currentSlot);
+        // Skip the current slot if it's unavailable
+        while (unavailableSlots.has(currentSlot) && attempts < 10) {
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Continue looping back to the previous slot
+            attempts++;
+        }
+    } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
+
+    setImage(currentSlot); // Update the image after finding a valid slot
 });
 
 // Handle "Next" button click
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : (isSFW ? 1 : 1); // Loop back to slot 1 if SFW is enabled
-        attempts++;
-    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
+        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Loop back to slot 1 if we're at the end
 
-    setImage(currentSlot);
+        // Skip the current slot if it's unavailable
+        while (unavailableSlots.has(currentSlot) && attempts < 10) {
+            currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Continue looping forward to the next slot
+            attempts++;
+        }
+    } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
+
+    setImage(currentSlot); // Update the image after finding a valid slot
 });
+
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', async () => {
