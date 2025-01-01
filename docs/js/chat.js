@@ -1203,13 +1203,13 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                         <div class="buttons">
                             <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
                             <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
                         </div>
                     </div>
                 
                     `;
                 }
             }
+//                            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
 
             if (!isResend) {
                 // Create a new message header with navigation arrows
@@ -1224,11 +1224,11 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
                     <div class="buttons">
                         <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
                         <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
                     </div>
                 </div>
 
                 `;
+//                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
 
                 // Append message header to the chat container
                 chatContainer.insertBefore(messageHeader, currentBotMessageElement);
@@ -1255,12 +1255,12 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             <div class="buttons">
                 <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
                 <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
-                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
             </div>
         </div>
 
         `;
-    
+    //                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+
         // Append message header to the chat container
         chatContainer.insertBefore(messageHeader, messageElement);
     }
