@@ -111,10 +111,6 @@ html { /*body*/
     color: #66ff66; /* Green for odd links */
 }
 
-.nav-links a:nth-child(even) {
-    color: #5eb6e6; /* Red for even links */
-}
-
 /* Hover effect */
 .nav-links a:hover {
     transform: scale(1.1); /* Slightly enlarge on hover */
