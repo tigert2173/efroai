@@ -191,11 +191,21 @@ document.addEventListener('click', (event) => {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
 
-        // Determine the next slot number based on direction
-        if (direction === 'prev') {
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+        // If SFW mode is on, restrict the slot range to 1-3
+        if (isSFWModeEnabled()) {
+            // Make sure the slots are within the allowed range for SFW mode
+            if (direction === 'prev') {
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+            } else {
+                currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
+            }
         } else {
-            currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+            // Otherwise, continue with the normal slot behavior
+            if (direction === 'prev') {
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+            } else {
+                currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+            }
         }
 
         // Skip unavailable slots
@@ -210,11 +220,20 @@ document.addEventListener('click', (event) => {
                     } else {
                         // Mark it as unavailable and skip to the next slot
                         unavailableSlots.add(currentSlot);
-                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                        if (isSFWModeEnabled()) {
+                            // Stay within 1-3 slots if SFW mode is on
+                            currentSlot = currentSlot < 3 ? currentSlot + 1 : 1;
+                        } else {
+                            currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                        }
                     }
                 } else {
                     // Skip unavailable slots if already marked
-                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                    if (isSFWModeEnabled()) {
+                        currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
+                    } else {
+                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                    }
                 }
             }
 
@@ -222,4 +241,3 @@ document.addEventListener('click', (event) => {
         })();
     }
 });
-
