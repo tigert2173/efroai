@@ -106,10 +106,15 @@ html { /*body*/
     transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
 }
 
+/* Alternate red and green colors */
+.nav-links a:nth-child() {
+    color: #66ff66; /* Green for odd links */
+}
+
 /* Hover effect */
 .nav-links a:hover {
     transform: scale(1.1); /* Slightly enlarge on hover */
-    color: #ff8800; /* Change text color to white on hover */
+    color: #fff; /* Change text color to white on hover */
 }
 
 .nav-links a:hover {
