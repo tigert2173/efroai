@@ -80,12 +80,29 @@ toggleMenuBtn.addEventListener("click", () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
+// Utility function to check if an image URL is valid (returns 200)
+async function isImageValid(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' }); // Only fetch the headers
+        return response.ok; // Return true if status is 200
+    } catch {
+        return false; // Return false if fetch fails
+    }
+}
+
 // Function to fetch and set the image based on the current slot
-function setImage(slot) {
+async function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Example slot-based image URL
+    const url = `https://efroai.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Slot-based image URL
+
+    // Check if the image URL is valid
+    const isValid = await isImageValid(url);
+    if (!isValid) {
+        console.log(`Image for slot ${slot} is not valid.`);
+        return;
+    }
 
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
@@ -104,38 +121,67 @@ function setImage(slot) {
         chatContainer.style.setProperty('--background-image', `url('${url}')`);
         chatContainer.style.setProperty('--bg-opacity', 1);
     } else if (imagePosition === 'left') {
-        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
+        leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
-        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
+        rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
 }
 
 // Handle "Previous" button click
-document.getElementById('prevImageBtn').addEventListener('click', () => {
-    if (currentSlot > 1) {
-        currentSlot--;
-    } else {
-        currentSlot = 10; // Loop back to slot 10
-    }
+document.getElementById('prevImageBtn').addEventListener('click', async () => {
+    let attempts = 0;
+    do {
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+        attempts++;
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+
     setImage(currentSlot);
 });
 
 // Handle "Next" button click
-document.getElementById('nextImageBtn').addEventListener('click', () => {
-    if (currentSlot < 10) {
-        currentSlot++;
-    } else {
-        currentSlot = 1; // Loop back to slot 1
-    }
+document.getElementById('nextImageBtn').addEventListener('click', async () => {
+    let attempts = 0;
+    do {
+        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+        attempts++;
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+
     setImage(currentSlot);
 });
 
 // Display slot 1 by default when the page loads
-window.addEventListener('load', () => {
-    setImage(1); // Show slot1 by default
+window.addEventListener('load', async () => {
+    let attempts = 0;
+    do {
+        currentSlot = currentSlot <= 10 ? currentSlot : 1; // Default to slot 1
+        attempts++;
+    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
+
+    setImage(currentSlot);
+});
+
+// Add click listener to the image elements for navigation
+document.addEventListener('click', (event) => {
+    const clickedImage = event.target;
+
+    // Check if the clicked element is an image with the "image-slot" class
+    if (clickedImage && clickedImage.classList.contains('image-slot')) {
+        const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
+        const direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
+
+        // Determine the next slot number based on direction
+        if (direction === 'prev') {
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+        } else {
+            currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+        }
+
+        // Update the image after determining the new slot
+        setImage(currentSlot);
+    }
 });
 
