@@ -108,7 +108,7 @@ html { /*body*/
 
 /* Alternate red and green colors */
 .nav-links a:nth-child(odd) {
-    color: #66ff66; /* Green for odd links */
+    color: #1c8b9e; /* Green for odd links */
 }
 
 .nav-links a:nth-child(even) {
