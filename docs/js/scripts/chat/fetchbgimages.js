@@ -83,6 +83,9 @@ let currentSlot = 1; // Starting from slot 1
 // Initialize a set to store unavailable slots for fast access
 let unavailableSlots = new Set();
 
+// Checkbox for restricting slots to 1-3
+const allowSFWCheckbox = document.getElementById('allowSFWCheckbox');
+
 // Utility function to check if an image URL is valid (returns 200)
 async function isImageValid(url) {
     try {
@@ -141,7 +144,7 @@ async function setImage(slot) {
 document.getElementById('prevImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10); // Restrict to 1-3 if checkbox is checked
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -152,7 +155,7 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+        currentSlot = currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1; // Restrict to 1-3 if checkbox is checked
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -163,7 +166,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
 window.addEventListener('load', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot <= 10 ? currentSlot : 1; // Default to slot 1
+        currentSlot = currentSlot <= (allowSFWCheckbox.checked ? 3 : 10) ? currentSlot : 1; // Default to slot 1
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -181,9 +184,9 @@ document.addEventListener('click', (event) => {
 
         // Determine the next slot number based on direction
         if (direction === 'prev') {
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10); // Restrict to 1-3 if checkbox is checked
         } else {
-            currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+            currentSlot = currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1; // Restrict to 1-3 if checkbox is checked
         }
 
         // Skip unavailable slots
@@ -198,11 +201,11 @@ document.addEventListener('click', (event) => {
                     } else {
                         // Mark it as unavailable and skip to the next slot
                         unavailableSlots.add(currentSlot);
-                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10) : currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1;
                     }
                 } else {
                     // Skip unavailable slots if already marked
-                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
+                    currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : (allowSFWCheckbox.checked ? 3 : 10) : currentSlot < (allowSFWCheckbox.checked ? 4 : 10) ? currentSlot + 1 : 1;
                 }
             }
 
@@ -210,4 +213,3 @@ document.addEventListener('click', (event) => {
         })();
     }
 });
-
