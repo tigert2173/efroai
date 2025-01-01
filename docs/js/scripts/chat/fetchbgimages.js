@@ -241,3 +241,10 @@ document.addEventListener('click', (event) => {
         })();
     }
 });
+
+// Function to check if SFW mode is enabled
+function isSFWModeEnabled() {
+    // Assuming there's a toggle or flag that indicates if SFW mode is active
+    const sfwToggle = document.getElementById('sfwToggle'); // Example: toggle switch in the DOM
+    return sfwToggle && sfwToggle.checked; // Return true if SFW mode is enabled
+}
