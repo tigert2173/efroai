@@ -4,7 +4,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
-    const objectKey = document.getElementById('objectKey').value.trim();
+    const objectKey = "1.webp"; //document.getElementById('objectKey').value.trim();
 
     if (!objectKey) {
         alert('Please enter both bucket name and object key.');
