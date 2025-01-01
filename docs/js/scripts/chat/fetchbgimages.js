@@ -101,7 +101,7 @@ async function setImage(slot) {
     const isValid = await isImageValid(url);
     if (!isValid) {
         console.log(`Image for slot ${slot} is not valid.`);
-        return;
+        return null; // Return null if image is not valid
     }
 
     const chatContainer = document.getElementById('chat-container');
@@ -129,27 +129,33 @@ async function setImage(slot) {
         chatWrapper.classList.add('has-right-image');
         inputWrapper.classList.add('has-right-image');
     }
+
+    return true; // Return true to indicate the image was successfully set
+}
+
+// Function to get the next valid slot
+async function getNextValidSlot(currentSlot, direction) {
+    let nextSlot = direction === 'next' ? currentSlot + 1 : currentSlot - 1;
+
+    // Loop through until a valid image is found
+    let attempts = 0;
+    while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${nextSlot}.webp`)) && attempts < 10) {
+        nextSlot = direction === 'next' ? (nextSlot % 10) + 1 : (nextSlot === 1 ? 10 : nextSlot - 1); // Loop from 1 to 10
+        attempts++;
+    }
+
+    return nextSlot;
 }
 
 // Handle "Previous" button click
 document.getElementById('prevImageBtn').addEventListener('click', async () => {
-    let attempts = 0;
-    do {
-        currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
-        attempts++;
-    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
-
+    currentSlot = await getNextValidSlot(currentSlot, 'prev');
     setImage(currentSlot);
 });
 
 // Handle "Next" button click
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
-    let attempts = 0;
-    do {
-        currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
-        attempts++;
-    } while (!(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`)) && attempts < 10);
-
+    currentSlot = await getNextValidSlot(currentSlot, 'next');
     setImage(currentSlot);
 });
 
@@ -165,7 +171,7 @@ window.addEventListener('load', async () => {
 });
 
 // Add click listener to the image elements for navigation
-document.addEventListener('click', (event) => {
+document.addEventListener('click', async (event) => {
     const clickedImage = event.target;
 
     // Check if the clicked element is an image with the "image-slot" class
@@ -173,12 +179,8 @@ document.addEventListener('click', (event) => {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         const direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
 
-        // Determine the next slot number based on direction
-        if (direction === 'prev') {
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
-        } else {
-            currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
-        }
+        // Determine the next valid slot based on direction
+        currentSlot = await getNextValidSlot(slot, direction);
 
         // Update the image after determining the new slot
         setImage(currentSlot);
