@@ -153,7 +153,7 @@ async function setImage(slot) {
 document.getElementById('prevImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 1 : 10); // Loop back to slot 3 if SFW is enabled
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Loop back to slot 3 if SFW is enabled
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -164,7 +164,7 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot < (isSFW ? 1 : 10) ? currentSlot + 1 : (isSFW ? 1 : 1); // Loop back to slot 1 if SFW is enabled
+        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : (isSFW ? 1 : 1); // Loop back to slot 1 if SFW is enabled
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -175,7 +175,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
 window.addEventListener('load', async () => {
     let attempts = 0;
     do {
-        currentSlot = currentSlot <= (isSFW ? 1 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
+        currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
@@ -195,9 +195,9 @@ document.addEventListener('click', (event) => {
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
             if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 1; // Loop back to slot 3 if we're in SFW mode
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
             } else {
-                currentSlot = currentSlot < 1 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
+                currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
             }
         } else {
             // Otherwise, continue with the normal slot behavior
@@ -222,7 +222,7 @@ document.addEventListener('click', (event) => {
                         unavailableSlots.add(currentSlot);
                         if (isSFWModeEnabled()) {
                             // Stay within 1-3 slots if SFW mode is on
-                            currentSlot = currentSlot < 1 ? currentSlot + 1 : 1;
+                            currentSlot = currentSlot < 3 ? currentSlot + 1 : 1;
                         } else {
                             currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                         }
@@ -230,7 +230,7 @@ document.addEventListener('click', (event) => {
                 } else {
                     // Skip unavailable slots if already marked
                     if (isSFWModeEnabled()) {
-                        currentSlot = currentSlot < 1 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
+                        currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
                     } else {
                         currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
                     }
@@ -241,6 +241,7 @@ document.addEventListener('click', (event) => {
         })();
     }
 });
+
 
 // Function to check if SFW mode is enabled
 function isSFWModeEnabled() {
