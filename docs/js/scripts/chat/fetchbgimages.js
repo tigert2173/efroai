@@ -162,3 +162,31 @@ window.addEventListener('load', async () => {
 
     setImage(currentSlot);
 });
+
+
+// Handle "Previous" button click
+document.getElementById('prevImageBtn').addEventListener('click', () => {
+    if (currentSlot > 1) {
+        currentSlot--;
+    } else {
+        currentSlot = 10; // Loop back to slot 10
+    }
+    setImage(currentSlot);
+});
+
+// Handle "Next" button click
+document.getElementById('nextImageBtn').addEventListener('click', () => {
+    if (currentSlot < 10) {
+        currentSlot++;
+    } else {
+        currentSlot = 1; // Loop back to slot 1
+    }
+    setImage(currentSlot);
+});
+
+// Display slot 1 by default when the page loads
+window.addEventListener('load', () => {
+    setImage(1); // Show slot1 by default
+});
+
+
