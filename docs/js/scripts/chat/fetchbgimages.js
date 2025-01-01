@@ -92,18 +92,23 @@ sfwToggle.addEventListener('change', () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
-// Initialize a set to store unavailable slots for fast access
-let unavailableSlots = new Set();
+// Set to track unavailable slots
+const unavailableSlots = new Set();
 
-// Utility function to check if an image URL is valid (returns 200)
+// Function to check if the image exists (returns 404 if not found)
 async function isImageValid(url) {
     try {
-        const response = await fetch(url, { method: 'HEAD' }); // Only fetch the headers
-        return response.ok; // Return true if status is 200
-    } catch {
-        return false; // Return false if fetch fails
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.status === 404) {
+            return false; // Image not found (404)
+        }
+        return true; // Image exists
+    } catch (error) {
+        console.error('Error checking image validity:', error);
+        return false; // If there's an error, assume the image is not available
     }
 }
+
 
 // Function to fetch and set the image based on the current slot
 async function setImage(slot) {
