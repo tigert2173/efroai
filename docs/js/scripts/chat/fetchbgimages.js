@@ -92,23 +92,18 @@ sfwToggle.addEventListener('change', () => {
 // Image cycling logic
 let currentSlot = 1; // Starting from slot 1
 
-// Set to track unavailable slots
-const unavailableSlots = new Set();
+// Initialize a set to store unavailable slots for fast access
+let unavailableSlots = new Set();
 
-// Function to check if the image exists (returns 404 if not found)
+// Utility function to check if an image URL is valid (returns 200)
 async function isImageValid(url) {
     try {
-        const response = await fetch(url, { method: 'HEAD' });
-        if (response.status === 404) {
-            return false; // Image not found (404)
-        }
-        return true; // Image exists
-    } catch (error) {
-        console.error('Error checking image validity:', error);
-        return false; // If there's an error, assume the image is not available
+        const response = await fetch(url, { method: 'HEAD' }); // Only fetch the headers
+        return response.ok; // Return true if status is 200
+    } catch {
+        return false; // Return false if fetch fails
     }
 }
-
 
 // Function to fetch and set the image based on the current slot
 async function setImage(slot) {
@@ -154,20 +149,21 @@ async function setImage(slot) {
     return true;
 }
 
+
 // Handle "Previous" button click
 document.getElementById('prevImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        // Go to the previous slot, wrapping around if needed
-        currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); 
+        currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Loop back to slot 3 if SFW is enabled
+        attempts++;
 
-        // Skip the current slot if it's unavailable (returns 404) and remember it
-        while (!unavailableSlots.has(currentSlot) && !await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`) && attempts < 10) {
-            unavailableSlots.add(currentSlot); // Remember the unavailable slot
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Continue looping to the previous slot
+        // Skip the current slot if it's unavailable (returns 404) and remember the unavailable slots
+        while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
+            unavailableSlots.add(currentSlot); // Mark the slot as unavailable
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Continue looping back to the previous slot
             attempts++;
         }
-    } while (attempts < 10 && unavailableSlots.has(currentSlot) && !await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`));
+    } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
 
     setImage(currentSlot); // Update the image after finding a valid slot
 });
@@ -176,16 +172,15 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
 document.getElementById('nextImageBtn').addEventListener('click', async () => {
     let attempts = 0;
     do {
-        // Go to the next slot, wrapping around if needed
-        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1;
+        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Loop back to slot 1 if we're at the end
 
-        // Skip the current slot if it's unavailable (returns 404) and remember it
-        while (!unavailableSlots.has(currentSlot) && !await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`) && attempts < 10) {
-            unavailableSlots.add(currentSlot); // Remember the unavailable slot
-            currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Continue looping to the next slot
+        // Skip the current slot if it's unavailable (returns 404) and remember the unavailable slots
+        while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
+            unavailableSlots.add(currentSlot); // Mark the slot as unavailable
+            currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Continue looping forward to the next slot
             attempts++;
         }
-    } while (attempts < 10 && unavailableSlots.has(currentSlot) && !await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`));
+    } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
 
     setImage(currentSlot); // Update the image after finding a valid slot
 });
