@@ -85,8 +85,8 @@ let isSFW = sfwToggle.checked;
 sfwToggle.addEventListener('change', () => {
     isSFW = sfwToggle.checked;
     // Update the image slot display based on the SFW mode
-   // currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
-    //setImage(currentSlot); // Show the first valid image
+    currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
+    setImage(currentSlot); // Show the first valid image
 });
 
 // Image cycling logic
@@ -187,7 +187,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', async () => {
-    let attempts = 0;
+    // let attempts = 0;
     do {
         currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
