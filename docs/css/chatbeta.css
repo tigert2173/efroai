@@ -231,21 +231,8 @@ code {
     
     background-size: cover; /* Ensure the background image covers the entire area */
     background-position: center center; /* Ensure the background stays centered */
-    background-attachment: fixed; /* Keeps the background fixed while content scrolls */
+    background-attachment: scroll; /* Keeps the background fixed while content scrolls */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
-}
-
-/* Optional: Update opacity for the background image */
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--background-image) center center / cover no-repeat;
-    opacity: var(--bg-opacity); /* Use custom opacity for the background */
-    z-index: -1; /* Put the background behind the content */
 }
 
 
