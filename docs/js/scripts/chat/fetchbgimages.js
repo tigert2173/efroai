@@ -64,6 +64,7 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const rightImageContainer = document.getElementById('right-image-container');
 
     // Update the opacity for background or side images
+    chatContainer.style.setProperty('--bg-opacity', opacityValue);
     leftImageContainer.style.opacity = opacityValue;
     rightImageContainer.style.opacity = opacityValue;
 });
@@ -71,10 +72,10 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
 // Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
-    const messageContainer = document.getElementById('chat-container');
+    const messageContainer = document.getElementById('message');
 
     // Update the opacity for background or side images
-    messageContainer.style.opacity = opacityValue;
+    messageContainer.style.setProperty('--bg-opacity', opacityValue);
 });
 
 // Toggle menu visibility
