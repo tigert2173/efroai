@@ -266,6 +266,7 @@ code {
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
+    background-attachment: scroll; /* This makes the background scroll with the page */
 }
 
 /* If the left or right images are shown, shift chat-container accordingly */
