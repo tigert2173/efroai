@@ -38,6 +38,15 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
            // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
            chatContainer.style.setProperty('--chatContainer-bg-opacity', 0);
            chatWrapper.style.backgroundImage = `url('${url}')`;
+            // Get all message elements
+            const messageElements = document.querySelectorAll('.message');
+            
+            // Apply the opacity to the background using the custom property
+            messageElements.forEach(message => {
+                // Update the custom property for background opacity
+                message.style.setProperty('--bg-opacity', opacityValue);
+            });
+
 
         } else if (imagePosition === 'left') {
             // Set the left side image
@@ -190,6 +199,14 @@ async function setImage(slot) {
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
+           // Get all message elements
+           const messageElements = document.querySelectorAll('.message');
+            
+           // Apply the opacity to the background using the custom property
+           messageElements.forEach(message => {
+               // Update the custom property for background opacity
+               message.style.setProperty('--bg-opacity', opacityValue);
+           });
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
         chatContainer.style.setProperty('--chatContainer-bg-opacity', 0);
