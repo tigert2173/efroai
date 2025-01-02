@@ -200,6 +200,9 @@ code {
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
+    --bg-opacity: 1; /* Default opacity for background image */
+    --background-image: none; /* Default background image */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
 #input-wrapper {
@@ -225,9 +228,7 @@ code {
     max-width: 700px;
     margin-bottom: 20px;
     position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
+   
 }
 
 #left-image-container,
