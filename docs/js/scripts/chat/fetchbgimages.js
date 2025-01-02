@@ -1,13 +1,12 @@
 // Handle form submission to fetch and set the background or side image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    let attempts = 0;
     do {
         currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
-
+    setImage(currentSlot);
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
     const objectKey = "slot1.webp"; //document.getElementById('objectKey').value.trim();
