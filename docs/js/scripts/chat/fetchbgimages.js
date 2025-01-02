@@ -199,7 +199,7 @@ window.addEventListener('load', async () => {
 // Add click listener to the image elements for navigation
 // Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
-    const clickedImage = event.target.closest('.image-slot');
+    const clickedImage = event.target;
 
     // Check if the clicked element is an image with the "image-slot" class
     if (clickedImage && clickedImage.classList.contains('image-slot')) {
