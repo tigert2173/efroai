@@ -187,7 +187,7 @@ document.getElementById('nextImageBtn').addEventListener('click', async () => {
 
 // Display slot 1 by default when the page loads
 window.addEventListener('load', async () => {
-    // let attempts = 0;
+    let attempts = 0;
     do {
         currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
@@ -198,6 +198,7 @@ window.addEventListener('load', async () => {
 
 // Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
+    let attempts = 0;
     const clickedImage = event.target;
 
     // Check if the clicked element is an image with the "image-slot" class
