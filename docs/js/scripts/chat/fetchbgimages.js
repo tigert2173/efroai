@@ -154,7 +154,7 @@ async function setImage(slot) {
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
         chatWrapper.style.setProperty('--background-image', `url('${url}')`);
-        chatContainer.style.setProperty('--bg-opacity', 1);
+        chatWrapper.style.setProperty('--bg-opacity', 1);
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-left-image');
