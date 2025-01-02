@@ -807,14 +807,6 @@
         localStorage.setItem('repeat_last_n', document.getElementById('repeat_last_n').value);
         alert('Settings saved');
     }
-    document.getElementById('chat-container').addEventListener('scroll', function() {
-    const chatContainer = this;
-    const scrollPosition = chatContainer.scrollTop; // Get current scroll position
-    const backgroundPosition = (scrollPosition * 0.5) + "px"; // Adjust multiplier to change speed of parallax effect
-    
-    // Update background position based on scroll position
-    chatContainer.style.setProperty('--background-position', `center ${backgroundPosition}`);
-});
 
     // Function to load settings from local storage
     function loadSettings() {

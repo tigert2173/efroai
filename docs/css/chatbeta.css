@@ -213,7 +213,7 @@ code {
 
 
 #chat-container {
-    width: 100%;
+    width: 100%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -238,16 +238,14 @@ code {
     right: 0;
     bottom: 0;
     background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover; /* Ensure the image covers the container */
-    background-position: center; /* Center the image */
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     z-index: -1; /* Place behind the content */
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
-    background-attachment: scroll; /* Ensure the background scrolls with the container */
 }
-
 
 #left-image-container,
 #right-image-container {
