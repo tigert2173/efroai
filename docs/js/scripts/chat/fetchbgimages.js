@@ -85,7 +85,7 @@ let isSFW = sfwToggle.checked;
 sfwToggle.addEventListener('change', () => {
     isSFW = sfwToggle.checked;
     // Update the image slot display based on the SFW mode
-    currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
+   // currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
     //setImage(currentSlot); // Show the first valid image
 });
 
