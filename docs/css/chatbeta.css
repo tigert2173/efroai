@@ -309,7 +309,7 @@ code {
     background-color: rgba(53, 59, 72, 1); /* Dark grey with full opacity */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    transition: opacity 0.3s ease; /* Smooth transition for background color change */
 }
 
 
@@ -336,11 +336,10 @@ code {
 /* Fade-in and slide-up animation */
 @keyframes slideFadeIn {
     0% {
-        opacity: 0;
+        background-color: rgba(0, 0, 0, 0);
         transform: translateY(20px); /* Initial position */
     }
     100% {
-        opacity: 1;
         transform: translateY(0); /* Final position */
     }
 }

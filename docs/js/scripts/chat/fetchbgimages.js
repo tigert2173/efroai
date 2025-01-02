@@ -69,20 +69,14 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     rightImageContainer.style.opacity = opacityValue;
 });
 
-// Handle opacity slider for background
+// Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
-    const opacityValue = e.target.value / 100; // Convert the slider value to a fraction (0-1)
-    
-    // Get all message elements
-    const messageElements = document.querySelectorAll('.message');
-    
-    // Update the background color's opacity dynamically
-    messageElements.forEach(message => {
-        // Set the background opacity using rgba
-        message.style.backgroundColor = `rgba(53, 59, 72, ${opacityValue})`;
-    });
-});
+    const opacityValue = e.target.value / 100;
+    const messageContainer = document.getElementById('.message');
 
+    // Update the opacity for background or side images
+    messageContainer.style.opacity = opacityValue;
+});
 
 // Toggle menu visibility
 const toggleMenuBtn = document.getElementById("toggleMenuBtn");
