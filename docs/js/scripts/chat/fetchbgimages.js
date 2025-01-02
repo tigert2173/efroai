@@ -83,12 +83,13 @@ document.getElementById('opacity-slider-messages').addEventListener('input', (e)
     // Get all message elements
     const messageElements = document.querySelectorAll('.message');
     
-    // Apply the opacity to the background of each message
+    // Apply the opacity to the background of each message (via the pseudo-element)
     messageElements.forEach(message => {
-        // Update the background color with new opacity while keeping text opacity unaffected
-        message.style.backgroundColor = `rgba(53, 59, 72, ${opacityValue})`;
+        // Set the opacity of the background (pseudo-element ::before)
+        message.style.setProperty('--bg-opacity', opacityValue);
     });
 });
+
 
 // Toggle menu visibility
 const toggleMenuBtn = document.getElementById("toggleMenuBtn");
