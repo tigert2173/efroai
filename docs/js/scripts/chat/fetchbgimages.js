@@ -199,12 +199,7 @@ window.addEventListener('load', async () => {
 // Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
     const clickedImage = event.target.closest('.image-slot');
-    let attempts = 0;
-    do {
-        currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
-        attempts++;
-    } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
-
+   
     // Check if the clicked element is an image with the "image-slot" class
     if (clickedImage && clickedImage.classList.contains('image-slot')) {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
@@ -259,6 +254,8 @@ document.addEventListener('click', (event) => {
             setImage(currentSlot); // Update the image after finding a valid slot
         })();
     }
+    setImage(currentSlot);
+
 });
 
 
