@@ -233,6 +233,7 @@ code {
     background-position: center; /* Ensure the background stays centered */
     background-attachment: scroll; /* Keeps the background fixed while content scrolls */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
+    opacity: var(--bg-opacity); /* Apply opacity for background */
 }
 
 
@@ -268,7 +269,6 @@ code {
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
