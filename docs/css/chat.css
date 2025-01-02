@@ -197,7 +197,7 @@ code {
     position: relative;
     width: 100%;
     height: fit-content; /* Allow height to extend based on the image */
-    min-height: calc(100vh + 1300px); /* Add 100px to the height */
+    min-height: calc(100vh + 200px); /* Add 100px to the height */
     /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
