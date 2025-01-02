@@ -308,7 +308,6 @@ code {
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 8px;
-    background-color: rgba(53, 59, 72, 1); /* Default dark grey background */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
     transition: opacity 0.3s ease; /* Smooth transition for opacity */
@@ -323,6 +322,8 @@ code {
     left: 0;
     right: 0;
     bottom: 0;
+    background-color: rgba(53, 59, 72, 1); /* Default dark grey background */
+
     z-index: -1; /* Ensure the background is behind the text */
     opacity: var(--bg-opacity, 1); /* Default to full opacity if not set */
     transition: opacity 0.3s ease; /* Smooth transition for background opacity */
@@ -331,7 +332,7 @@ code {
 /* Specific message types */
 .assistant {
     text-align: left;
-    background-color: #124429; /* Dark green background for bot */
+    /* background-color: #124429; Dark green background for bot */
     border: 1px solid #1abc9c; /* Soft green border for bot */
 }
 
@@ -341,7 +342,7 @@ code {
 
 .user {
     text-align: right;
-    background-color: #1b663e; /* Softer neon green background for user */
+    /* background-color: #1b663e; Softer neon green background for user */
     border: 1px solid #2ecc71; /* Soft green border for user */
 }
 
