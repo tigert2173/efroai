@@ -201,7 +201,7 @@ document.addEventListener('click', (event) => {
     const clickedImage = event.target.closest('.image-slot');
    
     // Check if the clicked element is an image with the "image-slot" class
-    if (clickedImage) {
+    if (clickedImage && clickedImage.classList.contains('image-slot')) {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
 
@@ -209,7 +209,19 @@ document.addEventListener('click', (event) => {
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
             if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+                let attempts = 0;
+                do {
+                    currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Loop back to slot 1 if we're at the end
+            
+                    // Skip the current slot if it's unavailable (returns 404) and remember the unavailable slots
+                    while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
+                        unavailableSlots.add(currentSlot); // Mark the slot as unavailable
+                        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Continue looping forward to the next slot
+                        attempts++;
+                    }
+                } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
+            
+                setImage(currentSlot); // Update the image after finding a valid slot
             } else {
                 currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
             }
@@ -254,8 +266,6 @@ document.addEventListener('click', (event) => {
             setImage(currentSlot); // Update the image after finding a valid slot
         })();
     }
-    setImage(currentSlot);
-
 });
 
 
