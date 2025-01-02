@@ -12,7 +12,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     }
 
     const chatContainer = document.getElementById('chat-container');
-    const chatBackground = document.getElementById('.chat-background');
+    const chatBackground = document.getElementById('chat-background');
 
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
@@ -142,7 +142,7 @@ async function setImage(slot) {
     }
 
     const chatContainer = document.getElementById('chat-container');
-    const chatBackground = document.getElementById('.chat-background');
+    const chatBackground = document.getElementById('chat-background');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
