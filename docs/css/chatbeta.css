@@ -313,10 +313,20 @@ code {
     transition: opacity 0.3s ease; /* Smooth transition for background color change */
 }
 
+/* Add a pseudo-element for the background */
 .message::before {
-    opacity: var(--bg-opacity);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(53, 59, 72, 1); /* Same color as the background */
+    border-radius: inherit;
+    z-index: -1; /* Make sure the background is behind the text */
+    opacity: var(--bg-opacity, 1); /* Default opacity is 1 */
+    transition: opacity 0.3s ease; /* Smooth transition for background opacity */
 }
-
 /* Specific message types */
 .assistant {
     text-align: left;
