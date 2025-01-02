@@ -227,7 +227,7 @@ code {
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
-.chat-background {
+#chat-background {
     content: '';
     position: absolute;
     top: 0;
@@ -242,13 +242,6 @@ code {
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
-    background-attachment: scroll; /* Ensures the background moves with the content */
-}
-
-.chat-content {
-    position: relative; /* Ensures content is above the background */
-    z-index: 1; /* Higher stacking context */
-    padding-top: 20px; /* Avoids overlap with the background */
 }
 
 
