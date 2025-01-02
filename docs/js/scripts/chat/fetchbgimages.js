@@ -36,21 +36,26 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         if (imagePosition === 'background') {
             // Set the background image
            // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
-            // chatContainer.style.opacity = 1;
-            chatWrapper.style.backgroundImage = `url('${url}')`;
+           chatContainer.style.opacity = 0;
+           chatWrapper.style.backgroundImage = `url('${url}')`;
 
         } else if (imagePosition === 'left') {
             // Set the left side image
+            chatContainer.style.opacity = 1;
+
             chatWrapper.style.backgroundImage = 'none';
             leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
             chatWrapper.classList.add('has-left-image');
             inputWrapper.classList.add('has-left-image');
         } else if (imagePosition === 'right') {
             // Set the right side image
+            chatContainer.style.opacity = 1;
+
             chatWrapper.style.backgroundImage = 'none';
             rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
             chatWrapper.classList.add('has-right-image');
             inputWrapper.classList.add('has-right-image');
+            
         }
     } catch (error) {
         console.error("Error setting image:", error);
@@ -154,16 +159,18 @@ async function setImage(slot) {
     if (imagePosition === 'background') {
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
-        // chatContainer.style.opacity = 1;
-            chatWrapper.style.backgroundImage = `url('${url}')`;
+        chatContainer.style.opacity = 0;
+        chatWrapper.style.backgroundImage = `url('${url}')`;
     } else if (imagePosition === 'left') {
         chatWrapper.style.backgroundImage = 'none';
+        chatContainer.style.opacity = 1;
 
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-left-image');
         inputWrapper.classList.add('has-left-image');
     } else if (imagePosition === 'right') {
         chatWrapper.style.backgroundImage = 'none';
+        chatContainer.style.opacity = 1;
 
         rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-right-image');
