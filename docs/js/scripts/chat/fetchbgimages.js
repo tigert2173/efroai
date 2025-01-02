@@ -255,7 +255,8 @@ document.addEventListener('click', (event) => {
     }
 
     if (settingschanged) {
-        setImage(currentSlot);
+        
+        setImage(currentCheckedSlot);
 
     }
 
