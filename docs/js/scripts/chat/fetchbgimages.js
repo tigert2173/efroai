@@ -1,8 +1,7 @@
 // Handle form submission to fetch and set the background or side image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    let attempts = 0;
-    
+
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
     const objectKey = "slot1.webp"; //document.getElementById('objectKey').value.trim();
@@ -87,7 +86,7 @@ sfwToggle.addEventListener('change', () => {
     isSFW = sfwToggle.checked;
     // Update the image slot display based on the SFW mode
     currentSlot = isSFW ? 1 : currentSlot; // Reset to slot 1 if SFW is enabled
-    setImage(currentSlot); // Show the first valid image
+    //setImage(currentSlot); // Show the first valid image
 });
 
 // Image cycling logic
