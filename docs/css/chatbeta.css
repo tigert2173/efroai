@@ -227,8 +227,14 @@ code {
     position: relative;
     --bg-opacity: 1; /* Default opacity for background image */
     --background-image: none; /* Default background image */
+    background-image: var(--background-image); /* Set background image dynamically */
+    background-size: cover; /* Ensure the background covers the whole container */
+    background-position: center; /* Center the background image */
+    background-attachment: scroll; /* Ensure the background scrolls with the content */
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
+    opacity: var(--bg-opacity); /* Apply opacity for background */
 }
+
 
 #left-image-container,
 #right-image-container {
