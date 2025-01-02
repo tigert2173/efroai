@@ -250,6 +250,7 @@ code {
     right: -10px; /* Place on the right side of the chat container */
 }
 
+
 #chat-container::before {
     content: '';
     position: absolute;
