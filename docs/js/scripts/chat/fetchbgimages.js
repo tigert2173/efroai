@@ -83,10 +83,10 @@ document.getElementById('opacity-slider-messages').addEventListener('input', (e)
     // Get all message elements
     const messageElements = document.querySelectorAll('.message');
     
-    // Apply the opacity to all message elements
+    // Apply the opacity to the background of each message
     messageElements.forEach(message => {
-        // Set the opacity directly for dynamic control
-        message.style.opacity = opacityValue;
+        // Update the background color with new opacity while keeping text opacity unaffected
+        message.style.backgroundColor = `rgba(53, 59, 72, ${opacityValue})`;
     });
 });
 
