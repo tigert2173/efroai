@@ -69,19 +69,20 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     rightImageContainer.style.opacity = opacityValue;
 });
 
-// Handle opacity slider
+// Handle opacity slider for background
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100; // Convert the slider value to a fraction (0-1)
     
     // Get all message elements
     const messageElements = document.querySelectorAll('.message');
     
-    // Set the max opacity value dynamically for all message elements
+    // Update the background color's opacity dynamically
     messageElements.forEach(message => {
-        // Set the maximum opacity value based on slider
-        message.style.setProperty('max-opacity', opacityValue); // Max opacity is dynamically controlled
+        // Set the background opacity using rgba
+        message.style.backgroundColor = `rgba(53, 59, 72, ${opacityValue})`;
     });
 });
+
 
 // Toggle menu visibility
 const toggleMenuBtn = document.getElementById("toggleMenuBtn");

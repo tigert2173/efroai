@@ -305,13 +305,11 @@ code {
 .message {
     margin-bottom: 15px;
     padding: 10px;
-    opacity: 0; /* Start invisible for animation */
-    border-radius: 8px; /* Fixed typo: added proper border-radius */
-    background-color: #353b48; /* Dark grey */
+    border-radius: 8px;
+    background-color: rgba(53, 59, 72, 1); /* Dark grey with full opacity */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-    transition: opacity 0.3s ease; /* Smooth transition for opacity adjustments */
-
+    transition: background-color 0.3s ease; /* Smooth transition for background color change */
 }
 
 
