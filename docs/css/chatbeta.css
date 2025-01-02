@@ -229,7 +229,7 @@ code {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
+    overflow-y: scroll;
     height: 500px;
     max-width: 700px;
     margin-bottom: 20px;
