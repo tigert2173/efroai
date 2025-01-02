@@ -1,6 +1,7 @@
 // Handle form submission to fetch and set the background or side image
 document.getElementById('fetchImageForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    let attempts;
     do {
         currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
         attempts++;
