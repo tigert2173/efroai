@@ -1121,6 +1121,49 @@ let currentBotMessageElement = null;
 let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
+  
+    // Handle opacity slider
+    const opacityValue = document.getElementById('opacity-slider').value / 100;
+
+    // Select the chat background element and any other image containers
+    // const chatContainer = document.getElementById('chat-container');
+    // const leftImageContainer = document.getElementById('left-image-container');
+    // const rightImageContainer = document.getElementById('right-image-container');
+    const messageElements = document.querySelectorAll('.message');
+
+    // // Optionally update opacity for side images if needed
+    // leftImageContainer.style.opacity = opacityValue;
+    // rightImageContainer.style.opacity = opacityValue;
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-shadow', opacityValue);
+    });
+
+
+    const lineWidth = document.getElementById('opacity-slider-outline').value;
+    
+    const messageElements = document.querySelectorAll('.message');
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-outline', lineWidth+'px');
+    });
+
+    const opacityValue = document.getElementById('opacity-slider-messages').value / 100; // Convert the slider value to a fraction (0-1)
+    
+    // Get all message elements
+    const messageElements = document.querySelectorAll('.message');
+    
+    // Apply the opacity to the background using the custom property
+    messageElements.forEach(message => {
+        // Update the custom property for background opacity
+        message.style.setProperty('--bg-opacity', opacityValue);
+    });
+
+
+
+
+
+
     let userName = document.getElementById('user-name').value.trim();
     let charName = settings.charname || "{{char}}";
     if (!userName) { userName = "{{user}}"; }
