@@ -82,6 +82,17 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     });
 });
 
+// Handle text outline slider
+document.getElementById('opacity-slider-outline').addEventListener('input', (e) => {
+    const lineWidth = e.target.value;
+    
+    const messageElements = document.querySelectorAll('.message');
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-outline', lineWidth);
+    });
+});
+
 
 // Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
