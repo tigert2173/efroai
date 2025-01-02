@@ -307,30 +307,15 @@ code {
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 8px;
-    position: relative;
-    overflow: hidden; /* Ensures the inner background does not overflow the message container */
-    animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-}
-
-/* Inner background layer */
-.message::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background-color: rgba(53, 59, 72, 1); /* Dark grey with full opacity */
-    z-index: -1; /* Ensure the background is behind the text */
-    transition: opacity 0.3s ease; /* Smooth transition for background opacity */
+    transform: translateY(20px); /* Start slightly below its final position */
+    animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
+    transition: opacity 0.3s ease; /* Smooth transition for background color change */
 }
 
-/* Optional: Define text styling for message content */
-.message-text {
-    color: white; /* Ensure text stays fully visible */
+.message::before {
+    opacity: var(--bg-opacity);
 }
-
-
 
 /* Specific message types */
 .assistant {
