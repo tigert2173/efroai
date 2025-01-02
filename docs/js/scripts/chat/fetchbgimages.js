@@ -63,6 +63,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     }
 });
 
+
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
@@ -241,6 +242,12 @@ window.addEventListener('load', async () => {
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
     setImage(currentSlot);
+
+    const messageElements = document.querySelectorAll('.message');
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-shadow', 1);
+    });
 });
 
 // Add click listener to the image elements for navigation
