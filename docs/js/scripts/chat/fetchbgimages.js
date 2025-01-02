@@ -75,6 +75,10 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     // Optionally update opacity for side images if needed
     leftImageContainer.style.opacity = opacityValue;
     rightImageContainer.style.opacity = opacityValue;
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-shadow', opacityValue);
+    });
 });
 
 
