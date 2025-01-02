@@ -71,6 +71,7 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const chatContainer = document.getElementById('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
+    const messageElements = document.querySelectorAll('.message');
 
     // Optionally update opacity for side images if needed
     leftImageContainer.style.opacity = opacityValue;
