@@ -76,18 +76,10 @@ document.getElementById('opacity-slider-messages').addEventListener('input', (e)
     // Get all message elements
     const messageElements = document.querySelectorAll('.message');
     
-    // Apply the opacity to all message elements
+    // Set the max opacity value dynamically for all message elements
     messageElements.forEach(message => {
-        // Disable animation during opacity change
-        message.classList.add('no-animation');
-        
-        // Set the opacity
-        message.style.opacity = opacityValue;
-        
-        // Optional: Reset the class after a short delay to re-enable animation for future elements
-        setTimeout(() => {
-            message.classList.remove('no-animation');
-        }, 300); // Delay should match the opacity transition time
+        // Set the maximum opacity value based on slider
+        message.style.setProperty('max-opacity', opacityValue); // Max opacity is dynamically controlled
     });
 });
 

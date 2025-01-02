@@ -314,11 +314,7 @@ code {
 
 }
 
-/* Disable animation when opacity is controlled via slider */
-.message.no-animation {
-    animation: none; /* Disable animation */
-    transition: opacity 0.3s ease; /* Add a smooth transition for opacity change */
-}
+
 /* Specific message types */
 .assistant {
     text-align: left;
