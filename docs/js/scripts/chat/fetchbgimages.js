@@ -7,7 +7,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         attempts++;
     } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
 
-    setImage(currentSlot);
+
     const userId = sessionStorage.getItem('characterUploader'); // Dynamic user ID from character data
     const charId = sessionStorage.getItem('selectedCharacterId'); // Dynamic character ID from character data
     const objectKey = "slot1.webp"; //document.getElementById('objectKey').value.trim();
