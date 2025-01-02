@@ -202,7 +202,7 @@ code {
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
-    background-size: cover; /* Makes the background image cover the entire container */
+    background-size: contain; /* Makes the background image cover the entire container */
     background-position: center center; /* Centers the image in the view */
     background-repeat: no-repeat; /* Ensures the image does not repeat */
 }
