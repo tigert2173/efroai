@@ -197,11 +197,12 @@ window.addEventListener('load', async () => {
 });
 
 // Add click listener to the image elements for navigation
-document.addEventListener('click', (event) => {
+document.querySelector('.image-container').addEventListener('click', (event) => {
+    
     const clickedImage = event.target;
 
     // Check if the clicked element is an image with the "image-slot" class
-    if (clickedImage || clickedImage.classList.contains('image-slot')) {
+    if (clickedImage && clickedImage.classList.contains('image-slot')) {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
 
