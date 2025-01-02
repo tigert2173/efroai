@@ -61,7 +61,7 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
 
     // Select the chat background element and any other image containers
-    const chatBackground = document.querySelector('.chat-wrapper');
+    const chatBackground = document.querySelector('chat-wrapper');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
 
