@@ -216,7 +216,7 @@ code {
 #chat-container {
     width: 100%; /* Adjust width as needed */
     z-index: 500;
-    background-color: rgba(47, 54, 64, 1); /* Fully opaque */
+    background-color: rgba(47, 54, 64, var(--bg-opacity)); /* Fully opaque */
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
