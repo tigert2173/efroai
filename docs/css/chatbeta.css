@@ -252,7 +252,7 @@ code {
 
 #chat-container::before {
     content: '';
-    position: absolute;
+    position: fixed; /* Fix the image in place */
     top: 0;
     left: 0;
     right: 0;
@@ -265,15 +265,8 @@ code {
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-    background-image: var(--background-image); /* Set background image dynamically */
-    background-size: cover; /* Ensure the background covers the whole container */
-    background-position: center; /* Center the background image */
-    background-attachment: scroll; /* Ensure the background scrolls with the content */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
-    opacity: var(--bg-opacity); /* Apply opacity for background */
 }
+
 
 /* If the left or right images are shown, shift chat-container accordingly */
 #chat-wrapper.has-left-image #chat-container {
