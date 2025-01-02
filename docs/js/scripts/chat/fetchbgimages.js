@@ -197,37 +197,62 @@ window.addEventListener('load', async () => {
 });
 
 // Add click listener to the image elements for navigation
+// Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
     const clickedImage = event.target.closest('.image-slot');
-   
+
     // Check if the clicked element is an image with the "image-slot" class
     if (clickedImage && clickedImage.classList.contains('image-slot')) {
-        const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
-
+        let slot = parseInt(clickedImage.getAttribute('data-slot')); // Get the slot number from clicked image
+        
         // If SFW mode is on, restrict the slot range to 1-3
         if (isSFWModeEnabled()) {
-            // Make sure the slots are within the allowed range for SFW mode
             if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+                slot = slot > 1 ? slot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
             } else {
-                currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
+                slot = slot < 3 ? slot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
             }
         } else {
             // Otherwise, continue with the normal slot behavior
             if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+                slot = slot > 1 ? slot - 1 : 10; // Loop back to slot 10
             } else {
-                currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+                slot = slot < 10 ? slot + 1 : 1; // Loop back to slot 1
             }
         }
 
-        
+        // Skip unavailable slots
+        (async function skipInvalidSlots() {
+            let validSlotFound = false;
+            let currentCheckedSlot = slot; // Start checking from the clicked slot
+            
+            while (!validSlotFound) {
+                // Check if the clicked slot is available and valid
+                if (!unavailableSlots.has(currentCheckedSlot)) {
+                    const isValid = await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentCheckedSlot}.webp`);
+                    if (isValid) {
+                        validSlotFound = true; // A valid slot was found, break the loop
+                    } else {
+                        // Mark it as unavailable and skip to the next slot
+                        unavailableSlots.add(currentCheckedSlot);
+                        currentCheckedSlot = direction === 'prev' 
+                            ? currentCheckedSlot > 1 ? currentCheckedSlot - 1 : (isSFWModeEnabled() ? 3 : 10)
+                            : currentCheckedSlot < (isSFWModeEnabled() ? 3 : 10) ? currentCheckedSlot + 1 : 1;
+                    }
+                } else {
+                    // Skip unavailable slots if already marked
+                    currentCheckedSlot = direction === 'prev'
+                        ? currentCheckedSlot > 1 ? currentCheckedSlot - 1 : (isSFWModeEnabled() ? 3 : 10)
+                        : currentCheckedSlot < (isSFWModeEnabled() ? 3 : 10) ? currentCheckedSlot + 1 : 1;
+                }
+            }
 
-            setImage(currentSlot); // Update the image after finding a valid slot
-       
+            setImage(currentCheckedSlot); // Update the image after finding a valid slot
+        })();
     }
 });
+
 
 
 // Function to check if SFW mode is enabled
