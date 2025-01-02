@@ -208,18 +208,11 @@ document.addEventListener('click', (event) => {
         // If SFW mode is on, restrict the slot range to 1-3
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
-            if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
-            } else {
-                currentSlot = currentSlot < 3 ? currentSlot + 1 : 3; // Loop back to slot 1 if we're in SFW mode
-            }
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+
         } else {
             // Otherwise, continue with the normal slot behavior
-            if (direction === 'prev') {
-                currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
-            } else {
-                currentSlot = currentSlot < 10 ? currentSlot + 1 : 10; // Loop back to slot 1
-            }
+            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
         }
 
         // Skip unavailable slots
