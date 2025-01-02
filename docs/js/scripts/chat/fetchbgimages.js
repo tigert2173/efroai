@@ -201,7 +201,7 @@ document.addEventListener('click', (event) => {
     const clickedImage = event.target.closest('.image-slot');
    
     // Check if the clicked element is an image with the "image-slot" class
-    if (clickedImage && clickedImage.classList.contains('image-slot')) {
+    if (clickedImage) {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
 
