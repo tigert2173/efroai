@@ -71,11 +71,15 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
 
 // Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
-    const opacityValue = e.target.value / 100;
-    const messageContainer = document.getElementById('message');
-
-    // Update the opacity for background or side images
-    messageContainer.style.setProperty('--bg-opacity', opacityValue);
+    const opacityValue = e.target.value / 100; // Convert the slider value to a fraction (0-1)
+    
+    // Get all message elements
+    const messageElements = document.querySelectorAll('.message');
+    
+    // Apply the opacity to all message elements
+    messageElements.forEach(message => {
+        message.style.opacity = opacityValue; // Override opacity dynamically
+    });
 });
 
 // Toggle menu visibility
