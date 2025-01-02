@@ -208,44 +208,24 @@ document.addEventListener('click', (event) => {
         // If SFW mode is on, restrict the slot range to 1-3
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
-
+            if (direction === 'prev') {
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
+            } else {
+                currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
+            }
         } else {
             // Otherwise, continue with the normal slot behavior
-            currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+            if (direction === 'prev') {
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 10; // Loop back to slot 10
+            } else {
+                currentSlot = currentSlot < 10 ? currentSlot + 1 : 1; // Loop back to slot 1
+            }
         }
 
-        // Skip unavailable slots
-        (async function skipInvalidSlots() {
-            let validSlotFound = false;
-            while (!validSlotFound) {
-                // Check if the clicked slot is available and valid
-                if (!unavailableSlots.has(currentSlot)) {
-                    const isValid = await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`);
-                    if (isValid) {
-                        validSlotFound = true; // A valid slot was found, break the loop
-                    } else {
-                        // Mark it as unavailable and skip to the next slot
-                        unavailableSlots.add(currentSlot);
-                        if (isSFWModeEnabled()) {
-                            // Stay within 1-3 slots if SFW mode is on
-                            currentSlot = currentSlot < 3 ? currentSlot + 1 : 1;
-                        } else {
-                            currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
-                        }
-                    }
-                } else {
-                    // Skip unavailable slots if already marked
-                    if (isSFWModeEnabled()) {
-                        currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Keep within 1-3 range for SFW mode
-                    } else {
-                        currentSlot = direction === 'prev' ? currentSlot > 1 ? currentSlot - 1 : 10 : currentSlot < 10 ? currentSlot + 1 : 1;
-                    }
-                }
-            }
+        
 
             setImage(currentSlot); // Update the image after finding a valid slot
-        })();
+       
     }
 });
 
