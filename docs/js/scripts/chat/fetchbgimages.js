@@ -126,9 +126,9 @@ async function setImage(slot) {
     const chatWrapper = document.getElementById('chat-wrapper');
     const inputWrapper = document.getElementById('input-wrapper');
 
-    // Clear side images before applying the new image
-    leftImageContainer.innerHTML = '';
-    rightImageContainer.innerHTML = '';
+    // // Clear side images before applying the new image
+    // leftImageContainer.innerHTML = '';
+    // rightImageContainer.innerHTML = '';
     chatWrapper.classList.remove('has-left-image', 'has-right-image');
     inputWrapper.classList.remove('has-left-image', 'has-right-image');
 
