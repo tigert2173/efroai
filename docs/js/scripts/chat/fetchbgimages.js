@@ -197,7 +197,7 @@ window.addEventListener('load', async () => {
 });
 
 // Add click listener to the image elements for navigation
-document.querySelector('.image-container').addEventListener('click', (event) => {
+document.querySelector('.image-slot').addEventListener('click', (event) => {
     
     const clickedImage = event.target;
 
