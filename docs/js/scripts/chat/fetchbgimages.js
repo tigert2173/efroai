@@ -209,19 +209,7 @@ document.addEventListener('click', (event) => {
         if (isSFWModeEnabled()) {
             // Make sure the slots are within the allowed range for SFW mode
             if (direction === 'prev') {
-                let attempts = 0;
-                do {
-                    currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Loop back to slot 1 if we're at the end
-            
-                    // Skip the current slot if it's unavailable (returns 404) and remember the unavailable slots
-                    while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
-                        unavailableSlots.add(currentSlot); // Mark the slot as unavailable
-                        currentSlot = currentSlot < (isSFW ? 3 : 10) ? currentSlot + 1 : 1; // Continue looping forward to the next slot
-                        attempts++;
-                    }
-                } while (attempts < 10 && unavailableSlots.has(currentSlot)); // Ensure we don't loop indefinitely
-            
-                setImage(currentSlot); // Update the image after finding a valid slot
+                currentSlot = currentSlot > 1 ? currentSlot - 1 : 3; // Loop back to slot 3 if we're in SFW mode
             } else {
                 currentSlot = currentSlot < 3 ? currentSlot + 1 : 1; // Loop back to slot 1 if we're in SFW mode
             }
