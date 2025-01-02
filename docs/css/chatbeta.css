@@ -201,6 +201,10 @@ code {
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
   
+}
+
+#chat-wrapper::before {
+
     background-image: var(--background-image); /* Use the variable for the image */
     background-size: cover;
     background-position: center;
@@ -210,7 +214,6 @@ code {
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
-
 #input-wrapper {
     position: relative;
     width: 100%;
