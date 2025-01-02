@@ -28,8 +28,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
 
         // Clear side images and reset chat wrapper class before applying the new image
-        leftImageContainer.innerHTML = 'class="image-slot"';
-        rightImageContainer.innerHTML = 'class="image-slot"';
+        leftImageContainer.innerHTML = '<class="image-slot">';
+        rightImageContainer.innerHTML = '<class="image-slot">';
         chatWrapper.classList.remove('has-left-image', 'has-right-image');
         inputWrapper.classList.remove('has-left-image', 'has-right-image');
 
