@@ -250,7 +250,7 @@ code {
 #right-image-container {
     right: -10px; /* Place on the right side of the chat container */
 }
-
+/* 
 #chat-container::before {
     content: '';
     position: absolute;
@@ -266,7 +266,7 @@ code {
     opacity: var(--bg-opacity); 
     transition: opacity 0.3s ease; 
     border-radius: inherit; 
-}
+} */
 
 /* If the left or right images are shown, shift chat-container accordingly */
 #chat-wrapper.has-left-image #chat-container {

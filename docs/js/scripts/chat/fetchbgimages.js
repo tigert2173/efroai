@@ -68,7 +68,7 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const rightImageContainer = document.getElementById('right-image-container');
 
     // Update the custom property for background opacity
-    chatContainer.style.setProperty('--bg-opacity', opacityValue);
+    chatContainer.style.background = 'none';
 
     // Optionally update opacity for side images if needed
     leftImageContainer.style.opacity = opacityValue;
