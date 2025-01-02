@@ -36,7 +36,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         if (imagePosition === 'background') {
             // Set the background image
            // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
-            chatContainer.style.setProperty('--bg-opacity', 1);
+            chatContainer.style.opacity = 1;
             chatWrapper.style.backgroundImage = `url('${url}')`;
 
         } else if (imagePosition === 'left') {
@@ -63,12 +63,12 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
 
     // Select the chat background element and any other image containers
-    const chatBackground = document.querySelector('chat-wrapper');
+    const chatContainer = document.querySelector('chat-container');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
 
     // Update the opacity for the background image in the chat container
-    chatBackground.style.opacity = opacityValue;
+    chatContainer.style.opacity = opacityValue;
 
     // Optionally update opacity for side images if needed
     leftImageContainer.style.opacity = opacityValue;
@@ -157,7 +157,7 @@ async function setImage(slot) {
     if (imagePosition === 'background') {
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
-        chatContainer.style.setProperty('--bg-opacity', 1);
+        chatContainer.style.opacity = 1;
             chatWrapper.style.backgroundImage = `url('${url}')`;
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
