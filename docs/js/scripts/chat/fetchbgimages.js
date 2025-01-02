@@ -87,7 +87,11 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         alert('Failed to set image: ' + error.message);
     }
 });
-
+        // Function to update the label with the slider value
+        opacitySlider.addEventListener('input', function() {
+            const sliderValue = opacitySlider.value;
+            label.textContent = `Message Opacity: ${sliderValue}%`;
+        });
 
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
@@ -200,7 +204,13 @@ async function setImage(slot) {
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
            // Get all message elements
-           
+           const messageElements = document.querySelectorAll('.message');
+            
+           // Apply the opacity to the background using the custom property
+           messageElements.forEach(message => {
+               // Update the custom property for background opacity
+               message.style.setProperty('--bg-opacity', document.getElementById('opacity-slider').value/100);
+           });
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
         chatContainer.style.setProperty('--chatContainer-bg-opacity', 0);
