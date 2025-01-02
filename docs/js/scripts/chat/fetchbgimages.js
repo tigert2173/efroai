@@ -41,13 +41,13 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         } else if (imagePosition === 'left') {
             // Set the left side image
-            chatContainer.style.setProperty('--background-image', 'none');
+            chatWrapper.style.backgroundImage = 'none';
             leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;">`;
             chatWrapper.classList.add('has-left-image');
             inputWrapper.classList.add('has-left-image');
         } else if (imagePosition === 'right') {
             // Set the right side image
-            chatContainer.style.setProperty('--background-image', 'none');
+            chatWrapper.style.backgroundImage = 'none';
             rightImageContainer.innerHTML = `<img src="${url}" alt="Right Image" style="width: 100%; height: auto;">`;
             chatWrapper.classList.add('has-right-image');
             inputWrapper.classList.add('has-right-image');
