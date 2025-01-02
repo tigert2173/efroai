@@ -212,7 +212,7 @@ code {
 }
 
 #chat-container {
-    width: 100%;
+    width: 100%; /* Adjust width as needed */
     z-index: 500;
     background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
@@ -224,27 +224,31 @@ code {
     max-width: 700px;
     margin-bottom: 20px;
     position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
-#chat-container::before {
+.chat-background {
     content: '';
     position: absolute;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover; /* Cover the container */
-    background-position: center; /* Center the background */
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     z-index: -1; /* Place behind the content */
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
-    background-attachment: fixed; /* Fix the background within the container */
-    background-position: center center; /* Keep the background centered */
+    background-attachment: scroll; /* Ensures the background moves with the content */
+}
+
+.chat-content {
+    position: relative; /* Ensures content is above the background */
+    z-index: 1; /* Higher stacking context */
+    padding-top: 20px; /* Avoids overlap with the background */
 }
 
 
