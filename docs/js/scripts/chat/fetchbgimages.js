@@ -64,7 +64,6 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const rightImageContainer = document.getElementById('right-image-container');
 
     // Update the opacity for background or side images
-    chatContainer.style.setProperty('--bg-opacity', opacityValue);
     leftImageContainer.style.opacity = opacityValue;
     rightImageContainer.style.opacity = opacityValue;
 });
