@@ -44,7 +44,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
             // Apply the opacity to the background using the custom property
             messageElements.forEach(message => {
                 // Update the custom property for background opacity
-                message.style.setProperty('--bg-opacity', opacityValue);
+                message.style.setProperty('--bg-opacity', document.getElementById('opacity-slider').value);
             });
 
 
@@ -205,7 +205,7 @@ async function setImage(slot) {
            // Apply the opacity to the background using the custom property
            messageElements.forEach(message => {
                // Update the custom property for background opacity
-               message.style.setProperty('--bg-opacity', opacityValue);
+               message.style.setProperty('--bg-opacity', document.getElementById('opacity-slider').value);
            });
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
