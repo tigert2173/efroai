@@ -239,7 +239,7 @@ code {
     background-image: var(--background-image); /* Use the variable for the image */
     background-size: cover; /* Cover the container */
     background-position: center; /* Center the background */
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     z-index: -1; /* Place behind the content */
     opacity: var(--bg-opacity); /* Use the variable for opacity */
     transition: opacity 0.3s ease; /* Smooth opacity change */
