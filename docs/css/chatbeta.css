@@ -230,18 +230,7 @@ code {
     --background-image: none; /* Default background image */
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
-.sticky-element {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background-color: rgba(0, 0, 255, 0.7);
-    color: white;
-    text-align: center;
-    font-size: 14px;
-    z-index: 10;
-  }
+
 #left-image-container,
 #right-image-container {
     position: absolute;
