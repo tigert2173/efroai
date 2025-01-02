@@ -196,14 +196,15 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
+    min-height: 100vh; /* Ensures the height is at least the viewport height */
+    height: auto; /* Allow height to extend based on the image */
     /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
-    background-size: cover; /* Makes the background image cover the entire container */
+    background-size: contain; /* Makes the background image cover the entire container */
     background-position: center center; /* Centers the image in the view */
     background-repeat: no-repeat; /* Ensures the image does not repeat */
-    height: max-content;
 }
 
 #input-wrapper {
@@ -225,7 +226,7 @@ code {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow-y: scroll;
-    height: 500px;
+    height: 600px;
     max-width: 700px;
     margin-bottom: 20px;
     position: relative;
