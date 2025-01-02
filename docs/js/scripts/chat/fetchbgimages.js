@@ -59,15 +59,20 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
-    const chatContainer = document.getElementById('chat-container');
+
+    // Select the chat background element and any other image containers
+    const chatBackground = document.querySelector('.chat-background');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
 
-    // Update the opacity for background or side images
-    chatContainer.style.setProperty('--bg-opacity', opacityValue);
+    // Update the opacity for the background image in the chat container
+    chatBackground.style.opacity = opacityValue;
+
+    // Optionally update opacity for side images if needed
     leftImageContainer.style.opacity = opacityValue;
     rightImageContainer.style.opacity = opacityValue;
 });
+
 
 // Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
