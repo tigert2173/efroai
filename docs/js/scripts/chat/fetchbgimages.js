@@ -36,7 +36,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         if (imagePosition === 'background') {
             // Set the background image
            // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
-            chatContainer.style.opacity = 1;
+            // chatContainer.style.opacity = 1;
             chatWrapper.style.backgroundImage = `url('${url}')`;
 
         } else if (imagePosition === 'left') {
@@ -157,7 +157,7 @@ async function setImage(slot) {
     if (imagePosition === 'background') {
         // chatWrapper.style.setProperty('--background-image', `url('${url}')`);
         // chatWrapper.style.setProperty('--bg-opacity', 1);
-        chatContainer.style.opacity = 1;
+        // chatContainer.style.opacity = 1;
             chatWrapper.style.backgroundImage = `url('${url}')`;
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
