@@ -196,7 +196,7 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    min-height: calc(auto + 1000px); /* Allow height to extend based on the image and add 100px */
+    height: max-content; /* Allow height to extend based on the image */
     /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
