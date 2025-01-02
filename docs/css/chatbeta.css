@@ -196,19 +196,17 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: #00FF00; */
     display: flex;
     justify-content: center; /* Centers the chat container horizontally */
     align-items: center; /* Vertically aligns the chat container */
-}
-
-#input-wrapper {
-    position: relative;
-    width: 100%;
-    /* background-color: #00FF00; */
-    display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
+    height: 100%; /* Ensure it takes full height */
+    background-image: var(--background-image); /* Use the background image here */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; /* Put the background behind the chat */
+    opacity: var(--bg-opacity); /* Control opacity */
+    transition: opacity 0.3s ease; /* Smooth opacity change */
 }
 
 #chat-container {
@@ -227,23 +225,16 @@ code {
     transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
-.chat-background {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); /* Use the variable for the image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Use the variable for opacity */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-    border-radius: inherit; /* Match the border radius */
-    pointer-events: none; /* Ensure it doesn't block interactions */
+
+#input-wrapper {
+    position: relative;
+    width: 100%;
+    /* background-color: #00FF00; */
+    display: flex;
+    justify-content: center; /* Centers the chat container horizontally */
+    align-items: center; /* Vertically aligns the chat container */
 }
+
 
 
 #left-image-container,
