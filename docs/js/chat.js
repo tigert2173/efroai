@@ -1142,21 +1142,17 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
 
     const lineWidth = document.getElementById('opacity-slider-outline').value;
     
-    const messageElements = document.querySelectorAll('.message');
 
     messageElements.forEach(message => {
         message.style.setProperty('--text-outline', lineWidth+'px');
     });
 
-    const opacityValue = document.getElementById('opacity-slider-messages').value / 100; // Convert the slider value to a fraction (0-1)
-    
-    // Get all message elements
-    const messageElements = document.querySelectorAll('.message');
+    const opacityMessagesValue = document.getElementById('opacity-slider-messages').value / 100; // Convert the slider value to a fraction (0-1)
     
     // Apply the opacity to the background using the custom property
     messageElements.forEach(message => {
         // Update the custom property for background opacity
-        message.style.setProperty('--bg-opacity', opacityValue);
+        message.style.setProperty('--bg-opacity', opacityMessagesValue);
     });
 
 
