@@ -323,7 +323,6 @@ code {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(53, 59, 72, 1); /* Same background color as .message */
     z-index: -1; /* Ensure the background is behind the text */
     opacity: var(--bg-opacity, 1); /* Default to full opacity if not set */
     transition: opacity 0.3s ease; /* Smooth transition for background opacity */
