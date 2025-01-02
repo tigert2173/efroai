@@ -249,9 +249,10 @@ document.addEventListener('click', (event) => {
 
             setImage(currentCheckedSlot); // Update the image after finding a valid slot
         })();
-        setImage(currentSlot); // Show the first valid image
-
+        
     }
+    setImage(currentSlot); // Show the first valid image
+
 });
 
 
