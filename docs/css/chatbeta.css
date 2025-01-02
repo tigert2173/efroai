@@ -226,6 +226,7 @@ code {
     overflow-y: scroll;
     min-height: 500px;
     max-height: 800px;
+    height: max-content;
     max-width: 700px;
     margin-bottom: 20px;
     position: relative;
