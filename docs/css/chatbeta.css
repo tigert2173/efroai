@@ -252,7 +252,7 @@ code {
 
 #chat-container::before {
     content: '';
-    position: fixed; /* Fix the image in place */
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -266,7 +266,6 @@ code {
     transition: opacity 0.3s ease; /* Smooth opacity change */
     border-radius: inherit; /* Match the border radius */
 }
-
 
 /* If the left or right images are shown, shift chat-container accordingly */
 #chat-wrapper.has-left-image #chat-container {
