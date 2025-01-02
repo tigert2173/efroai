@@ -199,6 +199,8 @@ window.addEventListener('load', async () => {
 // Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
     const clickedImage = event.target.closest('.image-slot');
+    const settingschanged = event.target.closest('.fetchImageForm');
+
 
     // Check if the clicked element is an image with the "image-slot" class
     if (clickedImage && clickedImage.classList.contains('image-slot')) {
@@ -251,7 +253,10 @@ document.addEventListener('click', (event) => {
         })();
         
     }
-    setImage(currentSlot); // Show the first valid image
+
+    if (settingschanged) {
+        setImage();
+    }
 
 });
 
