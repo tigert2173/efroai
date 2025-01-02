@@ -312,7 +312,7 @@ code {
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
     transition: opacity 0.3s ease; /* Smooth transition for opacity */
     overflow: hidden; /* Prevent background from overflowing message bounds */
-    text-shadow: #000;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Pseudo-element for background with dynamic opacity */
