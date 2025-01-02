@@ -78,7 +78,16 @@ document.getElementById('opacity-slider-messages').addEventListener('input', (e)
     
     // Apply the opacity to all message elements
     messageElements.forEach(message => {
-        message.style.opacity = opacityValue; // Override opacity dynamically
+        // Disable animation during opacity change
+        message.classList.add('no-animation');
+        
+        // Set the opacity
+        message.style.opacity = opacityValue;
+        
+        // Optional: Reset the class after a short delay to re-enable animation for future elements
+        setTimeout(() => {
+            message.classList.remove('no-animation');
+        }, 300); // Delay should match the opacity transition time
     });
 });
 
