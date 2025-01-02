@@ -87,11 +87,15 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
         alert('Failed to set image: ' + error.message);
     }
 });
-        // Function to update the label with the slider value
-        opacitySlider.addEventListener('input', function() {
-            const sliderValue = opacitySlider.value;
-            label.textContent = `Message Opacity: ${sliderValue}%`;
-        });
+      // Get the slider element
+      const opacitySlider = document.getElementById('opacity-slider');
+      const label = document.getElementById('slider-label');
+
+      // Function to update the label with the slider value
+      opacitySlider.addEventListener('input', function() {
+          const sliderValue = opacitySlider.value;
+          label.textContent = `Message Opacity: ${sliderValue}%`;
+      });
 
 // Handle opacity slider
 document.getElementById('opacity-slider').addEventListener('input', (e) => {
