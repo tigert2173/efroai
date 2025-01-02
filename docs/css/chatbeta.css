@@ -304,16 +304,18 @@ code {
 
 /* General message styling */
 .message {
+    position: relative;
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 8px;
-    background-color: rgba(53, 59, 72, 1); /* Dark grey with full opacity */
+    background-color: rgba(53, 59, 72, 1); /* Default dark grey background */
     transform: translateY(20px); /* Start slightly below its final position */
     animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-    transition: opacity 0.3s ease; /* Smooth transition for background color change */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    overflow: hidden; /* Prevent background from overflowing message bounds */
 }
 
-/* Add a pseudo-element for the background */
+/* Pseudo-element for background with dynamic opacity */
 .message::before {
     content: '';
     position: absolute;
@@ -321,29 +323,41 @@ code {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(53, 59, 72, 1); /* Same color as the background */
-    border-radius: inherit;
-    z-index: -1; /* Make sure the background is behind the text */
-    opacity: var(--bg-opacity, 1); /* Default opacity is 1 */
+    background-color: rgba(53, 59, 72, 1); /* Same background color as .message */
+    z-index: -1; /* Ensure the background is behind the text */
+    opacity: var(--bg-opacity, 1); /* Default to full opacity if not set */
     transition: opacity 0.3s ease; /* Smooth transition for background opacity */
 }
+
 /* Specific message types */
 .assistant {
     text-align: left;
     background-color: #124429; /* Dark green background for bot */
-    border: 1px solid #1abc9c; /* Optional: Add a soft green border for style */
+    border: 1px solid #1abc9c; /* Soft green border for bot */
+}
+
+.assistant::before {
+    background-color: #124429; /* Same background color for the background */
 }
 
 .user {
     text-align: right;
     background-color: #1b663e; /* Softer neon green background for user */
-    border: 1px solid #2ecc71; /* Optional: Add a soft green border for style */
+    border: 1px solid #2ecc71; /* Soft green border for user */
+}
+
+.user::before {
+    background-color: #1b663e; /* Same background color for the background */
 }
 
 .system {
     text-align: left;
     background-color: brown; /* Brown background for system */
-    border: 1px solid #d35400; /* Optional: Add a soft orange border for style */
+    border: 1px solid #d35400; /* Soft orange border for system */
+}
+
+.system::before {
+    background-color: brown; /* Same background color for the background */
 }
 
 

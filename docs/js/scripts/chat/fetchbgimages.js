@@ -83,13 +83,12 @@ document.getElementById('opacity-slider-messages').addEventListener('input', (e)
     // Get all message elements
     const messageElements = document.querySelectorAll('.message');
     
-    // Apply the opacity to the background of each message (via the pseudo-element)
+    // Apply the opacity to the background using the custom property
     messageElements.forEach(message => {
-        // Set the opacity of the background (pseudo-element ::before)
+        // Update the custom property for background opacity
         message.style.setProperty('--bg-opacity', opacityValue);
     });
 });
-
 
 // Toggle menu visibility
 const toggleMenuBtn = document.getElementById("toggleMenuBtn");
