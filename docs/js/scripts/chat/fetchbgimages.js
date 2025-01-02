@@ -12,8 +12,6 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
     }
 
     const chatContainer = document.getElementById('chat-container');
-    const chatBackground = document.getElementById('chat-background');
-
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
@@ -37,8 +35,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         if (imagePosition === 'background') {
             // Set the background image
-            chatBackground.style.setProperty('--background-image', `url('${url}')`);
-            chatBackground.style.setProperty('--bg-opacity', 1);
+            chatWrapper.style.setProperty('--background-image', `url('${url}')`);
+            chatWrapper.style.setProperty('--bg-opacity', 1);
         } else if (imagePosition === 'left') {
             // Set the left side image
             chatContainer.style.setProperty('--background-image', 'none');
@@ -142,7 +140,6 @@ async function setImage(slot) {
     }
 
     const chatContainer = document.getElementById('chat-container');
-    const chatBackground = document.getElementById('chat-background');
     const leftImageContainer = document.getElementById('left-image-container');
     const rightImageContainer = document.getElementById('right-image-container');
     const chatWrapper = document.getElementById('chat-wrapper');
@@ -156,8 +153,8 @@ async function setImage(slot) {
 
     // Apply the image based on the selected position
     if (imagePosition === 'background') {
-        chatBackground.style.setProperty('--background-image', `url('${url}')`);
-        chatBackground.style.setProperty('--bg-opacity', 1);
+        chatWrapper.style.setProperty('--background-image', `url('${url}')`);
+        chatWrapper.style.setProperty('--bg-opacity', 1);
     } else if (imagePosition === 'left') {
         leftImageContainer.innerHTML = `<img src="${url}" alt="Left Image" style="width: 100%; height: auto;" class="image-slot" data-slot="${slot}">`;
         chatWrapper.classList.add('has-left-image');
