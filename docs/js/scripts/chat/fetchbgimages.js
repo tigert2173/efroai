@@ -35,8 +35,8 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
         if (imagePosition === 'background') {
             // Set the background image
-            chatContainer.style.setProperty('--background-image', `url('${url}')`);
-            chatContainer.style.setProperty('--bg-opacity', 1);
+            chatWrapper.style.setProperty('--background-image', `url('${url}')`);
+            chatWrapper.style.setProperty('--bg-opacity', 1);
         } else if (imagePosition === 'left') {
             // Set the left side image
             chatContainer.style.setProperty('--background-image', 'none');
