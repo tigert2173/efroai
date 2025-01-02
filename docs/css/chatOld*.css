@@ -159,6 +159,19 @@ a:active {
     position: relative; /* Position relative for pseudo-elements */
 }
 
+.nav-arrows {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 1.2em;
+    color: #32CD32; /* Softer neon green */
+}
+
+.nav-arrows.disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
 #main-content {
     flex: 1;
     display: flex;
@@ -166,7 +179,7 @@ a:active {
     align-items: center;
     padding: 20px;
     width: 100%; /* Take full width */
-    max-width: 1200px; /* Limit max width */
+    max-width: 700px; /* Limit max width */
 }
 /* Style for block code */
 .code-block {
@@ -192,198 +205,53 @@ code {
     padding: 2px 5px;
     font-family: "Courier New", Courier, monospace;
 }
-
-#chat-wrapper {
-    position: relative;
-    width: 100%;
-    min-height: 650px; /* Ensures the height is at least the viewport height */
-    height: auto; /* Allow height to extend based on the image */
-    /* background-color: #00FF00; */
-    display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
-    background-size: contain; /* Makes the background image cover the entire container */
-    background-position: center center; /* Centers the image in the view */
-    background-repeat: no-repeat; /* Ensures the image does not repeat */
-}
-
-#input-wrapper {
-    position: relative;
-    width: 100%;
-    /* background-color: #00FF00; */
-    display: flex;
-    justify-content: center; /* Centers the chat container horizontally */
-    align-items: center; /* Vertically aligns the chat container */
-}
-
-
 #chat-container {
-    width: 100%; /* Adjust width as needed */
+    width: 100%;
     z-index: 500;
-    background-color: rgba(47, 54, 64, var(--chatContainer-bg-opacity)); /* Fully opaque */
+    background-color: #2f3640; /* Dark grey */
     border: 1px solid #32CD32; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    overflow-y: scroll;
-    height: 600px;
-    max-width: 700px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    overflow-y: auto;
+    height: 500px;
     margin-bottom: 20px;
-    position: relative;
-    --bg-opacity: 1; /* Default opacity for background image */
-    --background-image: none; /* Default background image */
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shifting */
 }
 
-#left-image-container,
-#right-image-container {
-    position: absolute;
-    height: 100%; /* Set a fixed width for the side image */
-    max-width: 300px;
-    height: auto;
-    padding: 10px;
-    z-index: 500; /* Place behind the content */
-    opacity: var(--bg-opacity); /* Opacity control */
-    transition: opacity 0.3s ease; /* Smooth opacity change */
-}
-
-#left-image-container {
-    left: -10px; /* Place on the left side of the chat container */
-}
-
-#right-image-container {
-    right: -10px; /* Place on the right side of the chat container */
-}
-/* 
-#chat-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(--background-image); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1; 
-    opacity: var(--bg-opacity); 
-    transition: opacity 0.3s ease; 
-    border-radius: inherit; 
-} */
-
-/* If the left or right images are shown, shift chat-container accordingly */
-#chat-wrapper.has-left-image #chat-container {
-    margin-left: 320px; /* Push the chat container to the right */
-}
-
-#chat-wrapper.has-right-image #chat-container {
-    margin-right: 320px; /* Push the chat container to the left */
-}
-
-/* If the left or right images are shown, shift chat-container accordingly */
-#input-wrapper.has-left-image #input-container {
-    margin-left: 320px; /* Push the chat container to the right */
-}
-
-#input-wrapper.has-right-image #input-container {
-    margin-right: 320px; /* Push the chat container to the left */
-}
-
-/* Ensures the input container shifts with the chat-wrapper */
-#input-container {
-    display: flex;
-    position: relative;
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 10px;
-    transition: margin-left 0.3s ease, margin-right 0.3s ease; /* Smooth shift */
-}
-
-
-#opacity-control {
-    margin-top: 10px;
-}
-
-
-/* General message styling */
 .message {
-    position: relative;
     margin-bottom: 15px;
     padding: 10px;
-    border-radius: 8px;
-    transform: translateY(20px); /* Start slightly below its final position */
-    animation: slideFadeIn 0.5s ease forwards; /* Animate on appearance */
-    transition: opacity 0.3s ease; /* Smooth transition for opacity */
-    overflow: hidden; /* Prevent background from overflowing message bounds */
-    text-shadow: 3px 3px 5px rgba(0, 0, 0, var(--text-shadow));
-    -webkit-text-stroke: var(--text-outline) black; /* 2px black outline around text */
+    border-radius: 5px;
+    background-color: #353b48; /* Dark grey */
 }
 
-/* Pseudo-element for background with dynamic opacity */
-.message::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(53, 59, 72, 1); /* Default dark grey background */
-
-    z-index: -1; /* Ensure the background is behind the text */
-    opacity: var(--bg-opacity, 1); /* Default to full opacity if not set */
-    transition: opacity 0.3s ease; /* Smooth transition for background opacity */
-}
-
-/* Specific message types */
 .assistant {
     text-align: left;
-    /* background-color: #124429; Dark green background for bot */
-    border: 1px solid #1abc9c; /* Soft green border for bot */
-}
-
-.assistant::before {
-    background-color: #124429; /* Same background color for the background */
+    background-color: #124429; /* Orange background for bot */
 }
 
 .user {
     text-align: right;
-    /* background-color: #1b663e; Softer neon green background for user */
-    border: 1px solid #2ecc71; /* Soft green border for user */
-}
-
-.user::before {
-    background-color: #1b663e; /* Same background color for the background */
+    background-color: #1b663e; /* Softer neon green background for user */
 }
 
 .system {
     text-align: left;
-    background-color: brown; /* Brown background for system */
-    border: 1px solid #d35400; /* Soft orange border for system */
+    background-color: brown; /* Orange background for bot */
 }
 
-.system::before {
-    background-color: brown; /* Same background color for the background */
+#input-container {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 10px;
 }
-
-
-/* Fade-in and slide-up animation */
-@keyframes slideFadeIn {
-    0% {
-        background-color: rgba(0, 0, 0, 0);
-        transform: translateY(20px); /* Initial position */
-    }
-    100% {
-        transform: translateY(0); /* Final position */
-    }
-}
-
 
 #input-container input {
     flex: 1;
     padding: 10px;
     border: 1px solid #32CD32; /* Softer neon green border */
-    border-radius: e 0 0 e;
+    border-radius: 5px 0 0 5px;
     /* background-color: #2f3640; Dark grey */
     background-color: #124429; 
     color: #f5f6fa; /* Light grey */
@@ -394,10 +262,10 @@ code {
     color: #f9f9fc;
 }
 
-/* Change placeholder text color */
-#user-input::placeholder {
-    color: #a0a0a0; /* Light gray placeholder */
-}
+    /* Change placeholder text color */
+    #user-input::placeholder {
+        color: #a0a0a0; /* Light gray placeholder */
+    }
 
 #input-container button {
     border: 1px solid #2e8b57; /* Softer neon green button */
@@ -616,23 +484,17 @@ input[type="checkbox"]:not(:checked) + label {
     #input-container {
         flex-direction: row; /* Stack input and button vertically */
         align-items: stretch; /* Full width for both */
-        min-width: 100%;
+        min-width: 50%;
     }
 
     #input-container input {
-        width: 50%; /* Full width */
+        width: 100%; /* Full width */
         margin-bottom: 5px; /* Space between input and button */
-    }
-
-    #user-input {
-        background-color: #2e2e2e; /* Slightly lighter green for the input field */
-        color: #f9f9fc;
-        width: 80%; /* Remove min-width to fit */
     }
 
     #input-container button {
         width: 20%; /* Full width for button */
-        min-width: 50px; /* Remove min-width to fit */
+        min-width: 100px; /* Remove min-width to fit */
     }
 
     #settings-container, #api-status {
@@ -797,50 +659,15 @@ input[type="checkbox"]:not(:checked) + label {
     transition: height 0.2s; /* Smooth transition for height changes */
 }
 
-/* Adjust the message header to space items correctly */
-.message-header {
-    display: flex;
-    align-items: center; /* Vertically align items */
-    justify-content: space-between; /* Space between the two groups (arrows and buttons) */
-    width: 100%; /* Ensure full width for the header */
-    flex-wrap: nowrap; /* Prevent wrapping */
-    padding: 2px; /* Add padding to the header */
-
-}
-
-/* Adjust placement of navigation arrows (left side) */
-.nav-arrows {
-    cursor: pointer;
-    display: inline-block;
-    padding: 0; /* Remove padding to eliminate space between the arrows */
-    font-size: 1.5em; /* Slightly larger arrows */
-    color: #32CD32; /* Softer neon green */
-    margin: 0; /* No margin between arrows */
-}
-
-/* Disabled navigation arrows */
-.nav-arrows.disabled {
-    color: #555;
-    cursor: not-allowed;
-}
-
-/* Button container styles for buttons on the right side */
-.buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between buttons */
-}
-
-/* Edit Button Styles */
+/* Button styles */
 .edit-btn {
     background-color: #007bff; /* Blue background */
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 8px 14px;
+    padding: 5px 10px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s, transform 0.3s ease-in-out; /* Transition effects */
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
 }
 
 .edit-btn:hover {
@@ -848,97 +675,17 @@ input[type="checkbox"]:not(:checked) + label {
     transform: scale(1.05); /* Slight scale effect on hover */
 }
 
-/* Delete Button Styles */
 .delete-btn {
-    background-color: #d9534f; /* Red background */
+    background-color: red;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 8px 14px;
+    padding: 5px 10px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s, transform 0.3s ease-in-out;
 }
 
 .delete-btn:hover {
-    background-color: #c9302c; /* Darker red on hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
-}
-
-/* Audio Button Styles */
-.audio-btn {
-    background-color: #5bc0de; /* Light blue background */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s, transform 0.3s ease-in-out;
-}
-
-.audio-btn:hover {
-    background-color: #31b0d5; /* Darker blue on hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
-}
-
-/* Disabled button styling */
-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* Gradual resizing for smaller screens */
-@media (max-width: 500px) {
-    /* Slightly shrink navigation arrows */
-    .nav-arrows {
-        font-size: 1.4em; /* Slightly smaller arrows */
-    }
-
-    /* Slightly shrink buttons */
-    .buttons button {
-        padding: 7px 12px; /* Smaller button size */
-        font-size: 13px; /* Slightly smaller font */
-    }
-}
-
-@media (max-width: 400px) {
-    /* More noticeable shrink for navigation arrows */
-    .nav-arrows {
-        font-size: 1.2em; /* Noticeably smaller arrows */
-    }
-
-    /* More noticeable shrink for buttons */
-    .buttons button {
-        padding: 6px 10px; /* Smaller button size */
-        font-size: 12px; /* Smaller font */
-    }
-}
-
-@media (max-width: 350px) {
-    /* Further shrink navigation arrows */
-    .nav-arrows {
-        font-size: 1em; /* Smaller arrows */
-    }
-
-    /* Further shrink buttons */
-    .buttons button {
-        padding: 5px 8px; /* Even smaller button size */
-        font-size: 11px; /* Smaller font */
-    }
-}
-
-@media (max-width: 300px) {
-    /* Even further shrink navigation arrows */
-    .nav-arrows {
-        font-size: 0.9em; /* Even smaller arrows */
-    }
-
-    /* Even further shrink buttons */
-    .buttons button {
-        padding: 4px 8px; /* Even smaller buttons */
-        font-size: 10px; /* Smallest font size */
-    }
+    background-color: darkred;
 }
 
 .likes-count {
@@ -973,60 +720,5 @@ button:disabled {
 .like-btn:hover {
     background-color: #da070060; /* Darker color on hover */
     transform: scale(1.25);    /* Slightly enlarge button on hover */
-}
-
-#opacity-control {
-    margin-top: 10px;
-}
-
-/* Button styling */
-.menu-btn {
-    background-color: #4CAF50; /* Green button */
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
-
-.menu-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-/* Form and opacity slider styling */
-.menu-container {
-    display: none; /* Hidden by default */
-    background-color: #242424;
-    padding: 20px;
-    position: absolute;
-    z-index: 10000;
-    margin-top: 60px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.menu-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.menu-container label {
-    margin: 8px 0;
-}
-
-#opacity-slider {
-    margin-top: 10px;
-}
-
-/* Show the menu when the button is clicked */
-.show-menu {
-    display: block;
 }
 

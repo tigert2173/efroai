@@ -11,9 +11,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - EFRO.AI</title>
-    <link rel="stylesheet" href="css/chatbeta.css">
+    <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/menu2.0.css">
-    <link rel="stylesheet" href="css/chatbeta-extras.css">
 
     <styles>
         <style>
@@ -306,64 +305,8 @@
         </script>
         <!--JuicyAds END-->
     </div>
-
-    <!-- Audio Players for Each Generated Clip -->
-    <div id="audioPlayersContainer"></div>
-    <div id="main-content">
-        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
-        <div id="imageMenu" class="menu-container">
-
-          <!-- Navigation arrows to cycle through images -->
-          <div class="image-navigation">
-            <button id="prevImageBtn">← Previous</button>
-            <button id="nextImageBtn">Next →</button>
+        <div id="chat-container">
         </div>
-        <!-- SFW Toggle -->
-        <input type="checkbox" id="sfwToggle" checked /> Safer Content Mode
-
-
-            <form id="fetchImageForm">
-                <!-- <label for="bucketName">Bucket Name:</label>
-                <input type="text" id="bucketName" name="bucketName" required> -->
-                <!-- <label for="objectKey">Object Key:</label>
-                <input type="text" id="objectKey" name="objectKey" required> -->
-                <label>Image Position:</label>
-                <label for="background">
-                    <input type="radio" id="background" name="imagePosition" value="background"> Background </label>
-                <label for="left">
-                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
-                <label for="right">
-                    <input type="radio" id="right" name="imagePosition" value="right" checked> Right </label>
-                <button type="submit">Fetch Image</button>
-            </form>
-            <label for="opacity-slider">Text Shadow:</label>
-            <input type="range" id="opacity-slider" min="0" max="100" value="80">
-            <label for="opacity-slider-messages">Message Opacity:</label>
-            <input type="range" id="opacity-slider-messages" min="0" max="100" value="30">
-            <label for="opacity-slider-outline">Text Outline:</label>
-            <input type="number" id="opacity-slider-outline" min="0" max="1.5" value="0" step="0.01">
-        </div>
-        <script src="js/scripts/chat/fetchbgimages.js"></script>
-        <!-- Button to manually trigger saving chat messages -->
-        <button id="save-chat-button">Save Chat</button>
-        <!-- Parent container for chat and images -->
-        <div id="chat-wrapper">
-            <div id="left-image-container"></div> <!-- Left side image container -->
-            <div id="chat-container">
-                <div class="chat-content">
-                    <!-- Messages and chat content will go here -->
-                </div>
-            </div>
-            
-            <div id="right-image-container"></div> <!-- Right side image container -->
-        </div>
-        <div id="input-wrapper">
-            <div id="input-container">
-                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-                <button id="send-button" onclick="sendMessage()">Send</button>
-                <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
-            </div>
-        </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
 <!-- Left-side Ad -->
@@ -411,6 +354,19 @@
         ad.style.display = 'none'; // Hides the ad
     }
 </script>
+
+
+        <div id="input-container">
+            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+            <button id="send-button" onclick="sendMessage()">Send</button>
+            <button onclick="regenerateMessage()">Regenerate Message</button>
+        </div>
+        
+        <label for="enter-send" class="send-on-enter-label">
+            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
+            <span class="checkbox-text">Send on Enter</span>
+        </label>
+        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = true;
@@ -455,10 +411,14 @@
             <p>The following are not always active, reach TigerT2173 if you'd like to try!</p>
             <button id="model3B-button" onclick="goToModel3B()">[Alpha] Try Our 3B Model</button>
             <button id="TTS-button" onclick="goToTTS()">[Alpha] Try Our Text to Speech.</button>
+            <button id="Alpha-Chatpage" onclick="goToAlpha()">[Alpha] New Features Preview</button>
 
             <script>
                 function goToModel3B() {
                     window.location.href = '3B-model-page.html'; // replace with the actual URL for the 13B model page
+                }
+                function goToAlpha() {
+                    window.location.href = 'chatalpha.html'; // replace with the actual URL for the 13B model page
                 }
                 function goToTTS() {
                     window.location.href = 'chatbeta.html'; // replace with the actual URL for the 13B model page
