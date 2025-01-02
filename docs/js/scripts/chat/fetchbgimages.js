@@ -198,13 +198,13 @@ window.addEventListener('load', async () => {
 
 // Add click listener to the image elements for navigation
 document.addEventListener('click', (event) => {
-    let attempts = 0;
     const clickedImage = event.target;
 
     // Check if the clicked element is an image with the "image-slot" class
     if (clickedImage && clickedImage.classList.contains('image-slot')) {
         const slot = clickedImage.getAttribute('data-slot'); // Get the slot number
         let direction = event.clientX < window.innerWidth / 2 ? 'prev' : 'next'; // Determine the direction based on click position
+        let attempts = 0;
 
         // If SFW mode is on, restrict the slot range to 1-3
         if (isSFWModeEnabled()) {
