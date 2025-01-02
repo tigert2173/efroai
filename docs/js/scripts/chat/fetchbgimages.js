@@ -89,7 +89,7 @@ document.getElementById('opacity-slider-outline').addEventListener('input', (e) 
     const messageElements = document.querySelectorAll('.message');
 
     messageElements.forEach(message => {
-        message.style.setProperty('--text-outline', lineWidth);
+        message.style.setProperty('--text-outline', lineWidth+'px');
     });
 });
 
