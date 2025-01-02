@@ -313,7 +313,7 @@ code {
     transition: opacity 0.3s ease; /* Smooth transition for opacity */
     overflow: hidden; /* Prevent background from overflowing message bounds */
     text-shadow: 3px 3px 5px rgba(0, 0, 0, var(--text-shadow));
-    -webkit-text-stroke: var(--text-outline)px black; /* 2px black outline around text */
+    -webkit-text-stroke: var(--text-outline) black; /* 2px black outline around text */
 }
 
 /* Pseudo-element for background with dynamic opacity */
