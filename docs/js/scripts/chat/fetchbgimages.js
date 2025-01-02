@@ -255,8 +255,13 @@ document.addEventListener('click', (event) => {
     }
 
     if (settingschanged) {
-        
-        setImage(currentCheckedSlot);
+        let attempts = 0;
+        do {
+            currentSlot = currentSlot <= (isSFW ? 3 : 10) ? currentSlot : (isSFW ? 1 : 1); // Default to slot 1 or 3 for SFW
+            attempts++;
+        } while (unavailableSlots.has(currentSlot) && attempts < 10); // Skip unavailable slots
+    
+        setImage(currentSlot);
 
     }
 
