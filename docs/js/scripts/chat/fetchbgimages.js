@@ -69,14 +69,14 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
 
     // Select the chat background element and any other image containers
-    const chatContainer = document.getElementById('chat-container');
-    const leftImageContainer = document.getElementById('left-image-container');
-    const rightImageContainer = document.getElementById('right-image-container');
+    // const chatContainer = document.getElementById('chat-container');
+    // const leftImageContainer = document.getElementById('left-image-container');
+    // const rightImageContainer = document.getElementById('right-image-container');
     const messageElements = document.querySelectorAll('.message');
 
-    // Optionally update opacity for side images if needed
-    leftImageContainer.style.opacity = opacityValue;
-    rightImageContainer.style.opacity = opacityValue;
+    // // Optionally update opacity for side images if needed
+    // leftImageContainer.style.opacity = opacityValue;
+    // rightImageContainer.style.opacity = opacityValue;
 
     messageElements.forEach(message => {
         message.style.setProperty('--text-shadow', opacityValue);
@@ -246,7 +246,7 @@ window.addEventListener('load', async () => {
     const messageElements = document.querySelectorAll('.message');
 
     messageElements.forEach(message => {
-        message.style.setProperty('--text-shadow', 1);
+        message.style.setProperty('--text-shadow', 0.8);
     });
 });
 
