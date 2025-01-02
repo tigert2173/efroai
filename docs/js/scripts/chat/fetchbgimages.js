@@ -71,11 +71,9 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
 // Handle opacity slider
 document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
     const opacityValue = e.target.value / 100;
-    const chatContainer = document.getElementById('chat-container');
-    const messageContainer = document.getElementById('.message');
+    const messageContainer = document.getElementById('.message-content');
 
     // Update the opacity for background or side images
-    chatContainer.style.setProperty('--bg-opacity', opacityValue);
     messageContainer.style.opacity = opacityValue;
 });
 
