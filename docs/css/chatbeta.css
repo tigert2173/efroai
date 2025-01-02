@@ -252,7 +252,7 @@ code {
 
 #chat-container::before {
     content: '';
-    position: absolute;
+    position: fixed; /* Keeps the image fixed in place */
     top: 0;
     left: 0;
     right: 0;
