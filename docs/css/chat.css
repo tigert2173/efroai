@@ -196,7 +196,6 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    min-height: 650px; /* Ensures the height is at least the viewport height */
     height: auto; /* Allow height to extend based on the image */
     /* background-color: #00FF00; */
     display: flex;
