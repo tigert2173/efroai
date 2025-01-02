@@ -69,6 +69,17 @@ document.getElementById('opacity-slider').addEventListener('input', (e) => {
     rightImageContainer.style.opacity = opacityValue;
 });
 
+// Handle opacity slider
+document.getElementById('opacity-slider-messages').addEventListener('input', (e) => {
+    const opacityValue = e.target.value / 100;
+    const chatContainer = document.getElementById('chat-container');
+    const messageContainer = document.getElementById('.message');
+
+    // Update the opacity for background or side images
+    chatContainer.style.setProperty('--bg-opacity', opacityValue);
+    messageContainer.style.opacity = opacityValue;
+});
+
 // Toggle menu visibility
 const toggleMenuBtn = document.getElementById("toggleMenuBtn");
 const imageMenu = document.getElementById("imageMenu");
