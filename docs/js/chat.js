@@ -870,9 +870,9 @@ console.log("RequestData: ", requestData);
                     const jsonString = line.substring(6).trim(); // Remove the 'data: ' prefix
     
                     // Skip the '[DONE]' message
-                    if (jsonString === '[DONE]') {
+                    if (jsonString === '[DONE]' || jsonString === '<|im_end|>') {
                         continue; // Skip this line
-                    }
+                    } 
     
                     try {
                         const jsonResponse = JSON.parse(jsonString);
