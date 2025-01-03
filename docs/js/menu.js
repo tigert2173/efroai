@@ -99,6 +99,14 @@ document.getElementById('login-status').addEventListener('click', function () {
 
 });
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
+
 window.onload = function() {
     // Get the userID from the cookie
     const userID = getCookie('userID');  // Replace 'userID' with the actual cookie name
