@@ -31,12 +31,13 @@ function filterCharacters() {
 
     const characterCards = document.querySelectorAll('.character-card');
     characterCards.forEach(card => {
-        // const name = card.querySelector('h3').textContent.toLowerCase();
-        // const tags = card.querySelector('.tags').textContent.toLowerCase();
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        const tags = card.querySelector('.tags').textContent.toLowerCase();
+        const creator = card.querySelector('.creator').textContent.toLowerCase();
 
-        // // Ensure that both name and tags are checked correctly
-        // const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
-        // const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
+        // Ensure that both name and tags are checked correctly
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery) || creator.includes(searchQuery);
+        const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
         card.style.display = 'block';
     });
