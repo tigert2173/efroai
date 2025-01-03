@@ -297,15 +297,16 @@ function detectAdBlocker() {
 
             <!-- Account with dropdown -->
             <li class="dropdown">
-                <a href="profile.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <a href="profile.html" class="dropbtn" onclick="toggleDropdown(event)" id="accountLink">Account</a>
                 <div class="dropdown-content">
-                    <a href="profile.html">Profile</a>
+                    <a href="profile.html" id="profileLink">Profile</a>
                     <a href="mylikes.html">My Likes</a>
                     <a href="myaccount.html">Account Settings</a>
                     <a href="login.html">Login</a>
                     <a href="subscriptions.html" class="nav-btn">Subscriptions</a>
                 </div>
             </li>
+
 
             <!-- Help with dropdown -->
             <li class="dropdown">
@@ -593,7 +594,6 @@ fetch('config.json')
         // Call the function on page load, using the username from cookies
         window.onload = function() {
             const username = getCookie('userID'); // Get the 'username' cookie
-            updateProfileLink();
 
             if (username) {
                 checkSuspension(username); // Check suspension if username exists
@@ -602,18 +602,6 @@ fetch('config.json')
                 // Optionally, redirect to login or error page
             }
         };
-// Function to update the profile link with the username from the cookie
-function updateProfileLink() {
-    const userID = getCookie("userID"); // Get the userID cookie value
-    if (userID) {
-        // Fetch the username (for now we'll assume it's the same as the userID)
-        const username = userID; // Replace with an API call or another logic to get the actual username
-        const profileLink = document.getElementById("profile-dropdown-link");
-        profileLink.href = `profile.html?username=${username}`; // Set the profile link with the username
-    }
-    console.log("Updated Profile Link");
-}
-
 
 </script>
 <script src="js/scripts/checkbot.js"></script>

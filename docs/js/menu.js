@@ -99,3 +99,17 @@ document.getElementById('login-status').addEventListener('click', function () {
 
 });
 
+window.onload = function() {
+    // Get the userID from the cookie
+    const userID = getCookie('userID');  // Replace 'userID' with the actual cookie name
+
+    if (userID) {
+        // Assuming you have a way to fetch the username, here we'll just simulate it.
+        // You can use an API call or directly fetch from localStorage if you have it.
+        const username = "user" + userID;  // This is a placeholder, replace it with actual logic to get the username
+
+        // Find the profile link and update it with the username
+        const profileLink = document.getElementById('profileLink');
+        profileLink.href = `profile.html?username=${username}`;
+    }
+};
