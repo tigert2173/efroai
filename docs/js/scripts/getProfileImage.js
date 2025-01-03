@@ -18,16 +18,3 @@ async function fetchProfileImage(username) {
         alert('Error fetching profile image!');
     }
 }
-
-// Function to get the value of a specific cookie
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-        return parts.pop().split(';').shift();
-    }
-    return null;
-}
-
-// Example usage: Fetch the profile image for a user (e.g., 'john_doe')
-fetchProfileImage(getCookie('userID'));
