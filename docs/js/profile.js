@@ -143,13 +143,13 @@ function displayBadges(badges) {
 
             // Apply specific class and animation based on badge name
             switch (badge.toLowerCase()) {
-                case 'Admin':
+                case 'admin':
                     badgeElement.classList.add('supporter');
                     break;
-                case 'Founder':
+                case 'founder':
                     badgeElement.classList.add('donor');
                     break;
-                case 'Dev-Team':
+                case 'dev-team':
                     badgeElement.classList.add('contest-winner');
                     break;
                 default:
