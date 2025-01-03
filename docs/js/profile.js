@@ -21,6 +21,8 @@ if (username) {
     document.querySelector('.username').textContent = "Unknown User";
 }
 
+fetchProfileImage(username);
+
 // TO FETCH USER BOTS \\
 async function fetchUserChatbots() {
     try {
