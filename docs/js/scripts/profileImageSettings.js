@@ -58,7 +58,7 @@ function getCookie(name) {
 fetchProfileImage(getCookie('userID'));
 
 // Function to compress the image
-function compressImage(file, quality = 0.5, maxWidth = 512, maxHeight = 512) {
+function compressImage(file, quality = 0.8, maxWidth = 512, maxHeight = 512) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         const reader = new FileReader();
