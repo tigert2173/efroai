@@ -109,8 +109,8 @@ function viewCharacter(characterId, uploader) {
 fetchUserChatbots();
 
 
-  // Function to fetch user badges based on username
-  async function getUserBadges(username) {
+// Function to fetch user badges based on username
+async function getUserBadges(username) {
     try {
         const response = await fetch(`https://characters.efroai.net/api/user/${username}/perks/get-badges`, {
             method: 'GET',
@@ -143,13 +143,13 @@ function displayBadges(badges) {
 
             // Apply specific class and animation based on badge name
             switch (badge.toLowerCase()) {
-                case 'admin':
+                case 'founder':
                     badgeElement.classList.add('supporter');
                     break;
-                case 'founder':
+                case 'donor':
                     badgeElement.classList.add('donor');
                     break;
-                case 'dev-team':
+                case 'contest winner':
                     badgeElement.classList.add('contest-winner');
                     break;
                 default:

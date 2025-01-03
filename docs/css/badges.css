@@ -9,6 +9,8 @@
     border-radius: 5px;
     color: white;
     font-weight: bold;
+    opacity: 0;  /* Start with hidden state */
+    animation: fadeIn 1s forwards; /* Fade-in animation */
     transition: background-color 0.3s ease;
 }
 
@@ -32,7 +34,7 @@
 
 /* General Animation */
 .badge.animate {
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 1s ease-in-out forwards; /* Added forwards to maintain state after animation */
 }
 
 /* Animation Styles */
