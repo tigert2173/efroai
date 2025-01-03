@@ -28,12 +28,15 @@
 .badge.dev-team {
     background: linear-gradient(45deg, #12acf3, #00ff9c);
     /* animation: bounce 1.5s ease-in-out infinite, colorChangeDonor 4s ease-in-out infinite alternate; */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
 }
 
 /* Admin Badge */
 .badge.admin {
     background: linear-gradient(45deg, #feff00, #c0392b);
     /* animation: shake 2s ease-in-out infinite, sparkle 2s infinite; */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
+
 }
 
 /* Fade-in animation */
