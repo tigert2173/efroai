@@ -25,8 +25,8 @@
 }
 
 /* Dev-Team Badge */
-.badge.donor {
-    background: linear-gradient(45deg, #f39c12, #e67e22);
+.badge.dev-team {
+    background: linear-gradient(45deg, #12acf3, #00ff9c);
     /* animation: bounce 1.5s ease-in-out infinite, colorChangeDonor 4s ease-in-out infinite alternate; */
 }
 
