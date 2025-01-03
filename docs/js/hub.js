@@ -94,7 +94,7 @@ function displayCharacters(characters, searchQuery) {
 
     characters.forEach(character => {
         // Check if the character name or description matches the search query
-        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery);
+        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.uploader.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery);
         if (matchesSearch) {
             const card = document.createElement('div');
             card.className = 'character-card';
