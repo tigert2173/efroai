@@ -508,7 +508,7 @@ const imageSize = file.size; // This is the uploaded file size in bytes
 // Set the maximum image size for compression scaling (192KB for example)
 const maxSize = 192 * 1024;  // 192KB in bytes
 const minQuality = 0.05;  // Minimum quality (for very large images)
-const maxQuality = 0.8;  // Maximum quality (for small images)
+const maxQuality = 0.8;  // Maximum quality for large images
 
 // Calculate the compression quality dynamically based on image size
 let quality = maxQuality; // Default to max quality
@@ -520,11 +520,11 @@ if (imageSize > maxSize) {
 
     console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
 } else {
-    // For smaller images, increase quality as image size decreases (up to a certain limit)
-    const compressionFactor = 1 - ((maxSize - imageSize) / maxSize) * 0.3; // Slight increase for smaller images
-    quality = Math.min(maxQuality * 1.1, maxQuality + compressionFactor); // Allow slight increase above maxQuality but keep it controlled
+    // For smaller images, gradually increase quality as the image size decreases
+    const increaseFactor = 1 - (imageSize / maxSize); // Increase factor based on how small the image is
+    quality = maxQuality + (increaseFactor * (1 - maxQuality)); // Gradually increase past maxQuality as the image gets smaller
 
-    console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+    console.log(`Image size: ${imageSize} bytes. Increase factor: ${increaseFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
 }
 
 // Now you can use the `quality` in your image compression logic
