@@ -56,10 +56,10 @@
 }
 
 /* Glowing effect for Founder */
-@keyframes glowSupporter {
-    0% { box-shadow: 0 0 3px #4caf50, 0 0 8px #4caf50; }
-    50% { box-shadow: 0 0 6px #388e3c, 0 0 12px #388e3c; }
-    100% { box-shadow: 0 0 3px #4caf50, 0 0 8px #4caf50; }
+@keyframes glowOrange {
+    0% { box-shadow: 0 0 3px #ffbb00, 0 0 8px #ffbb00; }
+    50% { box-shadow: 0 0 6px #ff7b00, 0 0 12px #ff7b00; }
+    100% { box-shadow: 0 0 3px #ffbb00, 0 0 8px #ffbb00; }
 }
 
 /* Bounce effect for Dev-Team */
