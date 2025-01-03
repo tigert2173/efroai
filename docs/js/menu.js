@@ -114,7 +114,7 @@ window.onload = function() {
     if (userID) {
         // Assuming you have a way to fetch the username, here we'll just simulate it.
         // You can use an API call or directly fetch from localStorage if you have it.
-        const username = "user" + userID;  // This is a placeholder, replace it with actual logic to get the username
+        const username = userID;  // This is a placeholder, replace it with actual logic to get the username
 
         // Find the profile link and update it with the username
         const profileLink = document.getElementById('profileLink');
