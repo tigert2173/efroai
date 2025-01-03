@@ -57,17 +57,72 @@ function getCookie(name) {
 // Example usage: Fetch the profile image for a user (e.g., 'john_doe')
 fetchProfileImage(getCookie('userID'));
 
+// Function to compress image before uploading
+function compressImage(file, quality = 0.7) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            img.onload = function() {
+                // Create a canvas to draw the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const maxWidth = 800; // Max width for compression
+                const maxHeight = 800; // Max height for compression
+
+                // Set new dimensions, maintain aspect ratio
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw image onto canvas
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress and convert to data URL (JPEG format)
+                canvas.toDataURL('image/jpeg', quality, (dataUrl) => {
+                    resolve(dataUrl);
+                });
+            };
+            img.src = e.target.result;
+        };
+        
+        reader.onerror = function(error) {
+            reject(error);
+        };
+        
+        reader.readAsDataURL(file);
+    });
+}
+
 // Event listener for the upload button
 uploadImageButton.addEventListener('click', async (event) => {
     event.preventDefault();
 
     const file = profileImageInput.files[0];
     if (file) {
-        const formData = new FormData();
-        formData.append('profile-image', file); // Field name should match backend
-
-        // Send the image to the server
         try {
+            // Compress the image before uploading
+            const compressedImage = await compressImage(file);
+
+            const formData = new FormData();
+            formData.append('profile-image', compressedImage); // Field name should match backend
+
+            // Send the compressed image to the server
             const response = await fetch('https://characters.efroai.net/api/upload/profile-picture', {
                 method: 'POST',
                 headers: {
@@ -88,7 +143,7 @@ uploadImageButton.addEventListener('click', async (event) => {
                 alert('Error uploading image!');
             }
         } catch (error) {
-            console.error('Error uploading image:', error);
+            console.error('Error compressing/uploading image:', error);
             alert('Error uploading image!');
         }
     } else {
