@@ -151,6 +151,12 @@ function displayBadges(badges) {
                 case 'admin':
                     badgeElement.classList.add('admin');
                     break;
+                case 'award-winner':
+                    badgeElement.classList.add('award-winner');
+                    break;
+                case 'contest-winner':
+                    badgeElement.classList.add('contest-winner');
+                    break;
                 default:
                     badgeElement.classList.add('badge');  // Fallback for unknown badges
             }
