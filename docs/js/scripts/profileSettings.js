@@ -27,22 +27,32 @@ const profileImageContainer = document.getElementById('profile-image-container')
 
 // Function to fetch the user's profile image (without extension)
 async function fetchProfileImage(username) {
-    try {
-        // Make the GET request to fetch the image without the extension
-        const response = await fetch(`https://characters.efroai.net/api/profile-picture/${username}`);
-        
-        if (response.ok) {
-            // The server will return the image file directly, so we set it as the image src
-            const imageUrl = `https://characters.efroai.net/api/profile-picture/${username}`;
-            profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
-        } else {
-            alert('Profile image not found.');
+    const extensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];  // Common image formats
+    let imageUrl = '';
+
+    // Try fetching the image with different extensions
+    for (const ext of extensions) {
+        try {
+            const response = await fetch(`https://characters.efroai.net/users/images/${username}${ext}`);
+            
+            if (response.ok) {
+                imageUrl = `https://characters.efroai.net/users/images/${username}${ext}`;
+                break; // Exit the loop once a valid image URL is found
+            }
+        } catch (error) {
+            // Ignore errors and continue with the next extension
+            continue;
         }
-    } catch (error) {
-        console.error('Error fetching profile image:', error);
-        alert('Error fetching profile image!');
+    }
+
+    // If an image URL was found, display it
+    if (imageUrl) {
+        profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
+    } else {
+        alert('Profile image not found.');
     }
 }
+
 
 // Example usage: Fetch the profile image for a user (e.g., 'john_doe')
 fetchProfileImage('tigert2173');
