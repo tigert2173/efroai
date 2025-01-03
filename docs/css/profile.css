@@ -190,9 +190,10 @@ body {
 
 /* Profile Picture */
 .profile-pic {
-    width: 100%;                 /* Fill the container's width */
-    height: 100%;                /* Fill the container's height */
-    object-fit: cover;           /* Default: Cover the container, cropping if necessary */
-    min-width: 100%;             /* Ensure small images are scaled up */
-    min-height: 100%;            /* Ensure small images are scaled up */
+    width: 100%;                 /* Ensure the image fills the width of the container */
+    height: 100%;                /* Ensure the image fills the height of the container */
+    object-fit: contain;         /* Ensures the image fits inside the container, scaling up or down */
+    object-position: center;     /* Centers the image */
+    min-width: 100%;             /* Ensures small images are scaled up */
+    min-height: 100%;            /* Ensures small images are scaled up */
 }
