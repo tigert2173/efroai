@@ -175,21 +175,21 @@ function displayBadges(badges) {
 
 // Function to create moving particles that despawn
 function generateDynamicParticles(parentElement) {
-    const particleCount = 15; // Number of particles
+    const particleCount = 10; // Number of particles to generate
     const duration = 3000; // Particle lifespan in ms
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
 
-        // Random start position around the badge
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 20; // Small initial offset
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
+        // Random initial position relative to the badge
+        const xPos = Math.random() * 30 - 15; // Random X position from -15 to +15
+        const yPos = Math.random() * 30 - 15; // Random Y position from -15 to +15
 
-        particle.style.left = `${50 + x}%`;
-        particle.style.top = `${50 + y}%`;
+        particle.style.left = `50%`; // Centered around the badge
+        particle.style.top = `50%`;
+
+        particle.style.transform = `translate(-50%, -50%) translate(${xPos}px, ${yPos}px)`;
 
         parentElement.appendChild(particle);
 
