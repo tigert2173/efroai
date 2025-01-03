@@ -164,5 +164,4 @@ function displayBadges(badges) {
 }
 
 // Call the function to get and display badges
-const username = 'tigert2173';  // Replace with actual username
 getUserBadges(username);
