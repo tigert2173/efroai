@@ -5,24 +5,15 @@
     flex-wrap: wrap;
 }
 
-/* Wrapper for badge and particles */
-.badge-wrapper {
-    position: relative;
-    width: fit-content;
-    height: fit-content;
-    display: inline-block;
-}
-
-/* Badge Style */
+/* General Badge Style */
 .badge {
     padding: 10px 20px;
     border-radius: 10px;
     color: white;
     font-weight: bold;
     font-size: 16px;
-    text-align: center;
-    position: relative;
-    z-index: 2; /* Ensure badge is above particles */
+    animation: fadeIn 1s ease-in-out forwards, subtlePulse 2s ease-in-out infinite alternate; /* Subtle fade-in and pulse animation */
+    transition: all 0.3s ease;
 }
 
 /* Founder Badge */
@@ -94,31 +85,4 @@
 @keyframes sparkle {
     0%, 100% { text-shadow: 0 0 6px #e74c3c, 0 0 12px #e74c3c; }
     50% { text-shadow: 0 0 3px #c0392b, 0 0 8px #c0392b; }
-}
-
-/* Particle Style */
-.particle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    animation: moveAndFade 3s ease-out forwards;
-}
-
-/* Particle Animation */
-@keyframes moveAndFade {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) translate(
-            calc(50px - 100px * var(--random-x)),
-            calc(50px - 100px * var(--random-y))
-        ) scale(0.5);
-    }
 }

@@ -126,84 +126,43 @@ async function getUserBadges(username) {
         displayBadges(data.badges);
     } catch (error) {
         console.error('Error fetching badges:', error);
-        const badgesSection = document.getElementById('badges-section');
-        badgesSection.innerHTML = '<p>Could not load badges. Please try again later.</p>';
+        // Handle error gracefully if needed (e.g., display a message)
     }
 }
 
-// Function to display badges on the page with animated particles
+// Function to display badges on the page
 function displayBadges(badges) {
     const badgesSection = document.getElementById('badges-section');
     badgesSection.innerHTML = ''; // Clear any existing badges
 
     if (badges && badges.length > 0) {
         badges.forEach(badge => {
-            const badgeWrapper = document.createElement('div');
-            badgeWrapper.classList.add('badge-wrapper');
-
             const badgeElement = document.createElement('span');
-            badgeElement.classList.add('badge');
-            badgeElement.textContent = badge; // Set badge text
+            badgeElement.classList.add('badge', 'animate');
 
-            // Apply specific class for badge styles
+            // Apply specific class and animation based on badge name
             switch (badge.toLowerCase()) {
                 case 'founder':
-                    badgeElement.classList.add('supporter', 'particle-cloud');
+                    badgeElement.classList.add('supporter');
                     break;
                 case 'dev-team':
                     badgeElement.classList.add('donor');
                     break;
                 case 'admin':
-                    badgeElement.classList.add('contest-winner', 'particle-cloud');
+                    badgeElement.classList.add('contest-winner');
                     break;
                 default:
-                    badgeElement.classList.add('unknown-badge');
+                    badgeElement.classList.add('badge');  // Fallback for unknown badges
             }
 
-            badgeWrapper.appendChild(badgeElement);
-            badgesSection.appendChild(badgeWrapper);
-
-            // Add animated particles for specific badges
-            if (badgeElement.classList.contains('particle-cloud')) {
-                generateDynamicParticles(badgeWrapper);
-            }
+            badgeElement.textContent = badge;
+            badgesSection.appendChild(badgeElement);
         });
     } else {
         badgesSection.innerHTML = '<p>No badges available for this user.</p>';
     }
 }
 
-// Function to create moving particles that despawn
-function generateDynamicParticles(parentElement) {
-    const particleCount = 10; // Number of particles to generate
-    const duration = 3000; // Particle lifespan in ms
-
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-
-        // Random initial position relative to the badge
-        const xPos = Math.random() * 30 - 15; // Random X position from -15 to +15
-        const yPos = Math.random() * 30 - 15; // Random Y position from -15 to +15
-
-        particle.style.left = `50%`; // Centered around the badge
-        particle.style.top = `50%`;
-
-        particle.style.transform = `translate(-50%, -50%) translate(${xPos}px, ${yPos}px)`;
-
-        parentElement.appendChild(particle);
-
-        // Apply animation and schedule removal
-        setTimeout(() => {
-            particle.remove();
-        }, duration);
-    }
-
-    // Continuously generate particles at intervals
-    setInterval(() => {
-        generateDynamicParticles(parentElement);
-    }, duration / 2);
-}
-
+// Call the function to get and display badges
+const username = 'tigert2173';  // Replace with actual username
 getUserBadges(username);
-
