@@ -12,26 +12,26 @@
     color: white;
     font-weight: bold;
     font-size: 16px;
-    animation: fadeIn 1s ease-in-out forwards, pulse 1.5s ease-in-out infinite alternate; /* Fade-in and pulse animation */
+    animation: fadeIn 1s ease-in-out forwards, subtlePulse 2s ease-in-out infinite alternate; /* Subtle fade-in and pulse animation */
     transition: all 0.3s ease;
 }
 
 /* Founder Badge */
 .badge.supporter {
     background: linear-gradient(45deg, #4caf50, #388e3c);
-    animation: floatUp 2s ease-in-out infinite, glowSupporter 1.5s infinite alternate, rotateEffect 3s ease-in-out infinite;
+    animation: floatUp 2s ease-in-out infinite, glowSupporter 2s infinite alternate;
 }
 
 /* Dev-Team Badge */
 .badge.donor {
     background: linear-gradient(45deg, #f39c12, #e67e22);
-    animation: bounce 1s ease-in-out infinite, colorChangeDonor 2s infinite alternate, pulse 1.5s ease-in-out infinite alternate;
+    animation: bounce 1.5s ease-in-out infinite, colorChangeDonor 4s ease-in-out infinite alternate;
 }
 
 /* Admin Badge */
 .badge.contest-winner {
     background: linear-gradient(45deg, #e74c3c, #c0392b);
-    animation: shake 1s ease-in-out infinite, sparkle 1.5s infinite, rotateEffect 4s ease-in-out infinite;
+    animation: shake 2s ease-in-out infinite, sparkle 2s infinite;
 }
 
 /* Fade-in animation */
@@ -40,30 +40,30 @@
     to { opacity: 1; }
 }
 
-/* Pulse animation for subtle effect */
-@keyframes pulse {
+/* Subtle Pulse animation */
+@keyframes subtlePulse {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
+    50% { transform: scale(1.02); opacity: 0.95; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 /* Floating effect for Founder */
 @keyframes floatUp {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-6px); }
 }
 
 /* Glowing effect for Founder */
 @keyframes glowSupporter {
-    0% { box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50; }
-    50% { box-shadow: 0 0 10px #388e3c, 0 0 25px #388e3c, 0 0 40px #388e3c; }
-    100% { box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50; }
+    0% { box-shadow: 0 0 3px #4caf50, 0 0 8px #4caf50; }
+    50% { box-shadow: 0 0 6px #388e3c, 0 0 12px #388e3c; }
+    100% { box-shadow: 0 0 3px #4caf50, 0 0 8px #4caf50; }
 }
 
 /* Bounce effect for Dev-Team */
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+    50% { transform: translateY(-6px); }
 }
 
 /* Color-changing effect for Dev-Team */
@@ -76,27 +76,13 @@
 /* Shake effect for Admin */
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-3px); }
 }
 
 /* Sparkle effect for Admin */
 @keyframes sparkle {
-    0%, 100% { text-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c; }
-    50% { text-shadow: 0 0 5px #c0392b, 0 0 15px #c0392b, 0 0 25px #c0392b; }
-}
-
-/* Rotate Effect */
-@keyframes rotateEffect {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Cool Color Shift effect */
-@keyframes colorShift {
-    0% { background-color: #ff0080; }
-    50% { background-color: #4caf50; }
-    100% { background-color: #f39c12; }
+    0%, 100% { text-shadow: 0 0 6px #e74c3c, 0 0 12px #e74c3c; }
+    50% { text-shadow: 0 0 3px #c0392b, 0 0 8px #c0392b; }
 }
