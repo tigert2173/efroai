@@ -39,6 +39,13 @@
 
 }
 
+.badge.contest-winner {
+    background: linear-gradient(45deg, #feff00, #11EE14);
+    /* animation: shake 2s ease-in-out infinite, sparkle 2s infinite; */
+    /* text-shadow: 3px 3px 5px rgba(0, 0, 0, 1); */
+
+}
+
 /* Fade-in animation */
 @keyframes fadeIn {
     from { opacity: 0; }
