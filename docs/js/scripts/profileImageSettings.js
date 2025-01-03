@@ -6,22 +6,20 @@ const uploadImageButton = document.getElementById('upload-image-button');
 const profileImageInput = document.getElementById('profile-image');
 const uploadedImageContainer = document.getElementById('profile-image-container');
 
-// Handle profile image upload with compression
-profileImageInput.addEventListener('change', async function (event) {
+// Event listener for the input change (for previewing the image before uploading)
+profileImageInput.addEventListener('change', function (event) {
     const file = event.target.files[0];
     if (file) {
-        try {
-            const compressedDataUrl = await compressImage(file);
+        const reader = new FileReader();
+        reader.onload = function (e) {
             const previewImage = document.createElement('img');
-            previewImage.src = compressedDataUrl;
+            previewImage.src = e.target.result;
             previewImage.width = 200; // Set a fixed size for preview
             // Replace the existing image preview or add new
             uploadedImageContainer.innerHTML = '';
             uploadedImageContainer.appendChild(previewImage);
-        } catch (error) {
-            console.error('Error compressing image:', error);
-            alert('Error compressing image!');
-        }
+        };
+        reader.readAsDataURL(file);
     }
 });
 
@@ -59,19 +57,17 @@ function getCookie(name) {
 // Example usage: Fetch the profile image for a user (e.g., 'john_doe')
 fetchProfileImage(getCookie('userID'));
 
-// Event listener for the upload button (with compressed image)
+// Event listener for the upload button
 uploadImageButton.addEventListener('click', async (event) => {
     event.preventDefault();
 
     const file = profileImageInput.files[0];
     if (file) {
+        const formData = new FormData();
+        formData.append('profile-image', file); // Field name should match backend
+
+        // Send the image to the server
         try {
-            const compressedDataUrl = await compressImage(file);
-
-            const formData = new FormData();
-            formData.append('profile-image', compressedDataUrl); // Use the compressed image data URL
-
-            // Send the compressed image to the server
             const response = await fetch('https://characters.efroai.net/api/upload/profile-picture', {
                 method: 'POST',
                 headers: {
@@ -99,57 +95,3 @@ uploadImageButton.addEventListener('click', async (event) => {
         alert('Please select an image to upload.');
     }
 });
-
-// Function to compress the image and log the size
-function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const img = new Image();
-            img.onload = function () {
-                // Create a canvas to resize the image
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Set the canvas dimensions based on the max width and height
-                let width = img.width;
-                let height = img.height;
-                
-                if (width > maxWidth || height > maxHeight) {
-                    const ratio = Math.min(maxWidth / width, maxHeight / height);
-                    width = width * ratio;
-                    height = height * ratio;
-                }
-                
-                canvas.width = width;
-                canvas.height = height;
-                
-                // Draw the image on the canvas
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                // Compress the image by converting it to a data URL
-                canvas.toDataURL('image/jpeg', quality, async function (compressedDataUrl) {
-                    // Create a Blob from the Data URL to get the size
-                    const byteString = atob(compressedDataUrl.split(',')[1]);
-                    const arrayBuffer = new ArrayBuffer(byteString.length);
-                    const uintArray = new Uint8Array(arrayBuffer);
-
-                    for (let i = 0; i < byteString.length; i++) {
-                        uintArray[i] = byteString.charCodeAt(i);
-                    }
-
-                    const blob = new Blob([uintArray], { type: 'image/jpeg' });
-
-                    // Log the size of the compressed image
-                    console.log('Compressed Image Size: ' + blob.size + ' bytes');
-                    
-                    resolve(compressedDataUrl);
-                });
-            };
-            img.onerror = reject;
-            img.src = e.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-}
