@@ -101,27 +101,33 @@ body {
 /* General Columns Layout */
 .columns {
     display: flex;
-    flex-direction: column;  /* Stack the content vertically */
-    gap: 20px;               /* Adds space between elements */
+    justify-content: space-between; /* Align items side-by-side on larger screens */
+    gap: 20px;                     /* Space between columns */
     margin-top: 20px;
 }
 
-
-/* Specific Styles for Chatbots Column */
-.chatbots-column {
-    width: 100%;  /* Ensure the chatbot section takes up full width */
-    padding: 10px;
-    background-color: #2a2a2a; 
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
+/* Specific Styles for Chatbots and Stories Column */
+.chatbots-column,
 .stories-column {
-    width: 100%;  /* Ensure the stories section takes up full width */
+    width: 48%;  /* Ensure both columns take up nearly half of the width */
     padding: 10px;
     background-color: #2a2a2a;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* For Smaller Screens */
+@media (max-width: 768px) {
+    .columns {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        align-items: stretch;   /* Make the columns take full width */
+    }
+
+    .chatbots-column,
+    .stories-column {
+        width: 100%;  /* Both columns will take full width */
+        margin-bottom: 20px;  /* Add space between them */
+    }
 }
 
 .sidebar-card {
