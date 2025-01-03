@@ -113,7 +113,12 @@ function displayCharacters(characters, searchQuery) {
                         ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
                     </span>
                 </p>
-                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+                <p class="creator">
+                    <b>Created by:</b> 
+                    <a href="profile.html?username=${encodeURIComponent(character.uploader || 'Not found')}">
+                        ${character.uploader || "Not found"}
+                    </a>
+                </p>
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
