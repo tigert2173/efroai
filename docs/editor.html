@@ -520,8 +520,11 @@
         console.log(`Image size: ${imageSize} bytes. Compression factor: ${(maxSize / imageSize).toFixed(2)}, Quality: ${quality.toFixed(2)}`);
     } else {
         // For smaller images, keep high quality
-        quality = maxQuality;
-        console.log(`Image size: ${imageSize} bytes. No compression needed. Quality: ${quality.toFixed(2)}`);
+        // quality = maxQuality;
+        // console.log(`Image size: ${imageSize} bytes. No compression needed. Quality: ${quality.toFixed(2)}`);
+            // For smaller images, reduce quality minimally
+    quality = Math.max(minQuality, maxQuality * 0.95); // Slight reduction but not too much
+    console.log(`Image size: ${imageSize} bytes. Compressing smaller image. Quality: ${quality.toFixed(2)}`);
     }
 
     // Convert canvas to WebP format with the calculated quality
