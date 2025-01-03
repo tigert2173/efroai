@@ -104,27 +104,13 @@ body {
     margin-top: 20px;
 }
 
-/* Chatbot Column */
 .chatbots-column,
 .stories-column {
-    width: 48%;                        /* Takes up half of the container width */
-    padding: 10px;                     /* Padding inside the column */
-    background-color: #2a2a2a;         /* Dark background for the column */
-    border-radius: 8px;                /* Rounded corners */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Light shadow */
-    display: flex;
-    flex-direction: column;            /* Stack children vertically */
-    justify-content: flex-start;       /* Align items at the top */
-}
-
-/* Ensuring the header is always visible and properly spaced */
-.chatbots-column h2,
-.stories-column h2 {
-    margin-top: 0;                   /* Remove any top margin if any */
-    margin-bottom: 20px;             /* Space below the header */
-    font-size: 24px;                 /* Adjust header size */
-    color: #e0e0e0;                  /* Light text color for contrast */
-    text-align: center;              /* Center align the text */
+    width: 48%;
+    padding: 10px;
+    background-color: #2a2a2a; 
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-card {
