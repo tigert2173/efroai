@@ -175,12 +175,6 @@ body {
         opacity: 0.6; 
     }
 }
-/* Make sure no extra margins/padding are affecting layout */
-.profile-header {
-    display: flex;
-    justify-content: center;  /* Centers all contents horizontally */
-    align-items: center;      /* Centers all contents vertically */
-}
 
 /* Profile Image Container */
 .profile-image-container {
