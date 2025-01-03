@@ -192,5 +192,5 @@ body {
 .profile-pic {
     width: 100%;                 /* Fill the container's width */
     height: 100%;                /* Fill the container's height */
-    object-fit: cover;           /* Ensure the image covers the area without distortion */
+    object-fit: contain;         /* Ensure the image is fully visible and fits within the container */
 }
