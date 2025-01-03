@@ -30,7 +30,7 @@ async function fetchUserChatbots() {
     try {
         // Get the username from the URL
         const params = new URLSearchParams(window.location.search);
-        const username = params.get('user') || 'defaultUser'; // Fallback to 'defaultUser'
+        const username = params.get('username') || 'defaultUser'; // Fallback to 'defaultUser'
 
         // Display the username in the header
         const usernameElement = document.querySelector('.username');
