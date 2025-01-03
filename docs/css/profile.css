@@ -185,13 +185,15 @@ body {
     border: 5px solid #fff;   /* Optional: Adds a white border around the image container */
     background-color: #e0e0e0; /* Optional: Adds a background color in case the image is missing */
     margin: 0 auto;           /* Center the container itself */
-    position: relative;       /* Position the image inside the container */
+    display: flex;            /* Use flex to center the image */
+    justify-content: center;  /* Center image horizontally */
+    align-items: center;      /* Center image vertically */
 }
 
 /* Profile Picture */
 .profile-pic {
-    width: 100%;              /* Make the image fill the container */
-    height: 100%;             /* Make the image fill the container */
-    object-fit: contain;      /* Ensures the entire image fits within the container without cropping */
-    object-position: center;  /* Centers the image within the container */
+    width: 100%;              /* Make the image fill the container width */
+    height: 100%;             /* Make the image fill the container height */
+    object-fit: cover;        /* Ensure the image covers the container fully */
+    object-position: center;  /* Centers the image inside the container */
 }
