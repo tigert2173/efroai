@@ -17,7 +17,7 @@
 
             // Send the image to the server
             try {
-                const response = await fetch('https://efroai.net/api/upload/profile-picture', {
+                const response = await fetch('https://characters.efroai.net/api/upload/profile-picture', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
