@@ -39,6 +39,7 @@ async function fetchUserChatbots() {
         // Fetch the user's chatbots
         const response = await fetch(`${backendurl}/api/characters`, {
             headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
             }
         });
 
