@@ -187,6 +187,7 @@ body {
     align-items: center;    /* Vertically centers the image */
     border: 5px solid #fff; /* Optional: Adds a white border around the image container */
     background-color: #e0e0e0; /* Optional: Adds a background color in case the image is missing */
+    margin: 0 auto;         /* Center the container itself if needed */
 }
 
 /* Profile Picture */
