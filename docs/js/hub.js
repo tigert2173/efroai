@@ -59,7 +59,7 @@ function loadCharacters() {
     const received = receivedCharacterIdentifiers.join(',');
 
     // Construct the URL with the filters and received character identifiers
-    const url = `${backendurl}/api/v2/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${received}`;
+    const url = `${backendurl}/api/characters/all?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&searchQuery=${encodeURIComponent(searchQuery)}&filters=${filters}&received=${received}`;
 
     fetch(url)
         .then(response => {
