@@ -4,7 +4,7 @@ const token = localStorage.getItem('token');
 // Handle profile image upload
 const uploadImageButton = document.getElementById('upload-image-button');
 const profileImageInput = document.getElementById('profile-image');
-const uploadedImageContainer = document.getElementById('uploaded-image-container');
+const uploadedImageContainer = document.getElementById('profile-image-container');
 
 // Event listener for the input change (for previewing the image before uploading)
 profileImageInput.addEventListener('change', function (event) {
