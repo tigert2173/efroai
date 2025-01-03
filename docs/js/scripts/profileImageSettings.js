@@ -100,8 +100,8 @@ uploadImageButton.addEventListener('click', async (event) => {
     }
 });
 
-// Function to compress the image
-function compressImage(file, maxWidth = 512, maxHeight = 512, quality = 0.5) {
+// Function to compress the image and log the size
+function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -128,7 +128,21 @@ function compressImage(file, maxWidth = 512, maxHeight = 512, quality = 0.5) {
                 ctx.drawImage(img, 0, 0, width, height);
                 
                 // Compress the image by converting it to a data URL
-                canvas.toDataURL('image/jpeg', quality, function (compressedDataUrl) {
+                canvas.toDataURL('image/jpeg', quality, async function (compressedDataUrl) {
+                    // Create a Blob from the Data URL to get the size
+                    const byteString = atob(compressedDataUrl.split(',')[1]);
+                    const arrayBuffer = new ArrayBuffer(byteString.length);
+                    const uintArray = new Uint8Array(arrayBuffer);
+
+                    for (let i = 0; i < byteString.length; i++) {
+                        uintArray[i] = byteString.charCodeAt(i);
+                    }
+
+                    const blob = new Blob([uintArray], { type: 'image/jpeg' });
+
+                    // Log the size of the compressed image
+                    console.log('Compressed Image Size: ' + blob.size + ' bytes');
+                    
                     resolve(compressedDataUrl);
                 });
             };
