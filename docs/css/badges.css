@@ -58,7 +58,7 @@
 /* Glowing effect for Founder */
 @keyframes glowOrange {
     0% { box-shadow: 0 0 3px #ffbb00, 0 0 8px #ffbb00; }
-    50% { box-shadow: 0 0 6px #ff7b00, 0 0 12px #ff7b00; }
+    50% { box-shadow: 0 0 6px #e5ff00, 0 0 12px #e5ff00; }
     100% { box-shadow: 0 0 3px #ffbb00, 0 0 8px #ffbb00; }
 }
 
