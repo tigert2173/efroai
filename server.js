@@ -165,9 +165,9 @@ return externalSources.some(regex => regex.test(path));
 app.use(express.static(path.join(__dirname, 'docs'), {
 setHeaders: (res, path) => {
 
-  // res.setHeader('Cache-Control', 'no-store');
-  // res.setHeader('Pragma', 'no-cache');
-  // res.setHeader('Expires', '0');
+   res.setHeader('Cache-Control', 'no-store');
+   res.setHeader('Pragma', 'no-cache');
+   res.setHeader('Expires', '0');
 
     // Do not cache external requests
     if (isExternalRequest(path)) {
@@ -176,8 +176,8 @@ setHeaders: (res, path) => {
   //   Set Cache-Control and Expires headers for caching
   //   res.setHeader('Cache-Control', 'public, max-age=604800000'); // Cache for 1 week
   //   res.setHeader('Expires', new Date(Date.now() + 604800000).toUTCString()); // Expires in 1 week
-  res.setHeader('Cache-Control', 'public, max-age=60'); // Cache for 5 minutes
-  res.setHeader('Expires', new Date(Date.now() + 60000).toUTCString()); // Expires in 5 minutes    
+  //res.setHeader('Cache-Control', 'public, max-age=60'); // Cache for 5 minutes
+  //res.setHeader('Expires', new Date(Date.now() + 60000).toUTCString()); // Expires in 5 minutes    
 }
 }));
 
