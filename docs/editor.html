@@ -502,31 +502,32 @@
     // Draw the image on the canvas
     ctx.drawImage(img, 0, 0);
 
-    // Get the original file size (assuming 'file' is the file input)
-    const imageSize = file.size; // This is the uploaded file size in bytes
+// Get the original file size (assuming 'file' is the file input)
+const imageSize = file.size; // This is the uploaded file size in bytes
 
-    // Set the maximum image size for compression scaling (192KB for example)
-    const maxSize = 192 * 1024;  // 192KB in bytes
-    const minQuality = 0.05;  // Minimum quality (for very large images)
-    const maxQuality = 0.8;  // Maximum quality (for small images)
+// Set the maximum image size for compression scaling (192KB for example)
+const maxSize = 192 * 1024;  // 192KB in bytes
+const minQuality = 0.05;  // Minimum quality (for very large images)
+const maxQuality = 0.8;  // Maximum quality (for small images)
 
-    // Calculate the compression quality dynamically based on image size
-    let quality = maxQuality; // Default to max quality
+// Calculate the compression quality dynamically based on image size
+let quality = maxQuality; // Default to max quality
 
-    if (imageSize > maxSize) {
-        // For large images (above maxSize), reduce quality gradually with a stronger curve
-        const compressionFactor = Math.pow((maxSize / imageSize), 0.5); // Stronger reduction for larger images
-        quality = minQuality + (maxQuality - minQuality) * compressionFactor;
+if (imageSize > maxSize) {
+    // For large images (above maxSize), reduce quality gradually with a stronger curve
+    const compressionFactor = Math.pow((maxSize / imageSize), 0.5); // Stronger reduction for larger images
+    quality = minQuality + (maxQuality - minQuality) * compressionFactor;
 
-        console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
-    } else {
-        // For smaller images, reduce quality minimally
-        // Compression factor: Slowly approach 1 as image size decreases
-        const compressionFactor = 1 - ((maxSize - imageSize) / maxSize) * 0.5; // Slow reduction for smaller images
-        quality = Math.max(minQuality, maxQuality * compressionFactor);
+    console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+} else {
+    // For smaller images, keep high quality but reduce a little
+    const compressionFactor = 1 - ((maxSize - imageSize) / maxSize) * 0.2; // Slow reduction for smaller images
+    // Ensure the quality does not drop below 0.8
+    quality = Math.max(0.8, maxQuality * compressionFactor);
 
-        console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
-    }
+    console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+}
+
 
     // Convert canvas to WebP format with the calculated quality
     canvas.toBlob(function(blob) {
