@@ -140,6 +140,22 @@ function displayBadges(badges) {
         badges.forEach(badge => {
             const badgeElement = document.createElement('span');
             badgeElement.classList.add('badge', 'animate');
+
+            // Apply specific class and animation based on badge name
+            switch (badge.toLowerCase()) {
+                case 'Admin':
+                    badgeElement.classList.add('supporter');
+                    break;
+                case 'Founder':
+                    badgeElement.classList.add('donor');
+                    break;
+                case 'Dev-Team':
+                    badgeElement.classList.add('contest-winner');
+                    break;
+                default:
+                    badgeElement.classList.add('badge');  // Fallback for unknown badges
+            }
+
             badgeElement.textContent = badge;
             badgesSection.appendChild(badgeElement);
         });

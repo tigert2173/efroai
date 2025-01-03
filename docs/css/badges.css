@@ -1,0 +1,82 @@
+.badges-section {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Supporter Badge */
+.badge.supporter {
+    background-color: #4caf50;
+    animation: pulse 1.5s infinite;
+}
+
+/* Donor Badge */
+.badge.donor {
+    background-color: #f39c12;
+    animation: bounce 1.5s infinite;
+}
+
+/* Contest Winner Badge */
+.badge.contest-winner {
+    background-color: #e74c3c;
+    animation: shake 1s ease-in-out infinite;
+}
+
+/* General Animation */
+.badge.animate {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animation Styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        background-color: #4caf50;
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: #388e3c;
+    }
+    100% {
+        transform: scale(1);
+        background-color: #4caf50;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(-5px);
+    }
+}
