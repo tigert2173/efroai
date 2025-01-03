@@ -1,3 +1,4 @@
+const backendurl = 'https://characters.efroai.net'; // Ensure this points to your backend
 
     // Function to get query parameters from the URL
     function getQueryParam(param) {
@@ -36,7 +37,7 @@
             usernameElement.textContent = username;
 
             // Fetch the user's chatbots
-            const response = await fetch(`/api/characters`, {
+            const response = await fetch(`${backendurl}/api/characters`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
                 }
