@@ -30,7 +30,7 @@
 /* Admin Badge */
 .badge.contest-winner {
     background: linear-gradient(45deg, #e74c3c, #c0392b);
-    animation: shake 1s ease-in-out infinite, sparkle 1.5s infinite;
+    animation: sparkle 1s ease-in-out infinite, sparkle 1.5s infinite;
 }
 
 /* Fade-in animation */
