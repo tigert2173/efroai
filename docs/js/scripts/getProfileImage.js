@@ -11,7 +11,7 @@ async function fetchProfileImage(username) {
             const imageUrl = `https://characters.efroai.net/api/profile-picture/${username}`;
             profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
         } else {
-            alert('Profile image not found.');
+            //alert('Profile image not found.');
         }
     } catch (error) {
         console.error('Error fetching profile image:', error);
