@@ -999,114 +999,114 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
-let isSnowflakeActive = false; // Flag to track if snowflake effect is active
-let isSantaActive = false; // Flag to track if Santa image effect is active
-let isGiftBoxActive = false; // Flag to track if gift box effect is active
+// let isSnowflakeActive = false; // Flag to track if snowflake effect is active
+// let isSantaActive = false; // Flag to track if Santa image effect is active
+// let isGiftBoxActive = false; // Flag to track if gift box effect is active
 
-function showSnowflakes() {
-    if (isSnowflakeActive) return; // Prevent triggering if snowflake effect is active
-    isSnowflakeActive = true; // Set flag to active
+// function showSnowflakes() {
+//     if (isSnowflakeActive) return; // Prevent triggering if snowflake effect is active
+//     isSnowflakeActive = true; // Set flag to active
 
-    // Function to create a snowflake at a random position
-    function createSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄️';
+//     // Function to create a snowflake at a random position
+//     function createSnowflake() {
+//         const snowflake = document.createElement('div');
+//         snowflake.classList.add('snowflake');
+//         snowflake.textContent = '❄️';
         
-        // Randomly decide whether to position the snowflake on the left or right
-        const isLeftSide = Math.random() < 0.5; // 50% chance for left side
+//         // Randomly decide whether to position the snowflake on the left or right
+//         const isLeftSide = Math.random() < 0.5; // 50% chance for left side
     
-        if (isLeftSide) {
-            // Random horizontal position favoring the left 25% of the viewport width
-            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
-            snowflake.style.left = `${randomX}%`; // Position using the left property
-        } else {
-            // Random horizontal position favoring the right 25% of the viewport width
-            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
-            snowflake.style.right = `${randomX}%`; // Position using the right property
-        }
+//         if (isLeftSide) {
+//             // Random horizontal position favoring the left 25% of the viewport width
+//             const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+//             snowflake.style.left = `${randomX}%`; // Position using the left property
+//         } else {
+//             // Random horizontal position favoring the right 25% of the viewport width
+//             const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+//             snowflake.style.right = `${randomX}%`; // Position using the right property
+//         }
     
-        // Random size between 10px and 50px
-        const randomSize = Math.random() * 40 + 20;
-        snowflake.style.fontSize = `${randomSize}px`;
+//         // Random size between 10px and 50px
+//         const randomSize = Math.random() * 40 + 20;
+//         snowflake.style.fontSize = `${randomSize}px`;
         
-        // Add the snowflake to the document body
-        document.body.appendChild(snowflake);
+//         // Add the snowflake to the document body
+//         document.body.appendChild(snowflake);
         
-        // Animate snowflake falling from the top
-        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`; // Adjust fall speed based on size
+//         // Animate snowflake falling from the top
+//         snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`; // Adjust fall speed based on size
         
-        // Remove the snowflake after the animation completes
-        setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
-    }
+//         // Remove the snowflake after the animation completes
+//         setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
+//     }
     
 
-    // Function to generate snowflakes over a period of time
-    function generateSnowflakes() {
-        const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
-        createSnowflake();
+//     // Function to generate snowflakes over a period of time
+//     function generateSnowflakes() {
+//         const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
+//         createSnowflake();
         
-        // Keep generating snowflakes at random intervals
-        setTimeout(generateSnowflakes, interval);
-    }
+//         // Keep generating snowflakes at random intervals
+//         setTimeout(generateSnowflakes, interval);
+//     }
 
-    generateSnowflakes();
+//     generateSnowflakes();
 
-    // Deactivate effect after 10 seconds
-    setTimeout(() => {
-        isSnowflakeActive = false;
-    }, 30000);
-}
+//     // Deactivate effect after 10 seconds
+//     setTimeout(() => {
+//         isSnowflakeActive = false;
+//     }, 30000);
+// }
 
-function showSantaImage() {
-    if (isSantaActive) return; // Prevent triggering if Santa effect is active
-    isSantaActive = true; // Set flag to active
-    playSantaVoice();
-    const santaImage = document.createElement('img');
-    santaImage.src = 'santa.png';
-    santaImage.classList.add('santa-image');
-    document.body.appendChild(santaImage);
+// function showSantaImage() {
+//     if (isSantaActive) return; // Prevent triggering if Santa effect is active
+//     isSantaActive = true; // Set flag to active
+//     playSantaVoice();
+//     const santaImage = document.createElement('img');
+//     santaImage.src = 'santa.png';
+//     santaImage.classList.add('santa-image');
+//     document.body.appendChild(santaImage);
     
-    // Remove the Santa image after a few seconds
-    setTimeout(() => {
-        santaImage.remove();
-        isSantaActive = false; // Deactivate the Santa effect
-    }, 30000);
-}
+//     // Remove the Santa image after a few seconds
+//     setTimeout(() => {
+//         santaImage.remove();
+//         isSantaActive = false; // Deactivate the Santa effect
+//     }, 30000);
+// }
 
-function showGiftBoxes() {
-    if (isGiftBoxActive) return; // Prevent triggering if gift box effect is active
-    isGiftBoxActive = true; // Set flag to active
+// function showGiftBoxes() {
+//     if (isGiftBoxActive) return; // Prevent triggering if gift box effect is active
+//     isGiftBoxActive = true; // Set flag to active
 
-    const giftBox = document.createElement('div');
-    giftBox.classList.add('gift-box');
-    giftBox.textContent = '🎁';
-    document.body.appendChild(giftBox);
+//     const giftBox = document.createElement('div');
+//     giftBox.classList.add('gift-box');
+//     giftBox.textContent = '🎁';
+//     document.body.appendChild(giftBox);
     
-    // Remove the gift box after animation
-    setTimeout(() => {
-        giftBox.remove();
-        isGiftBoxActive = false; // Deactivate the gift box effect
-    }, 5000);
-}
+//     // Remove the gift box after animation
+//     setTimeout(() => {
+//         giftBox.remove();
+//         isGiftBoxActive = false; // Deactivate the gift box effect
+//     }, 5000);
+// }
 
-function triggerSpecialEffect(effect) {
-    if (effect === 'merry-christmas') {
-        document.getElementById('christmas-music').play();
-        showSnowflakes();
-    } else if (effect === 'santa') {
-        showSantaImage();
-    } else if (effect === 'snow') {
-        showSnowflakes();
-    } else if (effect === 'gifts') {
-        showGiftBoxes();
-    }
-}
+// function triggerSpecialEffect(effect) {
+//     if (effect === 'merry-christmas') {
+//         document.getElementById('christmas-music').play();
+//         showSnowflakes();
+//     } else if (effect === 'santa') {
+//         showSantaImage();
+//     } else if (effect === 'snow') {
+//         showSnowflakes();
+//     } else if (effect === 'gifts') {
+//         showGiftBoxes();
+//     }
+// }
 
-// Example of playing sound when 'Santa' is mentioned
-function playSantaVoice() {
-    document.getElementById('santa-voice').play();
-}
+// // Example of playing sound when 'Santa' is mentioned
+// function playSantaVoice() {
+//     document.getElementById('santa-voice').play();
+// }
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 
@@ -1177,9 +1177,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         .replace(/{{user}}|{user}/g, userName) // Replace both {{user}} and {user} with the actual user name
         .replace(/{{char}}|{char}/g, charName) // Replace both {{user}} and {user} with the actual user name
  // Add custom Christmas formatting:
- .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
- .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
- .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
+//  .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
+//  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
+//  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
 //  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
       // Add colorful text formatting for specific syntax |color|text|color|
     .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
@@ -1187,16 +1187,16 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         return `<span style="color:${color};">${text}</span>`;
     });
    
-      // Check for Christmas keywords to trigger special effects
-   if (content.match(/Merry Christmas/i)) {
-    triggerSpecialEffect('merry-christmas');
-} else if (content.match(/Santa/i)) {
-    triggerSpecialEffect('santa');
-} else if (content.match(/gifts/i)) {
-    triggerSpecialEffect('gifts');
-} else if (content.match(/snow/i)) {
-    triggerSpecialEffect('snow');
-}
+//       // Check for Christmas keywords to trigger special effects
+//    if (content.match(/Merry Christmas/i)) {
+//     triggerSpecialEffect('merry-christmas');
+// } else if (content.match(/Santa/i)) {
+//     triggerSpecialEffect('santa');
+// } else if (content.match(/gifts/i)) {
+//     triggerSpecialEffect('gifts');
+// } else if (content.match(/snow/i)) {
+//     triggerSpecialEffect('snow');
+// }
  // Prepare message object in the desired format
     const messageObject = {
         role: sender,
