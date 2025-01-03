@@ -28,13 +28,12 @@ const profileImageContainer = document.getElementById('profile-image-container')
 // Function to fetch the user's profile image (without extension)
 async function fetchProfileImage(username) {
     try {
+        // Make the GET request to fetch the image without the extension
         const response = await fetch(`https://characters.efroai.net/api/profile-picture/${username}`);
-
+        
         if (response.ok) {
-            const data = await response.json();
-            const imageUrl = data.imageUrl;  // The backend will return the correct URL
-
-            // Update the profile image container with the correct URL
+            // The server will return the image file directly, so we set it as the image src
+            const imageUrl = `https://characters.efroai.net/api/profile-picture/${username}`;
             profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
         } else {
             alert('Profile image not found.');
@@ -44,6 +43,7 @@ async function fetchProfileImage(username) {
         alert('Error fetching profile image!');
     }
 }
+
 // Example usage: Fetch the profile image for a user (e.g., 'john_doe')
 fetchProfileImage('tigert2173');
 
