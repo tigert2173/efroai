@@ -192,5 +192,7 @@ body {
 .profile-pic {
     width: 100%;                 /* Fill the container's width */
     height: 100%;                /* Fill the container's height */
-    object-fit: contain;         /* Ensure the image is fully visible and fits within the container */
+    object-fit: cover;           /* Default: Cover the container, cropping if necessary */
+    min-width: 100%;             /* Ensure small images are scaled up */
+    min-height: 100%;            /* Ensure small images are scaled up */
 }
