@@ -110,11 +110,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         // Find the profile link and update it with the username
         const profileLink = document.getElementById('profileLink');
-        
+        const profileLink2 = document.getElementById('profileLink2');
+
         if (profileLink) {
             profileLink.href = `profile.html?username=${username}`;
         } else {
             console.error("Profile link not found!");
+        }
+        if (profileLink2) {
+            profileLink2.href = `profile.html?username=${username}`;
+        } else {
+            console.error("Profile link 2 not found!");
         }
     } else {
         console.error("userID cookie not found!");
