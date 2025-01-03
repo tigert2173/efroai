@@ -93,9 +93,6 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        // Check if the character name or description matches the search query
-        // const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.uploader.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery);
-        // if (matchesSearch) {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
