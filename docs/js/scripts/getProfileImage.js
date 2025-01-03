@@ -15,6 +15,6 @@ async function fetchProfileImage(username) {
         }
     } catch (error) {
         console.error('Error fetching profile image:', error);
-        alert('Error fetching profile image!');
+        //alert('Error fetching profile image!');
     }
 }
