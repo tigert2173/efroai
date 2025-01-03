@@ -186,6 +186,7 @@ body {
     justify-content: center;
     align-items: center; /* Centers the image inside the container */
     border: 5px solid #fff; /* Optional: Adds a white border around the image container */
+    background-color: #e0e0e0; /* Optional: Add background color in case image is missing */
 }
 
 /* Profile Picture */
