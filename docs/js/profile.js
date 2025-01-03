@@ -32,9 +32,9 @@ async function fetchUserChatbots() {
         usernameElement.textContent = username;
 
         // Fetch the user's chatbots
-        const response = await fetch(`${backendurl}/api/characters`, {
+        const response = await fetch(`${backendurl}/api/public/characters`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
+              //  'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
             }
         });
 
