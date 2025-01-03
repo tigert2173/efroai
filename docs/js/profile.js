@@ -112,7 +112,7 @@ fetchUserChatbots();
   // Function to fetch user badges based on username
   async function getUserBadges(username) {
     try {
-        const response = await fetch(`/api/user/${username}/perks/get-badges`, {
+        const response = await fetch(`https://characters.efroai.net/api/user/${username}/perks/get-badges`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
