@@ -5,7 +5,24 @@ const token = localStorage.getItem('token');
 const uploadImageButton = document.getElementById('upload-image-button');
 const profileImageInput = document.getElementById('profile-image');
 const uploadedImageContainer = document.getElementById('uploaded-image-container');
-    
+
+// Event listener for the input change (for previewing the image before uploading)
+profileImageInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const previewImage = document.createElement('img');
+            previewImage.src = e.target.result;
+            previewImage.width = 200; // Set a fixed size for preview
+            // Replace the existing image preview or add new
+            uploadedImageContainer.innerHTML = '';
+            uploadedImageContainer.appendChild(previewImage);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 // Event listener for the upload button
 uploadImageButton.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -27,10 +44,9 @@ uploadImageButton.addEventListener('click', async (event) => {
 
             if (response.ok) {
                 const result = await response.json();
-                if (result.file) {
+                if (result.imageUrl) {
                     // Display the uploaded image
-                    const imageUrl = result.imageUrl; // Assuming the server returns the image URL
-                    uploadedImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
+                    uploadedImageContainer.innerHTML = `<img src="${result.imageUrl}" alt="Profile Image" width="200" />`;
                 } else {
                     alert('Image upload failed!');
                 }
