@@ -98,9 +98,11 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+/* General Columns Layout */
 .columns {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;  /* Stack the content vertically */
+    gap: 20px;               /* Adds space between elements */
     margin-top: 20px;
 }
 
