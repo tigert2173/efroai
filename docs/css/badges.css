@@ -5,15 +5,24 @@
     flex-wrap: wrap;
 }
 
-/* General Badge Style */
+/* Wrapper for badge and particles */
+.badge-wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    display: inline-block;
+}
+
+/* Badge Style */
 .badge {
     padding: 10px 20px;
     border-radius: 10px;
     color: white;
     font-weight: bold;
     font-size: 16px;
-    animation: fadeIn 1s ease-in-out forwards, subtlePulse 2s ease-in-out infinite alternate; /* Subtle fade-in and pulse animation */
-    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Ensure badge is above particles */
 }
 
 /* Founder Badge */
@@ -87,3 +96,28 @@
     50% { text-shadow: 0 0 3px #c0392b, 0 0 8px #c0392b; }
 }
 
+/* Particle Style */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none; /* Ensure particles don't interfere with interactions */
+    z-index: 1; /* Place particles behind the badge */
+    transform: translate(-50%, -50%); /* Center particles around their position */
+}
+
+/* Subtle Animation (Optional) */
+.particle-cloud .particle {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
