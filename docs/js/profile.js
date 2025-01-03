@@ -126,8 +126,7 @@ async function getUserBadges(username) {
         displayBadges(data.badges);
     } catch (error) {
         console.error('Error fetching badges:', error);
-        const badgesSection = document.getElementById('badges-section');
-        badgesSection.innerHTML = '<p>Could not load badges. Please try again later.</p>';
+        // Handle error gracefully if needed (e.g., display a message)
     }
 }
 
@@ -139,24 +138,24 @@ function displayBadges(badges) {
     if (badges && badges.length > 0) {
         badges.forEach(badge => {
             const badgeElement = document.createElement('span');
-            badgeElement.classList.add('badge');
+            badgeElement.classList.add('badge', 'animate');
 
-            // Apply specific class and animation based on badge type
+            // Apply specific class and animation based on badge name
             switch (badge.toLowerCase()) {
                 case 'founder':
-                    badgeElement.classList.add('supporter', 'particle'); // Add particles
+                    badgeElement.classList.add('supporter');
                     break;
                 case 'dev-team':
                     badgeElement.classList.add('donor');
                     break;
                 case 'admin':
-                    badgeElement.classList.add('contest-winner', 'particle'); // Add particles
+                    badgeElement.classList.add('contest-winner');
                     break;
                 default:
-                    badgeElement.classList.add('unknown-badge');
+                    badgeElement.classList.add('badge');  // Fallback for unknown badges
             }
 
-            badgeElement.textContent = badge; // Set badge name as text
+            badgeElement.textContent = badge;
             badgesSection.appendChild(badgeElement);
         });
     } else {
@@ -164,7 +163,5 @@ function displayBadges(badges) {
     }
 }
 
-// Example: Replace 'username' with the actual username
-const username = 'exampleUser'; // Replace with dynamic username if available
+// Call the function to get and display badges
 getUserBadges(username);
-
