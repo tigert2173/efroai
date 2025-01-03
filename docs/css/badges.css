@@ -17,8 +17,8 @@
 }
 
 /* Founder Badge */
-.badge.supporter {
-    background: linear-gradient(45deg, #4caf50, #388e3c);
+.badge.founder {
+    background: linear-gradient(45deg, #ffd900, #fc9802);
     animation: floatUp 2s ease-in-out infinite, glowSupporter 2s infinite alternate;
 }
 
