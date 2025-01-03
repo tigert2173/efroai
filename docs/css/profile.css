@@ -182,6 +182,7 @@ body {
     height: 150px;          /* Set the size of the container */
     border-radius: 50%;     /* Makes the container round */
     overflow: hidden;       /* Ensures the image doesn't overflow the container */
+    display: flex;          /* Enables flexbox for centering */
     justify-content: center;/* Horizontally centers the image */
     align-items: center;    /* Vertically centers the image */
     border: 5px solid #fff; /* Optional: Adds a white border around the image container */
@@ -193,5 +194,5 @@ body {
 .profile-pic {
     width: 100%;            /* Makes the image fill the container */
     height: 100%;           /* Makes the image fill the container */
-    object-fit: cover;      /* Ensures the image covers the container without distortion */
+    object-fit: fill;      /* Ensures the image covers the container without distortion */
 }
