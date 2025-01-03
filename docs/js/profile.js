@@ -25,44 +25,44 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
 
     // TO FETCH USER BOTS \\
 
-      // Function to fetch and display the user's chatbots
-      async function fetchUserChatbots() {
-        try {
-            // Get the username from the URL
-            const params = new URLSearchParams(window.location.search);
-            const username = params.get('user') || 'defaultUser'; // Fallback to 'defaultUser'
+     // Function to fetch and display the user's chatbots
+async function fetchUserChatbots() {
+    try {
+        // Get the username from the URL
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('user') || 'defaultUser'; // Fallback to 'defaultUser'
 
-            // Display the username in the header
-            const usernameElement = document.querySelector('.username');
-            usernameElement.textContent = username;
+        // Display the username in the header
+        const usernameElement = document.querySelector('.username');
+        usernameElement.textContent = username;
 
-            // Fetch the user's chatbots
-            const response = await fetch(`${backendurl}/api/characters`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch chatbots');
+        // Fetch the user's chatbots
+        const response = await fetch(`${backendurl}/api/characters`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Replace with your auth mechanism
             }
+        });
 
-            const chatbots = await response.json();
-
-            // Display the chatbots
-            const chatbotsColumn = document.querySelector('.chatbots-column');
-            const chatbotList = chatbots.map(chatbot => `
-                <div class="sidebar-card">
-                    <img src="${chatbot.avatar || 'images/default-chatbot.png'}" alt="${chatbot.name}" class="sidebar-image">
-                    <p>${chatbot.name}</p>
-                </div>
-            `).join('');
-
-            chatbotsColumn.innerHTML += chatbotList;
-        } catch (error) {
-            console.error('Error fetching chatbots:', error);
+        if (!response.ok) {
+            throw new Error('Failed to fetch chatbots');
         }
-    }
 
-    // Fetch chatbots on page load
-    fetchUserChatbots();
+        const chatbots = await response.json();
+
+        // Display the chatbots
+        const chatbotsColumn = document.querySelector('.chatbots-column');
+        const chatbotList = chatbots.map(chatbot => `
+            <div class="sidebar-card">
+                <img src="${backendurl}/api/characters/${username}/images/${chatbot.id}" alt="${chatbot.name}" class="sidebar-image" onerror="this.src='images/default-chatbot.png'">
+                <p>${chatbot.name}</p>
+            </div>
+        `).join('');
+
+        chatbotsColumn.innerHTML += chatbotList;
+    } catch (error) {
+        console.error('Error fetching chatbots:', error);
+    }
+}
+
+// Fetch chatbots on page load
+fetchUserChatbots();
