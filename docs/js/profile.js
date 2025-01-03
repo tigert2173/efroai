@@ -131,7 +131,7 @@ async function getUserBadges(username) {
     }
 }
 
-// Function to display badges on the page with particles
+// Function to display badges on the page with animated particles
 function displayBadges(badges) {
     const badgesSection = document.getElementById('badges-section');
     badgesSection.innerHTML = ''; // Clear any existing badges
@@ -163,9 +163,9 @@ function displayBadges(badges) {
             badgeWrapper.appendChild(badgeElement);
             badgesSection.appendChild(badgeWrapper);
 
-            // Add particles for specific badges
+            // Add animated particles for specific badges
             if (badgeElement.classList.contains('particle-cloud')) {
-                createCloudParticles(badgeWrapper);
+                createAnimatedParticles(badgeWrapper);
             }
         });
     } else {
@@ -173,8 +173,8 @@ function displayBadges(badges) {
     }
 }
 
-// Function to create cloud-like particles around a badge
-function createCloudParticles(parentElement) {
+// Function to create animated particles around a badge
+function createAnimatedParticles(parentElement) {
     const particleCount = 20; // Number of particles
     const radius = 50; // Radius of the particle cloud
 
@@ -188,9 +188,10 @@ function createCloudParticles(parentElement) {
         particle.classList.add('particle');
         particle.style.left = `${50 + x}%`; // Center the cloud
         particle.style.top = `${50 + y}%`;
+        particle.style.animationDelay = `${Math.random() * 2}s`; // Staggered animation start
+
         parentElement.appendChild(particle);
     }
 }
-
 getUserBadges(username);
 
