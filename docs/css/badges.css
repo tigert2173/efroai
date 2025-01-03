@@ -1,123 +1,81 @@
+/* Badges Section */
 .badges-section {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
+/* General Badge Style */
 .badge {
     padding: 10px 20px;
     border-radius: 10px;
     color: white;
     font-weight: bold;
     font-size: 16px;
-    opacity: 0;  /* Start with hidden state */
+    opacity: 0;
     animation: fadeIn 1s ease-in-out forwards; /* Fade-in animation */
 }
 
-/* Supporter Badge */
+/* Founder Badge */
 .badge.supporter {
     background: linear-gradient(45deg, #4caf50, #388e3c);
     animation: floatUp 2s ease-in-out infinite, glowSupporter 1.5s infinite alternate;
 }
 
-/* Donor Badge */
+/* Dev-Team Badge */
 .badge.donor {
     background: linear-gradient(45deg, #f39c12, #e67e22);
     animation: bounce 1s ease-in-out infinite, colorChangeDonor 2s infinite alternate;
 }
 
-/* Contest Winner Badge */
+/* Admin Badge */
 .badge.contest-winner {
     background: linear-gradient(45deg, #e74c3c, #c0392b);
     animation: shake 1s ease-in-out infinite, sparkle 1.5s infinite;
 }
 
-/* General Badge Animation */
-.badge.animate {
-    animation: fadeIn 1s ease-in-out forwards;
-}
-
-/* Animation Styles */
+/* Fade-in animation */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* Floating effect for Supporter Badge */
+/* Floating effect for Founder */
 @keyframes floatUp {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-/* Glowing effect for Supporter Badge */
+/* Glowing effect for Founder */
 @keyframes glowSupporter {
-    0% {
-        box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50;
-    }
-    50% {
-        box-shadow: 0 0 10px #388e3c, 0 0 25px #388e3c, 0 0 40px #388e3c;
-    }
-    100% {
-        box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50;
-    }
+    0% { box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50; }
+    50% { box-shadow: 0 0 10px #388e3c, 0 0 25px #388e3c, 0 0 40px #388e3c; }
+    100% { box-shadow: 0 0 5px #4caf50, 0 0 15px #4caf50, 0 0 30px #4caf50; }
 }
 
-/* Bouncing effect for Donor Badge */
+/* Bounce effect for Dev-Team */
 @keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-12px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
 }
 
-/* Color-changing effect for Donor Badge */
+/* Color-changing effect for Dev-Team */
 @keyframes colorChangeDonor {
-    0% {
-        background-color: #f39c12;
-    }
-    50% {
-        background-color: #e67e22;
-    }
-    100% {
-        background-color: #f39c12;
-    }
+    0% { background-color: #f39c12; }
+    50% { background-color: #e67e22; }
+    100% { background-color: #f39c12; }
 }
 
-/* Shake effect for Contest Winner Badge */
+/* Shake effect for Admin */
 @keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-    75% {
-        transform: translateX(-5px);
-    }
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
 }
 
-/* Sparkling effect for Contest Winner Badge */
+/* Sparkle effect for Admin */
 @keyframes sparkle {
-    0%, 100% {
-        text-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
-    }
-    50% {
-        text-shadow: 0 0 5px #c0392b, 0 0 15px #c0392b, 0 0 25px #c0392b;
-    }
+    0%, 100% { text-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c; }
+    50% { text-shadow: 0 0 5px #c0392b, 0 0 15px #c0392b, 0 0 25px #c0392b; }
 }

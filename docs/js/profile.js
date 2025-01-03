@@ -108,7 +108,6 @@ function viewCharacter(characterId, uploader) {
 // Fetch chatbots on page load
 fetchUserChatbots();
 
-
 // Function to fetch user badges based on username
 async function getUserBadges(username) {
     try {
