@@ -106,11 +106,20 @@ body {
     margin-top: 20px;
 }
 
-.chatbots-column,
-.stories-column {
-    width: 48%;
+
+/* Specific Styles for Chatbots Column */
+.chatbots-column {
+    width: 100%;  /* Ensure the chatbot section takes up full width */
     padding: 10px;
     background-color: #2a2a2a; 
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.stories-column {
+    width: 100%;  /* Ensure the stories section takes up full width */
+    padding: 10px;
+    background-color: #2a2a2a;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
