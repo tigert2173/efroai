@@ -81,10 +81,21 @@
             <p>No real people images are permitted in any of the slots. All images should be of either fictional characters, illustrations, or abstract/artistic representations.</p>
         </div>
     </div>
-
+    <div class="button-container">
+        <button class="close-btn" onclick="closeTab()">Close Tab and Return to Original Tab</button>
+    </div>
+</div>
     <footer>
         <p>&copy; 2025 Content Guidelines</p>
     </footer>
-
+    <script>
+        function closeTab() {
+            // Attempt to close the current tab (only works if the tab was opened by a script)
+            window.close();
+            
+            // Redirect to the previous page or a specific URL (if you want to go back to a particular page)
+            window.history.back();
+        }
+    </script>
 </body>
 </html>
