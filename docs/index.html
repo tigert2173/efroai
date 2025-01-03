@@ -602,7 +602,7 @@ fetch('config.json')
             }
         };
 
-        
+
 // Function to update the profile link with the username from the cookie
 function updateProfileLink() {
     const userID = getCookie("userID"); // Get the userID cookie value
@@ -612,6 +612,7 @@ function updateProfileLink() {
         const profileLink = document.getElementById("profile-dropdown-link");
         profileLink.href = `profile.html?username=${username}`; // Set the profile link with the username
     }
+    console.log("Updated Profile Link");
 }
 
 // Run the function to update the profile link on page load
