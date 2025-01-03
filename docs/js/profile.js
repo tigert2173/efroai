@@ -126,7 +126,8 @@ async function getUserBadges(username) {
         displayBadges(data.badges);
     } catch (error) {
         console.error('Error fetching badges:', error);
-        // Handle error gracefully if needed (e.g., display a message)
+        const badgesSection = document.getElementById('badges-section');
+        badgesSection.innerHTML = '<p>Could not load badges. Please try again later.</p>';
     }
 }
 
@@ -138,24 +139,24 @@ function displayBadges(badges) {
     if (badges && badges.length > 0) {
         badges.forEach(badge => {
             const badgeElement = document.createElement('span');
-            badgeElement.classList.add('badge', 'animate');
+            badgeElement.classList.add('badge');
 
-            // Apply specific class and animation based on badge name
+            // Apply specific class and animation based on badge type
             switch (badge.toLowerCase()) {
                 case 'founder':
-                    badgeElement.classList.add('supporter');
+                    badgeElement.classList.add('supporter', 'particle'); // Add particles
                     break;
                 case 'dev-team':
                     badgeElement.classList.add('donor');
                     break;
                 case 'admin':
-                    badgeElement.classList.add('contest-winner');
+                    badgeElement.classList.add('contest-winner', 'particle'); // Add particles
                     break;
                 default:
-                    badgeElement.classList.add('badge');  // Fallback for unknown badges
+                    badgeElement.classList.add('unknown-badge');
             }
 
-            badgeElement.textContent = badge;
+            badgeElement.textContent = badge; // Set badge name as text
             badgesSection.appendChild(badgeElement);
         });
     } else {
@@ -163,5 +164,7 @@ function displayBadges(badges) {
     }
 }
 
-// Call the function to get and display badges
+// Example: Replace 'username' with the actual username
+const username = 'exampleUser'; // Replace with dynamic username if available
 getUserBadges(username);
+
