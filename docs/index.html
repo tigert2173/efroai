@@ -593,6 +593,7 @@ fetch('config.json')
         // Call the function on page load, using the username from cookies
         window.onload = function() {
             const username = getCookie('userID'); // Get the 'username' cookie
+            updateProfileLink();
 
             if (username) {
                 checkSuspension(username); // Check suspension if username exists
@@ -601,8 +602,6 @@ fetch('config.json')
                 // Optionally, redirect to login or error page
             }
         };
-
-
 // Function to update the profile link with the username from the cookie
 function updateProfileLink() {
     const userID = getCookie("userID"); // Get the userID cookie value
@@ -615,10 +614,7 @@ function updateProfileLink() {
     console.log("Updated Profile Link");
 }
 
-// Run the function to update the profile link on page load
-window.onload = function() {
-    updateProfileLink();
-};
+
 </script>
 <script src="js/scripts/checkbot.js"></script>
 
