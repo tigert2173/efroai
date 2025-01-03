@@ -126,42 +126,63 @@ async function getUserBadges(username) {
         displayBadges(data.badges);
     } catch (error) {
         console.error('Error fetching badges:', error);
-        // Handle error gracefully if needed (e.g., display a message)
+        const badgesSection = document.getElementById('badges-section');
+        badgesSection.innerHTML = '<p>Could not load badges. Please try again later.</p>';
     }
 }
 
-// Function to display badges on the page
+// Function to display badges on the page with particles
 function displayBadges(badges) {
     const badgesSection = document.getElementById('badges-section');
     badgesSection.innerHTML = ''; // Clear any existing badges
 
     if (badges && badges.length > 0) {
         badges.forEach(badge => {
-            const badgeElement = document.createElement('span');
-            badgeElement.classList.add('badge', 'animate');
+            const badgeWrapper = document.createElement('div');
+            badgeWrapper.classList.add('badge-wrapper');
 
-            // Apply specific class and animation based on badge name
+            const badgeElement = document.createElement('span');
+            badgeElement.classList.add('badge');
+            badgeElement.textContent = badge; // Set badge text
+
+            // Apply specific class and particles if applicable
             switch (badge.toLowerCase()) {
                 case 'founder':
-                    badgeElement.classList.add('supporter');
+                    badgeElement.classList.add('supporter', 'particle');
                     break;
                 case 'dev-team':
                     badgeElement.classList.add('donor');
                     break;
                 case 'admin':
-                    badgeElement.classList.add('contest-winner');
+                    badgeElement.classList.add('contest-winner', 'particle');
                     break;
                 default:
-                    badgeElement.classList.add('badge');  // Fallback for unknown badges
+                    badgeElement.classList.add('unknown-badge');
             }
 
-            badgeElement.textContent = badge;
-            badgesSection.appendChild(badgeElement);
+            badgeWrapper.appendChild(badgeElement);
+            badgesSection.appendChild(badgeWrapper);
+
+            // Add particles for specific badges
+            if (badgeElement.classList.contains('particle')) {
+                createParticles(badgeWrapper);
+            }
         });
     } else {
         badgesSection.innerHTML = '<p>No badges available for this user.</p>';
     }
 }
 
-// Call the function to get and display badges
+// Function to create particles around a badge
+function createParticles(parentElement) {
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        parentElement.appendChild(particle);
+    }
+}
+
 getUserBadges(username);
+
