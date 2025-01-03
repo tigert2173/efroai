@@ -146,7 +146,7 @@ function displayBadges(badges) {
                     badgeElement.classList.add('founder');
                     break;
                 case 'dev-team':
-                    badgeElement.classList.add('donor');
+                    badgeElement.classList.add('dev-team');
                     break;
                 case 'admin':
                     badgeElement.classList.add('contest-winner');
