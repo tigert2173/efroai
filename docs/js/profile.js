@@ -107,3 +107,46 @@ function viewCharacter(characterId, uploader) {
 
 // Fetch chatbots on page load
 fetchUserChatbots();
+
+
+  // Function to fetch user badges based on username
+  async function getUserBadges(username) {
+    try {
+        const response = await fetch(`/api/user/${username}/perks/get-badges`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch badges');
+        }
+
+        const data = await response.json();
+        displayBadges(data.badges);
+    } catch (error) {
+        console.error('Error fetching badges:', error);
+        // Handle error gracefully if needed (e.g., display a message)
+    }
+}
+
+// Function to display badges on the page
+function displayBadges(badges) {
+    const badgesSection = document.getElementById('badges-section');
+    badgesSection.innerHTML = ''; // Clear any existing badges
+
+    if (badges && badges.length > 0) {
+        badges.forEach(badge => {
+            const badgeElement = document.createElement('span');
+            badgeElement.classList.add('badge', 'animate');
+            badgeElement.textContent = badge;
+            badgesSection.appendChild(badgeElement);
+        });
+    } else {
+        badgesSection.innerHTML = '<p>No badges available for this user.</p>';
+    }
+}
+
+// Call the function to get and display badges
+getUserBadges(username);
