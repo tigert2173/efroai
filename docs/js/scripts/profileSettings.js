@@ -22,15 +22,18 @@ profileImageInput.addEventListener('change', function (event) {
         reader.readAsDataURL(file);
     }
 });
+
 const profileImageContainer = document.getElementById('profile-image-container');
 
 // Function to fetch the user's profile image (without extension)
 async function fetchProfileImage(username) {
     try {
+        // Make the GET request to fetch the image without the extension
         const response = await fetch(`https://characters.efroai.net/api/profile-picture/${username}`);
         
         if (response.ok) {
-            const imageUrl = response.url; // This will be the full URL for the image
+            // If the response is OK, the image URL will be returned
+            const imageUrl = response.url;  // Get the URL of the image from the response
             profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
         } else {
             alert('Profile image not found.');
@@ -42,7 +45,7 @@ async function fetchProfileImage(username) {
 }
 
 // Example usage: Fetch the profile image for a user (e.g., 'john_doe')
-fetchProfileImage('john_doe');
+fetchProfileImage('tigert2173');
 
 // Event listener for the upload button
 uploadImageButton.addEventListener('click', async (event) => {
