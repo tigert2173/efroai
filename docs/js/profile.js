@@ -145,7 +145,7 @@ function displayBadges(badges) {
             badgeElement.classList.add('badge');
             badgeElement.textContent = badge; // Set badge text
 
-            // Apply specific class and particles if applicable
+            // Apply specific class for badge styles
             switch (badge.toLowerCase()) {
                 case 'founder':
                     badgeElement.classList.add('supporter', 'particle-cloud');
@@ -165,7 +165,7 @@ function displayBadges(badges) {
 
             // Add animated particles for specific badges
             if (badgeElement.classList.contains('particle-cloud')) {
-                createAnimatedParticles(badgeWrapper);
+                generateDynamicParticles(badgeWrapper);
             }
         });
     } else {
@@ -173,25 +173,37 @@ function displayBadges(badges) {
     }
 }
 
-// Function to create animated particles around a badge
-function createAnimatedParticles(parentElement) {
-    const particleCount = 20; // Number of particles
-    const radius = 50; // Radius of the particle cloud
+// Function to create moving particles that despawn
+function generateDynamicParticles(parentElement) {
+    const particleCount = 15; // Number of particles
+    const duration = 3000; // Particle lifespan in ms
 
     for (let i = 0; i < particleCount; i++) {
-        const angle = Math.random() * 2 * Math.PI; // Random angle
-        const distance = Math.random() * radius; // Random distance from center
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random start position around the badge
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 20; // Small initial offset
         const x = Math.cos(angle) * distance;
         const y = Math.sin(angle) * distance;
 
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.left = `${50 + x}%`; // Center the cloud
+        particle.style.left = `${50 + x}%`;
         particle.style.top = `${50 + y}%`;
-        particle.style.animationDelay = `${Math.random() * 2}s`; // Staggered animation start
 
         parentElement.appendChild(particle);
+
+        // Apply animation and schedule removal
+        setTimeout(() => {
+            particle.remove();
+        }, duration);
     }
+
+    // Continuously generate particles at intervals
+    setInterval(() => {
+        generateDynamicParticles(parentElement);
+    }, duration / 2);
 }
+
 getUserBadges(username);
 
