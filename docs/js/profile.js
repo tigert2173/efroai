@@ -53,7 +53,7 @@ async function fetchUserChatbots() {
         const chatbotsColumn = document.querySelector('.chatbots-column');
         const chatbotList = chatbots.map(chatbot => `
             <div class="sidebar-card">
-                <img src="${backendurl}/api/characters/${username}/images/${chatbot.id}" alt="${chatbot.name}" class="sidebar-image" onerror="this.src='images/noimage.png'">
+                <img src="${backendurl}/api/characters/${username}/images/${chatbot.id}" alt="${chatbot.name}" class="sidebar-image" onerror="this.src='images/noimage.jpg'">
                 <p>${chatbot.name}</p>
             </div>
         `).join('');
