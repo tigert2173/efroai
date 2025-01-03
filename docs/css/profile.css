@@ -178,21 +178,23 @@ body {
 
 /* Profile Image Container */
 .profile-image-container {
-    width: 150px;           /* Set the size of the container */
-    height: 150px;          /* Set the size of the container */
-    border-radius: 50%;     /* Makes the container round */
-    overflow: hidden;       /* Ensures the image doesn't overflow the container */
-    display: flex;          /* Enables flexbox for centering */
-    justify-content: center;/* Horizontally centers the image */
-    align-items: center;    /* Vertically centers the image */
-    border: 5px solid #fff; /* Optional: Adds a white border around the image container */
+    width: 150px;            /* Set the size of the container */
+    height: 150px;           /* Set the size of the container */
+    border-radius: 50%;      /* Makes the container round */
+    overflow: hidden;        /* Ensures the image doesn't overflow the container */
+    border: 5px solid #fff;  /* Optional: Adds a white border around the image container */
     background-color: #e0e0e0; /* Optional: Adds a background color in case the image is missing */
-    margin: 0 auto;         /* Center the container itself if needed */
+    margin: 0 auto;          /* Center the container itself if needed */
+    position: relative;      /* Position the image inside the container */
 }
 
 /* Profile Picture */
 .profile-pic {
-    width: 100%;            /* Makes the image fill the container */
-    height: 100%;           /* Makes the image fill the container */
-    object-fit: fill;      /* Ensures the image covers the container without distortion */
+    width: 100%;             /* Makes the image fill the container */
+    height: 100%;            /* Makes the image fill the container */
+    object-fit: cover;       /* Ensures the image covers the container without distortion */
+    position: absolute;      /* Position it inside the container */
+    top: 50%;                /* Vertically center the image */
+    left: 50%;               /* Horizontally center the image */
+    transform: translate(-50%, -50%); /* Adjusts for exact centering */
 }
