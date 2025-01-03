@@ -200,7 +200,18 @@
             <p>Does not work!</p>
             <p id="message"></p>
         </div>
-          
+
+           <!-- Profile Image Upload Section -->
+    <h3>Upload Profile Image</h3>
+    <form id="image-upload-form" enctype="multipart/form-data">
+        <input type="file" id="profile-image" name="profile-image" accept="image/*" />
+        <button type="submit" id="upload-image-button">Upload Image</button>
+    </form>
+    <div id="uploaded-image-container">
+        <!-- Uploaded image preview will appear here -->
+    </div>
+    <script src="js/scripts/profileSettings.js"></script>
+
           <a href="https://efroai.net/some-useful-tools.html" class="nav-btn">Useful Tools / Troubleshooting</a>
           <script>
           // Example list of banned tags (this could be loaded dynamically from the server)
