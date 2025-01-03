@@ -32,8 +32,8 @@ async function fetchProfileImage(username) {
         const response = await fetch(`https://characters.efroai.net/api/profile-picture/${username}`);
         
         if (response.ok) {
-            // If the response is OK, the image URL will be returned
-            const imageUrl = response.url;  // Get the URL of the image from the response
+            // The server will return the image file directly, so we set it as the image src
+            const imageUrl = `https://characters.efroai.net/api/profile-picture/${username}`;
             profileImageContainer.innerHTML = `<img src="${imageUrl}" alt="Profile Image" width="200" />`;
         } else {
             alert('Profile image not found.');
