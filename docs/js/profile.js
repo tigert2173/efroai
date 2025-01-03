@@ -15,7 +15,7 @@ if (username) {
     document.querySelector('.username').textContent = username;
 
     // Optionally update other sections if needed
-    document.querySelector('.social-section p:last-child').textContent = `Website: www.${username}.com`;
+    //document.querySelector('.social-section p:last-child').textContent = `Website: www.${username}.com`;
 } else {
     // Handle case where username is missing
     document.querySelector('.username').textContent = "Unknown User";
