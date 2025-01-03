@@ -178,22 +178,19 @@ body {
 
 /* Profile Image Container */
 .profile-image-container {
-    width: 150px;              /* Container size */
-    height: 150px;             /* Container size */
-    border-radius: 50%;        /* Makes the container round */
-    overflow: hidden;          /* Hide overflow to keep the circle shape */
-    border: 5px solid #fff;    /* Optional: Add border around the image */
-    display: flex;             /* Use flexbox to center the image inside */
-    justify-content: center;   /* Horizontally center the image */
-    align-items: center;       /* Vertically center the image */
-    background-color: #e0e0e0; /* Optional: Background color for missing image */
-    margin: 0 auto;            /* Center the profile container */
+    width: 150px;                /* Container size */
+    height: 150px;               /* Container size */
+    border-radius: 50%;          /* Makes the container round */
+    overflow: hidden;            /* Hide anything that goes outside the circle */
+    display: flex;               /* Use flexbox to center the image */
+    justify-content: center;     /* Horizontally center the image */
+    align-items: center;         /* Vertically center the image */
+    border: 2px solid #000;      /* Optional: Border around the image */
 }
 
 /* Profile Picture */
 .profile-pic {
-    width: 100%;               /* Make the image fill the container's width */
-    height: 100%;              /* Make the image fill the container's height */
-    object-fit: contain;       /* Scale image to fit the container without distortion */
-    object-position: center;   /* Ensure the image is centered if it needs to be cropped */
+    width: 100%;                 /* Fill the container's width */
+    height: 100%;                /* Fill the container's height */
+    object-fit: cover;           /* Ensure the image covers the area without distortion */
 }
