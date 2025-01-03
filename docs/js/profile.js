@@ -15,7 +15,7 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
         document.querySelector('.username').textContent = username;
 
         // Optionally update other sections if needed
-        document.querySelector('.social-section p:first-child').textContent = `Twitter: @${username}`;
+        //document.querySelector('.social-section p:first-child').textContent = `Twitter: @${username}`;
         document.querySelector('.social-section p:last-child').textContent = `Website: www.${username}.com`;
     } else {
         // Handle case where username is missing
