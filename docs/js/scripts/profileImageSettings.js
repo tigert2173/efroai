@@ -101,7 +101,7 @@ uploadImageButton.addEventListener('click', async (event) => {
 });
 
 // Function to compress the image
-function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+function compressImage(file, maxWidth = 512, maxHeight = 512, quality = 0.5) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function (e) {
