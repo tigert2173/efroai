@@ -514,8 +514,8 @@ const maxQuality = 0.8;  // Maximum quality for large images
 let quality = maxQuality; // Default to max quality
 
 if (imageSize > maxSize) {
-    // For large images, apply stronger compression. Use a softer curve for better quality retention.
-    const compressionFactor = Math.pow((maxSize / imageSize), 0.5); // Compression factor based on image size
+    // For large images, apply stronger compression. Use a faster curve for compression.
+    const compressionFactor = Math.pow((maxSize / imageSize), 0.25); // Faster compression using a lower exponent
     quality = Math.max(minQuality, maxQuality * compressionFactor);  // Ensure quality doesn't go below minQuality
 
     console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
