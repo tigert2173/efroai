@@ -40,7 +40,7 @@
 }
 
 .badge.contest-winner {
-    background: linear-gradient(45deg, #8ad148, #11EE14);
+    background: linear-gradient(45deg, #11EE14, #11EE14);
     animation: sparkle 2s infinite;
     /* text-shadow: 3px 3px 5px rgba(0, 0, 0, 1); */
 
