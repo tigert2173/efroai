@@ -27,13 +27,13 @@
 /* Dev-Team Badge */
 .badge.donor {
     background: linear-gradient(45deg, #f39c12, #e67e22);
-    animation: bounce 1.5s ease-in-out infinite, colorChangeDonor 4s ease-in-out infinite alternate;
+    /* animation: bounce 1.5s ease-in-out infinite, colorChangeDonor 4s ease-in-out infinite alternate; */
 }
 
 /* Admin Badge */
 .badge.contest-winner {
     background: linear-gradient(45deg, #e74c3c, #c0392b);
-    animation: shake 2s ease-in-out infinite, sparkle 2s infinite;
+    /* animation: shake 2s ease-in-out infinite, sparkle 2s infinite; */
 }
 
 /* Fade-in animation */
