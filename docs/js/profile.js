@@ -24,7 +24,6 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
 
 
     // TO FETCH USER BOTS \\
-
     async function fetchUserChatbots() {
         try {
             const params = new URLSearchParams(window.location.search);
@@ -50,20 +49,35 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
             const chatbotsColumn = document.querySelector('.chatbots-column');
             chatbotsColumn.innerHTML = ''; // Clear any previous content
     
-            chatbots.forEach(chatbot => {
+            // Loop through each chatbot and display its details
+            for (let chatbot of chatbots) {
                 const imageUrl = `${backendurl}/api/characters/${username}/images/${chatbot.id}`;
+    
                 const sidebarCard = document.createElement('div');
                 sidebarCard.classList.add('sidebar-card');
     
                 const img = document.createElement('img');
-                img.src = imageUrl;
                 img.alt = chatbot.name;
                 img.classList.add('sidebar-image');
     
-                // Handle fallback for image errors
-                img.onerror = () => {
+                // Fetch the image as a Blob
+                const imageResponse = await fetch(imageUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Optional: Use the auth token if needed
+                    }
+                });
+    
+                if (!imageResponse.ok) {
+                    // Fallback in case image fails to load
                     img.src = 'images/noimage.jpg';
-                };
+                } else {
+                    // Convert the image response to a Blob
+                    const imageBlob = await imageResponse.blob();
+                    const imageObjectUrl = URL.createObjectURL(imageBlob);
+    
+                    // Set the image URL to the Blob URL
+                    img.src = imageObjectUrl;
+                }
     
                 const name = document.createElement('p');
                 name.textContent = chatbot.name;
@@ -71,7 +85,7 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
                 sidebarCard.appendChild(img);
                 sidebarCard.appendChild(name);
                 chatbotsColumn.appendChild(sidebarCard);
-            });
+            }
         } catch (error) {
             console.error('Error fetching chatbots:', error);
         }
@@ -79,4 +93,5 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
     
     // Fetch chatbots on page load
     fetchUserChatbots();
+    
     
