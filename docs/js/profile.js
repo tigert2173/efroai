@@ -30,7 +30,7 @@ async function fetchUserChatbots() {
     try {
         // Get the username from the URL
         const params = new URLSearchParams(window.location.search);
-        const username = params.get('username') || 'defaultUser'; // Fallback to 'defaultUser'
+        const username = params.get('usernae') || 'defaultUser'; // Fallback to 'defaultUser'
 
         // Display the username in the header
         const usernameElement = document.querySelector('.username');
@@ -53,7 +53,7 @@ async function fetchUserChatbots() {
         const chatbotsColumn = document.querySelector('.chatbots-column');
         const chatbotList = chatbots.map(chatbot => `
             <div class="sidebar-card">
-                <img src="${backendurl}/api/characters/${username}/images/${chatbot.id}" alt="${chatbot.name}" class="sidebar-image" onerror="this.src='images/default-chatbot.png'">
+                <img src="${backendurl}/api/characters/${username}/images/${chatbot.id}" alt="${chatbot.name}" class="sidebar-image" onerror="this.src='images/noimage.png'">
                 <p>${chatbot.name}</p>
             </div>
         `).join('');
