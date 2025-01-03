@@ -138,7 +138,7 @@ function displayBadges(badges) {
     if (badges && badges.length > 0) {
         badges.forEach(badge => {
             const badgeElement = document.createElement('span');
-            badgeElement.classList.add('badge', 'animate');
+            badgeElement.classList.add('badge');
 
             // Apply specific class and animation based on badge name
             switch (badge.toLowerCase()) {
