@@ -602,6 +602,22 @@ fetch('config.json')
             }
         };
 
+        
+// Function to update the profile link with the username from the cookie
+function updateProfileLink() {
+    const userID = getCookie("userID"); // Get the userID cookie value
+    if (userID) {
+        // Fetch the username (for now we'll assume it's the same as the userID)
+        const username = userID; // Replace with an API call or another logic to get the actual username
+        const profileLink = document.getElementById("profile-dropdown-link");
+        profileLink.href = `profile.html?username=${username}`; // Set the profile link with the username
+    }
+}
+
+// Run the function to update the profile link on page load
+window.onload = function() {
+    updateProfileLink();
+};
 </script>
 <script src="js/scripts/checkbot.js"></script>
 
