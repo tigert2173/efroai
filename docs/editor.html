@@ -515,7 +515,8 @@
 
     if (imageSize > maxSize) {
         // For large images (above maxSize), reduce quality gradually
-        quality = minQuality + (1 - minQuality) * (maxSize / imageSize);
+       // For large images, reduce the quality based on the size but limit the degradation
+        quality = minQuality + (maxQuality - minQuality) * Math.pow((maxSize / imageSize), 0.5); // Adjust quality with a softer curve
         console.log(`Image size: ${imageSize} bytes. Compression factor: ${(maxSize / imageSize).toFixed(2)}, Quality: ${quality.toFixed(2)}`);
     } else {
         // For smaller images, keep high quality
