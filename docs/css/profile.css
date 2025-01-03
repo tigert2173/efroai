@@ -185,6 +185,7 @@ body {
     border: 5px solid #fff;   /* Optional: Adds a white border around the image container */
     background-color: #e0e0e0; /* Optional: Adds a background color in case the image is missing */
     margin: 0 auto;           /* Center the container itself */
+    display: flex;            /* Use flex to center the image */
     justify-content: center;  /* Center image horizontally */
     align-items: center;      /* Center image vertically */
 }
@@ -193,6 +194,6 @@ body {
 .profile-pic {
     width: 100%;              /* Make the image fill the container width */
     height: 100%;             /* Make the image fill the container height */
-    object-fit: cover;        /* Ensure the image covers the container fully */
+    object-fit: contain;      /* Scale the image to fit inside the container without distortion */
     object-position: center;  /* Centers the image inside the container */
 }
