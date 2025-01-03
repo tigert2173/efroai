@@ -508,21 +508,22 @@
     // Set the maximum image size for compression scaling (e.g., 192KB)
     const maxSize = 192 * 1024;  // 192KB in bytes
     const minQuality = 0.05;  // Minimum quality for very large images
-    const maxQuality = 0.8;  // Maximum quality for small images
+    const maxQuality = 0.8;  // Maximum quality for smaller images
 
     // Calculate the compression quality dynamically based on image size
-    let quality = maxQuality; // Default to max quality
+    let quality = maxQuality; // Default to max quality for smaller images
 
     if (imageSize > maxSize) {
-        // For large images, reduce quality gradually with a sharper curve (stronger compression)
-        quality = minQuality + (maxQuality - minQuality) * Math.pow((maxSize / imageSize), 0.3); // Reduced the exponent to compress larger images more
+        // For large images, reduce quality gradually with a stronger compression (more aggressive for larger images)
+        quality = minQuality + (maxQuality - minQuality) * Math.pow((maxSize / imageSize), 0.3); // Reduce more for large images
         console.log(`Image size: ${imageSize} bytes. Compression factor: ${(maxSize / imageSize).toFixed(2)}, Quality: ${quality.toFixed(2)}`);
     } else {
-        // For smaller images, reduce quality minimally but more rapidly as the image size gets closer to maxSize
-        const factor = Math.pow((imageSize / maxSize), 1.5); // Sharper curve for smaller images to reduce quality faster as size approaches maxSize
-        quality = Math.max(minQuality, maxQuality * factor); // Apply the factor to the quality
+        // For smaller images, keep quality high but reduce minimally
+        const factor = Math.pow((imageSize / maxSize), 2); // Sharper curve for small images to reduce less
+        quality = Math.max(minQuality, maxQuality * factor); // Apply factor to keep quality higher
         console.log(`Image size: ${imageSize} bytes. Compression factor: ${factor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
     }
+
 
     // Convert canvas to WebP format with the calculated quality
     canvas.toBlob(function(blob) {
