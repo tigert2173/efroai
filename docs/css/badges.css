@@ -19,7 +19,7 @@
 /* Founder Badge */
 .badge.founder {
     background: linear-gradient(45deg, #ffd900, #fc9802);
-    animation: floatUp 2s ease-in-out infinite, glowSupporter 2s infinite alternate;
+    animation: floatUp 2s ease-in-out infinite, glowOrange 2s infinite alternate;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
 
 }
