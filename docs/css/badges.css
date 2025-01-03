@@ -11,7 +11,7 @@
     font-weight: bold;
     font-size: 16px;
     opacity: 0;  /* Start with hidden state */
-  
+    animation: fadeIn 1s ease-in-out forwards; /* Fade-in animation */
 }
 
 /* Supporter Badge */
