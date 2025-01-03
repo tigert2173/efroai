@@ -28,7 +28,7 @@ const backendurl = 'https://characters.efroai.net'; // Ensure this points to you
     async function fetchUserChatbots() {
         try {
             const params = new URLSearchParams(window.location.search);
-            const username = params.get('user') || 'defaultUser';
+            const username = params.get('username') || 'defaultUser';
     
             // Display the username in the header
             const usernameElement = document.querySelector('.username');
