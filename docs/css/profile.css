@@ -175,3 +175,12 @@ body {
         opacity: 0.6; 
     }
 }
+
+/* Profile Picture Styling */
+.profile-pic {
+    width: 150px; /* Adjust the size as needed */
+    height: 150px; /* Adjust the size as needed */
+    border-radius: 50%; /* Makes the image round */
+    border: 5px solid #fff; /* Adds a white border around the image */
+    object-fit: cover; /* Ensures the image maintains its aspect ratio and fits within the circle */
+}
