@@ -514,19 +514,20 @@ const maxQuality = 0.8;  // Maximum quality (for small images)
 let quality = maxQuality; // Default to max quality
 
 if (imageSize > maxSize) {
-    // For large images (above maxSize), reduce quality gradually with a stronger curve
-    const compressionFactor = Math.pow((maxSize / imageSize), 0.5); // Stronger reduction for larger images
-    quality = minQuality + (maxQuality - minQuality) * compressionFactor;
+    // For large images, apply stronger compression. Use a softer curve for better quality retention.
+    const compressionFactor = Math.pow((maxSize / imageSize), 0.5); // Compression factor based on image size
+    quality = Math.max(minQuality, maxQuality * compressionFactor);  // Ensure quality doesn't go below minQuality
 
     console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
 } else {
-    // For smaller images, keep high quality but reduce a little
-    const compressionFactor = 1 - ((maxSize - imageSize) / maxSize) * 0.2; // Slow reduction for smaller images
-    // Ensure the quality does not drop below 0.8
-    quality = Math.max(0.8, maxQuality * compressionFactor);
+    // For smaller images, increase quality as image size decreases (up to a certain limit)
+    const compressionFactor = 1 - ((maxSize - imageSize) / maxSize) * 0.3; // Slight increase for smaller images
+    quality = Math.min(maxQuality * 1.1, maxQuality + compressionFactor); // Allow slight increase above maxQuality but keep it controlled
 
     console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
 }
+
+// Now you can use the `quality` in your image compression logic
 
 
     // Convert canvas to WebP format with the calculated quality
