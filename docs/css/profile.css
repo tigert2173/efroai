@@ -178,22 +178,22 @@ body {
 
 /* Profile Image Container */
 .profile-image-container {
-    width: 150px;             /* Set the size of the container */
-    height: 150px;            /* Set the size of the container */
-    border-radius: 50%;       /* Makes the container round */
-    overflow: hidden;         /* Ensures the image doesn't overflow the container */
-    border: 5px solid #fff;   /* Optional: Adds a white border around the image container */
-    background-color: #e0e0e0; /* Optional: Adds a background color in case the image is missing */
-    margin: 0 auto;           /* Center the container itself */
-    display: flex;            /* Use flex to center the image */
-    justify-content: center;  /* Center image horizontally */
-    align-items: center;      /* Center image vertically */
+    width: 150px;              /* Container size */
+    height: 150px;             /* Container size */
+    border-radius: 50%;        /* Makes the container round */
+    overflow: hidden;          /* Hide overflow to keep the circle shape */
+    border: 5px solid #fff;    /* Optional: Add border around the image */
+    display: flex;             /* Use flexbox to center the image inside */
+    justify-content: center;   /* Horizontally center the image */
+    align-items: center;       /* Vertically center the image */
+    background-color: #e0e0e0; /* Optional: Background color for missing image */
+    margin: 0 auto;            /* Center the profile container */
 }
 
 /* Profile Picture */
 .profile-pic {
-    width: 100%;              /* Make the image fill the container width */
-    height: 100%;             /* Make the image fill the container height */
-    object-fit: contain;      /* Scale the image to fit inside the container without distortion */
-    object-position: center;  /* Centers the image inside the container */
+    width: 100%;               /* Make the image fill the container's width */
+    height: 100%;              /* Make the image fill the container's height */
+    object-fit: contain;       /* Scale image to fit the container without distortion */
+    object-position: center;   /* Ensure the image is centered if it needs to be cropped */
 }
