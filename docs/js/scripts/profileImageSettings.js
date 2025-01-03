@@ -58,7 +58,7 @@ function getCookie(name) {
 fetchProfileImage(getCookie('userID'));
 
 // Function to compress the image
-function compressImage(file, quality = 0.7, maxWidth = 800, maxHeight = 800) {
+function compressImage(file, quality = 0.5, maxWidth = 512, maxHeight = 512) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         const reader = new FileReader();
@@ -96,6 +96,9 @@ function compressImage(file, quality = 0.7, maxWidth = 800, maxHeight = 800) {
 
             // Compress the image to JPEG format with the desired quality
             canvas.toBlob((blob) => {
+                // Log the size of the compressed image
+                console.log('Compressed image size:', (blob.size / 1024).toFixed(2), 'KB');
+
                 resolve(blob);
             }, 'image/jpeg', quality);
         };
