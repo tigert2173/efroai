@@ -148,13 +148,13 @@ function displayBadges(badges) {
             // Apply specific class and particles if applicable
             switch (badge.toLowerCase()) {
                 case 'founder':
-                    badgeElement.classList.add('supporter', 'particle');
+                    badgeElement.classList.add('supporter', 'particle-cloud');
                     break;
                 case 'dev-team':
                     badgeElement.classList.add('donor');
                     break;
                 case 'admin':
-                    badgeElement.classList.add('contest-winner', 'particle');
+                    badgeElement.classList.add('contest-winner', 'particle-cloud');
                     break;
                 default:
                     badgeElement.classList.add('unknown-badge');
@@ -164,8 +164,8 @@ function displayBadges(badges) {
             badgesSection.appendChild(badgeWrapper);
 
             // Add particles for specific badges
-            if (badgeElement.classList.contains('particle')) {
-                createParticles(badgeWrapper);
+            if (badgeElement.classList.contains('particle-cloud')) {
+                createCloudParticles(badgeWrapper);
             }
         });
     } else {
@@ -173,13 +173,21 @@ function displayBadges(badges) {
     }
 }
 
-// Function to create particles around a badge
-function createParticles(parentElement) {
-    for (let i = 0; i < 15; i++) {
+// Function to create cloud-like particles around a badge
+function createCloudParticles(parentElement) {
+    const particleCount = 20; // Number of particles
+    const radius = 50; // Radius of the particle cloud
+
+    for (let i = 0; i < particleCount; i++) {
+        const angle = Math.random() * 2 * Math.PI; // Random angle
+        const distance = Math.random() * radius; // Random distance from center
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+
         const particle = document.createElement('div');
         particle.classList.add('particle');
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = `${50 + x}%`; // Center the cloud
+        particle.style.top = `${50 + y}%`;
         parentElement.appendChild(particle);
     }
 }
