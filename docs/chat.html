@@ -504,15 +504,14 @@
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
-        <option id="optionV6">[ALPHA] Negative Prompt V6 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="optionV5">[ALPHA] Negative Prompt V5 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
-        <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-        <option id="skunkAnatomyFix">[Beta] Skunk Anatomy Fix (For Accuracy)</option>
-        <option id="explicitEncourage">[Alpha] Explict Encouraged: May Get Too Horny</option>
-        <option id="optionV4" selected>[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
+        <option id="optionV5" selected>Negative Prompt V6 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV4" disabled>[Beta] Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV3" disabled>Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV2" disabled>Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+        <option value="Do not talk about sexual topics or explicit content." disabled>Negative Prompt V1</option>
+        <option id="skunkAnatomyFix" disabled>[Beta] Skunk Anatomy Fix (For Accuracy)</option>
+        <option id="explicitEncourage" disabled>[Alpha] Explict Encouraged: May Get Too Horny</option>
+        <option id="speakerIdentifierOption" disabled>Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
 
     </select>
 
@@ -524,7 +523,6 @@
     const sentenceDisplay = document.getElementById("SettingsMaxSentencesValue");
 
     const negativePrompt = document.getElementById("negativePrompt");
-    const optionV6 = document.getElementById("optionV6");
     const optionV5 = document.getElementById("optionV5");
     const optionV4 = document.getElementById("optionV4");
     const optionV3 = document.getElementById("optionV3");
@@ -562,13 +560,11 @@
 
     // Function to update the options' values and text
     function updateNegativePromptOptionsSentences(maxSentences) {
-        optionV6.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
+        optionV5.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
   1. Responses must never exceed ${maxSentences} sentences. Fewer is acceptable.
   2. If you are close to the limit, end your response naturally.
   3. Do not repeat or expand unnecessarily. 
   4. Failure to comply is unacceptable.`;
-        optionV6.textContent = `Negative Prompt V6 (Sentence Limit: ${maxSentences})`;
-        optionV5.value = ``;
         optionV5.textContent = `Negative Prompt V5 (Sentence Limit: ${maxSentences})`;
     }
     
