@@ -684,28 +684,19 @@ async function sendMessage() {
     }
     lastBotMsg = lastBotMsg || settings.greeting;
 
-    // //Define the system message
-    // const systemPrompt = {
-    //     role: "system",
-    //     content: 
-    //     `${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
-    //     ${settings.systemPrompt}
-    //     Persona: ${settings.persona}
-    //     ${settings.context ? `Context: ${settings.context}` : ''}
-    //         ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
-    //         ? `Example Dialogue:\n${settings.exampledialogue}` 
-    //         : ''}
-    //     ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
-
-    //     `,
-    // };
-
-      //Define the system message
-      const systemPrompt = {
+    //Define the system message
+    const systemPrompt = {
         role: "system",
         content: 
         `${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
         ${settings.systemPrompt}
+        Persona: ${settings.persona}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+            ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
+            ? `Example Dialogue:\n${settings.exampledialogue}` 
+            : ''}
+        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+
         `,
     };
     
