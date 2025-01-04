@@ -196,6 +196,7 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
+    max-width: 1200px;
     height: auto; /* Allow height to extend based on the image */
     max-height: 1300px;
     /* background-color: #00FF00; */
