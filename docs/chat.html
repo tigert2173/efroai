@@ -504,6 +504,7 @@
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
+        <option id="optionV6">[ALPHA] Negative Prompt V6 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV5">[ALPHA] Negative Prompt V5 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
@@ -523,6 +524,7 @@
     const sentenceDisplay = document.getElementById("SettingsMaxSentencesValue");
 
     const negativePrompt = document.getElementById("negativePrompt");
+    const optionV6 = document.getElementById("optionV6");
     const optionV5 = document.getElementById("optionV5");
     const optionV4 = document.getElementById("optionV4");
     const optionV3 = document.getElementById("optionV3");
@@ -567,8 +569,15 @@
     4. End naturally without abrupt cut-offs. 
     5. Never repeat a previous response. `;
         optionV5.textContent = `Negative Prompt V5 (Sentence Limit: ${maxSentences})`;
+
+        optionV6.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
+  - Responses must never exceed 5 sentences. Fewer is acceptable.
+  - If you are close to the limit, end your response naturally.
+  - Do not repeat or expand unnecessarily. 
+  Failure to comply is unacceptable.`;
+        optionV6.textContent = `Negative Prompt V6 (Sentence Limit: ${maxSentences})`;
     }
-  
+    
     updateNegativePromptOptionsSentences(sentenceSlider.value);
 
     // Initial set-up
