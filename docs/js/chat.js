@@ -621,6 +621,9 @@ updateNegativePrompt();
 // Add event listener for change events on the select element
 document.getElementById('systemPrompt').addEventListener('change', updateSystemPrompt);
 document.getElementById('negativePrompt').addEventListener('change', updateNegativePrompt);
+document.getElementById('SettingsMaxTokensSlider').addEventListener('change', updateNegativePrompt);
+document.getElementById('SettingsMaxSentencesSlider').addEventListener('change', updateNegativePrompt);
+
 
 // let settings = {
 //     persona: '',
