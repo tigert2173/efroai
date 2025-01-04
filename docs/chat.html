@@ -457,6 +457,17 @@
             <button id="model3B-button" onclick="goToModel3B()">[Alpha] Try Our 3B Model</button>
             <button id="TTS-button" onclick="goToTTS()">[Alpha] Try Our Text to Speech.</button>
 
+            <button id="toggle-width"><i>Toggle to fix display issues on some mobile devices!</i></button>
+
+            <script>
+                const toggleButton = document.getElementById('toggle-width');
+                const settingsContainer = document.getElementById('settings-container');
+            
+                toggleButton.addEventListener('click', () => {
+                  settingsContainer.classList.toggle('mobile-issue');
+                });
+              </script>
+
             <script>
                 function goToModel3B() {
                     window.location.href = '3B-model-page.html'; // replace with the actual URL for the 13B model page
