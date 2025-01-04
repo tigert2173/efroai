@@ -697,12 +697,15 @@ async function sendMessage() {
             : ''}
         
         `,
+    };
+    
+     //Define the system message
+     const scenarioPrompt = {
         role: "user",
         content:
         `Scenario: ${settings.scenario}`,
     };
-    
-
+   
     try {    
         await updateSettings();
         // Construct the conversation context
@@ -726,7 +729,7 @@ async function sendMessage() {
             // Construct the base requestData object
             const requestData = {
                // n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
+                messages: [systemPrompt, scenarioPrompt, ...messages],
               //  max_tokens: parseInt(settings.maxTokens, 10),
                 stream: true,
                 temperature: settings.temperature,
