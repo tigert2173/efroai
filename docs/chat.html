@@ -573,7 +573,8 @@
     sentenceSlider.addEventListener("input", () => {
         const maxSentences = sentenceSlider.value;
         sentenceDisplay.textContent = `${maxSentences} Sentences`;
-        updateNegativePromptOptions(maxSentences);
+        updateNegativePromptOptions(undefined, maxSentences);
+
     });
     </script>
                 <!-- <label for="negativePrompt">Negative Prompt:</label>
