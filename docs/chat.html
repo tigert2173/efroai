@@ -571,7 +571,7 @@
 
     sentenceSlider.addEventListener("input", () => {
         const maxSentences = sentenceSlider.value;
-        tokenDisplay.textContent = `${maxSentences} Sentences`;
+        sentenceDisplay.textContent = `${maxSentences} Sentences`;
         updateNegativePromptOptions(maxSentences);
     });
     </script>
