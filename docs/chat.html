@@ -516,7 +516,7 @@
     </select>
 
     <script>
-    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    //const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
     const sentenceSlider = document.getElementById("SettingsMaxSentencesSlider");
 
     const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
@@ -571,14 +571,14 @@
     updateNegativePromptOptionsSentences(sentenceSlider.value);
 
     // Initial set-up
-    updateNegativePromptOptionsTokens(tokenSlider.value - 48);
+   // updateNegativePromptOptionsTokens(tokenSlider.value - 48);
     
-    // Event listener for the slider
-    tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 48;
-        tokenDisplay.textContent = `${maxTokens} Tokens`;
-        updateNegativePromptOptionsTokens(maxTokens);
-    });
+    // // Event listener for the slider
+    // tokenSlider.addEventListener("input", () => {
+    //     const maxTokens = tokenSlider.value - 48;
+    //     tokenDisplay.textContent = `${maxTokens} Tokens`;
+    //     updateNegativePromptOptionsTokens(maxTokens);
+    // });
 
     sentenceSlider.addEventListener("input", () => {
         const maxSentences = sentenceSlider.value;
