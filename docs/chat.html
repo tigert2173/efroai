@@ -497,10 +497,16 @@
             </div> -->
 
             <div class="setting">
-                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Soft Message Length):</label>
+                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Message Length):</label>
                 <input type="range" id="SettingsMaxSentencesSlider" min="3" max="30" step="1" value="10">
                 <span id="SettingsMaxSentencesValue">10 Sentences</span>
             </div>
+
+            <label for="appendNegativePrompt">
+                Append Negative Prompt (Makes Sentence Limit A Bit More Strict, preventing cut-offs)
+            </label>
+            <input type="checkbox" id="appendNegativePrompt" checked> 
+            <br>        
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
@@ -878,11 +884,6 @@
         <!-- Expert Settings Section -->
         <div id="expert-settings">
             <h3>Expert Settings</h3>   
-            <label for="appendNegativePrompt">
-                Append Negative Prompt (Makes it more aggressive)
-            </label>
-            <input type="checkbox" id="appendNegativePrompt"> 
-            <br>        
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
 
