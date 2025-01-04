@@ -658,6 +658,7 @@ input[type="checkbox"]:not(:checked) + label {
 
     #settings-container, #api-status {
         width: 100%; /* Full width */
+        max-width: 750px;
         padding: 10px; /* Adjust padding */
     }
 
