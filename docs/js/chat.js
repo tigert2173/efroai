@@ -687,14 +687,16 @@ async function sendMessage() {
     //Define the system message
     const systemPrompt = {
         role: "system",
-        content: `${settings.systemPrompt}
+        content: 
+        `${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+        ${settings.systemPrompt}
         Persona: ${settings.persona}
         Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
             ? `Example Dialogue:\n${settings.exampledialogue}` 
             : ''}
-        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+        
         `,
     };
     
