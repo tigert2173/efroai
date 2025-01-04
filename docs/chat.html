@@ -1199,13 +1199,13 @@ function hideTooltip() {
 </script>
 <script>
     const toggleButton = document.getElementById('toggle-width');
-    const settingsContainer = document.getElementById('settings-container');
-    const chatContainer = document.getElementById('chat-container');
+    const settingsFixMobileContainer = document.getElementById('settings-container');
+    const chatFixMobileContainer = document.getElementById('chat-container');
 
     toggleButton.addEventListener('click', () => {
     console.log("Trying to fix view on mobile...")
-      settingsContainer.classList.toggle('mobile-issue');
-      chatContainer.classList.toggle('mobile-issue');
+      settingsFixMobileContainer.classList.toggle('mobile-issue');
+      chatFixMobileContainer.classList.toggle('mobile-issue');
     });
   </script>
 
