@@ -33,11 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const SettingsMaxSentencesSlider = document.getElementById('SettingsMaxSentencesSlider');
     const SettingsMaxSentencesValue = document.getElementById('SettingsMaxSentencesValue');
-
+    SettingsMaxSentencesSlider.value = 15;
     SettingsMaxSentencesSlider.addEventListener('input', () => {
     SettingsMaxSentencesValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
-    SettingsMaxSentencesSlider = SettingsMaxTokensSlider.value;
-
+    
         // Here you can add code to handle the setting change
         
         // For example, updating a global setting or sending it to a server
