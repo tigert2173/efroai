@@ -504,7 +504,7 @@
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
-        <option id="optionV4">Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
+        <option id="optionV5">[ALPHA] Negative Prompt V5 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
@@ -523,6 +523,7 @@
     const sentenceDisplay = document.getElementById("SettingsMaxSentencesValue");
 
     const negativePrompt = document.getElementById("negativePrompt");
+    const optionV5 = document.getElementById("optionV5");
     const optionV4 = document.getElementById("optionV4");
     const optionV3 = document.getElementById("optionV3");
     const optionV2 = document.getElementById("optionV2");
@@ -535,8 +536,8 @@
         optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
         optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
 
-        optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-        optionV4.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
+        optionV5.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV5.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
 
         
         optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
