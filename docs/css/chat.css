@@ -442,6 +442,10 @@ code {
     margin-bottom: 20px;
 }
 
+.mobile-issue {
+    max-width: 300px !important; /* Forces max-width to 300px */
+  }
+  
 .setting {
     margin-bottom: 15px;
 }
