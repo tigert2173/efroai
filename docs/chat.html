@@ -496,8 +496,15 @@
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
             </div>
 
+            <div class="setting">
+                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Message Length):</label>
+                <input type="range" id="SettingsMaxSentencesSlider" min="1" max="10" step="1" value="3">
+                <span id="SettingsMaxSentencesValue">3 Sentences</span>
+            </div>
+
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
+        <option id="optionV4">Negative Prompt V4 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
@@ -510,6 +517,8 @@
 
     <script>
     const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    const sentenceSlider = document.getElementById("SettingsMaxSentencesSlider");
+
     const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
     const negativePrompt = document.getElementById("negativePrompt");
     const optionV4 = document.getElementById("optionV4");
@@ -520,9 +529,12 @@
     const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
 
     // Function to update the options' values and text
-    function updateNegativePromptOptions(maxTokens) {
+    function updateNegativePromptOptions(maxTokens, maxSentences) {
         optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
         optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
+
+        optionV4.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV4.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
 
         
         optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
@@ -553,6 +565,12 @@
         const maxTokens = tokenSlider.value - 48;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
         updateNegativePromptOptions(maxTokens);
+    });
+
+    sentenceSlider.addEventListener("input", () => {
+        const maxSentences = sentenceSlider.value;
+        tokenDisplay.textContent = `${maxSentences} Sentences`;
+        updateNegativePromptOptions(maxSentences);
     });
     </script>
                 <!-- <label for="negativePrompt">Negative Prompt:</label>
