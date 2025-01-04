@@ -31,11 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const SettingsMaxTokensSlider = document.getElementById('SettingsMaxTokensSlider');
-    const SettingsMaxTokensValue = document.getElementById('SettingsMaxTokensValue');
+    const SettingsMaxSentencesSlider = document.getElementById('SettingsMaxSentencesSlider');
+    const SettingsMaxSentencesValue = document.getElementById('SettingsMaxSentencesValue');
 
-    SettingsMaxTokensSlider.addEventListener('input', () => {
-    SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
+    SettingsMaxSentencesSlider.addEventListener('input', () => {
+    SettingsMaxSentencesValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
         // Here you can add code to handle the setting change
         
         // For example, updating a global setting or sending it to a server
