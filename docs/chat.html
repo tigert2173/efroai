@@ -532,13 +532,11 @@
     const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
 
     // Function to update the options' values and text
-    function updateNegativePromptOptions(maxTokens, maxSentences) {
+    function updateNegativePromptOptionsTokens(maxTokens, maxSentences) {
         optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
         optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
 
-        optionV5.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-        optionV5.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
-
+ 
         
         optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
         optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
@@ -560,20 +558,27 @@
 
     }
 
+    // Function to update the options' values and text
+    function updateNegativePromptOptionsSentences(maxSentences) {
+        optionV5.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
+        optionV5.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
+    }
+  
+
     // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 48);
+    updateNegativePromptOptionsTokens(tokenSlider.value - 48);
     
     // Event listener for the slider
     tokenSlider.addEventListener("input", () => {
         const maxTokens = tokenSlider.value - 48;
         tokenDisplay.textContent = `${maxTokens} Tokens`;
-        updateNegativePromptOptions(maxTokens);
+        updateNegativePromptOptionsTokens(maxTokens);
     });
 
     sentenceSlider.addEventListener("input", () => {
         const maxSentences = sentenceSlider.value;
         sentenceDisplay.textContent = `${maxSentences} Sentences`;
-        updateNegativePromptOptions(undefined, maxSentences);
+        updateNegativePromptOptionsSentences(maxSentences);
 
     });
     </script>
