@@ -490,14 +490,14 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
-            <div class="setting">
+            <!-- <div class="setting">
                 <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
                 <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
-            </div>
+            </div> -->
 
             <div class="setting">
-                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Message Length):</label>
+                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Soft Message Length):</label>
                 <input type="range" id="SettingsMaxSentencesSlider" min="3" max="30" step="1" value="10">
                 <span id="SettingsMaxSentencesValue">3 Sentences</span>
             </div>
