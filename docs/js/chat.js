@@ -233,7 +233,7 @@ function updateSettings() {
     settings.repeat_last_n = parseFloat(document.getElementById('repeat_last_n').value);
 
     settings.model = document.getElementById('model').value;
-    settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
+    //settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
 
     //Controlled Message Data Importance
     messagedataimportance.lusermsg = lastUserMessage;
