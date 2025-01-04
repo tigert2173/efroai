@@ -561,9 +561,10 @@
     // Function to update the options' values and text
     function updateNegativePromptOptionsSentences(maxSentences) {
         optionV5.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxSentences} sentences. If the response is comes close to the limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-        optionV5.textContent = `Negative Prompt V4 (Sentence Limit: ${maxSentences})`;
+        optionV5.textContent = `Negative Prompt V5 (Sentence Limit: ${maxSentences})`;
     }
   
+    updateNegativePromptOptionsSentences(sentenceSlider.value);
 
     // Initial set-up
     updateNegativePromptOptionsTokens(tokenSlider.value - 48);
