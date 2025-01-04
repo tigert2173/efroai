@@ -498,7 +498,7 @@
 
             <div class="setting">
                 <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Message Length):</label>
-                <input type="range" id="SettingsMaxSentencesSlider" min="1" max="10" step="1" value="3">
+                <input type="range" id="SettingsMaxSentencesSlider" min="1" max="30" step="1" value="3">
                 <span id="SettingsMaxSentencesValue">3 Sentences</span>
             </div>
 
@@ -562,13 +562,12 @@
 
     // Function to update the options' values and text
     function updateNegativePromptOptionsSentences(maxSentences) {
-        optionV5.value = `Follow these rules: 
-    1. Stick to your persona and scenario. 
-    2. Do not discuss sexual or explicit content. 
-    3. Responses must not exceed ${maxSentences} sentences. 
-    4. End naturally without abrupt cut-offs. 
-    5. Never repeat a previous response. `;
-        optionV5.textContent = `Negative Prompt V5 (Sentence Limit: ${maxSentences})`;
+        optionV5.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
+  - Responses must never exceed ${maxSentences} paragraphs. Fewer is acceptable.
+  - If you are close to the limit, end your response naturally.
+  - Do not repeat or expand unnecessarily. 
+  Failure to comply is unacceptable.`;
+        optionV5.textContent = `Negative Prompt V5 (Paragraph Limit: ${maxSentences})`;
 
         optionV6.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
   - Responses must never exceed ${maxSentences} sentences. Fewer is acceptable.
