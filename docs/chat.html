@@ -562,18 +562,11 @@
 
     // Function to update the options' values and text
     function updateNegativePromptOptionsSentences(maxSentences) {
-        optionV5.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
-  - Responses must never exceed ${maxSentences} paragraphs. Fewer is acceptable.
-  - If you are close to the limit, end your response naturally.
-  - Do not repeat or expand unnecessarily. 
-  Failure to comply is unacceptable.`;
-        optionV5.textContent = `Negative Prompt V5 (Paragraph Limit: ${maxSentences})`;
-
         optionV6.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
-  - Responses must never exceed ${maxSentences} sentences. Fewer is acceptable.
-  - If you are close to the limit, end your response naturally.
-  - Do not repeat or expand unnecessarily. 
-  Failure to comply is unacceptable.`;
+  1. Responses must never exceed ${maxSentences} sentences. Fewer is acceptable.
+  2. If you are close to the limit, end your response naturally.
+  3. Do not repeat or expand unnecessarily. 
+  4. Failure to comply is unacceptable.`;
         optionV6.textContent = `Negative Prompt V6 (Sentence Limit: ${maxSentences})`;
     }
     
