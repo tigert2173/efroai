@@ -688,14 +688,14 @@ async function sendMessage() {
     const systemPrompt = {
         role: "system",
         content: 
-        `${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+        `
         ${settings.systemPrompt}
         Persona: ${settings.persona}
         ${settings.context ? `Context: ${settings.context}` : ''}
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
             ? `Example Dialogue:\n${settings.exampledialogue}` 
             : ''}
-        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+        ${settings.negativePrompt ? `Essential Response Constraints: ${settings.negativePrompt}` : ''}
 
         `,
     };
@@ -762,7 +762,7 @@ async function sendMessage() {
                     // Check if the negative prompt is already in the message
                     if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
                         // Append the negative prompt text directly to the last user's message content
-                        lastUserMessage.content[0].text += `\n\nMessage Generation Guidelines: ${negativePromptText}`;
+                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
                     }
                 }
             }
