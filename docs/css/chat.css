@@ -196,7 +196,6 @@ code {
 #chat-wrapper {
     position: relative;
     width: 100%;
-    max-width: 1200px;
     height: auto; /* Allow height to extend based on the image */
     max-height: 1300px;
     /* background-color: #00FF00; */
@@ -289,6 +288,27 @@ code {
 
 #input-wrapper.has-right-image #input-container {
     margin-right: 320px; /* Push the chat container to the left */
+}
+
+@media (max-width: 768px) {
+
+    /* If the left or right images are shown, shift chat-container accordingly */
+    #chat-wrapper.has-left-image #chat-container {
+        margin-left: 0px; /* Push the chat container to the right */
+    }
+
+    #chat-wrapper.has-right-image #chat-container {
+        margin-right: 0px; /* Push the chat container to the left */
+    }
+
+    /* If the left or right images are shown, shift chat-container accordingly */
+    #input-wrapper.has-left-image #input-container {
+        margin-left: 0px; /* Push the chat container to the right */
+    }
+
+    #input-wrapper.has-right-image #input-container {
+        margin-right: 0px; /* Push the chat container to the left */
+    }
 }
 
 /* Ensures the input container shifts with the chat-wrapper */
