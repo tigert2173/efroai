@@ -892,15 +892,15 @@
            
             <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
             <input type="range" id="repeat_last_n" min="64" max="8192" step="16">
-            <span id="repeat_last_n_display">1024 Tokens</span>
+            <span id="repeat_last_n_display">2048 Tokens</span>
             
             <script>
                 const repeat_last_n_slider = document.getElementById("repeat_last_n");
                 const repeat_last_n_display = document.getElementById("repeat_last_n_display");
             
                 // Set default value on page load
-                repeat_last_n_slider.value = 1024;
-                repeat_last_n_display.textContent = `1024 Tokens`;
+                repeat_last_n_slider.value = 2048;
+                repeat_last_n_display.textContent = `2048 Tokens`;
             
                 // Update the display on slider input
                 repeat_last_n_slider.addEventListener("input", () => {
