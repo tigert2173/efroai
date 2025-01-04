@@ -316,7 +316,19 @@ function getAllMessagesExceptLast() {
 
    // Function to update settings based on selected option
     function updateSettingParameters(option) {
-        switch (option) {       
+        switch (option) {    
+        case 'Ethereal Winds 2.0':
+            // Shortwave config
+            settings.temperature = 1.10;
+            settings.top_p = 0.64;
+            settings.top_k = 33;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            settings.repeat_penalty = 1.15;
+            // Add any additional settings updates here
+            break;  
+
         case 'Ethereal Winds':
             // Shortwave config
             settings.temperature = 1.10;
