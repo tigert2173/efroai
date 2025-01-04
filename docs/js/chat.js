@@ -695,7 +695,8 @@ async function sendMessage() {
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
             ? `Example Dialogue:\n${settings.exampledialogue}` 
             : ''}
-        
+        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+
         `,
     };
     
@@ -729,7 +730,7 @@ async function sendMessage() {
             // Construct the base requestData object
             const requestData = {
                // n_predict: parseInt(settings.maxTokens, 10),
-                messages: [scenarioPrompt, ...messages, systemPrompt],
+                messages: [systemPrompt, scenarioPrompt, ...messages],
               //  max_tokens: parseInt(settings.maxTokens, 10),
                 stream: true,
                 temperature: settings.temperature,
