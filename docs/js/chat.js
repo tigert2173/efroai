@@ -691,13 +691,15 @@ async function sendMessage() {
         `${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
         ${settings.systemPrompt}
         Persona: ${settings.persona}
-        Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
             ? `Example Dialogue:\n${settings.exampledialogue}` 
             : ''}
         
         `,
+        role: "user",
+        content:
+        `Scenario: ${settings.scenario}`,
     };
     
 
