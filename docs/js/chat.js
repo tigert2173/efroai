@@ -1251,7 +1251,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
+            //chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
 
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
