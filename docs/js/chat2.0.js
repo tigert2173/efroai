@@ -150,7 +150,7 @@ let settings = {
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
     repeat_penalty: 1.09,
     repeat_last_n: 512,
-    tokenLimit: 8000,
+    tokenLimit: 3000,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     context: "",
     enablePreload: false, // Default to false if not provided
