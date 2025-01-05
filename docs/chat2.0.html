@@ -166,7 +166,14 @@
         .close-btn:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-        
+        #debugOutput {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+        }
           </style>
     </styles>
 </head>
@@ -387,6 +394,13 @@
                 <input type="checkbox" id="debugMode">
             </div>
         </div>
+    
+        <!-- Debug Output Area -->
+        <div id="debugOutput">
+            <h3>Debug Output:</h3>
+            <p>Debug mode is disabled. Enable it to see what messages are kept or removed.</p>
+        </div>
+    
     
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">

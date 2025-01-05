@@ -663,14 +663,14 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 
 // Function to calculate the token length of a message
 function calculateTokenLength(message) {
-    // Assuming 1 token = 4 characters, adjust as needed for your token counting method
     return message.content.reduce((total, segment) => total + segment.text.length / 4, 0);
 }
 
 // Function to trim messages if necessary to fit within token limit
-function trimMessages(messages, tokenLimit) {
+function trimMessages(messages, tokenLimit, debug = false) {
     let totalTokens = 0;
     const trimmedMessages = [];
+    const removedMessages = [];
 
     for (let i = messages.length - 1; i >= 0; i--) {
         const message = messages[i];
@@ -680,8 +680,13 @@ function trimMessages(messages, tokenLimit) {
             trimmedMessages.unshift(message); // Add the message in the correct order
             totalTokens += messageTokens;
         } else {
-            break; // Stop if we've exceeded the token limit
+            removedMessages.unshift(message);
         }
+    }
+
+    // Show debug info if enabled
+    if (debug) {
+        showDebugInfo(trimmedMessages, removedMessages);
     }
 
     return trimmedMessages;
@@ -728,6 +733,25 @@ function getWeightedMessages(messages, numNewSentences, debug = false) {
 
     return combinedMessages;
 }
+
+// Function to display debug information
+function showDebugInfo(keptMessages, removedMessages) {
+    const debugOutput = document.getElementById('debugOutput');
+    
+    let debugContent = `<p><strong>Messages Kept:</strong></p><ul>`;
+    keptMessages.forEach(msg => {
+        debugContent += `<li>${msg.content.map(segment => segment.text).join(' ')}</li>`;
+    });
+
+    debugContent += `</ul><p><strong>Messages Removed:</strong></p><ul>`;
+    removedMessages.forEach(msg => {
+        debugContent += `<li>${msg.content.map(segment => segment.text).join(' ')}</li>`;
+    });
+
+    debugContent += `</ul>`;
+    debugOutput.innerHTML = debugContent;
+}
+
 
 document.getElementById('toggleModeButton').addEventListener('click', function() {
     // Get the checkbox value for enabling weighted selection
@@ -830,7 +854,7 @@ function constructRequestData(messages, settings, negativePromptText, useWeighte
     console.log("Messages: " + JSON.stringify(messages));
 
     // Trim messages to stay within the token limit
-    let trimmedMessages = trimMessages(messages, 1000);
+    let trimmedMessages = trimMessages(messages, 8000, settings.debug);
 
     if (useWeightedSelection) {
         const numNewSentences = parseInt(settings.numNewSentences, 10);
