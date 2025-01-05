@@ -1166,9 +1166,9 @@ function regenerateMessage() {
             currentBotMessageElement.innerHTML = ''; // Clear current bot message
             
             // remove the last assistant message if needed
-            if (messages.length > 0) {
-                messages.pop(); // Remove the last message from the array
-            }
+            // if (messages.length > 0) {
+            //     messages.pop(); // Remove the last message from the array
+            // }
 
             // Send the last user message again
             sendMessage(); // Ensure this function is defined to handle sending the message
