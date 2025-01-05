@@ -674,7 +674,7 @@ function getRawTextTokenCount(text) {
 }
 
 // Function to remove the last user-assistant message pair if the token count exceeds the limit
-function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
+function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLimit) {
     let messagesTokenCount = 0;
 
     // Calculate total token count
@@ -683,7 +683,7 @@ function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
     }
 
     // Calculate token count of the system prompt's content
-    const systemPromptText = systemPrompt.innerHTML;
+    const systemPromptText = systemPrompt;
     const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
     console.log("System Prompt token count: " + systemPromptTokenCount);
     console.log("Messages token count: " + messagesTokenCount);
@@ -795,7 +795,7 @@ async function sendMessage() {
    // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     // Remove last user-assistant pair if the token count exceeds the limit
-    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
+    messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
