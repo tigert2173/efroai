@@ -1173,7 +1173,7 @@ function regenerateMessage() {
             // Send the last user message again
             sendMessage(); // Ensure this function is defined to handle sending the message
         } else {
-            displayMessage('No previous user message found to regenerate.', 'assistant');
+            //displayMessage('No previous user message found to regenerate.', 'assistant');
             sendMessage();
         }
     } else {
