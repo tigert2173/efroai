@@ -823,7 +823,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-        const messagesTempChanges = messages;
+        let messagesTempChanges = messages;
 
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
