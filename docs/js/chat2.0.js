@@ -751,7 +751,6 @@ return messages;
 
 const isFirstMessage = true; 
 let isResend = false;
-
 async function sendMessage() {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
@@ -812,8 +811,6 @@ async function sendMessage() {
    
     try {    
         await updateSettings();
-        let messagesTempChanges = messages;
-
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
@@ -827,16 +824,16 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-    function constructRequestData(messages, settings, negativePromptText) {
+// Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
 
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
-    messagesTempChanges = messages;
-
+    
     // Calculate total token count
-    for (let i = 0; i < messagesTempChanges.length; i++) {
-        messagesTokenCount += getTokenCount(messagesTempChanges[i]);
+    for (let i = 0; i < messages.length; i++) {
+        messagesTokenCount += getTokenCount(messages[i]);
     }
 
     // Calculate token count of the system prompt's content
@@ -852,7 +849,7 @@ async function sendMessage() {
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
 
     // Find the most recent assistant message
-    let lastAssistantMessage = messagesTempChanges.slice().reverse().find(messagesTempChanges => messagesTempChanges.role === "assistant");
+    let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
 
     if (lastAssistantMessage) {
         let lastMessageText = lastAssistantMessage.content[0].text;
@@ -876,49 +873,39 @@ async function sendMessage() {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
-            messagesTempChanges = messages;
-    
-            // Console log for debugging
-        console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
 
-        // Append the negative prompt to the last user's message if the setting is enabled
-        if (appendNegativePrompt.checked && negativePromptText) {
+            let originalUserMessage = null;
             let lastUserMessageIndex = -1;
-            for (let i = messagesTempChanges.length - 1; i >= 0; i--) {
-                if (messagesTempChanges[i].role === "user") {
-                    lastUserMessageIndex = i;
-                    break;
-                }
-            }
-    
-            if (lastUserMessageIndex !== -1) {
-                const lastUserMessage = messagesTempChanges[lastUserMessageIndex];
-    
-                // Check if the negative prompt is already in the message
-                if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                    // Append the negative prompt text directly to the last user's message content
-                    lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-                }
-            }
-        }
-
-        
-            // Now, we append feedback to the last user message
-            let lastUserMessageIndex = -1;
-            for (let i = messagesTempChanges.length - 1; i >= 0; i--) {
-                if (messagesTempChanges[i].role === "user") {
+            
+            // Find the last user's message
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
                     lastUserMessageIndex = i;
                     break;
                 }
             }
 
-            if (lastUserMessageIndex !== -1) {
-                const lastUserMessage = messagesTempChanges[lastUserMessageIndex];
+           // Save the original state of the last user message
+if (lastUserMessageIndex !== -1) {
+    originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+}
 
-                // Append the feedback to the user's message
-                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
-            }
+// Apply feedback to the user's message
+if (lastUserMessageIndex !== -1) {
+    const lastUserMessage = messages[lastUserMessageIndex];
+
+    // Append the feedback if applicable
+    if (sentenceCount > maxSentences) {
+        lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+        console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
+    }
+} else {
+    console.log("No assistant message found.");
+}
+
+// Console log for debugging
+console.log("Messages after possible removal: " + JSON.stringify(messages));
+
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
@@ -926,10 +913,12 @@ async function sendMessage() {
         console.log("No assistant message found.");
     }
 
+    // Console log for debugging
+    console.log("Messages after possible removal: " + JSON.stringify(messages));
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...messagesTempChanges],
+        messages: [systemPrompt, ...messages],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -943,6 +932,30 @@ async function sendMessage() {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
+    // Append the negative prompt to the last user's message if the setting is enabled
+    if (appendNegativePrompt.checked && negativePromptText) {
+        let lastUserMessageIndex = -1;
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === "user") {
+                lastUserMessageIndex = i;
+                break;
+            }
+        }
+
+        if (lastUserMessageIndex !== -1) {
+            const lastUserMessage = messages[lastUserMessageIndex];
+
+            // Check if the negative prompt is already in the message
+            if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                // Append the negative prompt text directly to the last user's message content
+                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+            }
+        }
+    }
+// After `requestData` is returned, revert the user's message to its original state
+if (originalUserMessage && lastUserMessageIndex !== -1) {
+    messages[lastUserMessageIndex] = originalUserMessage;
+}
 
     return requestData;
 }
