@@ -827,7 +827,8 @@ async function sendMessage() {
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
-
+    let lastUserMessageIndex = -1;
+    let originalUserMessage = null;
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
     
@@ -875,14 +876,17 @@ function constructRequestData(messages, settings, negativePromptText) {
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
 
             // Now, we append feedback to the last user message
-            let lastUserMessageIndex = -1;
+         
             for (let i = messages.length - 1; i >= 0; i--) {
                 if (messages[i].role === "user") {
                     lastUserMessageIndex = i;
                     break;
                 }
             }
-
+// Save the original state of the last user message
+if (lastUserMessageIndex !== -1) {
+    originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+}
             if (lastUserMessageIndex !== -1) {
                 const lastUserMessage = messages[lastUserMessageIndex];
 
