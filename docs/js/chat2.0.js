@@ -1183,7 +1183,14 @@ function regenerateMessage() {
             }
         }
     } else {
-        displayMessage('No previous assistant message found to regenerate.', 'assistant');
+          // remove the last assistant message if needed
+          if (messages.length = 1) {
+            autoinput = 'Say blue'
+            messages.pop(); // Remove the last message from the array
+            sendMessage(autoinput);
+        } else {
+            displayMessage('No previous assistant message found to regenerate.', 'assistant');
+        }
     }
 }
 
