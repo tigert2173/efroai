@@ -887,7 +887,7 @@ function constructRequestData(messages, settings, negativePromptText) {
                 const lastUserMessage = messages[lastUserMessageIndex];
 
                 // Append the feedback to the user's message
-                lastUserMessage.content[0].text += `\n\n(Note: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please be mindful of the sentence limit in future requests.)`;
+                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
                 console.log("Feedback added to user message: " + lastUserMessage.content[0].text);
             }
         } else {
