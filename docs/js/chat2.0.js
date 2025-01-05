@@ -848,7 +848,12 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Get slider value (max sentences)
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
-
+    for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].role === "user") {
+            lastUserMessageIndex = i;
+            break;
+        }
+    }
     // Find the most recent assistant message
     let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
     if (lastUserMessageIndex !== -1) {
