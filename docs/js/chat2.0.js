@@ -848,24 +848,10 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Get slider value (max sentences)
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
-    for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === "user") {
-            lastUserMessageIndex = i;
-            break;
-        }
-    }
+
     // Find the most recent assistant message
     let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
-    if (lastUserMessageIndex !== -1) {
-        originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
-    }
-    if (appendNegativePrompt.checked && negativePromptText) {
-        // Save the original state of the last user message
-        if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = messages[lastUserMessageIndex];
-                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-        }
-    }
+
     if (lastAssistantMessage) {
         let lastMessageText = lastAssistantMessage.content[0].text;
 
@@ -912,6 +898,16 @@ function constructRequestData(messages, settings, negativePromptText) {
             }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
+            if (lastUserMessageIndex !== -1) {
+                originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+            }
+            if (appendNegativePrompt.checked && negativePromptText) {
+                // Save the original state of the last user message
+                if (lastUserMessageIndex !== -1) {
+                    const lastUserMessage = messages[lastUserMessageIndex];
+                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+                }
+            }
         }
     } else {
         console.log("No assistant message found.");
