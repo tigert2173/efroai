@@ -823,7 +823,6 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-        let messagesTempChanges = messages;
 
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
@@ -831,7 +830,8 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
-    
+    let messagesTempChanges = messages;
+
     // Calculate total token count
     for (let i = 0; i < messages.length; i++) {
         messagesTokenCount += getTokenCount(messages[i]);
