@@ -771,7 +771,7 @@ async function sendMessage(autoinput) {
     //document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
    // if (!message) return;
-    if (!isResend) {
+    if (!isResend || autoinput) {
        // processMessageDataImportance();
         lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
