@@ -669,7 +669,7 @@ function calculateTokenLength(message) {
 // Function to trim messages if necessary to fit within token limit
 function trimMessages(messages, tokenLimit, debug = false) {
     let totalTokens = 0;
-    const trimmedMessages = [];
+    const keptMessages = [];
     const removedMessages = [];
 
     for (let i = messages.length - 1; i >= 0; i--) {
@@ -677,19 +677,19 @@ function trimMessages(messages, tokenLimit, debug = false) {
         const messageTokens = calculateTokenLength(message);
 
         if (totalTokens + messageTokens <= tokenLimit) {
-            trimmedMessages.unshift(message); // Add the message in the correct order
+            keptMessages.unshift(message); // Add the message in the correct order
             totalTokens += messageTokens;
         } else {
             removedMessages.unshift(message);
         }
     }
 
-    // Show debug info if enabled
+    // Display debug information if enabled
     if (debug) {
-        showDebugInfo(trimmedMessages, removedMessages);
+        displayDebugInfo(keptMessages, removedMessages);
     }
 
-    return trimmedMessages;
+    return keptMessages;
 }
 
 // Function to randomly pick sentences from older messages, weighted by age
@@ -726,12 +726,28 @@ function getWeightedMessages(messages, numNewSentences, debug = false) {
 
     // Optionally log debug information
     if (debug) {
-        console.log('New Messages:', newMessages);
-        console.log('Older Messages (Weighted):', weightedMessages);
-        console.log('Combined Messages:', combinedMessages);
+        displayDebugInfo(newMessages, weightedMessages);
     }
 
     return combinedMessages;
+}
+
+// Function to display debug information in the debug box
+function displayDebugInfo(keptMessages, removedMessages) {
+    const debugBox = document.getElementById('debugBox');
+    debugBox.innerHTML = ''; // Clear previous debug information
+
+    let debugContent = '<strong>Kept Messages:</strong><br>';
+    keptMessages.forEach(msg => {
+        debugContent += `<pre>${JSON.stringify(msg, null, 2)}</pre>`;
+    });
+
+    debugContent += '<strong>Removed Messages:</strong><br>';
+    removedMessages.forEach(msg => {
+        debugContent += `<pre>${JSON.stringify(msg, null, 2)}</pre>`;
+    });
+
+    debugBox.innerHTML = debugContent;
 }
 
 document.getElementById('toggleModeButton').addEventListener('click', function() {
@@ -744,9 +760,6 @@ document.getElementById('toggleModeButton').addEventListener('click', function()
     // Get the debug mode setting (checkbox value)
     const debugMode = document.getElementById('debugMode').checked;
 
-    // Log debug mode status to help with debugging
-    console.log('Debug Mode:', debugMode ? 'Enabled' : 'Disabled');
-
     // Update settings object or call function with these values
     const settings = {
         numNewSentences: numNewSentences,
@@ -757,24 +770,6 @@ document.getElementById('toggleModeButton').addEventListener('click', function()
     // Call your existing function to construct the request data with updated settings
     constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
 });
-// Function to display debug information
-function showDebugInfo(keptMessages, removedMessages) {
-    const debugOutput = document.getElementById('debugOutput');
-    
-    let debugContent = `<p><strong>Messages Kept:</strong></p><ul>`;
-    keptMessages.forEach(msg => {
-        debugContent += `<li>${msg.content.map(segment => segment.text).join(' ')}</li>`;
-    });
-
-    debugContent += `</ul><p><strong>Messages Removed:</strong></p><ul>`;
-    removedMessages.forEach(msg => {
-        debugContent += `<li>${msg.content.map(segment => segment.text).join(' ')}</li>`;
-    });
-
-    debugContent += `</ul>`;
-    debugOutput.innerHTML = debugContent;
-}
-
 
 const isFirstMessage = true; 
 let isResend = false;
@@ -856,7 +851,7 @@ function constructRequestData(messages, settings, negativePromptText, useWeighte
     console.log("Messages: " + JSON.stringify(messages));
 
     // Trim messages to stay within the token limit
-    let trimmedMessages = trimMessages(messages, 8000, settings.debug);
+    let trimmedMessages = trimMessages(messages, 1000);
 
     if (useWeightedSelection) {
         const numNewSentences = parseInt(settings.numNewSentences, 10);
