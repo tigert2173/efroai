@@ -663,36 +663,20 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 
 // Function to calculate the token count of a message
 function getTokenCount(message) {
-    if (message && message.content && message.content[0] && message.content[0].text) {
-        // Log content for debugging
-        console.log("Message content: ", message.content[0].text);
-        return message.content[0].text.length / 4;  // Approximate token count
-    }
-    console.error("Invalid message format: ", message);
-    return 0; // If the message format is invalid, return 0
+    // Assume each character is roughly equivalent to 4 tokens (approximation)
+    return message.content[0].text.length / 4;
 }
 
-// Function to get the token count of the system prompt
-function getSystemPromptTokenCount(systemPrompt) {
-    if (systemPrompt) {
-        // Log system prompt for debugging
-        console.log("System prompt: ", systemPrompt);
-        return systemPrompt.length / 4;  // Approximate token count
-    }
-    console.error("Invalid system prompt: ", systemPrompt);
-    return 0;  // If systemPrompt is invalid, return 0
-}
+// Function to remove the last user-assistant message pair if the token count exceeds the limit
+function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
+    let tokenCount = 0;
 
-// Function to remove last user-assistant message pair if over token limit
-function removeLastUserAssistantPairIfOverLimit(messages, systemPrompt, tokenLimit) {
-    let tokenCount = getSystemPromptTokenCount(systemPrompt);  // Start with system prompt token count
-
-    // Calculate token count for all messages
+    // Calculate total token count
     for (let i = 0; i < messages.length; i++) {
-        tokenCount += getTokenCount(messages[i]);
+        tokenCount += getTokenCount(systemPrompt + messages[i]);
     }
 
-    console.log("Current token count: " + tokenCount);  // Log the current token count
+    console.log("Current token count: " + tokenCount);
 
     // Remove last user-assistant pair if token count exceeds the limit
     if (tokenCount > tokenLimit) {
@@ -795,10 +779,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-  // Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText, systemPrompt) {
+   // Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText) {
     // Remove last user-assistant pair if the token count exceeds the limit
-    messages = removeLastUserAssistantPairIfOverLimit(messages, systemPrompt, settings.tokenLimit);
+    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
@@ -843,7 +827,7 @@ function constructRequestData(messages, settings, negativePromptText, systemProm
     return requestData;
 }
 
-const requestData = constructRequestData(messages, settings, settings.negativePrompt, systemPrompt);
+const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 
 console.log("RequestData: ", requestData);
 
