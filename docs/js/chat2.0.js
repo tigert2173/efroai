@@ -816,7 +816,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     const tokenLimit = 4000;
 
     // Trim messages according to the selected mode
-    const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'simple');
+    const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'smart');
 
     // Console log for debugging
     console.log("Trimmed Messages: " + JSON.stringify(trimmedMessages));
