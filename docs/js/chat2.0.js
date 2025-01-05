@@ -851,7 +851,16 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Find the most recent assistant message
     let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
-
+    if (lastUserMessageIndex !== -1) {
+        originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+    }
+    if (appendNegativePrompt.checked && negativePromptText) {
+        // Save the original state of the last user message
+        if (lastUserMessageIndex !== -1) {
+            const lastUserMessage = messages[lastUserMessageIndex];
+                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+        }
+    }
     if (lastAssistantMessage) {
         let lastMessageText = lastAssistantMessage.content[0].text;
 
@@ -888,13 +897,6 @@ function constructRequestData(messages, settings, negativePromptText) {
             // Save the original state of the last user message
             if (lastUserMessageIndex !== -1) {
                 originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
-            }
-            if (appendNegativePrompt.checked && negativePromptText) {
-                // Save the original state of the last user message
-                if (lastUserMessageIndex !== -1) {
-                    const lastUserMessage = messages[lastUserMessageIndex];
-                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-                }
             }
             if (lastUserMessageIndex !== -1) {
                 const lastUserMessage = messages[lastUserMessageIndex];
