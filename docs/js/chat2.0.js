@@ -710,6 +710,23 @@ function selectAndReorderSentences(messages, recentCount, ageWeightFactor) {
     return selectedMessages;
 }
 
+function highlightDebugData() {
+    const debugInfoElement = document.getElementById('debugInfo');
+
+    // Example: Adding highlighted content dynamically
+    const newDebugMessage = 'New request data generated at ' + new Date().toLocaleTimeString();
+    const highlightedContent = `<span class="highlight">${newDebugMessage}</span>`;
+    
+    // Append the highlighted content
+    debugInfoElement.innerHTML += highlightedContent;
+
+    // Alternatively, highlight specific new data
+    const newDataContent = 'New API response: success!';
+    const newContent = `<span class="new-data">${newDataContent}</span>`;
+    
+    debugInfoElement.innerHTML += newContent;
+}
+
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {

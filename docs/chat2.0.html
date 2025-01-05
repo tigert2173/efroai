@@ -173,6 +173,7 @@
     border-radius: 5px;
     background-color: #f9f9f9;
     font-family: 'Courier New', Courier, monospace;
+    position: relative; /* Ensures positioning for the highlight */
 }
 
 #debugView h3 {
@@ -192,6 +193,20 @@
     overflow-x: auto; /* Adds horizontal scroll for long lines */
     max-height: 400px; /* Limits the height of the debug view */
     line-height: 1.5;
+}
+
+#debugInfo .highlight {
+    background-color: #ffeb3b; /* Highlight changes in yellow */
+    color: #333;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+#debugInfo .new-data {
+    background-color: #4caf50; /* Green for new data */
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
 }
 
 #debugView pre {
