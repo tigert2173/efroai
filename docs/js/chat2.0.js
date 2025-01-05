@@ -753,8 +753,8 @@ const isFirstMessage = true;
 let isResend = false;
 async function sendMessage(autoinput) {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
-    const userInput = autoinput || document.getElementById('user-input');
-    const message = userInput.value.trim();
+    const userInput = document.getElementById('user-input');
+    const message = autoinput || userInput.value.trim();
     if (message.trim() === "") return;  // Don't send empty messages
 
     // Add logic to send the message
