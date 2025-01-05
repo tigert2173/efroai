@@ -729,10 +729,24 @@ function getWeightedMessages(messages, numNewSentences, debug = false) {
     return combinedMessages;
 }
 
-// HTML buttons and sliders for toggling modes
 document.getElementById('toggleModeButton').addEventListener('click', function() {
+    // Get the checkbox value for enabling weighted selection
     const useWeightedSelection = document.getElementById('weightedSelectionCheckbox').checked;
-    // When toggling, use the mode you want (weighted selection on/off)
+
+    // Get the number of new sentences to take (from the input field)
+    const numNewSentences = parseInt(document.getElementById('numNewSentences').value, 10);
+
+    // Get the debug mode setting (checkbox value)
+    const debugMode = document.getElementById('debugMode').checked;
+
+    // Update settings object or call function with these values
+    const settings = {
+        numNewSentences: numNewSentences,
+        debug: debugMode,
+        // You can include other settings here as needed
+    };
+
+    // Call your existing function to construct the request data with updated settings
     constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
 });
 
