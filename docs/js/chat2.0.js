@@ -1193,7 +1193,7 @@ function regenerateMessage() {
         }
     } else {
           // remove the last assistant message if needed
-          if (messages.length = 1) {
+          if (messages.length > 0) {
             autoinput = "Generate a first greeting message for the user. The message should be unique and random, maintaining the personality outlined in the system prompt. The tone may vary but should always match the defined character—whether formal, casual, serious, humorous, or any other mood described. It should set the tone for the interaction, creating a sense of the character’s distinct style and attitude. Avoid being overtly friendly unless the character's personality dictates that approach. The message should feel natural and fitting for the scenario.";
             messages.pop(); // Remove the last message from the array
             sendMessage(autoinput);
