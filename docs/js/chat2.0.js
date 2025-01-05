@@ -841,8 +841,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     // Save the original state of the last user message
     if (lastUserMessageIndex !== -1) {
         originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
-    }
-    if (lastUserMessageIndex !== -1) {
+
         const lastUserMessage = messages[lastUserMessageIndex];
 
         // Check if the negative prompt is already in the message
