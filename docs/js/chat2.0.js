@@ -702,7 +702,7 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
     // Iterate through messages to find the first user-assistant pair
     while (i < messages.length) {
         // Check for user message
-        if (messages[i].role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'assistant') {
+        if (messages[i].role === 'assistant' && i + 1 < messages.length && messages[i + 1].role === 'user') {
             // Store the pair for logging
             removedMessages.push(messages[i], messages[i + 1]);
             // Remove the user-assistant pair from the beginning
