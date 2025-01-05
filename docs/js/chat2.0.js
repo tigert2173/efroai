@@ -1179,7 +1179,7 @@ function regenerateMessage() {
              if (messages.length = 1) {
                 autoinput = 'Write me a new scenario'
                 messages.pop(); // Remove the last message from the array
-                sendMessage();
+                sendMessage(autoinput);
             }
         }
     } else {
