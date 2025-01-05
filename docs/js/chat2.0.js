@@ -774,6 +774,7 @@ document.getElementById('toggleModeButton').addEventListener('click', function()
     constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
 });
 
+
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
