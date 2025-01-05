@@ -1196,7 +1196,7 @@ function regenerateMessage() {
           // remove the last assistant message if needed
           if (messages.length = 1) {
             autoinput = "Generate a long first greeting message. The message should maintain the personality outlined in the system prompt. The message should feel natural and fitting for the scenario. Extra points if you can hint at a fetish";
-            //messages.pop(); // Remove the last message from the array
+            messages.pop(); // Remove the last message from the array
             sendMessage(autoinput);
         } else {
             displayMessage('No previous assistant message found to regenerate.', 'assistant');
