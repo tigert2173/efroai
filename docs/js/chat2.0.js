@@ -901,7 +901,18 @@ function constructRequestData(messages, settings, negativePromptText) {
     } else {
         console.log("No assistant message found.");
     }
+ // Append the negative prompt to the last user's message if the setting is enabled
+ if (appendNegativePrompt.checked && negativePromptText) {
+    if (lastUserMessageIndex !== -1) {
+        const lastUserMessage = messages[lastUserMessageIndex];
 
+        // Check if the negative prompt is already in the message
+        if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+            // Append the negative prompt text directly to the last user's message content
+            lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+        }
+    }
+}
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
 
@@ -921,26 +932,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Append the negative prompt to the last user's message if the setting is enabled
-    if (appendNegativePrompt.checked && negativePromptText) {
-        let lastUserMessageIndex = -1;
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].role === "user") {
-                lastUserMessageIndex = i;
-                break;
-            }
-        }
 
-        if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = messages[lastUserMessageIndex];
-
-            // Check if the negative prompt is already in the message
-            if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                // Append the negative prompt text directly to the last user's message content
-                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-            }
-        }
-    }
 // After `requestData` is returned, revert the user's message to its original state
 if (originalUserMessage && lastUserMessageIndex !== -1) {
     messages[lastUserMessageIndex] = originalUserMessage;
