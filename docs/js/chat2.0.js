@@ -800,6 +800,20 @@ function constructRequestData(messages, settings, negativePromptText) {
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
 
+// Find the most recent assistant message
+let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
+
+// If an assistant message is found
+if (lastAssistantMessage) {
+  let lastMessageText = lastAssistantMessage.content[0].text;
+
+  // Split the text into sentences by common sentence-ending punctuation marks
+  let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
+
+  console.log('Number of sentences in the last assistant message:', sentenceCount);
+} else {
+  console.log("No assistant message found.");
+}
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
 
