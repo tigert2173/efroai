@@ -823,6 +823,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+        const messagesTempChanges = messages;
 
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
@@ -873,7 +874,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
-            const messagesTempChanges = messages;
+            messagesTempChanges = messages;
     
             // Console log for debugging
     console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
