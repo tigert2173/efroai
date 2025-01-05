@@ -661,6 +661,81 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
+// Function to calculate the token length of a message
+function calculateTokenLength(message) {
+    // Assuming 1 token = 4 characters, adjust as needed for your token counting method
+    return message.content.reduce((total, segment) => total + segment.text.length / 4, 0);
+}
+
+// Function to trim messages if necessary to fit within token limit
+function trimMessages(messages, tokenLimit) {
+    let totalTokens = 0;
+    const trimmedMessages = [];
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+        const message = messages[i];
+        const messageTokens = calculateTokenLength(message);
+
+        if (totalTokens + messageTokens <= tokenLimit) {
+            trimmedMessages.unshift(message); // Add the message in the correct order
+            totalTokens += messageTokens;
+        } else {
+            break; // Stop if we've exceeded the token limit
+        }
+    }
+
+    return trimmedMessages;
+}
+
+// Function to randomly pick sentences from older messages, weighted by age
+function getWeightedMessages(messages, numNewSentences, debug = false) {
+    const newMessages = [];
+    const olderMessages = [];
+    
+    // Separate new and old messages
+    for (let i = 0; i < messages.length; i++) {
+        if (i < numNewSentences) {
+            newMessages.push(messages[i]);
+        } else {
+            olderMessages.push(messages[i]);
+        }
+    }
+    
+    // Weight older messages by age (more recent is higher weight)
+    const weightedOlderMessages = olderMessages.map((msg, idx) => ({
+        message: msg,
+        weight: olderMessages.length - idx
+    }));
+
+    // Shuffle the weighted older messages
+    const weightedMessages = [];
+    for (const item of weightedOlderMessages) {
+        const { message, weight } = item;
+        for (let i = 0; i < weight; i++) {
+            weightedMessages.push(message);
+        }
+    }
+
+    // Combine the new and weighted older messages
+    const combinedMessages = [...newMessages, ...weightedMessages];
+
+    // Optionally log debug information
+    if (debug) {
+        console.log('New Messages:', newMessages);
+        console.log('Older Messages (Weighted):', weightedMessages);
+        console.log('Combined Messages:', combinedMessages);
+    }
+
+    return combinedMessages;
+}
+
+// HTML buttons and sliders for toggling modes
+document.getElementById('toggleModeButton').addEventListener('click', function() {
+    const useWeightedSelection = document.getElementById('weightedSelectionCheckbox').checked;
+    // When toggling, use the mode you want (weighted selection on/off)
+    constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
+});
+
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
@@ -736,53 +811,55 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-        // Function to construct requestData with optional negative prompt
-        function constructRequestData(messages, settings, negativePromptText) {
-            // Console log for debugging
-            console.log("Messages: " + JSON.stringify(messages));
-        
-            // Construct the base requestData object
-            const requestData = {
-               // n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
-              //  max_tokens: parseInt(settings.maxTokens, 10),
-                stream: true,
-                temperature: settings.temperature,
-                prescence_penalty: settings.prescence_penalty,
-                frequency_penalty: settings.frequency_penalty,
-                repeat_penalty: settings.repeat_penalty,
-                min_p: settings.min_p,
-                top_k: settings.top_k,
-                top_p: settings.top_p,
-                repeat_last_n: settings.repeat_last_n,
-                cache_prompt: true,
-                t_max_predict_ms: 300000, // timeout after 5 minutes
-            };
-        
-            // Append the negative prompt to the last user's message if the setting is enabled
-            if (appendNegativePrompt.checked && negativePromptText) {
-                // Find the last user message (not assistant's message)
-                let lastUserMessageIndex = -1;
-                for (let i = messages.length - 1; i >= 0; i--) {
-                    if (messages[i].role === "user") {
-                        lastUserMessageIndex = i;
-                        break;
-                    }
-                }
-        
-                if (lastUserMessageIndex !== -1) {
-                    const lastUserMessage = messages[lastUserMessageIndex];
-        
-                    // Check if the negative prompt is already in the message
-                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                        // Append the negative prompt text directly to the last user's message content
-                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-                    }
-                }
+// Main function to construct request data
+function constructRequestData(messages, settings, negativePromptText, useWeightedSelection = false) {
+    console.log("Messages: " + JSON.stringify(messages));
+
+    // Trim messages to stay within the token limit
+    let trimmedMessages = trimMessages(messages, 8000);
+
+    if (useWeightedSelection) {
+        const numNewSentences = parseInt(settings.numNewSentences, 10);
+        trimmedMessages = getWeightedMessages(trimmedMessages, numNewSentences, settings.debug);
+    }
+
+    // Construct the base requestData object
+    const requestData = {
+        messages: [systemPrompt, ...trimmedMessages],
+        stream: true,
+        temperature: settings.temperature,
+        prescence_penalty: settings.prescence_penalty,
+        frequency_penalty: settings.frequency_penalty,
+        repeat_penalty: settings.repeat_penalty,
+        min_p: settings.min_p,
+        top_k: settings.top_k,
+        top_p: settings.top_p,
+        repeat_last_n: settings.repeat_last_n,
+        cache_prompt: true,
+        t_max_predict_ms: 300000, // timeout after 5 minutes
+    };
+
+    // Append the negative prompt to the last user's message if the setting is enabled
+    if (appendNegativePrompt.checked && negativePromptText) {
+        let lastUserMessageIndex = -1;
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === "user") {
+                lastUserMessageIndex = i;
+                break;
             }
-        
-            return requestData;
         }
+
+        if (lastUserMessageIndex !== -1) {
+            const lastUserMessage = messages[lastUserMessageIndex];
+
+            if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+            }
+        }
+    }
+
+    return requestData;
+}
         
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
