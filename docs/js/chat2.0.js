@@ -926,7 +926,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...messages],
+        messages: [systemPrompt, ...messagesTempChanges],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
