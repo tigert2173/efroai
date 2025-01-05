@@ -667,16 +667,23 @@ function getTokenCount(message) {
     return message.content[0].text.length / 4;
 }
 
-// Function to remove the last user-assistant message pair if the token count exceeds the limit
-function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
-    let tokenCount = 0;
+// Function to calculate the token count of all messages, including system prompt
+function getTotalTokenCount(messages, systemPrompt) {
+    let totalTokenCount = getTokenCount(systemPrompt); // Add system prompt tokens
 
-    // Calculate total token count
+    // Add tokens for each message in the messages array
     for (let i = 0; i < messages.length; i++) {
-        tokenCount += getTokenCount(messages[i]);
+        totalTokenCount += getTokenCount(messages[i]);
     }
 
-    console.log("Current token count: " + tokenCount);
+    return totalTokenCount;
+}
+
+// Function to remove the last user-assistant message pair if the token count exceeds the limit
+function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit, systemPrompt) {
+    let tokenCount = getTotalTokenCount(messages, systemPrompt);
+
+    console.log("Current token count (including system prompt): " + tokenCount);
 
     // Remove last user-assistant pair if token count exceeds the limit
     if (tokenCount > tokenLimit) {
