@@ -816,7 +816,7 @@ function constructRequestData(messages, settings, negativePromptText, useWeighte
     console.log("Messages: " + JSON.stringify(messages));
 
     // Trim messages to stay within the token limit
-    let trimmedMessages = trimMessages(messages, 8000);
+    let trimmedMessages = trimMessages(messages, 1000);
 
     if (useWeightedSelection) {
         const numNewSentences = parseInt(settings.numNewSentences, 10);
