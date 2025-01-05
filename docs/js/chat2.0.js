@@ -661,126 +661,34 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
-const MAX_TOKENS = 8000; // Adjust according to token-to-character conversion
-let isRandomSelectionMode = false;
-
-function trimMessagesToTokenLimit(messages) {
-    let totalTokens = 0;
-    let trimmedMessages = [];
-    for (let i = messages.length - 1; i >= 0; i--) {
-        const messageTokens = countTokens(messages[i].content);
-        totalTokens += messageTokens;
-
-        if (totalTokens > MAX_TOKENS) {
-            break;
-        }
-
-        trimmedMessages.unshift(messages[i]);
-    }
-    return trimmedMessages;
-}
-
-function countTokens(text) {
-    // Assuming 4 characters per token, you can adjust if needed.
-    return Math.floor(text.length / 4);
-}
-
-function toggleRandomSelectionMode() {
-    isRandomSelectionMode = !isRandomSelectionMode;
-    document.getElementById('sliderContainer').style.display = isRandomSelectionMode ? 'block' : 'none';
-}
-
-function selectMessagesRandomly(messages, recentCount, weight) {
-    let recentMessages = messages.slice(-recentCount);
-    let olderMessages = messages.slice(0, -recentCount);
-
-    // Weight older messages by age, newer ones are more likely
-    let weightedMessages = olderMessages.map((msg, idx) => ({
-        message: msg,
-        weight: weight - idx
-    }));
-
-    // Combine and shuffle messages
-    weightedMessages = [...recentMessages, ...weightedMessages];
-    weightedMessages.sort((a, b) => b.weight - a.weight); // Sorting by weight, descending
-
-    // Return the shuffled messages while maintaining original structure
-    return weightedMessages.map(item => item.message);
-}
-// Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
-    // Console log for debugging
-    console.log("Messages:", messages);
-    
-    // Construct the base requestData object
-    const requestData = {
-        messages: [systemPrompt, ...messages],
-        stream: true,
-        temperature: settings.temperature,
-        prescence_penalty: settings.prescence_penalty,
-        frequency_penalty: settings.frequency_penalty,
-        repeat_penalty: settings.repeat_penalty,
-        min_p: settings.min_p,
-        top_k: settings.top_k,
-        top_p: settings.top_p,
-        repeat_last_n: settings.repeat_last_n,
-        cache_prompt: true,
-        t_max_predict_ms: 300000, // timeout after 5 minutes
-    };
-
-    // Append the negative prompt to the last user's message if the setting is enabled
-    const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-
-    if (appendNegativePrompt.checked && negativePromptText) {
-        // Find the last user message (not assistant's message)
-        let lastUserMessageIndex = -1;
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].role === "user") {
-                lastUserMessageIndex = i;
-                break;
-            }
-        }
-
-        if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = messages[lastUserMessageIndex];
-
-            // Check if the negative prompt is already in the message
-            if (!lastUserMessage.content.includes(negativePromptText)) {
-                // Append the negative prompt text directly to the last user's message content
-                lastUserMessage.content += `\n\nEssential Response Constraints: ${negativePromptText}`;
-            }
-        }
-    }
-
-    // Debugging: print out the final requestData
-    console.log("Final requestData:", JSON.stringify(requestData, null, 2));
-
-    return requestData;
-}
-
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
-    if (sendButtonDisabled) return;
+    if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (message.trim() === "") return;
+    if (message.trim() === "") return;  // Don't send empty messages
 
+    // Add logic to send the message
     console.log("Sending message:", message);
 
+    // Disable button and add delay
     sendButtonDisabled = true;
     document.getElementById("send-button").disabled = true;
-    setTimeout(() => {
+    setTimeout(function() {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
-    }, 8000);
+    }, 8000); // 8-second delay
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
+   // if (!message) return;
     if (!isResend) {
+       // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent++;
+        messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
@@ -789,23 +697,94 @@ async function sendMessage() {
     }
     lastBotMsg = lastBotMsg || settings.greeting;
 
+    //Define the system message
     const systemPrompt = {
         role: "system",
-        content: `Reponse Goals: ${settings.systemPrompt} Scenario: ${settings.scenario}, Persona: ${settings.persona}`
+        content: 
+        `Reponse Goals: ${settings.systemPrompt}
+        Scenario: ${settings.scenario},
+
+        Persona: ${settings.persona}
+        ${settings.context ? `Context: ${settings.context}` : ''}
+            ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
+            ? `Example Dialogue:\n${settings.exampledialogue}` 
+            : ''}
+        ${settings.negativePrompt ? `Essential Response Constraints: ${settings.negativePrompt}` : ''}
+
+        `,
     };
-
-    const messages = isRandomSelectionMode
-        ? selectMessagesRandomly(botMessages, document.getElementById('recentSentences').value, document.getElementById('olderSentenceWeight').value)
-        : trimMessagesToTokenLimit(botMessages);
-
-    const requestData = constructRequestData(messages, settings, settings.negativePrompt);
-    console.log("Final requestData:", JSON.stringify(requestData)); // Debugging view
-
     
+     //Define the system message
+     const scenarioPrompt = {
+        role: "user",
+        content:
+        `Scenario: ${settings.scenario}`,
+    };
+   
     try {    
         await updateSettings();
+        // Construct the conversation context
+        // conversationContext.push(`User: ${settings.message}`); // Append user message
 
+        // // Limit the context size
+        // if (conversationContext.length > 4096) {
+        //     conversationContext.shift(); // Remove the oldest message
+        // }
+
+        // Create the full prompt for the bot
+        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
+        // Retrieve the negative prompt setting
+        const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+
+        // Function to construct requestData with optional negative prompt
+        function constructRequestData(messages, settings, negativePromptText) {
+            // Console log for debugging
+            console.log("Messages: " + JSON.stringify(messages));
         
+            // Construct the base requestData object
+            const requestData = {
+               // n_predict: parseInt(settings.maxTokens, 10),
+                messages: [systemPrompt, ...messages],
+              //  max_tokens: parseInt(settings.maxTokens, 10),
+                stream: true,
+                temperature: settings.temperature,
+                prescence_penalty: settings.prescence_penalty,
+                frequency_penalty: settings.frequency_penalty,
+                repeat_penalty: settings.repeat_penalty,
+                min_p: settings.min_p,
+                top_k: settings.top_k,
+                top_p: settings.top_p,
+                repeat_last_n: settings.repeat_last_n,
+                cache_prompt: true,
+                t_max_predict_ms: 300000, // timeout after 5 minutes
+            };
+        
+            // Append the negative prompt to the last user's message if the setting is enabled
+            if (appendNegativePrompt.checked && negativePromptText) {
+                // Find the last user message (not assistant's message)
+                let lastUserMessageIndex = -1;
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    if (messages[i].role === "user") {
+                        lastUserMessageIndex = i;
+                        break;
+                    }
+                }
+        
+                if (lastUserMessageIndex !== -1) {
+                    const lastUserMessage = messages[lastUserMessageIndex];
+        
+                    // Check if the negative prompt is already in the message
+                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                        // Append the negative prompt text directly to the last user's message content
+                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+                    }
+                }
+            }
+        
+            return requestData;
+        }
+        
+const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
