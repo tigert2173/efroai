@@ -660,6 +660,81 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     enablePreload: false, // Default to false if not provided
 //     sessionId: 1,
 // };
+// Function to trim messages based on token limit (8000 tokens ~ 32000 characters)
+function trimMessagesByToken(messages) {
+    let tokenCount = 0;
+    let trimmedMessages = [];
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+        let messageContent = messages[i].content[0].text;
+        let messageTokens = Math.ceil(messageContent.length / 4); // Approximation: 4 characters per token
+        tokenCount += messageTokens;
+
+        if (tokenCount > 8000) {
+            break;
+        }
+
+        trimmedMessages.unshift(messages[i]); // Add to the beginning of the array
+    }
+
+    return trimmedMessages;
+}
+
+// Function to handle sentence selection mode (with HTML buttons and sliders)
+function adjustSentenceSelection(messages, mode, recentSentenceCount) {
+    let selectedMessages = [...messages]; // Preserve the original messages
+    
+    if (mode === 'recentFirst') {
+        // Pick recent sentences (based on recentSentenceCount)
+        let recentMessages = selectedMessages.slice(-recentSentenceCount);
+        console.log("Recent Messages: " + JSON.stringify(recentMessages));
+
+        // For older sentences, weight by age and select randomly (excluding the last selected message)
+        let olderMessages = selectedMessages.slice(0, selectedMessages.length - recentSentenceCount);
+        let weightedOlderMessages = weightAndSelectOlderMessages(olderMessages);
+        
+        // Merge recent and weighted older messages
+        selectedMessages = [...recentMessages, ...weightedOlderMessages];
+    }
+
+    // Debug view for sentence selection
+    console.log("Selected Messages after Adjustments: " + JSON.stringify(selectedMessages));
+
+    return selectedMessages;
+}
+
+// Function to weight and select older messages based on age
+function weightAndSelectOlderMessages(messages) {
+    let weightedMessages = messages.map((msg, index) => ({
+        message: msg,
+        weight: 1 / (index + 1) // Weight older messages lower
+    }));
+
+    // Sort messages by weight (newer messages are selected more likely)
+    weightedMessages.sort((a, b) => b.weight - a.weight);
+    
+    // Randomly select messages based on their weight
+    let selectedMessages = [];
+    weightedMessages.forEach(item => {
+        if (Math.random() < item.weight) {
+            selectedMessages.push(item.message);
+        }
+    });
+
+    console.log("Weighted Older Messages: " + JSON.stringify(selectedMessages));
+    return selectedMessages;
+}
+
+// Example HTML buttons to toggle modes
+document.getElementById('modeSwitchButton').addEventListener('click', function() {
+    let mode = document.querySelector('input[name="selectionMode"]:checked').value;
+    let recentSentenceCount = document.getElementById('recentSentenceSlider').value;
+    let adjustedMessages = adjustSentenceSelection(messages, mode, recentSentenceCount);
+    
+    // Update the request data based on the new adjusted messages
+    let updatedRequestData = constructRequestData(adjustedMessages, settings, negativePromptText);
+    console.log(updatedRequestData);
+});
 
 const isFirstMessage = true; 
 let isResend = false;
@@ -738,14 +813,16 @@ async function sendMessage() {
 
         // Function to construct requestData with optional negative prompt
         function constructRequestData(messages, settings, negativePromptText) {
-            // Console log for debugging
-            console.log("Messages: " + JSON.stringify(messages));
+            // Debugging logs
+            console.log("Original Messages: " + JSON.stringify(messages));
+            
+            // Trim messages to fit within token limit (8000 tokens = 32000 characters approx.)
+            let trimmedMessages = trimMessagesByToken(messages);
+            console.log("Trimmed Messages: " + JSON.stringify(trimmedMessages));
         
             // Construct the base requestData object
             const requestData = {
-               // n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
-              //  max_tokens: parseInt(settings.maxTokens, 10),
+                messages: [systemPrompt, ...trimmedMessages],
                 stream: true,
                 temperature: settings.temperature,
                 prescence_penalty: settings.prescence_penalty,
@@ -758,10 +835,9 @@ async function sendMessage() {
                 cache_prompt: true,
                 t_max_predict_ms: 300000, // timeout after 5 minutes
             };
-        
-            // Append the negative prompt to the last user's message if the setting is enabled
+            
+            // Append the negative prompt if needed
             if (appendNegativePrompt.checked && negativePromptText) {
-                // Find the last user message (not assistant's message)
                 let lastUserMessageIndex = -1;
                 for (let i = messages.length - 1; i >= 0; i--) {
                     if (messages[i].role === "user") {
@@ -773,13 +849,14 @@ async function sendMessage() {
                 if (lastUserMessageIndex !== -1) {
                     const lastUserMessage = messages[lastUserMessageIndex];
         
-                    // Check if the negative prompt is already in the message
                     if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                        // Append the negative prompt text directly to the last user's message content
                         lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
                     }
                 }
             }
+        
+            // Debug view for sentence selection
+            console.log("Request Data: " + JSON.stringify(requestData));
         
             return requestData;
         }
