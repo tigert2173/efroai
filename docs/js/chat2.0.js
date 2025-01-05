@@ -824,55 +824,72 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-   // Function to construct requestData with optional negative prompt
+// Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
 
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
-    // Calculate total token count
-    for (let i = 0; i < messages.length; i++) {
-        messagesTokenCount += getTokenCount(messages[i]);
+
+    // Get slider value (max sentences)
+    let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
+
+    // Find the most recent assistant message
+    let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
+
+    if (lastAssistantMessage) {
+        let lastMessageText = lastAssistantMessage.content[0].text;
+
+        // Split the text into sentences by common sentence-ending punctuation marks
+        let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
+
+        // If the sentence count exceeds the max, modify the last user message
+        if (sentenceCount > maxSentences) {
+            // Get the last user message
+            let lastUserMessageIndex = -1;
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+
+            if (lastUserMessageIndex !== -1) {
+                const lastUserMessage = messages[lastUserMessageIndex];
+
+                // Append the warning to the last user message as a new piece of text
+                lastUserMessage.content[0].text += `\n\n*Warning: The generated message exceeds the maximum sentence limit of ${maxSentences} sentences.*`;
+
+                console.log("Warning added to last user message.");
+            }
+        }
+        console.log('Number of sentences in the last assistant message:', sentenceCount);
+    } else {
+        console.log("No assistant message found.");
     }
 
     // Calculate token count of the system prompt's content
     const systemPromptText = systemPrompt.content;
     const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
     console.log("System Prompt token count: " + systemPromptTokenCount);
+
+    // Calculate token count of messages
+    for (let i = 0; i < messages.length; i++) {
+        messagesTokenCount += getTokenCount(messages[i]);
+    }
+
     console.log("Messages token count: " + messagesTokenCount);
 
+    const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
     const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
     console.info("New Total token count: " + totalTokenCount);
-
-
-// Get slider value (max sentences)
-let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
-
-// Find the most recent assistant message
-let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
-
-if (lastAssistantMessage) {
-  let lastMessageText = lastAssistantMessage.content[0].text;
-
-  // Split the text into sentences by common sentence-ending punctuation marks
-  let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
-
-  // Compare sentence count to slider value
-  if (sentenceCount > maxSentences) {
-    alert("The generated message exceeds the maximum sentence limit.");
-  } else {
-    console.log('Number of sentences in the last assistant message:', sentenceCount);
-  }
-} else {
-  console.log("No assistant message found.");
-}
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...messages],
+        messages: [systemPrompt, ...messages], // Add modified messages to requestData
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -909,6 +926,7 @@ if (lastAssistantMessage) {
 
     return requestData;
 }
+
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 
