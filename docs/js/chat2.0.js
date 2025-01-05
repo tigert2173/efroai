@@ -883,7 +883,6 @@ function constructRequestData(messages, settings, negativePromptText) {
                     break;
                 }
             }
-             // Append the negative prompt to the last user's message if the setting is enabled
 
             // Save the original state of the last user message
             if (lastUserMessageIndex !== -1) {
@@ -898,6 +897,15 @@ function constructRequestData(messages, settings, negativePromptText) {
             }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
+
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+            // Append the negative prompt to the last user's message if the setting is enabled
+
             if (lastUserMessageIndex !== -1) {
                 originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
             }
