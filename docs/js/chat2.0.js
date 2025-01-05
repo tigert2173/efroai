@@ -848,6 +848,8 @@ function constructRequestData(messages, settings, negativePromptText) {
     // Get slider value (max sentences)
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
     let originalUserMessage = null;
+    let lastUserMessageIndex = -1;
+
     // Find the most recent assistant message
     let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
 
@@ -875,7 +877,6 @@ function constructRequestData(messages, settings, negativePromptText) {
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
 
             
-            let lastUserMessageIndex = -1;
             
             // Find the last user's message
             for (let i = messages.length - 1; i >= 0; i--) {
