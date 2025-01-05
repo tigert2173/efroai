@@ -767,9 +767,13 @@ async function sendMessage() {
             const charactersPerToken = 4;
             return messages.reduce((count, message) => count + Math.ceil(message.content.length / charactersPerToken), 0);
         }
-        // Debug view container
+  // Debug view container
 const debugView = document.getElementById("debugView");
 const debugMessageList = document.getElementById("debugMessageList");
+const modal = document.getElementById("messageModal");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
 
 // Function to update the debug view with messages
 function updateDebugView(allMessages, keptMessages) {
@@ -785,8 +789,9 @@ function updateDebugView(allMessages, keptMessages) {
         messageDiv.style.marginBottom = "5px";
         messageDiv.style.borderRadius = "5px";
         messageDiv.style.backgroundColor = isKept ? "#d4edda" : "#f8d7da"; // Green for kept, red for removed
+        messageDiv.style.cursor = "pointer";
 
-        // Add message content
+        // Add message content and click handler
         messageDiv.innerHTML = `
             <strong>${message.role.toUpperCase()}:</strong> ${message.content.slice(0, 100)}${
             message.content.length > 100 ? "..." : ""
@@ -795,63 +800,78 @@ function updateDebugView(allMessages, keptMessages) {
                 isKept ? "#155724" : "#721c24"
             };">[${isKept ? "KEPT" : "REMOVED"}]</span>
         `;
+        messageDiv.onclick = () => openModal(message);
 
         debugMessageList.appendChild(messageDiv);
     });
 }
 
+// Function to open modal with message details
+function openModal(message) {
+    modalTitle.textContent = `${message.role.toUpperCase()} Message`;
+    modalContent.textContent = message.content;
+    modal.style.display = "block";
+    modalOverlay.style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+    modal.style.display = "none";
+    modalOverlay.style.display = "none";
+}
+
         // Function to trim messages based on token limits
         function trimMessages(messages, maxTokens, mode) {
             const allMessages = [...messages]; // Keep track of all messages for debugging
+            let totalTokens = 0;
             let keptMessages = [];
         
             if (mode === "simple") {
                 // Simple mode: Remove oldest messages until token count fits
-                let totalTokens = 0;
-                keptMessages = messages.filter((message) => {
-                    const tokenCount = Math.ceil(message.content.length / 4); // Approx token count
-                    totalTokens += tokenCount;
-                    return totalTokens <= maxTokens;
-                });
-            } else if (mode === "selective") {
-                // Selective mode: Take first X sentences and randomly weight others
-                const maxSentenceCount = 2; // Number of initial sentences to keep
-                const recentMessages = [];
-                let totalTokens = 0;
-        
-                for (const message of messages) {
-                    if (totalTokens >= maxTokens) break;
-        
-                    let sentences = message.content.split(". "); // Split into sentences
-                    const firstSentences = sentences.slice(0, maxSentenceCount).join(". ");
-        
-                    const remainingSentences = sentences
-                        .slice(maxSentenceCount)
-                        .map((sentence) => ({
-                            sentence,
-                            ageWeight: Math.random(), // Assign random weights
-                        }))
-                        .sort((a, b) => b.ageWeight - a.ageWeight) // Sort by age weight
-                        .map((s) => s.sentence);
-        
-                    const combinedSentences = [firstSentences, ...remainingSentences].join(". ");
-                    const trimmedMessage = { ...message, content: combinedSentences };
-        
-                    const tokenCount = Math.ceil(trimmedMessage.content.length / 4); // Approx token count
+                for (let i = messages.length - 1; i >= 0; i--) {
+                    const tokenCount = Math.ceil(messages[i].content.length / 4); // Approx token count
                     if (totalTokens + tokenCount <= maxTokens) {
-                        recentMessages.push(trimmedMessage);
+                        keptMessages.unshift(messages[i]); // Add to the front of the array
                         totalTokens += tokenCount;
+                    } else {
+                        break;
                     }
                 }
+            } else if (mode === "selective") {
+                // Selective mode: Advanced logic to preserve important content
+                let remainingTokens = maxTokens;
         
-                keptMessages = recentMessages;
+                messages.forEach((message) => {
+                    if (remainingTokens <= 0) return;
+        
+                    let sentences = message.content.split(". ");
+                    const initialSentences = sentences.slice(0, 2).join(". ");
+                    const remainingSentences = sentences.slice(2);
+        
+                    let selectedSentences = remainingSentences
+                        .map((sentence) => ({
+                            sentence,
+                            weight: Math.random(), // Weighting logic
+                        }))
+                        .sort((a, b) => b.weight - a.weight)
+                        .map((s) => s.sentence);
+        
+                    const trimmedContent = [initialSentences, ...selectedSentences].join(". ");
+                    const tokenCount = Math.ceil(trimmedContent.length / 4);
+        
+                    if (remainingTokens - tokenCount >= 0) {
+                        keptMessages.push({ ...message, content: trimmedContent });
+                        remainingTokens -= tokenCount;
+                    }
+                });
             }
         
-            // Update the debug view
+            // Update the debug view for visual feedback
             updateDebugView(allMessages, keptMessages);
         
             return keptMessages;
         }
+        
 
         // Function to construct requestData with optional negative prompt
         function constructRequestData(messages, settings, negativePromptText, trimMode = "simple") {
