@@ -836,7 +836,22 @@ function constructRequestData(messages, settings, negativePromptText) {
     for (let i = 0; i < messages.length; i++) {
         messagesTokenCount += getTokenCount(messages[i]);
     }
+ // Append the negative prompt to the last user's message if the setting is enabled
+ if (appendNegativePrompt.checked && negativePromptText) {
+    // Save the original state of the last user message
+    if (lastUserMessageIndex !== -1) {
+        originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+    }
+    if (lastUserMessageIndex !== -1) {
+        const lastUserMessage = messages[lastUserMessageIndex];
 
+        // Check if the negative prompt is already in the message
+        if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+            // Append the negative prompt text directly to the last user's message content
+            lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+        }
+    }
+}
     // Calculate token count of the system prompt's content
     const systemPromptText = systemPrompt.content;
     const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
@@ -901,18 +916,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     } else {
         console.log("No assistant message found.");
     }
- // Append the negative prompt to the last user's message if the setting is enabled
- if (appendNegativePrompt.checked && negativePromptText) {
-    if (lastUserMessageIndex !== -1) {
-        const lastUserMessage = messages[lastUserMessageIndex];
 
-        // Check if the negative prompt is already in the message
-        if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-            // Append the negative prompt text directly to the last user's message content
-            lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-        }
-    }
-}
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
 
