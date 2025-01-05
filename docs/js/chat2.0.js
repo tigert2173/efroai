@@ -734,6 +734,29 @@ function getWeightedMessages(messages, numNewSentences, debug = false) {
     return combinedMessages;
 }
 
+document.getElementById('toggleModeButton').addEventListener('click', function() {
+    // Get the checkbox value for enabling weighted selection
+    const useWeightedSelection = document.getElementById('weightedSelectionCheckbox').checked;
+
+    // Get the number of new sentences to take (from the input field)
+    const numNewSentences = parseInt(document.getElementById('numNewSentences').value, 10);
+
+    // Get the debug mode setting (checkbox value)
+    const debugMode = document.getElementById('debugMode').checked;
+
+    // Log debug mode status to help with debugging
+    console.log('Debug Mode:', debugMode ? 'Enabled' : 'Disabled');
+
+    // Update settings object or call function with these values
+    const settings = {
+        numNewSentences: numNewSentences,
+        debug: debugMode,
+        // You can include other settings here as needed
+    };
+
+    // Call your existing function to construct the request data with updated settings
+    constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
+});
 // Function to display debug information
 function showDebugInfo(keptMessages, removedMessages) {
     const debugOutput = document.getElementById('debugOutput');
@@ -751,28 +774,6 @@ function showDebugInfo(keptMessages, removedMessages) {
     debugContent += `</ul>`;
     debugOutput.innerHTML = debugContent;
 }
-
-
-document.getElementById('toggleModeButton').addEventListener('click', function() {
-    // Get the checkbox value for enabling weighted selection
-    const useWeightedSelection = document.getElementById('weightedSelectionCheckbox').checked;
-
-    // Get the number of new sentences to take (from the input field)
-    const numNewSentences = parseInt(document.getElementById('numNewSentences').value, 10);
-
-    // Get the debug mode setting (checkbox value)
-    const debugMode = document.getElementById('debugMode').checked;
-
-    // Update settings object or call function with these values
-    const settings = {
-        numNewSentences: numNewSentences,
-        debug: debugMode,
-        // You can include other settings here as needed
-    };
-
-    // Call your existing function to construct the request data with updated settings
-    constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
-});
 
 
 const isFirstMessage = true; 
