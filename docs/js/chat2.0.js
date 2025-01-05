@@ -842,7 +842,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     console.log("Messages token count: " + messagesTokenCount);
 
     const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
-    console.log("New Total token count: " + totalTokenCount);
+    console.info("New Total token count: " + totalTokenCount);
 
 // Find the most recent assistant message
 let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
