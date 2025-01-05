@@ -661,115 +661,54 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
-// Function to calculate the token length of a message
-function calculateTokenLength(message) {
-    return message.content.reduce((total, segment) => total + segment.text.length / 4, 0);
-}
+// Define the global toggle mode
+let isSentenceSelectionMode = false;
 
-// Function to trim messages if necessary to fit within token limit
-function trimMessages(messages, tokenLimit, debug = false) {
+// Define the trim function based on token count
+function trimMessagesByTokenCount(messages, maxTokens = 8000) {
     let totalTokens = 0;
-    const keptMessages = [];
-    const removedMessages = [];
-
-    for (let i = messages.length - 1; i >= 0; i--) {
-        const message = messages[i];
-        const messageTokens = calculateTokenLength(message);
-
-        if (totalTokens + messageTokens <= tokenLimit) {
-            keptMessages.unshift(message); // Add the message in the correct order
-            totalTokens += messageTokens;
-        } else {
-            removedMessages.unshift(message);
+    let trimmedMessages = [];
+    for (let message of messages) {
+        let messageTokens = Math.ceil(message.content.length / 4); // Approximate token count (4 chars per token)
+        if (totalTokens + messageTokens > maxTokens) {
+            break;
         }
+        totalTokens += messageTokens;
+        trimmedMessages.push(message);
     }
-
-    // Display debug information if enabled
-    if (debug) {
-        displayDebugInfo(keptMessages, removedMessages);
-    }
-
-    return keptMessages;
+    return trimmedMessages;
 }
 
-// Function to randomly pick sentences from older messages, weighted by age
-function getWeightedMessages(messages, numNewSentences, debug = false) {
-    const newMessages = [];
-    const olderMessages = [];
-    
-    // Separate new and old messages
-    for (let i = 0; i < messages.length; i++) {
-        if (i < numNewSentences) {
-            newMessages.push(messages[i]);
-        } else {
-            olderMessages.push(messages[i]);
-        }
-    }
-    
-    // Weight older messages by age (more recent is higher weight)
-    const weightedOlderMessages = olderMessages.map((msg, idx) => ({
-        message: msg,
-        weight: olderMessages.length - idx
-    }));
-
-    // Shuffle the weighted older messages
-    const weightedMessages = [];
-    for (const item of weightedOlderMessages) {
-        const { message, weight } = item;
-        for (let i = 0; i < weight; i++) {
-            weightedMessages.push(message);
-        }
-    }
-
-    // Combine the new and weighted older messages
-    const combinedMessages = [...newMessages, ...weightedMessages];
-
-    // Optionally log debug information
-    if (debug) {
-        displayDebugInfo(newMessages, weightedMessages);
-    }
-
-    return combinedMessages;
-}
-
-// Function to display debug information in the debug box
-function displayDebugInfo(keptMessages, removedMessages) {
-    const debugBox = document.getElementById('debugBox');
-    debugBox.innerHTML = ''; // Clear previous debug information
-
-    let debugContent = '<strong>Kept Messages:</strong><br>';
-    keptMessages.forEach(msg => {
-        debugContent += `<pre>${JSON.stringify(msg, null, 2)}</pre>`;
-    });
-
-    debugContent += '<strong>Removed Messages:</strong><br>';
-    removedMessages.forEach(msg => {
-        debugContent += `<pre>${JSON.stringify(msg, null, 2)}</pre>`;
-    });
-
-    debugBox.innerHTML = debugContent;
-}
-
+// Function to switch mode
 document.getElementById('toggleModeButton').addEventListener('click', function() {
-    // Get the checkbox value for enabling weighted selection
-    const useWeightedSelection = document.getElementById('weightedSelectionCheckbox').checked;
-
-    // Get the number of new sentences to take (from the input field)
-    const numNewSentences = parseInt(document.getElementById('numNewSentences').value, 10);
-
-    // Get the debug mode setting (checkbox value)
-    const debugMode = document.getElementById('debugMode').checked;
-
-    // Update settings object or call function with these values
-    const settings = {
-        numNewSentences: numNewSentences,
-        debug: debugMode,
-        // You can include other settings here as needed
-    };
-
-    // Call your existing function to construct the request data with updated settings
-    constructRequestData(messages, settings, negativePromptText, useWeightedSelection);
+    isSentenceSelectionMode = !isSentenceSelectionMode;
+    document.getElementById('sliderContainer').style.display = isSentenceSelectionMode ? 'block' : 'none';
+    console.log(`Switched to sentence selection mode: ${isSentenceSelectionMode}`);
 });
+
+// Function to select and reorder sentences based on age and weight
+function selectAndReorderSentences(messages, recentCount, ageWeightFactor) {
+    let newMessages = [...messages]; // Use a temporary array
+    let selectedMessages = [];
+    
+    // Select the last recent sentences
+    selectedMessages.push(...newMessages.slice(-recentCount));
+
+    // Select older sentences, weighted by age
+    newMessages = newMessages.slice(0, -recentCount); // Remove selected recent ones
+    let weightedMessages = newMessages.map((msg, index) => ({
+        ...msg,
+        weight: 1 / (index + 1) * ageWeightFactor
+    }));
+    
+    // Sort by weight (newer messages are more likely to be selected)
+    weightedMessages.sort((a, b) => b.weight - a.weight);
+    
+    // Add the weighted, random selection of older sentences
+    selectedMessages.push(...weightedMessages.map(msg => msg.content).sort(() => Math.random() - 0.5));
+
+    return selectedMessages;
+}
 
 const isFirstMessage = true; 
 let isResend = false;
@@ -846,21 +785,25 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-// Main function to construct request data
-function constructRequestData(messages, settings, negativePromptText, useWeightedSelection = false) {
+       // Modified constructRequestData function
+function constructRequestData(messages, settings, negativePromptText) {
+    // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
-
-    // Trim messages to stay within the token limit
-    let trimmedMessages = trimMessages(messages, 1000);
-
-    if (useWeightedSelection) {
-        const numNewSentences = parseInt(settings.numNewSentences, 10);
-        trimmedMessages = getWeightedMessages(trimmedMessages, numNewSentences, settings.debug);
+    
+    let messagesForRequest = messages;
+    
+    if (isSentenceSelectionMode) {
+        const recentCount = document.getElementById('recentSlider').value;
+        const ageWeightFactor = document.getElementById('ageSlider').value;
+        messagesForRequest = selectAndReorderSentences(messages, recentCount, ageWeightFactor);
+    } else {
+        // Trim messages by token count if not in sentence selection mode
+        messagesForRequest = trimMessagesByTokenCount(messages);
     }
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...trimmedMessages],
+        messages: [systemPrompt, ...messagesForRequest],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -886,16 +829,18 @@ function constructRequestData(messages, settings, negativePromptText, useWeighte
 
         if (lastUserMessageIndex !== -1) {
             const lastUserMessage = messages[lastUserMessageIndex];
-
             if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
                 lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
             }
         }
     }
 
+    // Debug output
+    document.getElementById('debugInfo').textContent = JSON.stringify(requestData, null, 2);
+
     return requestData;
 }
-        
+
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
 
