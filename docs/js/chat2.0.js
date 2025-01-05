@@ -699,23 +699,49 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
     let i = 0;
     let removedMessages = [];
 
+    // Recovery step: Ensure the message format is correct
+    // If there are consecutive assistant messages, remove the second one
+    if (messages[0] && messages[1] && messages[0].role === 'user' && messages[1].role === 'user') {
+        removedMessages.push(messages.splice(1, 1)[0]); // Remove the second assistant message
+        console.error("Removed the second consecutive user message as a recovery step.");
+        alert("Removed the second consecutive user message as a recovery step.");
+    }
+
+    // If there are consecutive assistant messages, remove the second one
+    if (messages[0] && messages[1] && messages[0].role === 'assistant' && messages[1].role === 'assistant') {
+        removedMessages.push(messages.splice(1, 1)[0]); // Remove the second assistant message
+        console.error("Removed the second consecutive assistant message as a recovery step.");
+        alert("Removed the second consecutive assistant message as a recovery step.");
+
+    }
+
+    // If the first message is a user message, remove it
+    if (messages[0] && messages[0].role === 'user') {
+        removedMessages.push(messages.shift()); // Remove the first user message
+        console.error("Removed the first user message as a recovery step.");
+        alert("Removed the first user message as a recovery step.");
+
+    }
+
     // Iterate through messages to find the first user-assistant pair
     while (i < messages.length) {
-        // Check for user message
-        if (messages[i].role === 'assistant' && i + 1 < messages.length && messages[i + 1].role === 'user') {
+        // Check for user message followed by assistant message
+        if (messages[i].role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'assistant') {
             // Store the pair for logging
             removedMessages.push(messages[i], messages[i + 1]);
             // Remove the user-assistant pair from the beginning
             messages.splice(i, 2);
+            console.log("Removed the oldest user-assistant pair.");
             break; // Stop after removing the first pair
         }
         i++;
     }
 
+    // Log the removed messages for debugging
     if (removedMessages.length > 0) {
-        console.log("Removed assistant-user pair: ", removedMessages);
+        console.log("Removed messages: ", removedMessages);
     } else {
-        console.log("No assistant-user pair removed.");
+        console.log("No user-assistant pair removed.");
     }
 }
 
