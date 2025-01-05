@@ -661,72 +661,7 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
-// Function to calculate token count (approximation)
-function calculateTokenCount(message) {
-    return message.content.reduce((totalTokens, part) => {
-        return totalTokens + part.text.split(/\s+/).length * 4; // Rough token estimate
-    }, 0);
-}
-
-// Function to trim messages to fit within the token limit
-function trimMessagesToFit(messages, tokenLimit, mode) {
-    let currentTokenCount = messages.reduce((totalTokens, message) => totalTokens + calculateTokenCount(message), 0);
-
-    // If within limit, return original messages
-    if (currentTokenCount <= tokenLimit) {
-        return messages;
-    }
-
-    // Simple Mode: Remove oldest sentences
-    if (mode === 'simple') {
-        while (currentTokenCount > tokenLimit) {
-            let messageToTrim = messages[0];
-            const sentenceCount = messageToTrim.content.length;
-
-            if (sentenceCount > 1) {
-                messageToTrim.content.shift(); // Remove the oldest sentence
-                currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
-            } else {
-                messages.shift(); // Remove the entire message if only one sentence left
-            }
-        }
-    }
-
-    // Smart Mode: Remove sentences based on weight
-    else if (mode === 'smart') {
-        // We assume each sentence has a weight; here we'll give recent ones higher priority
-        const weightedSentences = [];
-        messages.forEach(message => {
-            message.content.forEach((sentence, index) => {
-                const weight = index / message.content.length; // Weight can be based on recency
-                weightedSentences.push({ sentence, message, weight });
-            });
-        });
-
-        // Sort sentences by weight (newer sentences have higher priority)
-        weightedSentences.sort((a, b) => b.weight - a.weight);
-
-        // Construct new messages with the selected sentences
-        let newMessages = [];
-        let tokenCount = 0;
-        weightedSentences.forEach(item => {
-            const sentenceTokenCount = calculateTokenCount({ content: [item.sentence] });
-            if (tokenCount + sentenceTokenCount <= tokenLimit) {
-                tokenCount += sentenceTokenCount;
-                if (!newMessages.includes(item.message)) {
-                    newMessages.push(item.message);
-                }
-                item.message.content.push(item.sentence);
-            }
-        });
-
-        return newMessages;
-    }
-
-    return messages; // Return messages as is if no suitable mode found
-}
-
-// Function to calculate the token count of a message
+//Function to calculate the token count of a message
 function getTokenCount(message) {
     // Assume each character is roughly equivalent to 4 tokens (approximation)
     return message.content.length / 4;
@@ -741,16 +676,28 @@ function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
         tokenCount += getTokenCount(messages[i]);
     }
 
+    console.log("Current token count: " + tokenCount);
+
     // Remove last user-assistant pair if token count exceeds the limit
     if (tokenCount > tokenLimit) {
         let i = messages.length - 1;
+        let removedMessages = [];
+
+        // Find the last user message
         while (i >= 0 && messages[i].role !== 'user') {
             i--;
         }
 
         // Remove the pair (user and assistant)
         if (i >= 0 && i - 1 >= 0 && messages[i - 1].role === 'assistant') {
+            removedMessages.push(messages[i - 1], messages[i]);  // Store removed pair for logging
             messages.splice(i - 1, 2);  // Remove both user and assistant messages
+        }
+
+        if (removedMessages.length > 0) {
+            console.log("Removed user-assistant pair: ", removedMessages);
+        } else {
+            console.log("No user-assistant pair removed.");
         }
     }
 
@@ -832,13 +779,13 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-       // Function to construct requestData with optional negative prompt
+   // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
-    // Set the token limit (e.g., 8000 tokens)
-    const tokenLimit = 2000;
+    // Remove last user-assistant pair if the token count exceeds the limit
+    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
 
     // Console log for debugging
-    console.log("Messages: " + JSON.stringify(messages));
+    console.log("Messages after possible removal: " + JSON.stringify(messages));
 
     // Construct the base requestData object
     const requestData = {
