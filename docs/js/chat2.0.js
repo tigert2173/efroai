@@ -751,6 +751,8 @@ return messages;
 
 const isFirstMessage = true; 
 let isResend = false;
+let messagesTempChanges = messages;
+
 async function sendMessage() {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
@@ -823,9 +825,9 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+        messagesTempChanges = messages;
 
-// Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
+    function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
 
     // Remove last user-assistant pair if the token count exceeds the limit
@@ -873,7 +875,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
-            let messagesTempChanges = messages;
+            messagesTempChanges = messages;
     
             // Console log for debugging
         console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
