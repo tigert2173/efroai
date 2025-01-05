@@ -813,7 +813,7 @@ async function sendMessage() {
      // Updated requestData function with trimming functionality
 function constructRequestData(messages, settings, negativePromptText) {
     // Set the token limit (e.g., 8000 tokens)
-    const tokenLimit = 8000;
+    const tokenLimit = 500;
 
     // Trim messages according to the selected mode
     const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'simple');
