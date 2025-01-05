@@ -660,6 +660,98 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     enablePreload: false, // Default to false if not provided
 //     sessionId: 1,
 // };
+
+// Debug View Container
+const debugViewContainer = document.getElementById("debugMessages");
+
+// Function to update the debug view
+function updateDebugView(messages, trimmedMessages) {
+    // Clear the debug container
+    debugViewContainer.innerHTML = "";
+
+    // Add full messages and indicate their status (kept/trimmed)
+    messages.forEach((message, index) => {
+        const isTrimmed = !trimmedMessages.includes(message);
+
+        // Create a message display
+        const messageDiv = document.createElement("div");
+        messageDiv.style.padding = "5px";
+        messageDiv.style.marginBottom = "5px";
+        messageDiv.style.border = "1px solid #ddd";
+        messageDiv.style.backgroundColor = isTrimmed ? "#f8d7da" : "#d4edda";
+
+        // Add role, content, and status
+        messageDiv.innerHTML = `
+            <strong>Role:</strong> ${message.role}<br>
+            <strong>Content:</strong> ${message.content[0]?.text || ""}<br>
+            <strong>Status:</strong> <span style="color: ${isTrimmed ? "red" : "green"};">
+                ${isTrimmed ? "Trimmed" : "Kept"}
+            </span>
+        `;
+
+        debugViewContainer.appendChild(messageDiv);
+    });
+}
+
+// Example usage in your trimming function
+function trimMessages(messages, maxTokens, mode) {
+    // Keep the system prompt always
+    const trimmedMessages = [systemPrompt];
+    let currentTokens = calculateTokenLength(systemPrompt);
+
+    if (mode === "simple") {
+        // Simple mode: Remove oldest messages until within limit
+        for (let i = messages.length - 1; i >= 0; i--) {
+            const message = messages[i];
+            const messageTokens = calculateTokenLength(message);
+            if (currentTokens + messageTokens <= maxTokens) {
+                trimmedMessages.unshift(message);
+                currentTokens += messageTokens;
+            }
+        }
+    } else if (mode === "selective") {
+        // Selective mode: Trim intelligently (x sentences + random weighting)
+        for (let i = 0; i < messages.length; i++) {
+            const message = messages[i];
+            let trimmedContent = message.content[0].text.split(".").slice(0, 2).join(".") + ".";
+            if (i > 0) {
+                const extraSentences = selectWeightedSentences(
+                    message.content[0].text.split("."), 
+                    maxTokens
+                );
+                trimmedContent += " " + extraSentences.join(".") + ".";
+            }
+            const trimmedMessage = { ...message, content: [{ text: trimmedContent }] };
+            const messageTokens = calculateTokenLength(trimmedMessage);
+
+            if (currentTokens + messageTokens <= maxTokens) {
+                trimmedMessages.push(trimmedMessage);
+                currentTokens += messageTokens;
+            }
+        }
+    }
+
+    // Update the debug view
+    updateDebugView(messages, trimmedMessages);
+
+    return trimmedMessages;
+}
+
+// Helper functions
+function calculateTokenLength(message) {
+    // Rough token calculation (4 characters = 1 token)
+    const text = message.content[0]?.text || "";
+    return Math.ceil(text.length / 4);
+}
+
+function selectWeightedSentences(sentences, maxTokens) {
+    // Implement weighted sentence selection
+    const weights = sentences.map((_, index) => 1 / (index + 1)); // Older sentences have lower weight
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    return sentences.filter(() => Math.random() < weights[Math.floor(Math.random() * weights.length)] / totalWeight);
+}
+
+
 // Initialize the default mode
 let trimMode = "simple";
 
