@@ -782,6 +782,13 @@ async function sendMessage(autoinput) {
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
+    } else if (autoinput) {
+        //lastBotMsg = getLastAssistantMessage();
+        lastUserMessage = message;
+        //displayMessage(message, 'user');
+        //userInput.value = '';
+        botMessages = [];
+        currentBotMessageElement = null;
     }
     lastBotMsg = lastBotMsg || settings.greeting;
 
