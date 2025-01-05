@@ -893,12 +893,7 @@ function constructRequestData(messages, settings, negativePromptText) {
                 // Save the original state of the last user message
                 if (lastUserMessageIndex !== -1) {
                     const lastUserMessage = messages[lastUserMessageIndex];
-            
-                    // Check if the negative prompt is already in the message
-                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                        // Append the negative prompt text directly to the last user's message content
                         lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-                    }
                 }
             }
             if (lastUserMessageIndex !== -1) {
