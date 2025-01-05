@@ -859,7 +859,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
         // Provide feedback to the assistant
         if (sentenceCount > maxSentences) {
-            alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
+           // alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
 
             // Modify the assistant's message to fit the limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
