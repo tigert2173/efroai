@@ -783,10 +783,13 @@ async function sendMessage(autoinput) {
         botMessages = [];
         currentBotMessageElement = null;
     } else if (autoinput) {
-        //lastBotMsg = getLastAssistantMessage();
+        lastBotMsg = getLastAssistantMessage();
+        console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        //displayMessage(message, 'user');
-        //userInput.value = '';
+        messagessent = messagessent + 1;
+        document.getElementById('messages-sent').value = messagessent;
+        displayMessage(message, 'user');
+        userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
     }
