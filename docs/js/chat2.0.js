@@ -751,7 +751,6 @@ return messages;
 
 const isFirstMessage = true; 
 let isResend = false;
-let messagesTempChanges = messages;
 
 async function sendMessage() {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
@@ -813,6 +812,8 @@ async function sendMessage() {
    
     try {    
         await updateSettings();
+        let messagesTempChanges = messages;
+
         // Construct the conversation context
         // conversationContext.push(`User: ${settings.message}`); // Append user message
 
