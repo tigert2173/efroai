@@ -707,6 +707,56 @@ function selectMessagesRandomly(messages, recentCount, weight) {
     // Return the shuffled messages while maintaining original structure
     return weightedMessages.map(item => item.message);
 }
+// Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText) {
+    // Console log for debugging
+    console.log("Messages:", messages);
+    
+    // Construct the base requestData object
+    const requestData = {
+        messages: [systemPrompt, ...messages],
+        stream: true,
+        temperature: settings.temperature,
+        prescence_penalty: settings.prescence_penalty,
+        frequency_penalty: settings.frequency_penalty,
+        repeat_penalty: settings.repeat_penalty,
+        min_p: settings.min_p,
+        top_k: settings.top_k,
+        top_p: settings.top_p,
+        repeat_last_n: settings.repeat_last_n,
+        cache_prompt: true,
+        t_max_predict_ms: 300000, // timeout after 5 minutes
+    };
+
+    // Append the negative prompt to the last user's message if the setting is enabled
+    const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+
+    if (appendNegativePrompt.checked && negativePromptText) {
+        // Find the last user message (not assistant's message)
+        let lastUserMessageIndex = -1;
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === "user") {
+                lastUserMessageIndex = i;
+                break;
+            }
+        }
+
+        if (lastUserMessageIndex !== -1) {
+            const lastUserMessage = messages[lastUserMessageIndex];
+
+            // Check if the negative prompt is already in the message
+            if (!lastUserMessage.content.includes(negativePromptText)) {
+                // Append the negative prompt text directly to the last user's message content
+                lastUserMessage.content += `\n\nEssential Response Constraints: ${negativePromptText}`;
+            }
+        }
+    }
+
+    // Debugging: print out the final requestData
+    console.log("Final requestData:", JSON.stringify(requestData, null, 2));
+
+    return requestData;
+}
 
 const isFirstMessage = true; 
 let isResend = false;
