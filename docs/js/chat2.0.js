@@ -131,7 +131,7 @@ function loadCharacter(charName, listItem) {
     }
 }
 
-//Shortwave Config
+//Settings Config
 let settings = {
     charname: '',
     persona: '',
@@ -148,8 +148,9 @@ let settings = {
     top_k: 33, //Limit the next token selection to the K most probable tokens.
     prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-    repeat_penalty: 1.07,
+    repeat_penalty: 1.09,
     repeat_last_n: 512,
+    tokenLimit: 3000,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     context: "",
     enablePreload: false, // Default to false if not provided
