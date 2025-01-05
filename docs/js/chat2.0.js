@@ -857,20 +857,39 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Split the text into sentences by common sentence-ending punctuation marks
         let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
 
-        // Provide feedback to the assistant if the sentence count exceeds max
+        // Provide feedback to the assistant
         if (sentenceCount > maxSentences) {
+           // alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
+
             // Modify the assistant's message to fit the limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
 
             // Replace the assistant's message content with the truncated message
             lastAssistantMessage.content[0].text = truncatedMessage;
 
-            // Prepare feedback message
-            const feedbackMessage = `(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+            // Provide feedback to the AI that the response should be shorter
+            const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
             console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
 
-            // Store feedback temporarily in requestData (not appended to messages array)
-            feedbackMessageText = feedbackMessage;
+            // Optionally, append the feedback message to the system prompt or elsewhere
+            // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
+
+            // Now, we append feedback to the last user message
+            let lastUserMessageIndex = -1;
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+
+            if (lastUserMessageIndex !== -1) {
+                const lastUserMessage = messages[lastUserMessageIndex];
+
+                // Append the feedback to the user's message
+                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
+            }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
@@ -897,13 +916,8 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Append the negative prompt to the requestData temporarily if needed
+    // Append the negative prompt to the last user's message if the setting is enabled
     if (appendNegativePrompt.checked && negativePromptText) {
-        requestData.negativePrompt = `Essential Response Constraints: ${negativePromptText}`;
-    }
-
-    // Temporarily add the feedback message for the most recent user message
-    if (feedbackMessageText) {
         let lastUserMessageIndex = -1;
         for (let i = messages.length - 1; i >= 0; i--) {
             if (messages[i].role === "user") {
@@ -913,14 +927,18 @@ function constructRequestData(messages, settings, negativePromptText) {
         }
 
         if (lastUserMessageIndex !== -1) {
-            // Add feedback to the requestData, not to the messages array
-            requestData.feedbackMessage = feedbackMessageText;
+            const lastUserMessage = messages[lastUserMessageIndex];
+
+            // Check if the negative prompt is already in the message
+            if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                // Append the negative prompt text directly to the last user's message content
+                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+            }
         }
     }
 
     return requestData;
 }
-
 
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
