@@ -856,7 +856,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Split the text into sentences by common sentence-ending punctuation marks
         let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
 
-        // Provide feedback to the assistant
+        // Provide feedback to the assistant if it exceeds the sentence limit
         if (sentenceCount > maxSentences) {
             // Modify the assistant's message to fit the limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
@@ -870,23 +870,6 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`;
-
-            // Append the feedback to the last user message
-            let lastUserMessageIndex = -1;
-            for (let i = messages.length - 1; i >= 0; i--) {
-                if (messages[i].role === "user") {
-                    lastUserMessageIndex = i;
-                    break;
-                }
-            }
-
-            if (lastUserMessageIndex !== -1) {
-                const lastUserMessage = messages[lastUserMessageIndex];
-
-                // Append the feedback to the user's message
-                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
-            }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
@@ -896,6 +879,16 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
+
+    // Remove any feedback or negative prompt from previous user messages
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].role === "user") {
+            let userMessage = messages[i];
+            
+            // Remove any existing feedback or negative prompt
+            userMessage.content[0].text = userMessage.content[0].text.replace(/(\n\nEssential Response Constraints:.*|\n\nImportant:.*)/g, '');
+        }
+    }
 
     // Construct the base requestData object
     const requestData = {
