@@ -670,7 +670,7 @@ function getTokenCount(message) {
 
 function getRawTextTokenCount(text) {
     // Log the full content for debugging
-    console.log("System Prompt Content: ", text);
+    //console.log("System Prompt Content: ", text);
     return text.length / 4; // Rough estimate: 1 token ≈ 4 characters
 }
 
