@@ -661,59 +661,76 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
+const MAX_TOKENS = 8000; // Adjust according to token-to-character conversion
+let isRandomSelectionMode = false;
 
-// Initialize the default mode
-let trimMode = "simple";
+function trimMessagesToTokenLimit(messages) {
+    let totalTokens = 0;
+    let trimmedMessages = [];
+    for (let i = messages.length - 1; i >= 0; i--) {
+        const messageTokens = countTokens(messages[i].content);
+        totalTokens += messageTokens;
 
-// Get references to the button and current mode display
-const toggleTrimModeButton = document.getElementById("toggleTrimMode");
-const currentModeDisplay = document.getElementById("currentMode");
+        if (totalTokens > MAX_TOKENS) {
+            break;
+        }
 
-// Function to toggle between trimming modes
-toggleTrimModeButton.addEventListener("click", () => {
-    if (trimMode === "simple") {
-        trimMode = "selective";
-        toggleTrimModeButton.textContent = "Selective";
-        currentModeDisplay.textContent = "(Current: Selective)";
-    } else {
-        trimMode = "simple";
-        toggleTrimModeButton.textContent = "Simple";
-        currentModeDisplay.textContent = "(Current: Simple)";
+        trimmedMessages.unshift(messages[i]);
     }
-    console.log(`Trimming mode changed to: ${trimMode}`);
-});
+    return trimmedMessages;
+}
 
-// Pass `trimMode` to the constructRequestData function when constructing request data
+function countTokens(text) {
+    // Assuming 4 characters per token, you can adjust if needed.
+    return Math.floor(text.length / 4);
+}
 
+function toggleRandomSelectionMode() {
+    isRandomSelectionMode = !isRandomSelectionMode;
+    document.getElementById('sliderContainer').style.display = isRandomSelectionMode ? 'block' : 'none';
+}
+
+function selectMessagesRandomly(messages, recentCount, weight) {
+    let recentMessages = messages.slice(-recentCount);
+    let olderMessages = messages.slice(0, -recentCount);
+
+    // Weight older messages by age, newer ones are more likely
+    let weightedMessages = olderMessages.map((msg, idx) => ({
+        message: msg,
+        weight: weight - idx
+    }));
+
+    // Combine and shuffle messages
+    weightedMessages = [...recentMessages, ...weightedMessages];
+    weightedMessages.sort((a, b) => b.weight - a.weight); // Sorting by weight, descending
+
+    // Return the shuffled messages while maintaining original structure
+    return weightedMessages.map(item => item.message);
+}
 
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
-    if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
+    if (sendButtonDisabled) return;
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
-    if (message.trim() === "") return;  // Don't send empty messages
+    if (message.trim() === "") return;
 
-    // Add logic to send the message
     console.log("Sending message:", message);
 
-    // Disable button and add delay
     sendButtonDisabled = true;
     document.getElementById("send-button").disabled = true;
-    setTimeout(function() {
+    setTimeout(() => {
         sendButtonDisabled = false;
         document.getElementById("send-button").disabled = false;
-    }, 8000); // 8-second delay
+    }, 8000);
 
     document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
-   // if (!message) return;
     if (!isResend) {
-       // processMessageDataImportance();
         lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
-        console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent = messagessent + 1;
+        messagessent++;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
@@ -722,208 +739,22 @@ async function sendMessage() {
     }
     lastBotMsg = lastBotMsg || settings.greeting;
 
-    //Define the system message
     const systemPrompt = {
         role: "system",
-        content: 
-        `Reponse Goals: ${settings.systemPrompt}
-        Scenario: ${settings.scenario},
-
-        Persona: ${settings.persona}
-        ${settings.context ? `Context: ${settings.context}` : ''}
-            ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
-            ? `Example Dialogue:\n${settings.exampledialogue}` 
-            : ''}
-        ${settings.negativePrompt ? `Essential Response Constraints: ${settings.negativePrompt}` : ''}
-
-        `,
+        content: `Reponse Goals: ${settings.systemPrompt} Scenario: ${settings.scenario}, Persona: ${settings.persona}`
     };
+
+    const messages = isRandomSelectionMode
+        ? selectMessagesRandomly(botMessages, document.getElementById('recentSentences').value, document.getElementById('olderSentenceWeight').value)
+        : trimMessagesToTokenLimit(botMessages);
+
+    const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+    console.log("Final requestData:", JSON.stringify(requestData)); // Debugging view
+
     
-     //Define the system message
-     const scenarioPrompt = {
-        role: "user",
-        content:
-        `Scenario: ${settings.scenario}`,
-    };
-   
     try {    
         await updateSettings();
-        // Construct the conversation context
-        // conversationContext.push(`User: ${settings.message}`); // Append user message
 
-        // // Limit the context size
-        // if (conversationContext.length > 4096) {
-        //     conversationContext.shift(); // Remove the oldest message
-        // }
-
-        // Create the full prompt for the bot
-        //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
-        // Retrieve the negative prompt setting
-        const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-
-        // Function to calculate the estimated token count of a message array
-        function calculateTokenCount(messages) {
-            // Each token is approximately 4 characters
-            const charactersPerToken = 4;
-            return messages.reduce((count, message) => count + Math.ceil(message.content.length / charactersPerToken), 0);
-        }
-  // Debug view container
-const debugView = document.getElementById("debugView");
-const debugMessageList = document.getElementById("debugMessageList");
-const modal = document.getElementById("messageModal");
-const modalOverlay = document.getElementById("modalOverlay");
-const modalTitle = document.getElementById("modalTitle");
-const modalContent = document.getElementById("modalContent");
-
-// Function to update the debug view with messages
-function updateDebugView(allMessages, keptMessages) {
-    debugMessageList.innerHTML = ""; // Clear the current list
-
-    allMessages.forEach((message, index) => {
-        // Determine if the message was kept or removed
-        const isKept = keptMessages.includes(message);
-
-        // Create a message display
-        const messageDiv = document.createElement("div");
-        messageDiv.style.padding = "5px";
-        messageDiv.style.marginBottom = "5px";
-        messageDiv.style.borderRadius = "5px";
-        messageDiv.style.backgroundColor = isKept ? "#d4edda" : "#f8d7da"; // Green for kept, red for removed
-        messageDiv.style.cursor = "pointer";
-
-        // Add message content and click handler
-        messageDiv.innerHTML = `
-            <strong>${message.role.toUpperCase()}:</strong> ${message.content.slice(0, 100)}${
-            message.content.length > 100 ? "..." : ""
-        }
-            <span style="float: right; font-size: 0.9em; color: ${
-                isKept ? "#155724" : "#721c24"
-            };">[${isKept ? "KEPT" : "REMOVED"}]</span>
-        `;
-        messageDiv.onclick = () => openModal(message);
-
-        debugMessageList.appendChild(messageDiv);
-    });
-}
-
-// Function to open modal with message details
-function openModal(message) {
-    modalTitle.textContent = `${message.role.toUpperCase()} Message`;
-    modalContent.textContent = message.content;
-    modal.style.display = "block";
-    modalOverlay.style.display = "block";
-}
-
-// Function to close the modal
-function closeModal() {
-    modal.style.display = "none";
-    modalOverlay.style.display = "none";
-}
-
-        // Function to trim messages based on token limits
-        function trimMessages(messages, maxTokens, mode) {
-            const allMessages = [...messages]; // Keep track of all messages for debugging
-            let totalTokens = 0;
-            let keptMessages = [];
-        
-            if (mode === "simple") {
-                // Simple mode: Remove oldest messages until token count fits
-                for (let i = messages.length - 1; i >= 0; i--) {
-                    const tokenCount = Math.ceil(messages[i].content.length / 4); // Approx token count
-                    if (totalTokens + tokenCount <= maxTokens) {
-                        keptMessages.unshift(messages[i]); // Add to the front of the array
-                        totalTokens += tokenCount;
-                    } else {
-                        break;
-                    }
-                }
-            } else if (mode === "selective") {
-                // Selective mode: Advanced logic to preserve important content
-                let remainingTokens = maxTokens;
-        
-                messages.forEach((message) => {
-                    if (remainingTokens <= 0) return;
-        
-                    let sentences = message.content.split(". ");
-                    const initialSentences = sentences.slice(0, 2).join(". ");
-                    const remainingSentences = sentences.slice(2);
-        
-                    let selectedSentences = remainingSentences
-                        .map((sentence) => ({
-                            sentence,
-                            weight: Math.random(), // Weighting logic
-                        }))
-                        .sort((a, b) => b.weight - a.weight)
-                        .map((s) => s.sentence);
-        
-                    const trimmedContent = [initialSentences, ...selectedSentences].join(". ");
-                    const tokenCount = Math.ceil(trimmedContent.length / 4);
-        
-                    if (remainingTokens - tokenCount >= 0) {
-                        keptMessages.push({ ...message, content: trimmedContent });
-                        remainingTokens -= tokenCount;
-                    }
-                });
-            }
-        
-            // Update the debug view for visual feedback
-            updateDebugView(allMessages, keptMessages);
-        
-            return keptMessages;
-        }
-        
-
-        // Function to construct requestData with optional negative prompt
-        function constructRequestData(messages, settings, negativePromptText, trimMode = "simple") {
-            console.log("Messages before trimming: " + JSON.stringify(messages));
-        
-            // Trim messages to fit within token limit
-            const maxTokens = 1000; // Adjust as necessary
-            const trimmedMessages = trimMessages(messages, maxTokens, trimMode, settings.sentenceCount || 2);
-        
-            console.log("Messages after trimming: " + JSON.stringify(trimmedMessages));
-        
-            // Append the negative prompt to the last user's message if the setting is enabled
-            if (appendNegativePrompt.checked && negativePromptText) {
-                let lastUserMessageIndex = -1;
-                for (let i = trimmedMessages.length - 1; i >= 0; i--) {
-                    if (trimmedMessages[i].role === "user") {
-                        lastUserMessageIndex = i;
-                        break;
-                    }
-                }
-        
-                if (lastUserMessageIndex !== -1) {
-                    const lastUserMessage = trimmedMessages[lastUserMessageIndex];
-                    if (!lastUserMessage.content.includes(negativePromptText)) {
-                        lastUserMessage.content += `\n\nEssential Response Constraints: ${negativePromptText}`;
-                    }
-                }
-            }
-        
-            // Construct the base requestData object
-            const requestData = {
-                messages: [systemPrompt, ...trimmedMessages],
-                stream: true,
-                temperature: settings.temperature,
-                prescence_penalty: settings.prescence_penalty,
-                frequency_penalty: settings.frequency_penalty,
-                repeat_penalty: settings.repeat_penalty,
-                min_p: settings.min_p,
-                top_k: settings.top_k,
-                top_p: settings.top_p,
-                repeat_last_n: settings.repeat_last_n,
-                cache_prompt: true,
-                t_max_predict_ms: 300000, // timeout after 5 minutes
-            };
-        
-            // Add negative prompt if provided
-            if (negativePromptText) {
-                requestData.negative_prompt = negativePromptText;
-            }
-        
-            return requestData;
-        }
         
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);

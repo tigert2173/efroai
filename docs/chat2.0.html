@@ -366,28 +366,17 @@
             </div>
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-        <div>
-            <label for="trimMode">Select Trimming Mode:</label>
-            <button id="toggleTrimMode">Simple</button>
-            <span id="currentMode">(Current: Simple)</span>
-          </div>
-          <div id="debugView" style="border: 1px solid #ccc; padding: 10px; margin-top: 20px;">
-            <h3>Message Debug View</h3>
-            <div id="debugMessageList" style="max-height: 300px; overflow-y: auto; background: #f9f9f9; padding: 10px;">
-              <!-- Messages will appear here -->
-            </div>
-          </div>
-          
-          <!-- Modal for viewing full message content -->
-          <div id="messageModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-height: 70%; overflow-y: auto; background: white; border: 1px solid #ccc; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); padding: 20px; z-index: 1000;">
-            <h4 id="modalTitle"></h4>
-            <p id="modalContent" style="white-space: pre-wrap;"></p>
-            <button onclick="closeModal()" style="margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Close</button>
-          </div>
-          
-          <!-- Modal overlay -->
-          <div id="modalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;" onclick="closeModal()"></div>
-                    
+
+        <button id="toggleModeBtn" onclick="toggleRandomSelectionMode()">Toggle Random Selection Mode</button>
+<div id="sliderContainer" style="display: none;">
+    <label for="recentSentences">Recent Sentences: </label>
+    <input type="range" id="recentSentences" min="1" max="10" value="3">
+    <br>
+    <label for="olderSentenceWeight">Older Sentences Weight: </label>
+    <input type="range" id="olderSentenceWeight" min="1" max="10" value="5">
+</div>
+<textarea id="debugView" readonly rows="10" cols="50"></textarea>
+
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
     <!-- JuicyAds v3.0 -->
