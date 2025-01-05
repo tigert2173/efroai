@@ -773,7 +773,7 @@ async function sendMessage() {
    // if (!message) return;
     if (!isResend) {
        // processMessageDataImportance();
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
         messagessent = messagessent + 1;
