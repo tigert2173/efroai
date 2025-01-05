@@ -683,7 +683,7 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
     }
 
     // Calculate token count of the system prompt's content
-    const systemPromptText = systemPrompt;
+    const systemPromptText = systemPrompt.content.text;
     const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
     console.log("System Prompt token count: " + systemPromptTokenCount);
     console.log("Messages token count: " + messagesTokenCount);
