@@ -667,7 +667,7 @@ function getTokenCount(message) {
     return message.content[0].text.length / 4;
 }
 
-function getTokenCount(text) {
+function getRawTextTokenCount(text) {
     // Log the full content for debugging
     console.log("System Prompt Content: ", text);
     return text.length / 4; // Rough estimate: 1 token ≈ 4 characters
@@ -684,7 +684,7 @@ function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
 
     // Calculate token count of the system prompt's content
     const systemPromptText = systemPrompt.content;
-    const systemPromptTokenCount = getTokenCount(systemPromptText);
+    const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
     console.log("System Prompt token count: " + systemPromptTokenCount);
     console.log("Messages token count: " + messagesTokenCount);
 
