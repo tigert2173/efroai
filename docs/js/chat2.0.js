@@ -662,6 +662,7 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
+
 // Function to calculate the token count of a message
 function getTokenCount(message) {
     // Assume each character is roughly equivalent to 4 tokens (approximation)
@@ -692,26 +693,27 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
     const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
     console.log("Total token count: " + totalTokenCount);
 
-    // Remove last user-assistant pair if token count exceeds the limit
+ 
+    // Check if the total token count exceeds the limit
     if (totalTokenCount > tokenLimit) {
         let i = messages.length - 1;
         let removedMessages = [];
 
-        // Find the last user message
-        while (i >= 0 && messages[i].role !== 'user') {
+        // Find the last assistant message
+        while (i >= 0 && messages[i].role !== 'assistant') {
             i--;
         }
 
-        // Remove the pair (user and assistant)
-        if (i >= 0 && i - 1 >= 0 && messages[i - 1].role === 'assistant') {
+        // If there's an assistant message, remove it and the corresponding user message
+        if (i >= 0 && i - 1 >= 0 && messages[i - 1].role === 'user') {
             removedMessages.push(messages[i - 1], messages[i]);  // Store removed pair for logging
-            messages.splice(i - 1, 2);  // Remove both user and assistant messages
+            messages.splice(i - 1, 2);  // Remove the assistant message and the user message that follows it
         }
 
         if (removedMessages.length > 0) {
-            console.log("Removed user-assistant pair: ", removedMessages);
+            console.log("Removed assistant-user pair: ", removedMessages);
         } else {
-            console.log("No user-assistant pair removed.");
+            console.log("No assistant-user pair removed.");
         }
     }
 
