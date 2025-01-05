@@ -830,8 +830,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
-    let messagesTempChanges = messages;
-
+    
     // Calculate total token count
     for (let i = 0; i < messages.length; i++) {
         messagesTokenCount += getTokenCount(messages[i]);
@@ -874,7 +873,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
-            messagesTempChanges = messages;
+            let messagesTempChanges = messages;
     
             // Console log for debugging
         console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
