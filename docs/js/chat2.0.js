@@ -782,7 +782,8 @@ async function sendMessage(autoinput) {
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
-    } else if (autoinput) {
+    }
+    if (autoinput) {
         lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
