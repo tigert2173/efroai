@@ -667,22 +667,16 @@ function getTokenCount(message) {
     return message.content[0].text.length / 4;
 }
 
-// Function to calculate the token count of all messages, including system prompt
-function getTotalTokenCount(messages, systemPrompt) {
-    let totalTokenCount = getTokenCount(systemPrompt); // Add system prompt tokens
-
-    // Add tokens for each message in the messages array
-    for (let i = 0; i < messages.length; i++) {
-        totalTokenCount += getTokenCount(messages[i]);
-    }
-
-    return totalTokenCount;
+// Function to get the token count of the system prompt
+function getSystemPromptTokenCount(systemPrompt) {
+    return systemPrompt.length / 4;  // Assuming the system prompt is a simple string, you can adjust if it's structured differently
 }
-// Function to remove the last user-assistant message pair if the token count exceeds the limit
-function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
-    let tokenCount = 0;
 
-    // Calculate total token count
+// Function to remove the last user-assistant message pair if the token count exceeds the limit
+function removeLastUserAssistantPairIfOverLimit(messages, systemPrompt, tokenLimit) {
+    let tokenCount = getSystemPromptTokenCount(systemPrompt);  // Start with the system prompt token count
+
+    // Calculate total token count for the messages
     for (let i = 0; i < messages.length; i++) {
         tokenCount += getTokenCount(messages[i]);
     }
@@ -790,10 +784,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-   // Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
+  // Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText, systemPrompt) {
     // Remove last user-assistant pair if the token count exceeds the limit
-    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
+    messages = removeLastUserAssistantPairIfOverLimit(messages, systemPrompt, settings.tokenLimit);
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
@@ -838,7 +832,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     return requestData;
 }
 
-const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+const requestData = constructRequestData(messages, settings, settings.negativePrompt, systemPrompt);
 
 console.log("RequestData: ", requestData);
 
