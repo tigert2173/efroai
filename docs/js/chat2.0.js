@@ -786,10 +786,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-   // Function to construct requestData with optional negative prompt
-function constructRequestData(messages, settings, negativePromptText) {
+  // Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText, systemPrompt) {
     // Remove last user-assistant pair if the token count exceeds the limit
-    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
+    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit, systemPrompt);
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
@@ -833,6 +833,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     return requestData;
 }
+
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 

@@ -1,5 +1,5 @@
 {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "maintenanceUpcoming": false,
     "maintenanceMessage": "We’re working on adding exciting new features, including character images you can view while chatting—services will remain online, but you may experience some issues.\nThank you for your patience!"
 }
