@@ -782,8 +782,7 @@ async function sendMessage(autoinput) {
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
-    }
-    if (autoinput) {
+    } else if (autoinput) {
         lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
@@ -1185,6 +1184,7 @@ function regenerateMessage() {
             sendMessage(); // Ensure this function is defined to handle sending the message
         } else {
             //displayMessage('No previous user message found to regenerate.', 'assistant');
+            currentBotMessageElement.innerHTML = ''; // Clear current bot message
 
              // remove the last assistant message if needed
              if (messages.length = 1) {
