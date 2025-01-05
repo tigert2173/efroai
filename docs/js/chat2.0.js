@@ -868,8 +868,8 @@ function constructRequestData(messages, settings, negativePromptText) {
             lastAssistantMessage.content[0].text = truncatedMessage;
 
             // Provide feedback to the AI that the response should be shorter
-            const feedbackMessage = `You have generated ${sentenceCount} sentences, but the maximum allowed is ${maxSentences}. Please ensure future responses stay within the limit.`;
-            console.log("Feedback to AI: " + feedbackMessage);
+            const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+            console.warning("Feedback to AI: " + feedbackMessage);
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
@@ -888,7 +888,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
                 // Append the feedback to the user's message
                 lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-                console.log("Feedback added to user message: " + lastUserMessage.content[0].text);
+                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
             }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
