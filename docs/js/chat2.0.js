@@ -814,7 +814,7 @@ async function sendMessage() {
             console.log("Messages before trimming: " + JSON.stringify(messages));
         
             // Trim messages to fit within token limit
-            const maxTokens = 8000; // Adjust as necessary
+            const maxTokens = 1000; // Adjust as necessary
             const trimmedMessages = trimMessages(messages, maxTokens, trimMode, settings.sentenceCount || 2);
         
             console.log("Messages after trimming: " + JSON.stringify(trimmedMessages));
