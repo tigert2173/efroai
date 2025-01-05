@@ -664,7 +664,7 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 // Function to calculate the token count of a message based on the 'text' content
 function getTokenCount(message) {
     // Assume each character in the text is roughly equivalent to 4 tokens (approximation)
-    return message.content.text.length / 4;
+    return message.textContent.length / 4;
 }
 
 // Function to remove the last user-assistant message pair if the token count exceeds the limit
