@@ -834,8 +834,8 @@ async function sendMessage() {
 
        // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
-    // Remove last user-assistant pair if the token count exceeds the limit
-    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
+    // Set the token limit (e.g., 8000 tokens)
+    const tokenLimit = 2000;
 
     // Console log for debugging
     console.log("Messages: " + JSON.stringify(messages));
