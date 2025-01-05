@@ -756,7 +756,6 @@ async function sendMessage() {
         await updateSettings();
 
         
-const requestData = constructRequestData(messages, settings, settings.negativePrompt);
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
