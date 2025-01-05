@@ -673,7 +673,7 @@ function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
 
     // Calculate total token count
     for (let i = 0; i < messages.length; i++) {
-        tokenCount += getTokenCount(systemPrompt + messages[i]);
+        tokenCount += getTokenCount(systemPrompt[1] + messages[i]);
     }
 
     console.log("Current token count: " + tokenCount);
