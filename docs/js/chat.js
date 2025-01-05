@@ -701,8 +701,9 @@ async function sendMessage() {
     const systemPrompt = {
         role: "system",
         content: 
-        `
-        ${settings.systemPrompt}
+        `Reponse Goals: ${settings.systemPrompt}
+        Scenario: ${settings.scenario},
+
         Persona: ${settings.persona}
         ${settings.context ? `Context: ${settings.context}` : ''}
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
