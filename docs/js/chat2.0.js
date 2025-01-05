@@ -752,6 +752,7 @@ return messages;
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage(autoinput) {
+    updateRegenerateButton();  // Update the button when the page loads
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
     const message = autoinput || userInput.value.trim();
