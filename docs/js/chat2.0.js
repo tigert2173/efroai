@@ -751,9 +751,9 @@ return messages;
 
 const isFirstMessage = true; 
 let isResend = false;
-async function sendMessage() {
+async function sendMessage(autoinput) {
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
-    const userInput = document.getElementById('user-input');
+    const userInput = autoinput || document.getElementById('user-input');
     const message = userInput.value.trim();
     if (message.trim() === "") return;  // Don't send empty messages
 
@@ -1177,11 +1177,10 @@ function regenerateMessage() {
 
              // remove the last assistant message if needed
              if (messages.length = 1) {
-                lastUserMessage.content.text = 'Write me a new scenario'
+                autoinput = 'Write me a new scenario'
                 messages.pop(); // Remove the last message from the array
+                sendMessage(autoinput);
             }
-
-            sendMessage();
         }
     } else {
         displayMessage('No previous assistant message found to regenerate.', 'assistant');
