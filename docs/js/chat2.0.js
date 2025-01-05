@@ -1176,10 +1176,10 @@ function regenerateMessage() {
             //displayMessage('No previous user message found to regenerate.', 'assistant');
 
              // remove the last assistant message if needed
-             if (messages.length > 0) {
+             if (messages.length = 1) {
                 messages.pop(); // Remove the last message from the array
             }
-            
+
             sendMessage();
         }
     } else {
