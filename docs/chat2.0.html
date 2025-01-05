@@ -367,16 +367,18 @@
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 <script>
+   document.addEventListener("DOMContentLoaded", function() {
     const regenerateButton = document.getElementById("regenerate-button");
 
-// Check if there is only one or zero messages in the array
-if (messages.length <= 1) {
-    regenerateButton.textContent = "Generate New Scenario";  // Update the button text
-    regenerateButton.setAttribute("onclick", "generateNewScenario()");  // Change the onclick to generateNewScenario
-} else {
-    regenerateButton.textContent = "Regenerate Message";  // Default button text
-    regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Default onclick action
-}
+    // Check if there is only one or zero messages in the array
+    if (messages.length <= 1) {
+        regenerateButton.textContent = "Generate New Scenario";  // Update the button text
+        regenerateButton.setAttribute("onclick", "generateNewScenario()");  // Change the onclick to generateNewScenario
+    } else {
+        regenerateButton.textContent = "Regenerate Message";  // Default button text
+        regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Default onclick action
+    }
+});
 
 </script>
 <!-- Left-side Ad -->
