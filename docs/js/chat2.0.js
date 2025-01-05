@@ -661,17 +661,17 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
-// Function to calculate the token count of a message based on the 'text' content
+// Function to calculate the token count of a message
 function getTokenCount(message) {
-    // Assume each character in the text is roughly equivalent to 4 tokens (approximation)
-    return message.textContent.length / 4;
+    // Assume each character is roughly equivalent to 4 tokens (approximation)
+    return message.content[0].text.length / 4;
 }
 
 // Function to remove the last user-assistant message pair if the token count exceeds the limit
 function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
     let tokenCount = 0;
 
-    // Calculate total token count based on 'text' content in each message
+    // Calculate total token count
     for (let i = 0; i < messages.length; i++) {
         tokenCount += getTokenCount(messages[i]);
     }
