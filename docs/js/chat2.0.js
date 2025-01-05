@@ -698,7 +698,8 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
    if (totalTokenCount > tokenLimit) {
     let i = 0;
     let removedMessages = [];
-
+    console.warn("Warning: The total token count exceeds the limit. Token count: " + totalTokenCount + " (Limit: " + tokenLimit + ")");
+    
     // Recovery step: Ensure the message format is correct
     // If there are consecutive assistant messages, remove the second one
     if (messages[0] && messages[1] && messages[0].role === 'user' && messages[1].role === 'user') {
@@ -827,6 +828,19 @@ async function sendMessage() {
 function constructRequestData(messages, settings, negativePromptText) {
     // Remove last user-assistant pair if the token count exceeds the limit
     messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
+    // Calculate total token count
+    for (let i = 0; i < messages.length; i++) {
+        messagesTokenCount += getTokenCount(messages[i]);
+    }
+
+    // Calculate token count of the system prompt's content
+    const systemPromptText = systemPrompt.content;
+    const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
+    console.log("System Prompt token count: " + systemPromptTokenCount);
+    console.log("Messages token count: " + messagesTokenCount);
+
+    const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
+    console.log("New Total token count: " + totalTokenCount);
 
 // Find the most recent assistant message
 let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
