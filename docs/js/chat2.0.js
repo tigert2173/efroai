@@ -835,8 +835,8 @@ async function sendMessage() {
     messagesTempChanges = messages;
 
     // Calculate total token count
-    for (let i = 0; i < messages.length; i++) {
-        messagesTokenCount += getTokenCount(messages[i]);
+    for (let i = 0; i < messagesTempChanges.length; i++) {
+        messagesTokenCount += getTokenCount(messagesTempChanges[i]);
     }
 
     // Calculate token count of the system prompt's content
@@ -852,7 +852,7 @@ async function sendMessage() {
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
 
     // Find the most recent assistant message
-    let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
+    let lastAssistantMessage = messagesTempChanges.slice().reverse().find(messagesTempChanges => messagesTempChanges.role === "assistant");
 
     if (lastAssistantMessage) {
         let lastMessageText = lastAssistantMessage.content[0].text;
