@@ -768,7 +768,7 @@ async function sendMessage() {
         document.getElementById("send-button").disabled = false;
     }, 8000); // 8-second delay
 
-    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
+    //document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
    // if (!message) return;
     if (!isResend) {
