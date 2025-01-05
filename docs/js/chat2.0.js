@@ -873,6 +873,23 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
+
+            // Now, we append feedback to the last user message
+            let lastUserMessageIndex = -1;
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+
+            if (lastUserMessageIndex !== -1) {
+                const lastUserMessage = messages[lastUserMessageIndex];
+
+                // Append the feedback to the user's message
+                lastUserMessage.content[0].text += `\n\n(Note: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please be mindful of the sentence limit in future requests.)`;
+                console.log("Feedback added to user message: " + lastUserMessage.content[0].text);
+            }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
