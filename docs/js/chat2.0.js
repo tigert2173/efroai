@@ -1177,6 +1177,7 @@ function regenerateMessage() {
 
              // remove the last assistant message if needed
              if (messages.length = 1) {
+                lastUserMessage.content.text = 'Write me a new scenario'
                 messages.pop(); // Remove the last message from the array
             }
 
