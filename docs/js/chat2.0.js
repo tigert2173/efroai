@@ -665,7 +665,7 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 let isSentenceSelectionMode = false;
 
 // Define the trim function based on token count
-function trimMessagesByTokenCount(messages, maxTokens = 8000) {
+function trimMessagesByTokenCount(messages, maxTokens = 1000) {
     let totalTokens = 0;
     let trimmedMessages = [];
     for (let message of messages) {
