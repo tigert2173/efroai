@@ -694,30 +694,32 @@ function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLim
     console.log("Total token count: " + totalTokenCount);
 
  
-    // Check if the total token count exceeds the limit
-    if (totalTokenCount > tokenLimit) {
-        let i = messages.length - 1;
-        let removedMessages = [];
+   // Check if the total token count exceeds the limit
+   if (totalTokenCount > tokenLimit) {
+    let i = 0;
+    let removedMessages = [];
 
-        // Find the last assistant message
-        while (i >= 0 && messages[i].role !== 'assistant') {
-            i--;
+    // Iterate through messages to find the first user-assistant pair
+    while (i < messages.length) {
+        // Check for user message
+        if (messages[i].role === 'user' && i + 1 < messages.length && messages[i + 1].role === 'assistant') {
+            // Store the pair for logging
+            removedMessages.push(messages[i], messages[i + 1]);
+            // Remove the user-assistant pair from the beginning
+            messages.splice(i, 2);
+            break; // Stop after removing the first pair
         }
-
-        // If there's an assistant message, remove it and the corresponding user message
-        if (i >= 0 && i - 1 >= 0 && messages[i - 1].role === 'user') {
-            removedMessages.push(messages[i - 1], messages[i]);  // Store removed pair for logging
-            messages.splice(i - 1, 2);  // Remove the assistant message and the user message that follows it
-        }
-
-        if (removedMessages.length > 0) {
-            console.log("Removed assistant-user pair: ", removedMessages);
-        } else {
-            console.log("No assistant-user pair removed.");
-        }
+        i++;
     }
 
-    return messages;
+    if (removedMessages.length > 0) {
+        console.log("Removed assistant-user pair: ", removedMessages);
+    } else {
+        console.log("No assistant-user pair removed.");
+    }
+}
+
+return messages;
 }
 
 const isFirstMessage = true; 
