@@ -877,7 +877,7 @@ function constructRequestData(messages, settings, negativePromptText) {
             messagesTempChanges = messages;
     
             // Console log for debugging
-    console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
+        console.log("Messages after changes: " + JSON.stringify(messagesTempChanges));
 
         // Append the negative prompt to the last user's message if the setting is enabled
         if (appendNegativePrompt.checked && negativePromptText) {
@@ -903,7 +903,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         
             // Now, we append feedback to the last user message
             let lastUserMessageIndex = -1;
-            for (let i = messages.length - 1; i >= 0; i--) {
+            for (let i = messagesTempChanges.length - 1; i >= 0; i--) {
                 if (messagesTempChanges[i].role === "user") {
                     lastUserMessageIndex = i;
                     break;
