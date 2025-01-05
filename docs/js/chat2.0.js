@@ -823,6 +823,7 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
+
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
@@ -856,7 +857,7 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Split the text into sentences by common sentence-ending punctuation marks
         let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
 
-        // Provide feedback to the assistant if it exceeds the sentence limit
+        // Provide feedback to the assistant if the sentence count exceeds max
         if (sentenceCount > maxSentences) {
             // Modify the assistant's message to fit the limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
@@ -864,12 +865,12 @@ function constructRequestData(messages, settings, negativePromptText) {
             // Replace the assistant's message content with the truncated message
             lastAssistantMessage.content[0].text = truncatedMessage;
 
-            // Provide feedback to the AI that the response should be shorter
-            const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+            // Prepare feedback message
+            const feedbackMessage = `(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
             console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
 
-            // Optionally, append the feedback message to the system prompt or elsewhere
-            // systemPrompt.content += `\n\n${feedbackMessage}`;
+            // Store feedback temporarily in requestData (not appended to messages array)
+            feedbackMessageText = feedbackMessage;
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
@@ -879,16 +880,6 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Console log for debugging
     console.log("Messages after possible removal: " + JSON.stringify(messages));
-
-    // Remove any feedback or negative prompt from previous user messages
-    for (let i = 0; i < messages.length; i++) {
-        if (messages[i].role === "user") {
-            let userMessage = messages[i];
-            
-            // Remove any existing feedback or negative prompt
-            userMessage.content[0].text = userMessage.content[0].text.replace(/(\n\nEssential Response Constraints:.*|\n\nImportant:.*)/g, '');
-        }
-    }
 
     // Construct the base requestData object
     const requestData = {
@@ -906,8 +897,13 @@ function constructRequestData(messages, settings, negativePromptText) {
         t_max_predict_ms: 300000, // timeout after 5 minutes
     };
 
-    // Append the negative prompt to the last user's message if the setting is enabled
+    // Append the negative prompt to the requestData temporarily if needed
     if (appendNegativePrompt.checked && negativePromptText) {
+        requestData.negativePrompt = `Essential Response Constraints: ${negativePromptText}`;
+    }
+
+    // Temporarily add the feedback message for the most recent user message
+    if (feedbackMessageText) {
         let lastUserMessageIndex = -1;
         for (let i = messages.length - 1; i >= 0; i--) {
             if (messages[i].role === "user") {
@@ -917,18 +913,14 @@ function constructRequestData(messages, settings, negativePromptText) {
         }
 
         if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = messages[lastUserMessageIndex];
-
-            // Check if the negative prompt is already in the message
-            if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                // Append the negative prompt text directly to the last user's message content
-                lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
-            }
+            // Add feedback to the requestData, not to the messages array
+            requestData.feedbackMessage = feedbackMessageText;
         }
     }
 
     return requestData;
 }
+
 
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
