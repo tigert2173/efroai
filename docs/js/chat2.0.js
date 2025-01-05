@@ -823,7 +823,6 @@ async function sendMessage() {
         //const fullPrompt = `${settings.systemPrompt}\n${conversationContext.join('\n')}\nAssistant: ${settings.lastBotMsg || ''}`;
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
-
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
@@ -859,8 +858,6 @@ function constructRequestData(messages, settings, negativePromptText) {
 
         // Provide feedback to the assistant
         if (sentenceCount > maxSentences) {
-           // alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
-
             // Modify the assistant's message to fit the limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
 
@@ -872,9 +869,9 @@ function constructRequestData(messages, settings, negativePromptText) {
             console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
 
             // Optionally, append the feedback message to the system prompt or elsewhere
-            // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
+            // systemPrompt.content += `\n\n${feedbackMessage}`;
 
-            // Now, we append feedback to the last user message
+            // Append the feedback to the last user message
             let lastUserMessageIndex = -1;
             for (let i = messages.length - 1; i >= 0; i--) {
                 if (messages[i].role === "user") {
