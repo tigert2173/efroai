@@ -828,6 +828,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 }
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
