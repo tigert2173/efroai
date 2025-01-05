@@ -788,7 +788,7 @@ async function sendMessage(autoinput) {
         lastUserMessage = message;
         messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
-        displayMessage(message, 'user');
+       // displayMessage(message, 'user');
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
