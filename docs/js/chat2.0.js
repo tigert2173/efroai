@@ -1174,6 +1174,7 @@ function regenerateMessage() {
             sendMessage(); // Ensure this function is defined to handle sending the message
         } else {
             displayMessage('No previous user message found to regenerate.', 'assistant');
+            sendMessage();
         }
     } else {
         displayMessage('No previous assistant message found to regenerate.', 'assistant');
