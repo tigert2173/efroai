@@ -664,6 +664,7 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 const isFirstMessage = true; 
 let isResend = false;
 async function sendMessage() {
+    updateRegenerateButton();
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
