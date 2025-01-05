@@ -680,21 +680,14 @@ function trimMessagesToFit(messages, tokenLimit, mode) {
     // Simple Mode: Remove oldest sentences
     if (mode === 'simple') {
         while (currentTokenCount > tokenLimit) {
-            let messageToTrim = messages[0]; // Take the first message in the array
+            let messageToTrim = messages[0];
+            const sentenceCount = messageToTrim.content.length;
 
-            if (messageToTrim && messageToTrim.content && messageToTrim.content.length > 0) {
-                const sentenceCount = messageToTrim.content.length;
-
-                if (sentenceCount > 1) {
-                    messageToTrim.content.shift(); // Remove the oldest sentence
-                    currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
-                } else {
-                    messages.shift(); // Remove the entire message if only one sentence left
-                    currentTokenCount -= calculateTokenCount(messageToTrim);
-                }
+            if (sentenceCount > 1) {
+                messageToTrim.content.shift(); // Remove the oldest sentence
+                currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
             } else {
-                // If messageToTrim is undefined or doesn't have content, just remove it
-                messages.shift();
+                messages.shift(); // Remove the entire message if only one sentence left
             }
         }
     }
@@ -704,12 +697,10 @@ function trimMessagesToFit(messages, tokenLimit, mode) {
         // We assume each sentence has a weight; here we'll give recent ones higher priority
         const weightedSentences = [];
         messages.forEach(message => {
-            if (message.content) {
-                message.content.forEach((sentence, index) => {
-                    const weight = index / message.content.length; // Weight can be based on recency
-                    weightedSentences.push({ sentence, message, weight });
-                });
-            }
+            message.content.forEach((sentence, index) => {
+                const weight = index / message.content.length; // Weight can be based on recency
+                weightedSentences.push({ sentence, message, weight });
+            });
         });
 
         // Sort sentences by weight (newer sentences have higher priority)
@@ -733,6 +724,37 @@ function trimMessagesToFit(messages, tokenLimit, mode) {
     }
 
     return messages; // Return messages as is if no suitable mode found
+}
+
+// Function to calculate the token count of a message
+function getTokenCount(message) {
+    // Assume each character is roughly equivalent to 4 tokens (approximation)
+    return message.content.length / 4;
+}
+
+// Function to remove the last user-assistant message pair if the token count exceeds the limit
+function removeLastUserAssistantPairIfOverLimit(messages, tokenLimit) {
+    let tokenCount = 0;
+
+    // Calculate total token count
+    for (let i = 0; i < messages.length; i++) {
+        tokenCount += getTokenCount(messages[i]);
+    }
+
+    // Remove last user-assistant pair if token count exceeds the limit
+    if (tokenCount > tokenLimit) {
+        let i = messages.length - 1;
+        while (i >= 0 && messages[i].role !== 'user') {
+            i--;
+        }
+
+        // Remove the pair (user and assistant)
+        if (i >= 0 && i - 1 >= 0 && messages[i - 1].role === 'assistant') {
+            messages.splice(i - 1, 2);  // Remove both user and assistant messages
+        }
+    }
+
+    return messages;
 }
 
 const isFirstMessage = true; 
@@ -810,20 +832,17 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-     // Updated requestData function with trimming functionality
+       // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
-    // Set the token limit (e.g., 8000 tokens)
-    const tokenLimit = 4000;
-
-    // Trim messages according to the selected mode
-    const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'smart');
+    // Remove last user-assistant pair if the token count exceeds the limit
+    messages = removeLastUserAssistantPairIfOverLimit(messages, settings.tokenLimit);
 
     // Console log for debugging
-    console.log("Trimmed Messages: " + JSON.stringify(trimmedMessages));
+    console.log("Messages: " + JSON.stringify(messages));
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...trimmedMessages],
+        messages: [systemPrompt, ...messages],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -839,17 +858,16 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Append the negative prompt to the last user's message if the setting is enabled
     if (appendNegativePrompt.checked && negativePromptText) {
-        // Find the last user message (not assistant's message)
         let lastUserMessageIndex = -1;
-        for (let i = trimmedMessages.length - 1; i >= 0; i--) {
-            if (trimmedMessages[i].role === "user") {
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === "user") {
                 lastUserMessageIndex = i;
                 break;
             }
         }
 
         if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = trimmedMessages[lastUserMessageIndex];
+            const lastUserMessage = messages[lastUserMessageIndex];
 
             // Check if the negative prompt is already in the message
             if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
@@ -863,7 +881,6 @@ function constructRequestData(messages, settings, negativePromptText) {
 }
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
-
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
