@@ -660,6 +660,29 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     enablePreload: false, // Default to false if not provided
 //     sessionId: 1,
 // };
+// Initialize the default mode
+let trimMode = "simple";
+
+// Get references to the button and current mode display
+const toggleTrimModeButton = document.getElementById("toggleTrimMode");
+const currentModeDisplay = document.getElementById("currentMode");
+
+// Function to toggle between trimming modes
+toggleTrimModeButton.addEventListener("click", () => {
+    if (trimMode === "simple") {
+        trimMode = "selective";
+        toggleTrimModeButton.textContent = "Selective";
+        currentModeDisplay.textContent = "(Current: Selective)";
+    } else {
+        trimMode = "simple";
+        toggleTrimModeButton.textContent = "Simple";
+        currentModeDisplay.textContent = "(Current: Simple)";
+    }
+    console.log(`Trimming mode changed to: ${trimMode}`);
+});
+
+// Pass `trimMode` to the constructRequestData function when constructing request data
+
 
 const isFirstMessage = true; 
 let isResend = false;
