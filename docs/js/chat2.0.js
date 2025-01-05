@@ -786,15 +786,14 @@ async function sendMessage(autoinput) {
         lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
-        messagessent = messagessent + 1;
         document.getElementById('messages-sent').value = messagessent;
         displayMessage(message, 'user');
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
-    }
+    } else {
     lastBotMsg = lastBotMsg || settings.greeting;
-
+    }
     //Define the system message
     const systemPrompt = {
         role: "system",
