@@ -827,16 +827,14 @@ async function sendMessage() {
 // Function to construct requestData with optional negative prompt
 function constructRequestData(messages, settings, negativePromptText) {
     let messagesTokenCount = 0;
-
-    // Create a temporary array based on the original messages
-    let modifiedMessages = [...messages];
+    const tempMessages = [...messages]; // Create a temporary array to hold the modified messages
 
     // Remove last user-assistant pair if the token count exceeds the limit
-    modifiedMessages = removeLastUserAssistantPairIfOverLimit(systemPrompt, modifiedMessages, settings.tokenLimit);
+    tempMessages = removeLastUserAssistantPairIfOverLimit(systemPrompt, tempMessages, settings.tokenLimit);
 
     // Calculate total token count
-    for (let i = 0; i < modifiedMessages.length; i++) {
-        messagesTokenCount += getTokenCount(modifiedMessages[i]);
+    for (let i = 0; i < tempMessages.length; i++) {
+        messagesTokenCount += getTokenCount(tempMessages[i]);
     }
 
     // Calculate token count of the system prompt's content
@@ -852,7 +850,7 @@ function constructRequestData(messages, settings, negativePromptText) {
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
 
     // Find the most recent assistant message
-    let lastAssistantMessage = modifiedMessages.slice().reverse().find(message => message.role === "assistant");
+    let lastAssistantMessage = tempMessages.slice().reverse().find(message => message.role === "assistant");
 
     if (lastAssistantMessage) {
         let lastMessageText = lastAssistantMessage.content[0].text;
@@ -860,31 +858,31 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Split the text into sentences by common sentence-ending punctuation marks
         let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
 
-        // Provide feedback to the assistant
+        // Provide feedback to the assistant if necessary
         if (sentenceCount > maxSentences) {
-            // Truncate the assistant's message to fit the sentence limit
             let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
 
             // Replace the assistant's message content with the truncated message
             lastAssistantMessage.content[0].text = truncatedMessage;
 
-            // Construct feedback for the user
+            // Provide feedback to the AI that the response should be shorter
             const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-            console.warn("Feedback to AI: " + feedbackMessage);
+            console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
 
-            // Find the last user message and add the feedback there
+            // Now, we add feedback to the user's message in the temporary array
             let lastUserMessageIndex = -1;
-            for (let i = modifiedMessages.length - 1; i >= 0; i--) {
-                if (modifiedMessages[i].role === "user") {
+            for (let i = tempMessages.length - 1; i >= 0; i--) {
+                if (tempMessages[i].role === "user") {
                     lastUserMessageIndex = i;
                     break;
                 }
             }
 
             if (lastUserMessageIndex !== -1) {
-                const lastUserMessage = modifiedMessages[lastUserMessageIndex];
-                // Append the feedback to the user's message
-                lastUserMessage.content[0].text += `\n\n${feedbackMessage}`;
+                const lastUserMessage = tempMessages[lastUserMessageIndex];
+
+                // Append feedback to the user's message temporarily
+                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
                 console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
             }
         } else {
@@ -895,11 +893,11 @@ function constructRequestData(messages, settings, negativePromptText) {
     }
 
     // Console log for debugging
-    console.log("Messages after possible removal: " + JSON.stringify(modifiedMessages));
+    console.log("Temp Messages after possible removal: " + JSON.stringify(tempMessages));
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...modifiedMessages],  // Use modifiedMessages for the request
+        messages: [systemPrompt, ...tempMessages],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -916,15 +914,15 @@ function constructRequestData(messages, settings, negativePromptText) {
     // Append the negative prompt to the last user's message if the setting is enabled
     if (appendNegativePrompt.checked && negativePromptText) {
         let lastUserMessageIndex = -1;
-        for (let i = modifiedMessages.length - 1; i >= 0; i--) {
-            if (modifiedMessages[i].role === "user") {
+        for (let i = tempMessages.length - 1; i >= 0; i--) {
+            if (tempMessages[i].role === "user") {
                 lastUserMessageIndex = i;
                 break;
             }
         }
 
         if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = modifiedMessages[lastUserMessageIndex];
+            const lastUserMessage = tempMessages[lastUserMessageIndex];
 
             // Check if the negative prompt is already in the message
             if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
