@@ -661,70 +661,69 @@ document.getElementById('SettingsMaxSentencesSlider').addEventListener('change',
 //     sessionId: 1,
 // };
 
-// Define the global toggle mode
-let isSentenceSelectionMode = false;
+// Function to calculate token count (approximation)
+function calculateTokenCount(message) {
+    return message.content.reduce((totalTokens, part) => {
+        return totalTokens + part.text.split(/\s+/).length * 4; // Rough token estimate
+    }, 0);
+}
 
-// Define the trim function based on token count
-function trimMessagesByTokenCount(messages, maxTokens = 1000) {
-    let totalTokens = 0;
-    let trimmedMessages = [];
-    for (let message of messages) {
-        let messageTokens = Math.ceil(message.content.length / 4); // Approximate token count (4 chars per token)
-        if (totalTokens + messageTokens > maxTokens) {
-            break;
-        }
-        totalTokens += messageTokens;
-        trimmedMessages.push(message);
+// Function to trim messages to fit within the token limit
+function trimMessagesToFit(messages, tokenLimit, mode) {
+    let currentTokenCount = messages.reduce((totalTokens, message) => totalTokens + calculateTokenCount(message), 0);
+
+    // If within limit, return original messages
+    if (currentTokenCount <= tokenLimit) {
+        return messages;
     }
-    return trimmedMessages;
-}
 
-// Function to switch mode
-document.getElementById('toggleModeButton').addEventListener('click', function() {
-    isSentenceSelectionMode = !isSentenceSelectionMode;
-    document.getElementById('sliderContainer').style.display = isSentenceSelectionMode ? 'block' : 'none';
-    console.log(`Switched to sentence selection mode: ${isSentenceSelectionMode}`);
-});
+    // Simple Mode: Remove oldest sentences
+    if (mode === 'simple') {
+        while (currentTokenCount > tokenLimit) {
+            let messageToTrim = messages[0];
+            const sentenceCount = messageToTrim.content.length;
 
-// Function to select and reorder sentences based on age and weight
-function selectAndReorderSentences(messages, recentCount, ageWeightFactor) {
-    let newMessages = [...messages]; // Use a temporary array
-    let selectedMessages = [];
-    
-    // Select the last recent sentences
-    selectedMessages.push(...newMessages.slice(-recentCount));
+            if (sentenceCount > 1) {
+                messageToTrim.content.shift(); // Remove the oldest sentence
+                currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
+            } else {
+                messages.shift(); // Remove the entire message if only one sentence left
+            }
+        }
+    }
 
-    // Select older sentences, weighted by age
-    newMessages = newMessages.slice(0, -recentCount); // Remove selected recent ones
-    let weightedMessages = newMessages.map((msg, index) => ({
-        ...msg,
-        weight: 1 / (index + 1) * ageWeightFactor
-    }));
-    
-    // Sort by weight (newer messages are more likely to be selected)
-    weightedMessages.sort((a, b) => b.weight - a.weight);
-    
-    // Add the weighted, random selection of older sentences
-    selectedMessages.push(...weightedMessages.map(msg => msg.content).sort(() => Math.random() - 0.5));
+    // Smart Mode: Remove sentences based on weight
+    else if (mode === 'smart') {
+        // We assume each sentence has a weight; here we'll give recent ones higher priority
+        const weightedSentences = [];
+        messages.forEach(message => {
+            message.content.forEach((sentence, index) => {
+                const weight = index / message.content.length; // Weight can be based on recency
+                weightedSentences.push({ sentence, message, weight });
+            });
+        });
 
-    return selectedMessages;
-}
+        // Sort sentences by weight (newer sentences have higher priority)
+        weightedSentences.sort((a, b) => b.weight - a.weight);
 
-function highlightDebugData() {
-    const debugInfoElement = document.getElementById('debugInfo');
+        // Construct new messages with the selected sentences
+        let newMessages = [];
+        let tokenCount = 0;
+        weightedSentences.forEach(item => {
+            const sentenceTokenCount = calculateTokenCount({ content: [item.sentence] });
+            if (tokenCount + sentenceTokenCount <= tokenLimit) {
+                tokenCount += sentenceTokenCount;
+                if (!newMessages.includes(item.message)) {
+                    newMessages.push(item.message);
+                }
+                item.message.content.push(item.sentence);
+            }
+        });
 
-    // Example: Adding highlighted content dynamically
-    const newDebugMessage = 'New request data generated at ' + new Date().toLocaleTimeString();
-    const highlightedContent = `<span class="highlight">${newDebugMessage}</span>`;
-    
-    // Append the highlighted content
-    debugInfoElement.innerHTML += highlightedContent;
+        return newMessages;
+    }
 
-    // Alternatively, highlight specific new data
-    const newDataContent = 'New API response: success!';
-    const newContent = `<span class="new-data">${newDataContent}</span>`;
-    
-    debugInfoElement.innerHTML += newContent;
+    return messages; // Return messages as is if no suitable mode found
 }
 
 const isFirstMessage = true; 
@@ -802,25 +801,20 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-       // Modified constructRequestData function
+        // Updated requestData function with trimming functionality
 function constructRequestData(messages, settings, negativePromptText) {
+    // Set the token limit (e.g., 8000 tokens)
+    const tokenLimit = 1000;
+
+    // Trim messages according to the selected mode
+    const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'simple');
+
     // Console log for debugging
-    console.log("Messages: " + JSON.stringify(messages));
-    
-    let messagesForRequest = messages;
-    
-    if (isSentenceSelectionMode) {
-        const recentCount = document.getElementById('recentSlider').value;
-        const ageWeightFactor = document.getElementById('ageSlider').value;
-        messagesForRequest = selectAndReorderSentences(messages, recentCount, ageWeightFactor);
-    } else {
-        // Trim messages by token count if not in sentence selection mode
-        messagesForRequest = trimMessagesByTokenCount(messages);
-    }
+    console.log("Trimmed Messages: " + JSON.stringify(trimmedMessages));
 
     // Construct the base requestData object
     const requestData = {
-        messages: [systemPrompt, ...messagesForRequest],
+        messages: [systemPrompt, ...trimmedMessages],
         stream: true,
         temperature: settings.temperature,
         prescence_penalty: settings.prescence_penalty,
@@ -836,29 +830,31 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Append the negative prompt to the last user's message if the setting is enabled
     if (appendNegativePrompt.checked && negativePromptText) {
+        // Find the last user message (not assistant's message)
         let lastUserMessageIndex = -1;
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].role === "user") {
+        for (let i = trimmedMessages.length - 1; i >= 0; i--) {
+            if (trimmedMessages[i].role === "user") {
                 lastUserMessageIndex = i;
                 break;
             }
         }
 
         if (lastUserMessageIndex !== -1) {
-            const lastUserMessage = messages[lastUserMessageIndex];
+            const lastUserMessage = trimmedMessages[lastUserMessageIndex];
+
+            // Check if the negative prompt is already in the message
             if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
+                // Append the negative prompt text directly to the last user's message content
                 lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
             }
         }
     }
 
-    // Debug output
-    document.getElementById('debugInfo').textContent = JSON.stringify(requestData, null, 2);
-
     return requestData;
 }
 
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
