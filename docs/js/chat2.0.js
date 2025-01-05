@@ -771,7 +771,7 @@ async function sendMessage(autoinput) {
     //document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
    // if (!message) return;
-    if (!isResend || autoinput) {
+    if (!isResend) {
        // processMessageDataImportance();
         lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
@@ -1177,7 +1177,7 @@ function regenerateMessage() {
 
              // remove the last assistant message if needed
              if (messages.length = 1) {
-                autoinput = 'Write me a new scenario'
+                autoinput = 'Say blue'
                 messages.pop(); // Remove the last message from the array
                 sendMessage(autoinput);
             }
