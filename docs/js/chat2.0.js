@@ -869,7 +869,7 @@ function constructRequestData(messages, settings, negativePromptText) {
 
             // Provide feedback to the AI that the response should be shorter
             const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-            console.warn("Feedback to AI: " + feedbackMessage + " \nThis is to avoid message cutoffs!");
+            console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
 
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
