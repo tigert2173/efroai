@@ -857,28 +857,22 @@ function constructRequestData(messages, settings, negativePromptText) {
         // Split the text into sentences by common sentence-ending punctuation marks
         let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
 
-        // Compare sentence count to slider value
+        // Provide feedback to the assistant
         if (sentenceCount > maxSentences) {
-            // Exceeds the sentence limit, add the extra part to the last user message
-            let excessContent = lastMessageText.split(/[.!?~]/).slice(maxSentences).join('. ') + ".";
+            alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
 
-            // Find the last user message and append the excess content
-            let lastUserMessageIndex = -1;
-            for (let i = messages.length - 1; i >= 0; i--) {
-                if (messages[i].role === "user") {
-                    lastUserMessageIndex = i;
-                    break;
-                }
-            }
+            // Modify the assistant's message to fit the limit
+            let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
 
-            if (lastUserMessageIndex !== -1) {
-                const lastUserMessage = messages[lastUserMessageIndex];
+            // Replace the assistant's message content with the truncated message
+            lastAssistantMessage.content[0].text = truncatedMessage;
 
-                // Append the excess content to the last user's message
-                lastUserMessage.content[0].text += `\n\n[Assistant's Message (Exceeds Sentence Limit):] ${excessContent}`;
-            }
+            // Provide feedback to the AI that the response should be shorter
+            const feedbackMessage = `You have generated ${sentenceCount} sentences, but the maximum allowed is ${maxSentences}. Please ensure future responses stay within the limit.`;
+            console.log("Feedback to AI: " + feedbackMessage);
 
-            alert("The generated message exceeds the maximum sentence limit. The excess content was added to the last user message.");
+            // Optionally, append the feedback message to the system prompt or elsewhere
+            // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
