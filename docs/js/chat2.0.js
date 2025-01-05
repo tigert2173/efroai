@@ -847,8 +847,6 @@ function constructRequestData(messages, settings, negativePromptText) {
 
     // Get slider value (max sentences)
     let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
-    let originalUserMessage = null;
-    let lastUserMessageIndex = -1;
 
     // Find the most recent assistant message
     let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
@@ -876,9 +874,8 @@ function constructRequestData(messages, settings, negativePromptText) {
             // Optionally, append the feedback message to the system prompt or elsewhere
             // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
 
-            
-            
-            // Find the last user's message
+            // Now, we append feedback to the last user message
+            let lastUserMessageIndex = -1;
             for (let i = messages.length - 1; i >= 0; i--) {
                 if (messages[i].role === "user") {
                     lastUserMessageIndex = i;
@@ -886,27 +883,13 @@ function constructRequestData(messages, settings, negativePromptText) {
                 }
             }
 
-           // Save the original state of the last user message
-if (lastUserMessageIndex !== -1) {
-    originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
-}
+            if (lastUserMessageIndex !== -1) {
+                const lastUserMessage = messages[lastUserMessageIndex];
 
-// Apply feedback to the user's message
-if (lastUserMessageIndex !== -1) {
-    const lastUserMessage = messages[lastUserMessageIndex];
-
-    // Append the feedback if applicable
-    if (sentenceCount > maxSentences) {
-        lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
-        console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
-    }
-} else {
-    console.log("No assistant message found.");
-}
-
-// Console log for debugging
-console.log("Messages after possible removal: " + JSON.stringify(messages));
-
+                // Append the feedback to the user's message
+                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
+            }
         } else {
             console.log('Number of sentences in the last assistant message:', sentenceCount);
         }
