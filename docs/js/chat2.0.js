@@ -680,14 +680,21 @@ function trimMessagesToFit(messages, tokenLimit, mode) {
     // Simple Mode: Remove oldest sentences
     if (mode === 'simple') {
         while (currentTokenCount > tokenLimit) {
-            let messageToTrim = messages[0];
-            const sentenceCount = messageToTrim.content.length;
+            let messageToTrim = messages[0]; // Take the first message in the array
 
-            if (sentenceCount > 1) {
-                messageToTrim.content.shift(); // Remove the oldest sentence
-                currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
+            if (messageToTrim && messageToTrim.content && messageToTrim.content.length > 0) {
+                const sentenceCount = messageToTrim.content.length;
+
+                if (sentenceCount > 1) {
+                    messageToTrim.content.shift(); // Remove the oldest sentence
+                    currentTokenCount -= calculateTokenCount({ content: [messageToTrim.content[0]] });
+                } else {
+                    messages.shift(); // Remove the entire message if only one sentence left
+                    currentTokenCount -= calculateTokenCount(messageToTrim);
+                }
             } else {
-                messages.shift(); // Remove the entire message if only one sentence left
+                // If messageToTrim is undefined or doesn't have content, just remove it
+                messages.shift();
             }
         }
     }
@@ -697,10 +704,12 @@ function trimMessagesToFit(messages, tokenLimit, mode) {
         // We assume each sentence has a weight; here we'll give recent ones higher priority
         const weightedSentences = [];
         messages.forEach(message => {
-            message.content.forEach((sentence, index) => {
-                const weight = index / message.content.length; // Weight can be based on recency
-                weightedSentences.push({ sentence, message, weight });
-            });
+            if (message.content) {
+                message.content.forEach((sentence, index) => {
+                    const weight = index / message.content.length; // Weight can be based on recency
+                    weightedSentences.push({ sentence, message, weight });
+                });
+            }
         });
 
         // Sort sentences by weight (newer sentences have higher priority)
@@ -801,10 +810,10 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-        // Updated requestData function with trimming functionality
+     // Updated requestData function with trimming functionality
 function constructRequestData(messages, settings, negativePromptText) {
     // Set the token limit (e.g., 8000 tokens)
-    const tokenLimit = 1000;
+    const tokenLimit = 8000;
 
     // Trim messages according to the selected mode
     const trimmedMessages = trimMessagesToFit(messages, tokenLimit, settings.trimMode || 'simple');
