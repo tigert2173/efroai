@@ -780,7 +780,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         // Force "Gastronova" if the user is not premium
                         const select = document.getElementById("model");
-                        if (subscriptionTier < 1) {
+                        if (subscriptionTier < 1 && !select.value == "NemoMix") {
                             console.log("User is not premium, forcing 'Gastronova' selection.");
                             select.value = "gastronova"; // Force "Gastronova"
                             alert("You are not a premium user. Access to this model is restricted.");
