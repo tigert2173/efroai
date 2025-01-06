@@ -1,5 +1,5 @@
 {
     "maintenanceMode": false,
-    "maintenanceUpcoming": true,
+    "maintenanceUpcoming": false,
     "maintenanceMessage": "\n🔧 We’re Almost There! 🔧\nOur maintenance is complete, and we’re currently testing exciting new features before rolling them out. Thank you for your patience and support!"
 }
