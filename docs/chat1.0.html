@@ -366,25 +366,7 @@
             </div>
         </div>        
         <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
-<script>
-   function updateRegenerateButton() {
-    const regenerateButton = document.getElementById("regenerate-button");
 
-    // Check if there is only one or zero messages in the array
-    if (messages.length <= 1) {
-        regenerateButton.textContent = "Random New Scenario";  // Update the button text
-        regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Change the onclick to generateNewScenario
-    } else {
-        regenerateButton.textContent = "Regenerate Message";  // Default button text
-        regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Default onclick action
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    updateRegenerateButton();  // Update the button when the page loads
-});
-
-</script>
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
     <!-- JuicyAds v3.0 -->
@@ -519,10 +501,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <div class="setting">
                 <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Soft Message Length):</label>
-                <input type="range" id="SettingsMaxSentencesSlider" min="3" max="40" step="1" value="15">
-                <span id="SettingsMaxSentencesValue">25 Sentences</span>
+                <input type="range" id="SettingsMaxSentencesSlider" min="3" max="30" step="1" value="15">
+                <span id="SettingsMaxSentencesValue">15 Sentences</span>
             </div>
-                 
+
+            <label for="appendNegativePrompt">
+                Append Negative Prompt (Makes Sentence Limit A Bit More Strict, preventing cut-offs)
+            </label>
+            <input type="checkbox" id="appendNegativePrompt" checked> 
+            <br>        
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
@@ -669,7 +656,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <br>
             <br>
             <label for="use-example-dialogue">
-                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()"> Use Example Dialogue (Beta)
+                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta)
             </label>            
             <div class="setting hidden">
                 <label for="persona">Character Persona</label>
@@ -904,12 +891,8 @@ document.addEventListener("DOMContentLoaded", function() {
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
 
-            <label for="appendNegativePrompt">
-                Append Negative Prompt (Makes Sentence Limit A Bit More Strict, preventing cut-offs)
-            </label>
-            <input type="checkbox" id="appendNegativePrompt"> 
-            
-            <br>
+        
+        
            
             <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
             <input type="range" id="repeat_last_n" min="64" max="8192" step="16">
@@ -1227,7 +1210,7 @@ function hideTooltip() {
   </script>
 
 <script src="js/scripts/chat/savechatlocally.js?v=1"></script>
-<script src="js/chat2.0.js"></script>
+<script src="js/chat.js"></script>
 <script src="js/scripts/checkbot.js"></script>
 <script src="js/menu.js" defer></script>
 </body>
