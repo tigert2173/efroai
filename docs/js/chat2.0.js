@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const SettingsMaxSentencesSlider = document.getElementById('SettingsMaxSentencesSlider');
     const SettingsMaxSentencesValue = document.getElementById('SettingsMaxSentencesValue');
-    SettingsMaxSentencesSlider.value = 15;
+    SettingsMaxSentencesSlider.value = 20;
     SettingsMaxSentencesSlider.addEventListener('input', () => {
     SettingsMaxSentencesValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
     
