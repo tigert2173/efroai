@@ -71,7 +71,7 @@ function loadCharacters() {
         .then(data => {
             totalCharacters = data.total;
             const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
-            adExempt = isAdExempt(userToken); // Check if the user is Ad-Exempt
+            adExempt = true; //isAdExempt(userToken); // Check if the user is Ad-Exempt
             displayCharacters(data.characters, searchQuery);
 
             // Update the received character identifiers with the new ones
