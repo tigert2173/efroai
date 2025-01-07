@@ -44,9 +44,9 @@ function loginUser() {
             // Redirect to the referrer or homepage
             window.close(); // Optionally close the login window
         } else {
-            window.location.href = 'https://efroai.net/index.html';
+            window.location.href = 'https://efroai.net/hub.html';
         }
-        //const redirectUrl = document.referrer || '../index.html';
+        //const redirectUrl = document.referrer || '../hub.html';
 
     })
     .catch(error => {

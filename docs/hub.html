@@ -80,8 +80,9 @@
 }
 
 .maintenance-warning {
-    background-color: #ffda48; /* Warning banner background color */
-    color: #333; /* Text color */
+    background-color: #353535; /* Warning banner background color */
+    color: #e6e6e6; /* Text color */
+    /* background-color: #ffda48; */
     padding: 15px; /* Padding inside the banner */
     border: 1px solid #cc9900; /* Border style */
     border-radius: 5px; /* Rounded corners */
@@ -132,6 +133,8 @@
 }
 
     </style>
+    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+
 </head>
 <body>
 
@@ -173,22 +176,27 @@
     }
 </script>
 <script>
-    // Function to check for ad blocker
-    function detectAdBlocker() {
-        // Create a test image element
-        var img = new Image();
-        img.src = 'https://pagead2.googlesyndication.com/pagead/imgad?id=CAAQy5Z5y1cYwGoJ6gM1GQgPShTqlNTRx4WEJ8IY'; // A test image URL that is typically blocked
-        img.onload = function() {
-            // If the image loads, no ad blocker is detected
-            console.log('No ad blocker detected.');
-        };
-        img.onerror = function() {
-            // If the image fails to load, an ad blocker is likely active
-            document.getElementById('adBlockMessage').style.display = 'block';
-        };
-        // Append the image to the body (hidden)
-      //  document.body.appendChild(img);
-    }
+  // Function to check for ad blocker using an external script
+function detectAdBlocker() {
+    // Create a script element
+    var script = document.createElement('script');
+    script.src = 'https://a.magsrv.com/ad-provider.js'; // Use the URL of the ad-serving script
+    
+    // Event listener for when the script loads successfully
+    script.onload = function() {
+        // If the script loads, no ad blocker is detected
+        console.log('No ad blocker detected.');
+    };
+
+    // Event listener for when the script fails to load
+    script.onerror = function() {
+        // If the script fails to load, an ad blocker is likely active
+        document.getElementById('adBlockMessage').style.display = 'block';
+    };
+
+    // Append the script to the body (or head) of the document
+    document.body.appendChild(script);
+}
 
     // Run the detection function
     detectAdBlocker();
@@ -201,14 +209,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="efroai, efro ai, efro, EFRO, gassy chatbots, fetish AI, efrochatbots, skunkchatbots, fart fetish, fart fetish chatbot, farting roleplay, gassy girls, flatulence, AI chat, erotic flatulence, fart fantasy, skunk girls, fetish chat, gas fetish roleplay, custom AI chatbots, relieving chatbots, adult AI, emroai, emro ai, emrochatbots, Erotic Female Relieving Observerance Chatbot">
+    <meta name="keywords" content="efroai, efro ai, efro, EFRO, gassy chatbots, fetish AI, fetish chat ai, fetish ai chat, frochatbots, skunkchatbots, fart fetish, fart fetish chatbot, farting roleplay, gassy girls, flatulence, AI chat, erotic flatulence, fart fantasy, skunk girls, fetish chat, gas fetish roleplay, custom AI chatbots, relieving chatbots, adult AI, emroai, emro ai, emrochatbots, Erotic Female Relieving Observerance Chatbot">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EFRO.AI Character Hub</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/menu2.0.css">
+    <link rel="stylesheet" href="css/styles-winter.css">
+    <link rel="stylesheet" href="css/menu2.0-winter.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="initial-snow">
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+        <div class="snow">&#10052;</div>
+    </div>
+
     <!-- Header -->
     <header>
         <div id="maintenance-warning" class="maintenance-warning">
@@ -255,6 +294,7 @@
                     <a href="/EFROTales/">Old Stories Page</a>
                 </div>
             </li>
+
                         <!-- Account with dropdown -->
                     <li class="dropdown">
                         <a href="profile.html" id="profileLink" class="dropbtn" onclick="toggleDropdown(event)" id="accountLink">Account</a>
@@ -266,6 +306,7 @@
                             <a href="subscriptions.html" class="nav-btn">Subscriptions</a>
                         </div>
                     </li>
+
 
             <!-- Help with dropdown -->
             <li class="dropdown">
@@ -281,6 +322,7 @@
             <li>
                 <a href="contribute.html" class="nav-btn">Contribute</a>
             </li>
+            
         </ul>     
 
         <!-- Search bar -->
@@ -295,12 +337,11 @@
         </div>  
     </div>
 </nav>
-   
     </header>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-
             <h1>Unleash Your Fantasies with EFRO.AI!</h1>
             <p>Dive into a world where your wildest, grossest desires come to life! Discover and create unique AI characters designed to cater to your most niche interests. Share your creations, connect with like-minded enthusiasts, and indulge in a space where everything is celebrated. Join us for a playful exploration of the unusual and the taboo—because your fantasies deserve a voice!</p>
             <!-- <button class="cta-btn">Get Started</button> -->
@@ -309,24 +350,73 @@
 
     <!-- Main Content -->
     <main>
+      
   <!-- Sidebar with Filters -->
     <div class="filters">
-        <h2>Filters</h2>
+        <div class="sort-search-container">
+            <div class="column">
+                <select id="sort-select" class="custom-select">
+                    <option value="date">Sort by Newest</option>
+                    <option value="likes">Sort by Likes</option>
+                    <option value="match">Sort by Relevance</option>
+                </select>            
+            </div>
+        
+            <div class="column">
+                <input type="text" id="search-input" class="custom-input" placeholder="Search For..." />
+            </div>
+            <div class="column">
+                <small class="search-hint">Try traits like "furry," "fart," or usernames.</small>
+            </div>
+            <!-- <div class="column">
+                <select id="search-type-select" class="custom-select">
+                    <option value="normal">Normal Search</option>
+                    <option value="tags">Tags Search</option>
+                    <option value="deep">Deep Search</option>
+                </select>            
+            </div> -->
+        </div>
+        
+        
+    <div class="filter-container minimized">
+            <h2>
+            Filters
+            <button id="minimizeBtn" class="minimize-btn">+</button>
+        </h2>
+        <ul id="filterList">
         <ul>
+            <li><input type="checkbox" id="contest#001" name="filter"><label for="contest#001">[Contest#001]</label></li>
+            <li>
+                <input type="checkbox" id="nonfetish,non-fetish" name="filter" value="nonfetish,non-fetish">
+                <label for="gassy,fart">Non-Fetish</label>
+            </li>
+
+            <li><input type="checkbox" id="female" name="filter"><label for="female">Female</label></li>
+            <li><input type="checkbox" id="male" name="filter"><label for="male">Male</label></li>
             <li>
                 <input type="checkbox" id="gassy,fart" name="filter" value="gassy,fart">
                 <label for="gassy,fart">Gassy / Fart</label>
             </li>
-            
-            <li><input type="checkbox" id="female" name="filter"><label for="female">Female</label></li>
-            <li><input type="checkbox" id="male" name="filter"><label for="male">Male</label></li>
 
-            <li><input type="checkbox" id="lactose-intolerant,lactose intolerant" name="filter"><label for="lactose-intolerant, lactose intolerant">Lactose-Intolerant</label></li>
+            <li><input type="checkbox" id="feet" name="filter" value="feet"><label for="feet">Feet</label></li>
+            <li><input type="checkbox" id="armpit" name="filter" value="armpit"><label for="armpit">Armpit</label></li>
+
+            <li><input type="checkbox" id="smelly" name="filter"><label for="smelly">Smelly</label></li>
+            <li><input type="checkbox" id="gross" name="filter"><label for="gross">Gross</label></li>
+
+
+            <li><input type="checkbox" id="lactose-intolerant" name="filter"><label for="lactose-intolerant">Lactose-Intolerant</label></li>
             <li><input type="checkbox" id="skunk" name="filter"><label for="skunk">Skunk</label></li>
+            <li><input type="checkbox" id="spray" name="filter"><label for="spray">Spray</label></li>
             <li><input type="checkbox" id="sweat" name="filter"><label for="sweat">Sweat</label></li>
             <li><input type="checkbox" id="scat" name="filter"><label for="scat">Scat</label></li>
             <li><input type="checkbox" id="supremacy" name="filter"><label for="supremacy">Supremacy</label></li>
             <li><input type="checkbox" id="facesitting" name="filter"><label for="facesitting">Facesitting</label></li>
+            <li><input type="checkbox" id="furry" name="filter"><label for="furry">Furry</label></li>
+            <li><input type="checkbox" id="bondage" name="filter"><label for="bondage">Bondage</label></li>
+            <li><input type="checkbox" id="femdom" name="filter"><label for="femdom">Femdom</label></li>
+            <li><input type="checkbox" id="girlfriend" name="filter"><label for="girlfriend">Girlfriend</label></li>
+
             <li>
                 <input type="checkbox" id="piss,pee" name="filter" value="piss,pee">
                 <label for="piss,pee">Piss / Pee</label>
@@ -337,9 +427,11 @@
                 <input type="checkbox" id="futa,futanari" name="filter" value="futa,futanari">
                 <label for="futa,futanari">Futa / futanari</label>
             </li>
-            
+            <li><input type="checkbox" id="fat" name="filter"><label for="fat">Fat</label></li>
+
             <!-- More Filters -->
         </ul>
+    </div>
     </div>
 
         <!-- Character Grid -->
@@ -359,8 +451,11 @@
                 </div>
                 <!-- Repeat Cards for more characters -->
             </div>
-            <!-- Upload Character Button -->
-            <button class="upload-btn">Upload New Character</button>
+          <!-- Upload Character Button -->
+            <a href="editor.html">
+                <button class="upload-btn">Upload New Character</button>
+            </a>
+            
         </section>
 
         <!-- AI Recommendations Section -->
@@ -395,15 +490,15 @@
     <div id="maintenance-overlay">
         <div class="maintenance-content">
             <h1>Maintenance Mode</h1>
-            <p>We’re currently improving your experience! Maintenance will end by 4:40 PM EST. </p>
-            <p>During this time, it is highly likely that chatting will be offline. Thank you for your patience.</p>
+            <p>We’re currently improving your experience! </p>
+            <p>Thank you for your patience.</p>
             <button id="continue-btn">Continue Anyway</button>
         </div>
     </div>
     
     
     <!-- Scripts -->
-    <script src="js/hubold.js"></script>
+    <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
 
     <script>
@@ -431,6 +526,18 @@
     </script>
     
 <script>
+document.getElementById("minimizeBtn").addEventListener("click", function() {
+    const filterContainer = document.querySelector(".filter-container");
+    filterContainer.classList.toggle("minimized");
+    
+    // Change the button text to reflect the state
+    if (filterContainer.classList.contains("minimized")) {
+        document.getElementById("minimizeBtn").textContent = "+";
+    } else {
+        document.getElementById("minimizeBtn").textContent = "−";
+    }
+});
+
 
 // Function to show the maintenance mode
 function showMaintenanceMode() {

@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 
 // Optional: Define a fallback route for requests to /EFROTales or /efrotales root path
 app.get(['/EFROTales', '/efrotales'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'docs', 'EFROTales', 'index.html'));
+  res.sendFile(path.join(__dirname, 'docs', 'EFROTales', 'hub.html'));
 });
 
 // Use compression middleware with Brotli support
@@ -190,7 +190,7 @@ app.get('/capacity/capacity.html', (req, res) => {
 // Example route for the main page
 app.get('/', (req, res) => {
     console.log(`Serving main page to IP: ${userIp}`);
-    res.sendFile(path.join(__dirname, 'docs', 'index.html'));
+    res.sendFile(path.join(__dirname, 'docs', 'hub.html'));
 });
 
 // New endpoint to get waiting user count

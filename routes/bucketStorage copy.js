@@ -28,7 +28,7 @@ const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 }
 
 // Serve the test webpage for /bucket/list
 router.get('/list', (req, res) => {
-    res.sendFile('index.html', { root: './public' });
+    res.sendFile('hub.html', { root: './public' });
 });
 
 // List contents of the bucket
