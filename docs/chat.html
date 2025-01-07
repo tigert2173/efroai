@@ -199,9 +199,9 @@
     <ul class="nav-links">
         <!-- Characters with dropdown -->
         <li class="dropdown">
-            <a href="hub.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
             <div class="dropdown-content">
-                <a href="hub.html">Characters Hub</a>
+                <a href="index.html">Characters Hub</a>
                 <a href="editor.html">Upload Character</a>
                 <a href="mycharacters.html">My Characters</a>
             </div>
@@ -280,34 +280,6 @@
         adExempt = isAdExempt(userToken);
         </script>
 
-    <div class="desktop-only-ad-2">
-        <!-- JuicyAds v3.0 -->
-        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-        <ins id="1073770" data-width="728" data-height="102"></ins>
-        <script type="text/javascript" data-cfasync="false" async>
-            if (!adExempt) {
-                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});
-            } else {
-                document.getElementById("mobile-only-ad-2").style.display = "none";
-            }
-        </script>
-            <!--JuicyAds END-->
-    </div>
-
-    <div class="mobile-only-ad-2">
-        <!-- JuicyAds v3.0 -->
-        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-        <ins id="1073773" data-width="300" data-height="62"></ins>
-        <script type="text/javascript" data-cfasync="false" async>
-            if (!adExempt) {
-                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073773});
-            } else {
-                document.getElementById("mobile-only-ad-2").style.display = "none";
-            }
-        </script>
-        <!--JuicyAds END-->
-    </div>
-
     <!-- Audio Players for Each Generated Clip -->
     <div id="audioPlayersContainer"></div>
     <div id="main-content">
@@ -385,43 +357,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 </script>
-<!-- Left-side Ad -->
-<div class="desktop-only-ad left-ad" id="leftAd">
-    <!-- JuicyAds v3.0 -->
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073768" data-width="160" data-height="600"></ins>
-    <script type="text/javascript" data-cfasync="false" async>
-        if (!adExempt) {
-            (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073768});
-        } else {
-            document.getElementById("leftAd").style.display = "none";
-        }
-    </script>
-    <!-- JuicyAds END -->
 
-    <!-- Close button -->
-    <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
-</div>
-
-<!-- Right-side Ad -->
-<div class="desktop-only-ad right-ad" id="rightAd">
-    <!-- JuicyAds v3.0 -->
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073768" data-width="160" data-height="600"></ins>
-    <script type="text/javascript" data-cfasync="false" async>
-        if (!adExempt) {
-            (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073768});
-        } else {
-            document.getElementById("rightAd").style.display = "none";
-        }
-    </script>
-
-
-    <!-- JuicyAds END -->
-
-    <!-- Close button -->
-    <button class="close-btn" onclick="closeAd('rightAd')">&times;</button>
-</div>
 
 <script>
     // Function to close the ad
@@ -449,18 +385,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Function to simulate sending the message
         let sendButtonDisabled = false;
         </script>
- 
-        <!-- JuicyAds v3.0 -->
-        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-        <ins id="1073767" data-width="300" data-height="250"></ins>
-        <script type="text/javascript" data-cfasync="false" async>
-            if (!adExempt) {
-                (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073767});
-            } else {
-                document.getElementById("rightAd").style.display = "none";
-            }
-        </script>
-        <!--JuicyAds END-->
 
             <div class="status">
                 <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
